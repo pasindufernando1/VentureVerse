@@ -47,6 +47,12 @@ public class UserDTO implements UserDetails {
     @OneToOne(mappedBy = "user")
     private TokenDTO token;
 
+    @OneToMany(mappedBy = "sender")
+    List<ChatDTO> sender;
+
+    @OneToMany(mappedBy = "receiver")
+    List<ChatDTO> receiver;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));
