@@ -21,13 +21,13 @@ public class TokenDTO {
     private String token;
 
     @Enumerated(EnumType.STRING)
-    private TokenType tokenType;
+    private TokenType tokenType = TokenType.BEARER;
 
     private boolean expired;
     private boolean revoked;
 
-    @OneToOne
-    @JoinColumn(name = "users" )
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "userId", referencedColumnName = "id" )
     private UserDTO user;
 
 }

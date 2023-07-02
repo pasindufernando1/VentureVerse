@@ -1,6 +1,5 @@
 package com.ventureverse.server.model.normal;
 
-import com.ventureverse.server.enumeration.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +10,35 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequestDTO {
-    private String firstname;
-    private String lastname;
+
+    // ALL USERS
     private String email;
     private String password;
-    private Role role;
+    private String contactNumber;
+    private String firstLineAddress;
+    private String secondLineAddress;
+    private String town;
+    private String district;
+
+    // ADMIN | ENTREPRENEUR |INDIVIDUAL INVESTOR
+    private String firstname;
+    private String lastname;
+    private String nic;
+    private String gender;
+
+    // ENTREPRENEUR |INDIVIDUAL INVESTOR | ENTERPRISE INVESTOR
+    private String policeReport;
+    private String incomeStatement;
+    private String collaboratorDetails;
+    private Boolean felony;
+    private Boolean lawSuit;
+    private String felonyDescription;
+
+    // INDIVIDUAL INVESTOR | ENTERPRISE INVESTOR
+    private String financialDocument;
+
+    // ENTERPRISE INVESTOR
+    private String businessName;
+    private String businessRegistration;
+
 }

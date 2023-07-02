@@ -1,21 +1,21 @@
 package com.ventureverse.server.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "enterpriseinvestor")
-public class EnterpriseInvestorDTO extends InvestorDTO {
+@PrimaryKeyJoinColumn(name = "enterpriseinvestorId")
+public class EnterpriseInvestorDTO extends UserDTO {
 
     private String businessName;
     private String businessRegistration;
+    private String financialDocument;
 
 }

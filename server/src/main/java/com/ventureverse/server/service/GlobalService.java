@@ -6,6 +6,10 @@ import com.ventureverse.server.enumeration.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+import java.util.Arrays;
+import java.util.Base64;
+
 @Service
 @RequiredArgsConstructor
 public class GlobalService {
@@ -23,6 +27,17 @@ public class GlobalService {
                 .status(status)
                 .message(message)
                 .build();
+    }
+
+    public static String generateSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return Base64.getEncoder().encodeToString(salt);
+    }
+
+    public static String generateSaltedPassword(String password, String salt) {
+        return password + salt;
     }
 
 }

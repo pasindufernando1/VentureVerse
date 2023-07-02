@@ -21,12 +21,20 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponseDTO> register(
+    @PostMapping("/register/admin")
+    public ResponseEntity<ResponseDTO> register(
             HttpServletResponse response,
             @RequestBody RegisterRequestDTO registerRequestDTO
     ) {
-        return ResponseEntity.ok(authenticationService.register(response, registerRequestDTO));
+        return ResponseEntity.ok(authenticationService.registerAdmin(response, registerRequestDTO));
+    }
+
+    @PostMapping("/authorize/{id}")
+    public ResponseEntity<ResponseDTO> register(
+            HttpServletResponse response,
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(authenticationService.authorize(response, id));
     }
 
     @PostMapping("/authenticate")
