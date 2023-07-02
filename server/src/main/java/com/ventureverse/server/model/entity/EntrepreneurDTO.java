@@ -1,17 +1,17 @@
 package com.ventureverse.server.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "entrepreneur")
+@PrimaryKeyJoinColumn(name = "entrepreneurId")
 public class EntrepreneurDTO extends UserDTO {
 
     private String firstname;

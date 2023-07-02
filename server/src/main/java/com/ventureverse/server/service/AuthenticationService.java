@@ -3,15 +3,19 @@ package com.ventureverse.server.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ventureverse.server.config.JwtService;
 import com.ventureverse.server.enumeration.Role;
+import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
+import com.ventureverse.server.model.entity.AdminDTO;
 import com.ventureverse.server.model.entity.TokenDTO;
 import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
 import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.repository.AdminRepository;
 import com.ventureverse.server.repository.TokenRepository;
 import com.ventureverse.server.repository.UserRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,39 +35,65 @@ public class AuthenticationService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private Integer refreshExpiration;
     private final UserRepository userRepository;
+    private final AdminRepository adminRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponseDTO register(HttpServletResponse response, RegisterRequestDTO registerRequestDTO ) {
-        var user = UserDTO.builder()
-                .firstname(registerRequestDTO.getFirstname())
-                .lastname((registerRequestDTO.getLastname()))
+    public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO ) {
+
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user = AdminDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(registerRequestDTO.getPassword()))
-                .role(Role.USER)
-                .build();
-        var savedUser = userRepository.save(user);
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword() ,salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.CO_ADMIN)
+                .firstname(registerRequestDTO.getFirstname())
+                .lastname(registerRequestDTO.getLastname())
+                .gender(registerRequestDTO.getGender())
+                .nic(registerRequestDTO.getNic())
+                .adminType(Role.CO_ADMIN)
+                .build(); // Creates AdminDTO
+
+        adminRepository.save(user); // Save the Record
+        return GlobalService.response("Success", "Registration Pending");
+
+    }
+
+    public ResponseDTO authorize( HttpServletResponse response, Integer id ) {
+
+        var user = userRepository.findById(id).orElseThrow();
+
+        user.setApprovalStatus(Status.APPROVED);
+        userRepository.save(user);
+
         var accessToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
-        saveUserToken(savedUser, accessToken);
-        creatCookie(response, refreshToken, refreshExpiration/1000);
-        return GlobalService.authenticationResponse(
-                accessToken,
-                savedUser.getId(),
-                savedUser.getFirstname(),
-                savedUser.getLastname(),
-                savedUser.getEmail(),
-                savedUser.getRole()
-        );
+        saveUserToken(user, accessToken);
+
+        // SEND EMAIL TO USER
+
+        return GlobalService.response("Success", "User Approved");
+
     }
 
     public AuthenticationResponseDTO authenticate( HttpServletResponse response, AuthenticationRequestDTO authenticationRequest ) {
+
+        var salt = userRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
-                        authenticationRequest.getPassword()
+                        GlobalService.generateSaltedPassword(authenticationRequest.getPassword() ,salt)
                 )
         );
         var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
@@ -142,24 +172,13 @@ public class AuthenticationService {
         response.addCookie(refreshTokenCookie);
     }
 
-    private void revokeAllUserTokens(UserDTO user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
-        if (validUserTokens.isEmpty())
-            return;
-        validUserTokens.forEach(token->{
-            token.setExpired(true);
-            token.setRevoked(true);
-        });
-        tokenRepository.saveAll(validUserTokens);
-    }
-
     private void saveUserToken(UserDTO user, String jwtToken) {
         var token = TokenDTO.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
-                .revoked(false)
-                .expired(false)
+                .expired(true)
+                .revoked(true)
                 .build();
         tokenRepository.save(token);
     }
@@ -172,6 +191,17 @@ public class AuthenticationService {
             storedToken.setRevoked(false);
             tokenRepository.save(storedToken);
         }
+    }
+
+    private void revokeAllUserTokens(UserDTO user) {
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        if (validUserTokens.isEmpty())
+            return;
+        validUserTokens.forEach(token->{
+            token.setExpired(true);
+            token.setRevoked(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
     }
 
 }

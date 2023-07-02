@@ -14,9 +14,6 @@ public class AuthenticationResponseDTO {
     
     private String accessToken;
     private Integer id;
-    private String firstname;
-    private String lastname;
-    private String email;
     private Role role;
 
 }

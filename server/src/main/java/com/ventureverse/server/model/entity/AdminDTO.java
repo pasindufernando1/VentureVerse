@@ -1,24 +1,26 @@
 package com.ventureverse.server.model.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.ventureverse.server.enumeration.Role;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "admin")
+@PrimaryKeyJoinColumn(name = "adminId")
 public class AdminDTO extends UserDTO {
 
     private String firstname;
     private String lastname;
     private String nic;
     private String gender;
-    private String adminType;
+
+    @Enumerated(EnumType.STRING)
+    private Role adminType;
 
 }
