@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "individualinvestor")
 @PrimaryKeyJoinColumn(name = "individualinvestorId")
-public class IndividualInvestorDTO extends InvestorDTO {
+public class IndividualInvestorDTO extends InvestorDTO{
 
     private String firstname;
     private String lastname;
