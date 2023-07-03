@@ -11,10 +11,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "industrySector")
+@Table(name = "industry-sector")
 public class IndustrySectorDTO {
+
     @Id
     @GeneratedValue
     private Integer sectorId;
     private String sectorName;
+
 }

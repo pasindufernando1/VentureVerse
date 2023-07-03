@@ -51,7 +51,7 @@ public class AuthenticationService {
                 .email(registerRequestDTO.getEmail())
                 .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword() ,salt)))
                 .salt(salt)
-                .approvalStatus(Status.PENDING)
+                .approvalStatus(Status.APPROVED)
                 .profileImage("profileImage.jpg")
                 .contactNumber(registerRequestDTO.getContactNumber())
                 .firstLineAddress(registerRequestDTO.getFirstLineAddress())
@@ -66,8 +66,12 @@ public class AuthenticationService {
                 .adminType(Role.CO_ADMIN)
                 .build(); // Creates AdminDTO
 
-        adminRepository.save(user); // Save the Record
-        return GlobalService.response("Success", "Registration Pending");
+        var savedUser = adminRepository.save(user); // Save the Record
+
+        var accessToken = jwtService.generateToken(user);
+        saveUserToken(savedUser, accessToken);
+
+        return GlobalService.response("Success", "Co-Admin Registration Successful");
 
     }
 

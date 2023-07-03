@@ -13,8 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "listingImages")
+@Table(name = "listing-images")
 public class ListingImagesDTO implements Serializable {
+
     @EmbeddedId
     private CompositeKey id;
     @Data
@@ -28,4 +29,5 @@ public class ListingImagesDTO implements Serializable {
 
         private String image;
     }
+
 }

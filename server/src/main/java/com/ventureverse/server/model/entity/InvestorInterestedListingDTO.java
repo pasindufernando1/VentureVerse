@@ -1,4 +1,5 @@
 package com.ventureverse.server.model.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,18 +13,19 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "investor_interested_listing")
-public class Investor_InterestedListingDTO implements Serializable {
+@Table(name = "investor-interested-listing")
+public class InvestorInterestedListingDTO implements Serializable {
+
     @EmbeddedId
     private CompositeKey id;
-    private Integer AmountFinalized;
-    private Integer ReturnEquityPercentage;
-    private Integer ReturnUnitProfitPercentage;
-    private String FinalizedDate;
-    private String Status;
-    private String InvestorProofDocument;
-    private String EnterpreneurProofDocument;
-    private String SystemGeneratedDocument;
+    private Integer amountFinalized;
+    private Integer returnEquityPercentage;
+    private Integer returnUnitProfitPercentage;
+    private String finalizedDate;
+    private String status;
+    private String investorProofDocument;
+    private String entrepreneurProofDocument;
+    private String systemGeneratedDocument;
 
     @Data
     @NoArgsConstructor
@@ -38,4 +40,5 @@ public class Investor_InterestedListingDTO implements Serializable {
         @JoinColumn(name = "listingId", referencedColumnName = "listingId")
         private ListingDTO listingId;
     }
+
 }

@@ -1,4 +1,5 @@
 package com.ventureverse.server.model.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,9 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "listing_subscription")
-
+@Table(name = "listing-subscription")
 public class ListingSubscriptionDTO implements Serializable{
+
     @EmbeddedId
     private CompositeKey id;
 
@@ -31,4 +32,5 @@ public class ListingSubscriptionDTO implements Serializable{
         @JoinColumn(name = "listingId", referencedColumnName = "listingId")
         private ListingDTO listingId;
     }
+
 }

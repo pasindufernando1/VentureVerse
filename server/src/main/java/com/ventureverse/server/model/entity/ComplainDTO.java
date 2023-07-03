@@ -14,14 +14,15 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "complain")
 public class ComplainDTO {
-   @Id
-   @GeneratedValue
-   private Integer complainId;
-   private String description;
-   private String date;
 
-   @Enumerated(EnumType.STRING)
-    private Complain ComplainType=Complain.pending;
+    @Id
+    @GeneratedValue
+    private Integer complainId;
+    private String description;
+    private String date;
+
+    @Enumerated(EnumType.STRING)
+    private Complain ComplainType = Complain.PENDING;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")
@@ -31,5 +32,6 @@ public class ComplainDTO {
     @JoinColumn(name = "adminId", referencedColumnName = "id")
     private AdminDTO adminId;
 
-   private String ActionDescription;
+    private String ActionDescription;
+
 }

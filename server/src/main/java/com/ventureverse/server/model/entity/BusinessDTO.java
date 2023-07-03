@@ -1,4 +1,5 @@
 package com.ventureverse.server.model.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "business")
 public class BusinessDTO {
+
     @Id
     @GeneratedValue
     private String businessName;
@@ -27,4 +29,5 @@ public class BusinessDTO {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurID", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurID;
+
 }

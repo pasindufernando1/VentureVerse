@@ -1,6 +1,5 @@
 package com.ventureverse.server.model.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

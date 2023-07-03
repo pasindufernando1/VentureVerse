@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 @Entity
 @Table(name = "listing")
 public class ListingDTO {
+
     @Id
     @GeneratedValue
     private Integer listingId;

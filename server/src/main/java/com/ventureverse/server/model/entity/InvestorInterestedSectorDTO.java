@@ -1,4 +1,5 @@
 package com.ventureverse.server.model.entity;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "investor_interested_sector")
+@Table(name = "investor-interested-sector")
 public class InvestorInterestedSectorDTO implements Serializable {
+
     @EmbeddedId
     private CompositeKey id;
     @Data
@@ -29,4 +31,5 @@ public class InvestorInterestedSectorDTO implements Serializable {
         @JoinColumn(name = "sectorId", referencedColumnName = "sectorId")
         private IndustrySectorDTO sectorId;
     }
+
 }
