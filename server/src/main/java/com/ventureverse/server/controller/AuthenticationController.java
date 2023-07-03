@@ -29,12 +29,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.registerAdmin(response, registerRequestDTO));
     }
 
-    @PostMapping("/authorize/{id}")
+    @PostMapping("/authorize/{status}/{id}")
     public ResponseEntity<ResponseDTO> register(
             HttpServletResponse response,
+            @PathVariable String status,
             @PathVariable Integer id
     ) {
-        return ResponseEntity.ok(authenticationService.authorize(response, id));
+        return ResponseEntity.ok(authenticationService.authorize(response, status, id));
     }
 
     @PostMapping("/authenticate")

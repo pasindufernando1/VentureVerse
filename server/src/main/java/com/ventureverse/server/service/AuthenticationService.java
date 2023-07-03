@@ -70,7 +70,12 @@ public class AuthenticationService {
 
     }
 
-    public ResponseDTO authorize( HttpServletResponse response, Integer id ) {
+    public ResponseDTO authorize( HttpServletResponse response, String status, Integer id ) {
+
+        if (status.equals("decline")) {
+            userRepository.deleteById(id);
+            return GlobalService.response("Success", "Registration of User" + id + "is Declined");
+        }
 
         var user = userRepository.findById(id).orElseThrow();
 
@@ -82,7 +87,7 @@ public class AuthenticationService {
 
         // SEND EMAIL TO USER
 
-        return GlobalService.response("Success", "User Approved");
+        return GlobalService.response("Success", "User" + id + "Approved");
 
     }
 
