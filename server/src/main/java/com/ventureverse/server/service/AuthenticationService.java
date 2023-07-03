@@ -6,6 +6,7 @@ import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
 import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.entity.TokenDTO;
 import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
@@ -68,6 +69,38 @@ public class AuthenticationService {
         adminRepository.save(user); // Save the Record
         return GlobalService.response("Success", "Registration Pending");
 
+    }
+
+    public ResponseDTO registerEntrepreneur(HttpServletResponse response,RegisterRequestDTO registerRequestDTO) {
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user = EntrepreneurDTO.builder()
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.ENTREPRENEUR)
+                .firstname(registerRequestDTO.getFirstname())
+                .lastname(registerRequestDTO.getLastname())
+                .gender(registerRequestDTO.getGender())
+                .nic(registerRequestDTO.getNic())
+                .policeReport(registerRequestDTO.getPoliceReport())
+                .incomeStatement(registerRequestDTO.getIncomeStatement())
+                .collaboratorDetails(registerRequestDTO.getCollaboratorDetails())
+                .felony(registerRequestDTO.getFelony())
+                .lawSuit(registerRequestDTO.getLawSuit())
+                .felonyDescription(registerRequestDTO.getFelonyDescription())
+                .build(); // Creates EntrepreneurDTO
+
+        userRepository.save(user); // Save the Record
+        return GlobalService.response("Success", "Registration request sent");
     }
 
     public ResponseDTO authorize( HttpServletResponse response, Integer id ) {
@@ -203,5 +236,4 @@ public class AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
-
 }
