@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.sql.Timestamp;
 
 @Data
@@ -13,22 +12,22 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "chat")
-public class ChatDTO {
+@Table(name = "ban-account")
+public class BanAccountDTO {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Integer banId;
+    private String reason;
+    private String duration;
+    private Timestamp bannedTimeStamp;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sender", referencedColumnName = "id")
-    private UserDTO sender;
+    @JoinColumn(name = "userId", referencedColumnName = "id")
+    private UserDTO userId;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "receiver", referencedColumnName = "id")
-    private UserDTO receiver;
-
-    private String message;
-    private Timestamp timestamp;
+    @JoinColumn(name = "adminId", referencedColumnName = "id")
+    private AdminDTO adminId;
 
 }

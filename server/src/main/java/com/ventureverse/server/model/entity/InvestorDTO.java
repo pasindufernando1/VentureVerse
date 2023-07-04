@@ -20,4 +20,8 @@ public class InvestorDTO extends UserDTO {
 
     private String financialDocument;
 
+    @ManyToOne
+    @JoinColumn(name = "badgeId")
+    private BadgeDTO badgeId;
+
 }
