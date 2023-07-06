@@ -16,7 +16,6 @@ import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.AdminRepository;
 import com.ventureverse.server.repository.TokenRepository;
 import com.ventureverse.server.repository.UserRepository;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -41,15 +40,16 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
 
-    public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO ) {
+    public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO) {
 
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
         var user = AdminDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword() ,salt)))
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
                 .salt(salt)
                 .approvalStatus(Status.APPROVED)
                 .profileImage("profileImage.jpg")
@@ -107,7 +107,16 @@ public class AuthenticationService {
         return GlobalService.response("Success", "Registration request sent");
     }
 
-    public ResponseDTO authorize( HttpServletResponse response, Integer id ) {
+    public ResponseDTO authorize(HttpServletResponse response, String status, Integer id) {
+
+        if (userRepository.findApprovalById(id).equals(Status.APPROVED)) {
+            return GlobalService.response("Success", "User " + id + " Already Approved");
+        }
+
+        if (status.equals("decline")) {
+            userRepository.deleteById(id);
+            return GlobalService.response("Success", "Registration of User " + id + " is Declined");
+        }
 
         var user = userRepository.findById(id).orElseThrow();
 
@@ -118,26 +127,27 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
+        emailService.sendEmail(user.getEmail(), "Test", string);
 
-        return GlobalService.response("Success", "User Approved");
+        return GlobalService.response("Success", "User " + id + " Approved");
 
     }
 
-    public AuthenticationResponseDTO authenticate( HttpServletResponse response, AuthenticationRequestDTO authenticationRequest ) {
+    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {
 
         var salt = userRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
-                        GlobalService.generateSaltedPassword(authenticationRequest.getPassword() ,salt)
+                        GlobalService.generateSaltedPassword(authenticationRequest.getPassword(), salt)
                 )
         );
         var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
         var accessToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);
         updateUserToken(user, accessToken);
-        creatCookie(response, refreshToken, refreshExpiration/1000);
+        creatCookie(response, refreshToken, refreshExpiration / 1000);
         return GlobalService.authenticationResponse(
                 accessToken,
                 user.getId(),
@@ -145,7 +155,7 @@ public class AuthenticationService {
         );
     }
 
-    public void refreshToken( HttpServletRequest request, HttpServletResponse response ) throws IOException {
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         String refreshToken = null;
         final String email;
@@ -182,22 +192,22 @@ public class AuthenticationService {
 
     }
 
-    public ResponseDTO logout(HttpServletRequest request, HttpServletResponse response ) {
+    public ResponseDTO logout(HttpServletRequest request, HttpServletResponse response) {
 
         String authHeader = request.getHeader("Authorization");
         String jwt;
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return GlobalService.response("Error", "Logout Failed" );
+            return GlobalService.response("Error", "Logout Failed");
         }
 
         jwt = authHeader.substring(7);
         var email = jwtService.extractEmail(jwt);
         var user = this.userRepository.findByEmail(email).orElseThrow();
         revokeAllUserTokens(user);
-        creatCookie(response,"",0);
+        creatCookie(response, "", 0);
 
-        return GlobalService.response("Success", "" );
+        return GlobalService.response("Success", "");
 
     }
 
@@ -234,7 +244,7 @@ public class AuthenticationService {
         var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
             return;
-        validUserTokens.forEach(token->{
+        validUserTokens.forEach(token -> {
             token.setExpired(true);
             token.setRevoked(true);
         });

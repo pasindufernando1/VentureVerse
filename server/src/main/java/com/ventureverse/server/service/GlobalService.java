@@ -4,8 +4,14 @@ import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.enumeration.Role;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.Base64;
@@ -13,6 +19,8 @@ import java.util.Base64;
 @Service
 @RequiredArgsConstructor
 public class GlobalService {
+
+    private static final ResourceLoader resourceLoader = null;
 
     static AuthenticationResponseDTO authenticationResponse(String accessToken, Integer userId, Role role) {
         return AuthenticationResponseDTO.builder()

@@ -13,6 +13,23 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 465
+    username: ab0d841f1ed7e0
+    password: 3acbc47c370a58
+
+    properties:
+      mail:
+        smtp:
+          ssl:
+            trust: "*"
+          auth: true
+          starttls:
+            enable: true
+          connectiontimeout: 5000
+          timeout: 3000
+          writetimeout: 5000
 
 application:
   security:
@@ -21,3 +38,4 @@ application:
       expiration: 86400000
       refresh-token:
         expiration: 604800000
+

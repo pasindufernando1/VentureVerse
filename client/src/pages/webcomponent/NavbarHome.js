@@ -1,0 +1,133 @@
+import React from "react";
+import {
+    Navbar,
+    Collapse,
+    Typography,
+    Button,
+    IconButton,
+    List,
+    ListItem
+} from "@material-tailwind/react";
+
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {
+    faBars,
+    faCircleInfo,
+    faHouse,
+    faPhone,
+    faTag,
+    faUser,
+    faUserPlus,
+    faXmark
+} from '@fortawesome/free-solid-svg-icons'
+
+import logo from "../../assets/images/VentureVerse-Black.png";
+
+const NavList = (props) => {
+
+    let { active } = props;
+
+    let navList = [
+        {'icon': faHouse, 'title': "Home", 'link': "#"},
+        {'icon': faCircleInfo, 'title': "About", 'link': "#"},
+        {'icon': faTag, 'title': "Pricing", 'link': "#"},
+        {'icon': faPhone, 'title': "Contact", 'link': "#"},
+    ]
+
+    return (
+        <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
+            {
+                navList.map(({icon, title, link}, key) => (
+                    <Typography
+                        as="a"
+                        href={link}
+                        variant="small"
+                        className="font-normal"
+                        key={key}
+                    >
+                        <ListItem className="py-0 px-0 justify-center hover:!bg-transparent">
+                            <div className={active === title ? "navigation active" : "navigation"}>
+                                <FontAwesomeIcon icon={icon}/>
+                                {title}
+                            </div>
+                        </ListItem>
+                    </Typography>
+                ))
+            }
+        </List>
+    );
+
+}
+
+const NavAuthentications = () => {
+
+    let navAuthentications = [
+        {'icon': faUserPlus, 'title': "Sign In", 'link': "#"},
+        {'icon': faUser, 'title': "Sign Up", 'link': "#"},
+    ]
+
+    return (
+        <>
+            {
+                navAuthentications.map(({icon, title, link}, key) => (
+                    <Button
+                        variant="text"
+                        size="sm"
+                        className="flex items-center gap-2 navigation hover:!bg-transparent"
+                        key={key}
+                    >
+                        <FontAwesomeIcon icon={icon}/>
+                        {title}
+                    </Button>
+                ))
+            }
+        </>
+    );
+
+}
+
+const NavbarHome = (props) => {
+
+    const [openNav, setOpenNav] = React.useState(false);
+
+    React.useEffect(() => {
+        window.addEventListener("resize", () => window.innerWidth >= 960 && setOpenNav(false));
+    }, []);
+
+    const { active } = props;
+
+    return (
+        <Navbar className="mx-auto max-w-screen-xl px-4 py-2">
+            <div className="flex items-center justify-between text-blue-gray-900">
+                <img src={logo} className="w-[6rem] h-[2.5rem]" alt="Logo"/>
+
+                <div className="hidden lg:block">
+                    <NavList active={active} />
+                </div>
+                <div className="hidden gap-2 lg:flex">
+                    <NavAuthentications />
+                </div>
+                <IconButton
+                    variant="text"
+                    color="blue-gray"
+                    className="lg:hidden hover:!bg-transparent"
+                    onClick={() => setOpenNav(!openNav)}
+                >
+                    {
+                        openNav
+                            ? (<FontAwesomeIcon icon={faXmark} className="h-6 w-6"/>)
+                            : (<FontAwesomeIcon icon={faBars} className="h-6 w-6"/>)
+                    }
+                </IconButton>
+            </div>
+            <Collapse open={openNav}>
+                <NavList active={active} />
+                <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden justify-center">
+                    <NavAuthentications />
+                </div>
+            </Collapse>
+        </Navbar>
+    );
+}
+
+export default NavbarHome;

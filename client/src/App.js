@@ -2,6 +2,8 @@ import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 
+import Components from "./pages/webcomponent/Components";
+
 // Import Pages Here
 
 import {Routes, Route} from "react-router-dom";
@@ -11,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />}>
           {/*Public Routes*/}
-
+                <Route path="/components" element={<Components />} />
           {/*Protected Routes*/}
           <Route element={<PersistLogin />} >
             <Route element={<RequireAuth allowedRoles={["ADMIN","INVESTOR","ENTREPRENEUR"]} />} >
