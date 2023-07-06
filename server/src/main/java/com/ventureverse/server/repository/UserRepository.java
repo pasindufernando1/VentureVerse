@@ -1,5 +1,6 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,6 +15,13 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
         WHERE u.email = :email
     """)
     Optional<String> findSaltByEmail(String email);
+
+    @Query("""
+        SELECT u.approvalStatus
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    Status findApprovalById(Integer id);
 
     Optional<UserDTO> findByEmail(String email);
 
