@@ -5,6 +5,7 @@ import PersistLogin from "./components/PersistLogin";
 import Components from "./pages/webcomponent/Components"
 import Signup from "./pages/entrepreneur/Form"
 import AddListing from "./pages/entrepreneur/AddListing";
+import IndividualInvestor from "./pages/investor/individual_investor/Form";
 
 // Import Pages Here
 
@@ -18,6 +19,7 @@ function App() {
                 <Route path="/components" element={<Components />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/add-listing" element={<AddListing />} />
+                <Route path="/individual-investor" element={<IndividualInvestor />} />
           {/*Protected Routes*/}
           <Route element={<PersistLogin />} >
             <Route element={<RequireAuth allowedRoles={["ADMIN","INVESTOR","ENTREPRENEUR"]} />} >

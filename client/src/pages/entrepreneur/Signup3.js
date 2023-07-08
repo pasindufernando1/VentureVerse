@@ -123,9 +123,10 @@ function Signup3({formData, setFormData}) {
                     <label htmlFor="felony" className="text-main-black block mb-1">
                     Please upload the Business Registration Document:
                     </label>
-                    
+                    <input type="file" id="felony" name="felony" accept="image/png, image/jpeg" />
                 </div>
-            </div> 
+            </div>
+            <br></br> 
         </div>
     </div>  
     );  

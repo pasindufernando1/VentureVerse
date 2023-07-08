@@ -1,6 +1,6 @@
 import React from "react";
-import { Textarea} from "@material-tailwind/react";
 import InputField from "../webcomponent/InputField";
+import { Textarea} from "@material-tailwind/react";
 
 function Signup1({formData, setFormData}) {
   return (
@@ -108,7 +108,7 @@ function Signup1({formData, setFormData}) {
                     }
                 />
             </div>
-
+ 
             <div className="row2">
                 <div>
                     <label htmlFor="collabarators" className="text-main-black block mb-2">
@@ -124,7 +124,7 @@ function Signup1({formData, setFormData}) {
                         }
                     />
                 </div>
-            </div>    
+            </div> 
         </div>
     </div>
   );

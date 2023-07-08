@@ -3,6 +3,7 @@ import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
 import Signup4 from './Signup4';
+import { Button } from '@material-tailwind/react';
 
 function Form() {
     const [page, setPage] = useState(0);
@@ -55,17 +56,34 @@ function Form() {
             <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
                 <div className="text-gray-700 p-20 w-full">
                     {PageDisplay()}
-                    <button
-                    onClick={() => {
-                        setPage(currPage => currPage - 1);
-                    }}
-                    >Prev</button>
-                    <button
-                    onClick={() => {
-                        setPage(currPage => currPage + 1);
-                    }}
+                    <Button 
+                        type="button"
+                        //hide prev button on first page
+                        hidden={page === 0}
+                        //change the color to purple
+                        color="purple"
+                        className="float-left"
+                        onClick={() => {      
+                        setPage((currPage) => currPage - 1);
+                        }}
                     >
-                    Next</button>
+                    Prev    
+                    </Button>
+                    <Button
+                        type="button"
+                        color="purple"
+                        className="float-right"
+                        onClick={() => {
+                        if (page === FormTitles.length - 1) {
+                            alert("FORM SUBMITTED");
+                            console.log(formData);
+                        } else {
+                            setPage((currPage) => currPage + 1);
+                        }
+                        }}
+                    >
+                    {page === FormTitles.length - 1 ? "Submit" : "Next"}
+                    </Button>
                 </div> 
                 <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
                 </div>             

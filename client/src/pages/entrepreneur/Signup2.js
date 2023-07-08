@@ -30,12 +30,12 @@ function Signup2({formData, setFormData}) {
                             color="purple" 
                             name="felony" 
                             id="felony" 
-                            value="no" 
-                            label="No"/>
+                            label="No"
                             value={formData.felony}
                             onChange={(event)=>
                                 setFormData({...formData, felony: event.target.value})
                             }
+                        />
                     </div>    
                 </div>
             </div>   
@@ -78,7 +78,7 @@ function Signup2({formData, setFormData}) {
                     </label>
                     <Textarea 
                         color="purple"  
-                        outline={true} 
+                        outline="true"
                         className="w-full" 
                         value={formData.lawsuitDetails}
                         onChange={(event)=>
@@ -93,8 +93,10 @@ function Signup2({formData, setFormData}) {
                     <label htmlFor="policeReport" className="text-main-black block mb-1">
                     Please provide a copy of any police report .
                     </label>
-                    <div className="flex gap-20">
-                    </div>
+                    {/* File upload  */}
+                    <div>
+                        <input type="file" id="policeReport" name="policeReport" accept="image/png, image/jpeg" />
+                    </div>    
                 </div>
             </div>
 
@@ -104,6 +106,7 @@ function Signup2({formData, setFormData}) {
                     Please provide a copy of your bank statement.
                     </label>
                     <div className="flex gap-20">
+                        <input type="file" id="bankStatement" name="bankStatement" accept="image/png, image/jpeg" />
                     </div>
                 </div>
             </div>            
