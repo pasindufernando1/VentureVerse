@@ -2,6 +2,8 @@ import Button from "./Button";
 import InputField from "./InputField";
 import NavbarHome from "./NavbarHome";
 import NavbarAll from "./NavbarAll";
+import CustomCheckbox from "./CustomCheckbox";
+// import CustomCheckbox from "./checkbox";
 
 const Components = () => {
 
@@ -65,6 +67,9 @@ const Components = () => {
 
             <h2 className="font-bold text-xl">Investor Navbar</h2>
             <NavbarAll />
+
+            <h2 className="font-bold text-xl">Investor Navbar</h2>
+            <CustomCheckbox label="This is a Checkbox"/>
 
         </div>
     )

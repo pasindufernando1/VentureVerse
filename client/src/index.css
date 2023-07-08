@@ -38,6 +38,10 @@
     @apply right-[1px] top-[3px]
   }
 
+  .row {
+    @apply flex flex-col gap-[0.5rem] pb-[1rem] lg:flex-row
+  }
+
 
 
 }
@@ -52,4 +56,10 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+
+.listing {
+  background: url("./assets/images/Listing.png") no-repeat;
+  background-size:cover;
 }
