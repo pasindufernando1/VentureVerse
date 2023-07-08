@@ -2,7 +2,9 @@ import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 
-import Components from "./pages/webcomponent/Components";
+import Components from "./pages/webcomponent/Components"
+import Signup from "./pages/entrepreneur/Form"
+import AddListing from "./pages/entrepreneur/AddListing";
 
 // Import Pages Here
 
@@ -14,6 +16,8 @@ function App() {
         <Route path="/" element={<Layout />}>
           {/*Public Routes*/}
                 <Route path="/components" element={<Components />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/add-listing" element={<AddListing />} />
           {/*Protected Routes*/}
           <Route element={<PersistLogin />} >
             <Route element={<RequireAuth allowedRoles={["ADMIN","INVESTOR","ENTREPRENEUR"]} />} >
