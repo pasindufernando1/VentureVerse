@@ -10,7 +10,7 @@ function Signup3({formData, setFormData}) {
         Tell us more about your business
         </p>
 
-        <div className="mt-6">
+        <div className="mt-6 ">
             <div className="row">                                  
                 <InputField 
                     type="text" 
@@ -102,12 +102,10 @@ function Signup3({formData, setFormData}) {
 
             <div className="row2">
                 <div>
-                    <label htmlFor="businessDescription" className="text-main-black block mb-2">
+                    <label htmlFor="businessDescription" className="text-main-black block mb-2 text-[14px]">
                     Please provide a brief non-confidential description of your business or product:
                     </label>
                     <Textarea 
-                        color="purple"  
-                        outline={true} 
                         label="Description" 
                         className="w-full"
                         value={formData.businessDescription} 
@@ -118,15 +116,18 @@ function Signup3({formData, setFormData}) {
                 </div>
             </div>
 
-            <div className="row2">
-                <div>
-                    <label htmlFor="felony" className="text-main-black block mb-1">
+            <div className="row">
+                <div className="file-input-container">
+                    <label htmlFor="bregReport" className="text-main-black block mb-1 text-[14px]">
                     Please upload the Business Registration Document:
                     </label>
-                    <input type="file" id="felony" name="felony" accept="image/png, image/jpeg" />
+                    <input type="file" id="bregReport" name="bregReport" accept="image/png, image/jpeg" className="hidden" />
+                    <label htmlFor="bregReport" className="file-input-button">
+                        Select File
+                    </label>
+                    <span className="file-input-text">No file chosen</span>
                 </div>
             </div>
-            <br></br> 
         </div>
     </div>  
     );  

@@ -1,5 +1,5 @@
 import React from "react";
-import {Checkbox } from "@material-tailwind/react";
+import Checkbox from "../webcomponent/CustomCheckbox";
 import InputField from "../webcomponent/InputField";
 
 function Signup4({formData, setFormData}) {
@@ -12,7 +12,7 @@ function Signup4({formData, setFormData}) {
 
         <div className="mt-6">
             <div className="row2">                                  
-                <label>
+                <label htmlFor="password" className="text-main-black block mb-1 text-[14px]">
                     Password:
                     <InputField 
                         type="password" 
@@ -26,7 +26,7 @@ function Signup4({formData, setFormData}) {
             </div>    
             <br></br>
             <div className="row2">                                  
-                <label>
+                <label htmlFor="cpassword" className="text-main-black block mb-1 text-[14px]">
                     Confirm Password:
                     <InputField 
                         type="password" 

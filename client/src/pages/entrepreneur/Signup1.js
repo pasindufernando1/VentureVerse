@@ -1,6 +1,7 @@
 import React from "react";
 import InputField from "../webcomponent/InputField";
-import { Textarea} from "@material-tailwind/react";
+import Textarea from "../webcomponent/CustomTextarea";
+import { Select,Option } from "@material-tailwind/react";
 
 function Signup1({formData, setFormData}) {
   return (
@@ -18,6 +19,7 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, firstname: event.target.value})
                     }
+                    className=""
                 />
                 <InputField
                     type="text"
@@ -60,14 +62,38 @@ function Signup1({formData, setFormData}) {
                             setFormData({...formData, town: event.target.value})
                         }
                     />
-                    <InputField
-                        type="text"
+                    <Select 
                         label="District"
                         value={formData.district}
-                        onChange={(event)=>
-                            setFormData({...formData, district: event.target.value})
-                        }
-                    />
+                        // onChange={(event)=>
+                        //     setFormData({...formData, district: event.target.value})
+                        // }
+                    >
+                        <Option value="Colombo">Colombo</Option>
+                        <Option value="Gampaha">Gampaha</Option>
+                        <Option value="Kalutara">Kalutara</Option>
+                        <Option value="Kandy">Kandy</Option>
+                        <Option value="Matale">Matale</Option>
+                        <Option value="Nuwara Eliya">Nuwara Eliya</Option>
+                        <Option value="Galle">Galle</Option>
+                        <Option value="Matara">Matara</Option>
+                        <Option value="Hambantota">Hambantota</Option>
+                        <Option value="Jaffna">Jaffna</Option>
+                        <Option value="Kilinochchi">Kilinochchi</Option>
+                        <Option value="Mannar">Mannar</Option>
+                        <Option value="Mullaitivu">Mullaitivu</Option>
+                        <Option value="Vavuniya">Vavuniya</Option>
+                        <Option value="Puttalam">Puttalam</Option>
+                        <Option value="Kurunegala">Kurunegala</Option>
+                        <Option value="Anuradhapura">Anuradhapura</Option>
+                        <Option value="Polonnaruwa">Polonnaruwa</Option>
+                        <Option value="Badulla">Badulla</Option>
+                        <Option value="Monaragala">Monaragala</Option>
+                        <Option value="Batticaloa">Batticaloa</Option>
+                        <Option value="Ampara">Ampara</Option>
+                        <Option value="Trincomalee">Trincomalee</Option>
+                        
+                    </Select>
                 </div>
             </fieldset>
 
@@ -91,14 +117,13 @@ function Signup1({formData, setFormData}) {
             </div>
 
             <div className="row">
-                <InputField
-                    type="text"
+                <Select 
                     label="Gender"
                     value={formData.gender}
-                    onChange={(event)=>
-                        setFormData({...formData,gender: event.target.value})
-                    }
-                />
+                >
+                    <Option value="male">Male</Option>
+                    <Option value="female">Female</Option>
+                </Select>
                 <InputField
                     type="text"
                     label="mobile number"
@@ -111,11 +136,10 @@ function Signup1({formData, setFormData}) {
  
             <div className="row2">
                 <div>
-                    <label htmlFor="collabarators" className="text-main-black block mb-2">
+                    <label htmlFor="collabarators" className="text-main-black block mb-2 text-[14px]">
                     If applying as a part of a group, the name(s) of your collaborator(s) :
                     </label>
                     <Textarea 
-                        color="purple"  
                         placeholder="Write here..." 
                         className="w-full" 
                         value={formData.collabarators}
