@@ -1,6 +1,6 @@
 import React from "react";
-import InputField from "../webcomponent/InputField";
-import Button from "../webcomponent/Button";
+import InputField from "../webcomponent/CustomInput";
+import Button from "../webcomponent/CustomButton";
 
 function AddListing() {
   return (

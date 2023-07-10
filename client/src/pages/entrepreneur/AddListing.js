@@ -1,7 +1,13 @@
+import {
+    Button,
+    Card
+  } from "@material-tailwind/react";
 import React from "react";
-import InputField from "../webcomponent/InputField";
+import InputField from "../webcomponent/CustomInput";
 import { useState } from "react";
 import Checkbox from "../webcomponent/CustomCheckbox";
+import CustomButton from "../webcomponent/CustomButton";
+
 function AddListing() {
     const [currentSection, setCurrentSection] = useState(1);
     const [previouseSection, setPrevSection] = useState(0);
@@ -92,7 +98,7 @@ function AddListing() {
                                     </div>
                                 </div>
                                 <div className="row flex justify-end">
-                                    <button onClick={handleNext} className="text-main-purple">Next</button>
+                                    <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
                                 </div>
                             </div>
                         </>
@@ -149,10 +155,10 @@ function AddListing() {
                                 </div>
                                 <div className="row w-full flex">
                                     <div className="justify-begin">
-                                        <button onClick={handlePrevious}  className="text-main-purple">Previous</button>
+                                        <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                     </div>
                                     <div className="justify-end">
-                                        <button onClick={handleNext} className="text-main-purple">Next</button>
+                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
                                     </div>
                                 </div>
                             </div>
@@ -222,10 +228,10 @@ function AddListing() {
                                         
                                 <div className="row w-full flex">
                                     <div className="justify-begin">
-                                        <button onClick={handlePrevious}  className="text-main-purple">Previous</button>
+                                        <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                     </div>
                                     <div className="justify-end">
-                                        <button onClick={handleNext} className="text-main-purple">Next</button>
+                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
                                     </div>
                                 </div>
                             </div>
@@ -266,13 +272,13 @@ function AddListing() {
                                         Please upload a pitch video of your business:
                                         </label>
                                         <div className="flex flex-cols gap-2">
-                                            <div className="row">
-                                                <div className="w-[600px] h-[300px] border-2 border-main-purple rounded-[1rem] video-container">
-                                                    {/* Dive to hold the play button  */}
-                                                    <div className="w-[80px] h-[80px] mx-[15rem] my-[6rem] play-image">
-                                                    </div>
-                                                </div>
+                                        <div className="row">
+                                            <div className="w-full md:w-[600px] md:h-[300px] sm:w-[400px] sm:w-[200px] border-2 border-main-purple rounded-[1rem] video-container">
+                                            {/* Dive to hold the play button  */}
+                                            <div className="w-[80px] h-[80px] md:w-[100px] md:h-[100px] mx-auto my-[4rem] md:my-[6rem] play-image">
                                             </div>
+                                            </div>
+                                        </div>
                                         </div>
                                         <div className="row">
                                             <div className="file-input-container">
@@ -287,10 +293,10 @@ function AddListing() {
                                 </div>        
                                 <div className="row w-full flex">
                                     <div className="justify-begin">
-                                        <button onClick={handlePrevious}  className="text-main-purple">Previous</button>
+                                        <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                     </div>
                                     <div className="justify-end">
-                                        <button onClick={handleNext} className="text-main-purple">Next</button>
+                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
                                     </div>
                                 </div>
                             </div>
@@ -314,22 +320,42 @@ function AddListing() {
                                         </label>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="w-full">
-                                        {/* Rectangular div */}
+                                <div className="row flex justify-center items-center">
+                                    {/* <div className="w-full">
+                                        
                                         <div className="flex flex-cols gap-2">
                                             <div className="row">
                                                 <div className="w-[200px] h-[100px] border-2 border-main-purple rounded-[1rem]"></div>
                                             </div>
                                         </div>
-                                    </div>
+                                        
+                                    </div> */}
+                                    <Card className="w-500 shadow-lg p-6 border-2 border-main-purple">
+                                        <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px]">
+                                            I am seeking (Rs) :
+                                        </label>
+                                        <InputField type="text" id="seek" className="w-full" />
+                                        <label htmlFor="seek" className="text-main-gray block mb-2 mt-5 text-[14px]">
+                                            And willing to give up :
+                                        </label>
+                                        <div className="flex items-center mb-3">
+                                            <InputField type="text" id="seek" className="w-full mr-2" />
+                                            <Checkbox label="On Equity" name="equity" />
+                                        </div>
+                                        <div className="flex items-center">
+                                            <InputField type="text" id="seek" className="w-full mr-2" />
+                                            <Checkbox label="Profit per unit" name="profitunit" />
+                                        </div>
+                                    </Card>
+
+
                                 </div>
                                 <div className="row w-full flex">
                                     <div className="justify-begin">
-                                        <button onClick={handlePrevious}  className="text-main-purple">Previous</button>
+                                        <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                     </div>
                                     <div className="justify-end">
-                                        <button onClick={handleNext} className="text-main-purple">Next</button>
+                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
                                     </div>
                                 </div>
                             </div>

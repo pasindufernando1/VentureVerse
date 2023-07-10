@@ -7,7 +7,7 @@ const CustomCheckbox = (props) => {
     return (
         <Checkbox
             label={
-                <Typography color="blue-gray" className="font-medium flex">
+                <Typography color="blue-gray" className="font-medium flex text-[12px]">
                     {label}
                 </Typography>
             }
