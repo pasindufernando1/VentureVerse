@@ -47,6 +47,9 @@ public class UserDTO implements UserDetails {
     @OneToOne(mappedBy = "user")
     private TokenDTO token;
 
+    @OneToMany(mappedBy = "user")
+    List<ResetDTO> reset;
+
     @OneToMany(mappedBy = "sender")
     List<ChatDTO> sender;
 
