@@ -1,0 +1,220 @@
+import React, {useEffect, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import axios from "../../api/axios";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faApple, faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
+import {Alert, Avatar, Card, CardBody, CardHeader, Carousel, Typography} from "@material-tailwind/react";
+import { CommonNavbar, Footer, Input, Button } from "../webcomponent";
+
+const Login = () => {
+
+    const {setAuth} = useAuth();
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const [errorMsg, setErrorMsg] = useState('');
+
+    useEffect(() => {
+        setErrorMsg('');
+    }, [email, password])
+
+    const handleSubmit = async (e) => {
+
+        e.preventDefault();
+
+        try {
+
+            const response = await axios.post('/auth/authenticate',
+                JSON.stringify({email, password}),
+                {
+                    headers: {'Content-Type': 'application/json'},
+                    withCredentials: true
+                }
+            );
+
+            setAuth(response?.data);
+
+            setEmail('');
+            setPassword('');
+
+            const from = location?.state?.from || {pathname: "/" + response?.data?.role.toLowerCase()};
+            // console.log(from);
+            navigate(from, {replace: true});
+
+        } catch (err) {
+            if (!err?.response) {
+                setErrorMsg('No Server Response');
+            } else if (err.response?.status === 400) {
+                setErrorMsg('Missing Username or Password');
+            } else if (err.response?.status === 403) {
+                setErrorMsg('Unauthorized');
+            } else {
+                setErrorMsg('Login Failed');
+            }
+        }
+    }
+
+    const CarouselItem = () => {
+        return (
+            <div>
+                <Card color="white" shadow={false}
+                      className="w-full h-full justify-center overflow-hidden text-center gap-[1.5rem] p-[2rem]">
+                    <CardHeader
+                        color="transparent"
+                        floated={false}
+                        shadow={false}
+                        className="mx-0 flex justify-center items-center gap-4"
+                    >
+                        <Avatar
+                            size="lg"
+                            variant="circular"
+                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                            alt="candice wu"
+                            className=" items-center w-[5rem] h-[5rem]"
+                        />
+                    </CardHeader>
+                    <CardBody className="flex flex-col gap-[1rem] mb-6 p-0">
+                        <Typography className="font-[700] capitalize">
+                            Our top Entrepreneur
+                        </Typography>
+                        <Typography>
+                            &quot;I found solution to all my design needs from Creative Tim. I use
+                            them as a freelancer in my hobby projects for fun! And its really
+                            affordable, very humble guys !!!&quot;
+                        </Typography>
+                        <div>
+                            <Typography variant="h5" color="blue-gray">
+                                Candice Wu
+                            </Typography>
+                            <Typography>
+                                San Francisco, CA
+                            </Typography>
+                        </div>
+                    </CardBody>
+                </Card>
+            </div>
+        )
+    }
+
+    return (
+
+        <div className="flex flex-col justify-between items-center w-full overflow-hidden">
+
+            <CommonNavbar active="Login"/>
+
+            <section
+                className="flex flex-col md:flex-row  md:space-y-0 md:space-x-16 justify-items-center md:mx-0 m-20 lg:my-[5rem]">
+                <div className="lg:flex hidden bg-[#c7d2fe] place-items-center">
+                    <div className="max-w-lg p-10">
+                        <Carousel
+                            prevArrow={() => ("")}
+                            nextArrow={() => ("")}
+                            autoplay={true}
+                            autoplayspeed={5000}
+                            loop={true}
+                            className="rounded-xl"
+                            navigation={({setActiveIndex, activeIndex, length}) => (
+                                <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+                                    {new Array(length).fill("").map((_, i) => (
+                                        <span
+                                            key={i}
+                                            className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                                                activeIndex === i ? "bg-main-purple w-8" : "bg-light-purple w-4"
+                                            }`}
+                                            onClick={() => setActiveIndex(i)}
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        >
+
+                            <CarouselItem/>
+                            <CarouselItem/>
+                            <CarouselItem/>
+
+                        </Carousel>
+                    </div>
+                </div>
+                <div className="my-130">
+                    <Card color="transparent" className="items-center lg:items-start" shadow={false}>
+                        <Typography variant="h4" className="text-[2rem] text-700 text-main-purple">
+                            Login
+                        </Typography>
+                        <Typography color="gray" className="mt-1 font-normal">
+                            Enter your details to Login.
+                        </Typography>
+                        <form className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
+                            {errorMsg && <Alert severity="error" color="red" className="mb-2">{errorMsg}</Alert>}
+                            <div className="flex flex-col gap-[0.75rem] items-center">
+                                <Input
+                                    type="text"
+                                    label="Email"
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    value={email || ''}
+                                    required
+                                />
+                                <Input
+                                    type="password"
+                                    label="Password"
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    value={password}
+                                    required
+                                />
+                                <Button
+                                    type="submit"
+                                    label="Login"
+                                    className="w-full"
+                                />
+                                <Typography as="a" href="/forgot-password"
+                                    className="font-[400] text-[0.875rem] leading-[1.5rem] tracking-[0.2px] text-main-purple hover:text-secondary cursor-pointer">
+                                    Forgot Password?
+                                </Typography>
+                            </div>
+                            <div className="flex flex-col gap-[0.75rem] items-center p-[1rem]">
+                                <Typography
+                                    className="font-[400] text-[0.875rem] leading-[1.5rem] tracking-[0.2px] text-main-gray hover:text-secondary cursor-pointer">
+                                    or
+                                </Typography>
+                            </div>
+                            <div className="flex flex-col gap-[0.75rem] items-center">
+                                <Button
+                                    type="button"
+                                    variant="clear"
+                                    className="w-full !gap-[1rem]"
+                                >
+                                    <FontAwesomeIcon icon={faGoogle} className="text-[1.2rem]"/>Continue with Google
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="clear"
+                                    className="w-full !gap-[1rem]"
+                                >
+                                    <FontAwesomeIcon icon={faFacebook} className="text-[1.2rem]"/>Continue with Facebook
+                                </Button>
+                                <Button
+                                    type="button"
+                                    variant="clear"
+                                    className="w-full !gap-[1rem]"
+                                >
+                                    <FontAwesomeIcon icon={faApple} className="text-[1.2rem]"/>Continue with Apple
+                                </Button>
+                            </div>
+                        </form>
+                    </Card>
+                </div>
+            </section>
+
+            <Footer/>
+
+        </div>
+
+    )
+
+}
+
+export default Login

@@ -8,6 +8,7 @@ import About from "./pages/common/About";
 import Pricing from "./pages/common/Pricing";
 import Contact from "./pages/common/Contact";
 import Signup from "./pages/common/Signup";
+import Login from "./pages/common/Login";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import ResetPassword from "./pages/common/ResetPassword";
 
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/about" element={<About/>}/>
                 <Route path="/pricing" element={<Pricing/>}/>
                 <Route path="/contact" element={<Contact/>}/>
+                <Route path="/login" element={<Login/>}/>
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword/>}/>
                 <Route path="/reset-password/:token" element={<ResetPassword/>}/>
