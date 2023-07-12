@@ -6,30 +6,35 @@ import {Checkbox } from "@material-tailwind/react";
 function Signup2({formData, setFormData}) {
     return(
     <div className="Signup2">
-        <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                <p className="text-main-purple">
+        <h3 className="text-3xl text-main-purple self-center">Sign up as an Individual Investor</h3>                                <p className="text-main-purple">
         Tell us more about you
         </p>
 
         <div className="mt-6">
             <div className="row">
-                <div>
-                    <label htmlFor="policeReport" className="text-main-black block mb-1">
+                <div className="file-input-container">
+                    <label htmlFor="policeReport" className="text-main-black block mb-1 text-[14px]">
                     Please provide a copy of any police report .
                     </label>
-                    <div className="flex gap-20">
-                    </div>
+                    <input type="file" id="policeReport" name="policeReport" accept="image/png, image/jpeg" className="hidden" />
+                    <label htmlFor="policeReport" className="file-input-button">
+                        Select File
+                    </label>
+                    <span className="file-input-text">No file chosen</span>
                 </div>
             </div>
-
             <div className="row">
-                <div>
-                    <label htmlFor="bankStatement" className="text-main-black block mb-1">
-                    Please provide a copy of your financial Document.
+                <div className="file-input-container">
+                    <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
+                    Please provide a copy of your bank statement.
                     </label>
-                    <div className="flex gap-20">
-                    </div>
+                    <input type="file" id="bankStatement" name="bankStatement" accept="image/png, image/jpeg" className="hidden" />
+                    <label htmlFor="bankStatement" className="file-input-button">
+                        Select File
+                    </label>
+                    <span className="file-input-text">No file chosen</span>
                 </div>
-            </div>  
+            </div>
 
             <div className="row2">                                  
                 <label>

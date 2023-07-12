@@ -42,6 +42,18 @@
     @apply flex flex-col gap-[0.5rem] pb-[1rem] lg:flex-row
   }
 
+  .select[aria-expanded="true"] {
+    @apply border-main-purple border-t-transparent
+  }
+
+  .select[aria-expanded="true"] ~ .select-label {
+      @apply text-main-purple
+  }
+
+  .select[aria-expanded="true"] ~ .select-label::before,
+  .select[aria-expanded="true"] ~ .select-label::after {
+      @apply border-main-purple
+  }
 
 
 }

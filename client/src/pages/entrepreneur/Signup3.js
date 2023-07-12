@@ -16,7 +16,7 @@ function Signup3({formData, setFormData}) {
                     type="text" 
                     color="purple"  
                     outline={true} 
-                    label="Business Name"
+                    label={<span style={{ fontSize: '12px' }}>Business Name:</span>}
                     value={formData.businessName}  
                     onChange={(event)=>
                         setFormData({...formData, businessName: event.target.value})
@@ -26,7 +26,7 @@ function Signup3({formData, setFormData}) {
                     type="text" 
                     color="purple"  
                     outline={true} 
-                    label="Contact No"
+                    label={<span style={{ fontSize: '12px' }}>Business Contact:</span>}
                     value={formData.businessContact}
                     onChange={(event)=>
                         setFormData({...formData, businessContact: event.target.value})
@@ -41,7 +41,7 @@ function Signup3({formData, setFormData}) {
                 <div className="row">
                     <InputField
                         type="text"
-                        label="First Line"
+                        label={<span style={{ fontSize: '12px' }}>First Line:</span>}
                         value={formData.bfirstline}
                         onChange={(event)=>
                             setFormData({...formData, bfirstline: event.target.value})
@@ -49,7 +49,7 @@ function Signup3({formData, setFormData}) {
                     />
                     <InputField
                         type="text"
-                        label="Second Line"
+                        label={<span style={{ fontSize: '12px' }}>Second Line:</span>}
                         value={formData.bsecondline}
                         onChange={(event)=>
                             setFormData({...formData, bsecondline: event.target.value})
@@ -60,7 +60,7 @@ function Signup3({formData, setFormData}) {
                 <div className="row">
                     <InputField
                         type="text"
-                        label="Town"
+                        label={<span style={{ fontSize: '12px' }}>Town:</span>}
                         value={formData.btown}
                         onChange={(event)=>
                             setFormData({...formData, btown: event.target.value})
@@ -68,7 +68,7 @@ function Signup3({formData, setFormData}) {
                     />
                     <InputField
                         type="text"
-                        label="District"
+                        label={<span style={{ fontSize: '12px' }}>District:</span>}
                         value={formData.bdistrict}
                         onChange={(event)=>
                             setFormData({...formData, bdistrict: event.target.value})
@@ -82,7 +82,7 @@ function Signup3({formData, setFormData}) {
                     type="text" 
                     color="purple"  
                     outline={true} 
-                    label="Business Website"
+                    label={<span style={{ fontSize: '12px' }}>Business Website:</span>}
                     value={formData.businesswebsite}
                     onChange={(event)=>
                         setFormData({...formData, businesswebsite: event.target.value})
@@ -92,7 +92,7 @@ function Signup3({formData, setFormData}) {
                     type="text" 
                     color="purple"  
                     outline={true} 
-                    label="Business Email"
+                    label={<span style={{ fontSize: '12px' }}>Business Email:</span>}
                     value={formData.businessemail}
                     onChange={(event)=>
                         setFormData({...formData, businessemail: event.target.value})
@@ -106,7 +106,7 @@ function Signup3({formData, setFormData}) {
                     Please provide a brief non-confidential description of your business or product:
                     </label>
                     <Textarea 
-                        label="Description" 
+                        label={<span style={{ fontSize: '12px' }}>Business Description:</span>}
                         className="w-full"
                         value={formData.businessDescription} 
                         onChange={(event)=>

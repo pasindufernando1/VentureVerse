@@ -2,7 +2,7 @@ import {Checkbox, Typography} from "@material-tailwind/react";
 
 const CustomCheckbox = (props) => {
 
-    const { label } = props;
+    const { label, ...rest } = props;
 
     return (
         <Checkbox
@@ -13,6 +13,7 @@ const CustomCheckbox = (props) => {
             }
             className="checked:bg-main-purple checked:border-main-purple"
             color="purple"
+            {...rest}
         />
     );
 }

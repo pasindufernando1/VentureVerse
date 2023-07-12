@@ -12,31 +12,27 @@ function Signup4({formData, setFormData}) {
 
         <div className="mt-6">
             <div className="row2">                                  
-                <label htmlFor="password" className="text-main-black block mb-1 text-[14px]">
-                    Password:
                     <InputField 
                         type="password" 
                         color="purple" 
+                        label={<span style={{ fontSize: '12px' }}>Password:</span>}
                         value={formData.password}
                         onChange={(event)=>
                             setFormData({...formData, password: event.target.value})
                         }
                     />
-                </label>
             </div>    
             <br></br>
             <div className="row2">                                  
-                <label htmlFor="cpassword" className="text-main-black block mb-1 text-[14px]">
-                    Confirm Password:
                     <InputField 
                         type="password" 
                         color="purple" 
+                        label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
                         value={formData.confirmPassword}
                         onChange={(event)=>
                             setFormData({...formData, confirmPassword: event.target.value})
                         }
                     />
-                </label>
             </div> 
             <br></br>
             <div>

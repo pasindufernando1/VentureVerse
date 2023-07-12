@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
+import Button from '../../webcomponent/Button';
 
 
 function Form() {
@@ -31,37 +32,45 @@ function Form() {
         }
     };
 
+    const handlePrevClick = () => {
+        setPage((currPage) => currPage - 1)
+      };
+    
+      const handleNextClick = () => {
+          if (page === FormTitles.length - 1) {
+            alert('FORM SUBMITTED');
+            console.log(formData);
+          } else {
+            setPage((currPage) => currPage + 1);
+          }
+      };
+
     return(
         <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
             <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
                 <div className="text-gray-700 p-20 w-full">
                     {PageDisplay()}
-                    <button
-                        disabled={page === 0}
-                        onClick={() => {
-                        setPage((currPage) => currPage - 1);
-                        }}
+                    <Button
+                        type="button"
+                        className={'float-left' + (page === 0 ? ' hidden' : '')}
+                        icon="previous"
+                        onClick={handlePrevClick}
                     >
-                    Prev
-                    </button>
-                    <button
-                        onClick={() => {
-                        if (page === FormTitles.length - 1) {
-                            alert("FORM SUBMITTED");
-                            console.log(formData);
-                        } else {
-                            setPage((currPage) => currPage + 1);
-                        }
-                    }}
+                        Prev
+                    </Button>
+                    <Button
+                        type="button"
+                        className="float-right"
+                        onClick={handleNextClick}
+                        icon={page === FormTitles.length - 1 ? '' : 'next'}
                     >
-                    {page === FormTitles.length - 1 ? "Submit" : "Next"}
-                    </button>
-                </div> 
+                    {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
+                    </Button>                
+                    </div> 
                 <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
                 </div>             
             </form>
         </main>    
     )
-
 }
 export default Form;

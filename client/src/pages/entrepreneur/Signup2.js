@@ -5,7 +5,8 @@ import { Radio, Textarea} from "@material-tailwind/react";
 function Signup2({formData, setFormData}) {
     return(
     <div className="Signup2">
-        <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                <p className="text-main-purple">
+        <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
+        <p className="text-main-purple">
         Tell us more about you
         </p>
 
@@ -20,7 +21,7 @@ function Signup2({formData, setFormData}) {
                             color="purple" 
                             name="felony" 
                             id="felony"  
-                            label="Yes" 
+                            label={<span style={{ fontSize: '12px' }}>Yes</span>} 
                             className="w-4 h-4"
                             value={formData.felony}
                             onChange={(event)=>
@@ -31,10 +32,10 @@ function Signup2({formData, setFormData}) {
                             color="purple" 
                             name="felony" 
                             id="felony" 
-                            label="No"
+                            label={<span style={{ fontSize: '12px' }}>No</span>}
                             className="w-4 h-4"
                             value={formData.felony}
-                            onChange={(event)=>
+                            onclick={(event)=>
                                 setFormData({...formData, felony: event.target.value})
                             }
                         />
@@ -54,7 +55,7 @@ function Signup2({formData, setFormData}) {
                             id="lawsuit"   
                             value="yes" 
                             className="w-4 h-4"
-                            label="Yes"
+                            label={<span style={{ fontSize: '12px' }}>Yes</span>}
                             onChange={(event)=>
                                 setFormData({...formData, lawsuit: event.target.value})
                             }
@@ -65,7 +66,7 @@ function Signup2({formData, setFormData}) {
                             id="lawsuit" 
                             className="w-4 h-4"
                             value="no" 
-                            label="No"
+                            label={<span style={{ fontSize: '12px' }}>No</span>}
                             onChange={(event)=>
                                 setFormData({...formData, lawsuit: event.target.value})
                             }
@@ -85,6 +86,7 @@ function Signup2({formData, setFormData}) {
                         outline="true"
                         className="w-full" 
                         value={formData.lawsuitDetails}
+                        label={<span style={{ fontSize: '12px' }}>Lawsuit Details</span>}
                         onChange={(event)=>
                             setFormData({...formData, lawsuitDetails: event.target.value})
                         }

@@ -1,7 +1,8 @@
 import React from "react";
-import InputField from "../webcomponent/InputField";
+import InputField from "../webcomponent/CustomInput";
 import Textarea from "../webcomponent/CustomTextarea";
-import { Select,Option } from "@material-tailwind/react";
+import Select from "../webcomponent/CustomSelect";
+// import { Select,Option } from "@material-tailwind/react";
 
 function Signup1({formData, setFormData}) {
   return (
@@ -14,7 +15,7 @@ function Signup1({formData, setFormData}) {
             <div className="row">
                 <InputField
                     type="text"
-                    label="First Name"
+                    label={"First name:"}
                     value={formData.firstname}
                     onChange={(event)=>
                         setFormData({...formData, firstname: event.target.value})
@@ -23,7 +24,7 @@ function Signup1({formData, setFormData}) {
                 />
                 <InputField
                     type="text"
-                    label="Last name"
+                    label={"Last name:"}
                     value={formData.lastname}
                     onChange={(event)=>
                         setFormData({...formData, lastname: event.target.value})
@@ -37,7 +38,7 @@ function Signup1({formData, setFormData}) {
                 <div className="row">
                     <InputField
                         type="text"
-                        label="First Line"
+                        label={"First Line:"}
                         value={formData.firstline}
                         onChange={(event)=>
                             setFormData({...formData, firstline: event.target.value})
@@ -45,7 +46,7 @@ function Signup1({formData, setFormData}) {
                     />
                     <InputField
                         type="text"
-                        label="Second Line"
+                        label={"Second Line:"}
                         value={formData.secondline}
                         onChange={(event)=>
                             setFormData({...formData, secondline: event.target.value})
@@ -56,7 +57,7 @@ function Signup1({formData, setFormData}) {
                 <div className="row">
                     <InputField
                         type="text"
-                        label="Town"
+                        label={"Town:"}
                         value={formData.town}
                         onChange={(event)=>
                             setFormData({...formData, town: event.target.value})
@@ -65,42 +66,18 @@ function Signup1({formData, setFormData}) {
                     <Select 
                         label="District"
                         value={formData.district}
-                        // onChange={(event)=>
-                        //     setFormData({...formData, district: event.target.value})
-                        // }
-                    >
-                        <Option value="Colombo">Colombo</Option>
-                        <Option value="Gampaha">Gampaha</Option>
-                        <Option value="Kalutara">Kalutara</Option>
-                        <Option value="Kandy">Kandy</Option>
-                        <Option value="Matale">Matale</Option>
-                        <Option value="Nuwara Eliya">Nuwara Eliya</Option>
-                        <Option value="Galle">Galle</Option>
-                        <Option value="Matara">Matara</Option>
-                        <Option value="Hambantota">Hambantota</Option>
-                        <Option value="Jaffna">Jaffna</Option>
-                        <Option value="Kilinochchi">Kilinochchi</Option>
-                        <Option value="Mannar">Mannar</Option>
-                        <Option value="Mullaitivu">Mullaitivu</Option>
-                        <Option value="Vavuniya">Vavuniya</Option>
-                        <Option value="Puttalam">Puttalam</Option>
-                        <Option value="Kurunegala">Kurunegala</Option>
-                        <Option value="Anuradhapura">Anuradhapura</Option>
-                        <Option value="Polonnaruwa">Polonnaruwa</Option>
-                        <Option value="Badulla">Badulla</Option>
-                        <Option value="Monaragala">Monaragala</Option>
-                        <Option value="Batticaloa">Batticaloa</Option>
-                        <Option value="Ampara">Ampara</Option>
-                        <Option value="Trincomalee">Trincomalee</Option>
-                        
-                    </Select>
+                        options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
+                        onChange={(event)=>
+                            setFormData({...formData, district: event})
+                        }
+                    />
                 </div>
             </fieldset>
 
             <div className="row">
                 <InputField
                     type="email"
-                    label="Email"
+                    label={"Email:"}
                     value={formData.email}
                     onChange={(event)=>
                         setFormData({...formData, email: event.target.value})
@@ -108,7 +85,7 @@ function Signup1({formData, setFormData}) {
                 />
                 <InputField
                     type="text"
-                    label="NIC"
+                    label={"NIC:"}
                     value={formData.nic}
                     onChange={(event)=>
                         setFormData({...formData, nic: event.target.value})
@@ -120,13 +97,14 @@ function Signup1({formData, setFormData}) {
                 <Select 
                     label="Gender"
                     value={formData.gender}
-                >
-                    <Option value="male">Male</Option>
-                    <Option value="female">Female</Option>
-                </Select>
+                    options={["Male", "Female"]}
+                    onChange={(event)=>
+                        setFormData({...formData, gender: event})
+                    }
+                />            
                 <InputField
                     type="text"
-                    label="mobile number"
+                    label={"Mobile:"}
                     value={formData.mobile}
                     onChange={(event)=>
                         setFormData({...formData, mobile: event.target.value})

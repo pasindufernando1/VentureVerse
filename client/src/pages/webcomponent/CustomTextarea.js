@@ -2,20 +2,11 @@ import {Textarea} from "@material-tailwind/react";
 
 const CustomTextarea = (props) => {
 
-    let {placeholder, className = "", state = "", ...rest} = props;
+    let {placeholder, className = "", ...rest} = props;
 
-    let border;
 
-    if (state.State === "Valid" || state.State === "") {
-        border = "focus:border-main-purple "
-    } else if (state.State === "Invalid") {
-        border = "focus:border-error-red "
-    } else if (state.State === "Success") {
-        border = "focus:border-success-green "
-    }
+    className = "border-t-blue-gray-200 focus:border-main-purple focus:!border-t-main-purple " + className
 
-    className = border + className
-    
     return (
         <Textarea
             placeholder={placeholder}
