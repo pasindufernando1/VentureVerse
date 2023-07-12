@@ -114,3 +114,7 @@ code {
   background: url("./assets/images/VentureVerse-Black.png") no-repeat;
   background-size:cover;
 }
+
+.parent > div {
+  width: 30%;
+}
