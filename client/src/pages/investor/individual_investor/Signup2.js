@@ -4,6 +4,25 @@ import {Checkbox } from "@material-tailwind/react";
 
 
 function Signup2({formData, setFormData}) {
+    // const validateForm2 = () => {
+    //     let errors = {};
+    //     if(!formData.policeReport.trim()){
+    //         errors.policeReport = "Police report is required";
+    //     }
+    //     if(!formData.bankStatement.trim()){
+    //         errors.bankStatement = "Bank statement is required";
+    //     }
+    //     if(!formData.password.trim()){
+    //         errors.password = "Password is required";
+    //     }
+    //     if(!formData.confirmPassword.trim()){
+    //         errors.confirmPassword = "Confirm password is required";
+    //     }
+    //     if(formData.password !== formData.confirmPassword){
+    //         errors.confirmPassword = "Passwords do not match";
+    //     }
+    //     return Object.keys(errors).length === 0 ? null : errors;
+    // };
     return(
     <div className="Signup2">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Individual Investor</h3>                                <p className="text-main-purple">

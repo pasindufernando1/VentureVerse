@@ -24,5 +24,15 @@ public class EntrepreneurDTO extends UserDTO {
     private Boolean felony;
     private Boolean lawSuit;
     private String felonyDescription;
+    private String businessName;
+    private String businessContact;
+    private String bfirstLineAddress;
+    private String bsecondLineAddress;
+    private String btown;
+    private String bdistrict;
+    private String businessWebsite;
+    private String businessEmail;
+    private String businessDescription;
+    private String businessRegDoc;
 
 }

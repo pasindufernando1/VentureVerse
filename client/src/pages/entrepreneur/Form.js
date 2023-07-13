@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
@@ -39,65 +40,16 @@ function Form() {
     businessDescription: '',
     businessregdoc: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
+    terms: false
   });
 
   // validation
-  // const validateForm=()=> {
-  //   const errors = {};
-  //   //first page
-  //   if(page === 0){
-  //     if (formData.firstname.trim().length < 3) {
-  //       errors.firstname = 'First name must be at least 3 characters.';
-  //     }
-  //     if (formData.lastname.trim().length < 3) {
-  //       errors.lastname = 'Last name must be at least 3 characters.';
-  //     }
-  //     //check email using a regex
-  //     if (!/\S+@\S+\.\S+/.test(formData.email)) {
-  //       errors.email = 'Email address is invalid.';
-  //     }
-  //     //check both types of nic using a regex
-  //     if (!/^[0-9]{9}[vVxX]$/.test(formData.nic) && !/^[0-9]{12}$/.test(formData.nic)) {
-  //       errors.nic = 'NIC is invalid.';
-  //     }
-  //     //check mobile number using a regex
-  //     if (!/^[0-9]{10}$/.test(formData.mobile)) {
-  //       errors.mobile = 'Mobile number is invalid.';
-  //     }
-  //   }else if(page === 2){
-  //     //second page
-  //     if (formData.businessName.trim().length < 3) {
-  //       errors.businessName = 'Business name must be at least 3 characters.';
-  //     }
-  //     //check business contact number using a regex
-  //     if (!/^[0-9]{10}$/.test(formData.businessContact)) {
-  //       errors.businessContact = 'Business contact number is invalid.';
-  //     }
-  //     //check business email using a regex
-  //     if (!/\S+@\S+\.\S+/.test(formData.businessemail)) {
-  //       errors.businessemail = 'Business email address is invalid.';
-  //     }
-  //   }else if(page === 3){
-  //     //third page
-  //     if (formData.password.trim().length < 6) {
-  //       errors.password = 'Password must be at least 6 characters.';
-  //     }
-  //     if (formData.confirmPassword.trim().length < 6) {
-  //       errors.confirmPassword = 'Confirm password must be at least 6 characters.';
-  //     }
-  //     if (formData.password !== formData.confirmPassword) {
-  //       errors.confirmPassword = 'Passwords do not match.';
-  //     }
-  //   }
-  //   setFormErrors(errors);
-  // };
 
   const FormTitles = ['Signup1', 'Signup2', 'Signup3', 'Signup4'];
 
   const PageDisplay = () => {
     if (page === 0) {
-      // <Signup1 formData={formData} setFormData={setFormData} validateForm={validateForm} formErrors={formErrors} setFormErrors={setFormErrors} isFormValid={isFormValid} />
       return <Signup1 formData={formData} setFormData={setFormData} />;
     } else if (page === 1) {
       return <Signup2 formData={formData} setFormData={setFormData} />;
@@ -112,8 +64,50 @@ function Form() {
     setPage((currPage) => currPage - 1);
   };
 
-  const handleNextClick = () => {
-    setPage((currPage) => currPage + 1);
+  //map the stored data to the formdata object
+  const requestData = {
+    firstname: formData.firstname,
+    lastname: formData.lastname,
+    firstLineAddress: formData.firstline,
+    secondLineAddress: formData.secondline,
+    town: formData.town,
+    district: formData.district,
+    email: formData.email,
+    nic: formData.nic,
+    gender: formData.gender,
+    contactNumber: formData.mobile,
+    collaboratorDetails: formData.collobarators,
+    felony: formData.felony,
+    lawsuit: formData.lawsuit,
+    felonyDescription: formData.lawsuitDetails,
+    policeReport: formData.policeReport,
+    incomeStatement: formData.bankStatement,
+    businessName: formData.businessName,
+    businessContact: formData.businessContact,
+    bfirstlineAddress: formData.bfirstline,
+    bsecondlineAddress: formData.bsecondline,
+    btown: formData.btown,
+    bdistrict: formData.bdistrict,
+    businessWebsite: formData.businesswebsite,
+    businessEmail: formData.businessemail,
+    businessDescription: formData.businessDescription,
+    businessregdoc: formData.businessregdoc,
+    password: formData.password
+  }
+
+  const handleNextClick = async () => {
+    //if the submit page then just get the data and submit the form
+    if (page === FormTitles.length - 1) {
+      console.log(formData);
+      try {
+        const response = await axios.post('/api/auth/register/entrepreneur', formData);
+        console.log(response.data); // Handle the response from the back-end as needed
+      } catch (error) {
+        console.error(error); // Handle any errors that occur during the request
+      }
+    }else{
+      setPage((currPage) => currPage + 1);
+    }
   };
 
   return (

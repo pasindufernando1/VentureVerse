@@ -58,7 +58,7 @@ public class AuthenticationService {
                 .secondLineAddress(registerRequestDTO.getSecondLineAddress())
                 .town(registerRequestDTO.getTown())
                 .district(registerRequestDTO.getDistrict())
-                .role(Role.CO_ADMIN)
+                .role(Role.ADMIN)
                 .firstname(registerRequestDTO.getFirstname())
                 .lastname(registerRequestDTO.getLastname())
                 .gender(registerRequestDTO.getGender())
@@ -101,6 +101,16 @@ public class AuthenticationService {
                 .felony(registerRequestDTO.getFelony())
                 .lawSuit(registerRequestDTO.getLawSuit())
                 .felonyDescription(registerRequestDTO.getFelonyDescription())
+                .businessName(registerRequestDTO.getBusinessName())
+                .businessContact(registerRequestDTO.getBusinessContact())
+                .bfirstLineAddress(registerRequestDTO.getBfirstLineAddress())
+                .bsecondLineAddress(registerRequestDTO.getBsecondLineAddress())
+                .btown(registerRequestDTO.getBtown())
+                .bdistrict(registerRequestDTO.getBdistrict())
+                .businessWebsite(registerRequestDTO.getBusinessWebsite())
+                .businessEmail(registerRequestDTO.getBusinessEmail())
+                .businessDescription(registerRequestDTO.getBusinessDescription())
+                .businessRegDoc(registerRequestDTO.getBusinessRegDoc())
                 .build(); // Creates EntrepreneurDTO
 
         userRepository.save(user); // Save the Record

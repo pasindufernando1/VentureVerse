@@ -37,8 +37,20 @@ public class RegisterRequestDTO {
     // INDIVIDUAL INVESTOR | ENTERPRISE INVESTOR
     private String financialDocument;
 
-    // ENTERPRISE INVESTOR
+    // ENTERPRISE INVESTOR | ENTREPRENEUR
     private String businessName;
     private String businessRegistration;
+
+    // ENTREPRENEUR
+    private String businessContact;
+    private String bfirstLineAddress;
+    private String bsecondLineAddress;
+    private String btown;
+    private String bdistrict;
+    private String businessWebsite;
+    private String businessEmail;
+    private String businessDescription;
+    private String businessRegDoc;
+
 
 }

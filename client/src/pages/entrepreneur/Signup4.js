@@ -36,7 +36,14 @@ function Signup4({formData, setFormData}) {
             </div> 
             <br></br>
             <div>
-                <Checkbox color="purple" label="I agree to the Terms and Conditions" />
+                <Checkbox 
+                    color="purple" 
+                    label="I agree to the Terms and Conditions" 
+                    checked={formData.terms}
+                    onChange={(event)=>
+                        setFormData({...formData, terms: event.target.checked})
+                    }
+                />
             </div>                                    
         </div>
     </div>    

@@ -38,12 +38,11 @@ function Form() {
       };
     
       const handleNextClick = () => {
-          if (page === FormTitles.length - 1) {
-            alert('FORM SUBMITTED');
-            console.log(formData);
-          } else {
-            setPage((currPage) => currPage + 1);
-          }
+        if(page === FormTitles.length - 1){
+          console.log(formData);
+        }else{
+          setPage((currPage) => currPage + 1)
+        }
       };
 
     return(
