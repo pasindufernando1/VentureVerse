@@ -3,6 +3,11 @@ import {Textarea} from "@material-tailwind/react";
 import InputField from "../webcomponent/InputField";
 
 function Signup3({formData, setFormData}) {
+    const handleBusinessRegDocUpload = (event) => {
+        const file = event.target.files[0];
+        setFormData({ ...formData, businessregdoc: file });
+    };
+
     return (
     <div className="Signup3">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -15,7 +20,7 @@ function Signup3({formData, setFormData}) {
                 <InputField 
                     type="text" 
                     color="purple"  
-                    outline={true} 
+                    outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Name:</span>}
                     value={formData.businessName}  
                     onChange={(event)=>
@@ -25,7 +30,7 @@ function Signup3({formData, setFormData}) {
                 <InputField 
                     type="text" 
                     color="purple"  
-                    outline={true} 
+                    outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Contact:</span>}
                     value={formData.businessContact}
                     onChange={(event)=>
@@ -81,7 +86,7 @@ function Signup3({formData, setFormData}) {
                 <InputField 
                     type="text" 
                     color="purple"  
-                    outline={true} 
+                    outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Website:</span>}
                     value={formData.businesswebsite}
                     onChange={(event)=>
@@ -91,7 +96,7 @@ function Signup3({formData, setFormData}) {
                 <InputField 
                     type="text" 
                     color="purple"  
-                    outline={true} 
+                    outline="true" 
                     label={<span style={{ fontSize: '12px' }}>Business Email:</span>}
                     value={formData.businessemail}
                     onChange={(event)=>
@@ -118,14 +123,23 @@ function Signup3({formData, setFormData}) {
 
             <div className="row">
                 <div className="file-input-container">
-                    <label htmlFor="bregReport" className="text-main-black block mb-1 text-[14px]">
+                <label htmlFor="bregReport" className="text-main-black block mb-1 text-[14px]">
                     Please upload the Business Registration Document:
-                    </label>
-                    <input type="file" id="bregReport" name="bregReport" accept="image/png, image/jpeg" className="hidden" />
-                    <label htmlFor="bregReport" className="file-input-button">
-                        Select File
-                    </label>
-                    <span className="file-input-text">No file chosen</span>
+                </label>
+                <input
+                    type="file"
+                    id="bregReport"
+                    name="bregReport"
+                    accept="image/png, image/jpeg"
+                    className="hidden"
+                    onChange={handleBusinessRegDocUpload}
+                />
+                <label htmlFor="bregReport" className="file-input-button">
+                    Select File
+                </label>
+                <span className="file-input-text">
+                    {formData.businessregdoc ? formData.businessregdoc.name : 'No file chosen'}
+                </span>
                 </div>
             </div>
         </div>

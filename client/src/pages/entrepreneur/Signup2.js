@@ -3,6 +3,24 @@ import { Radio, Textarea} from "@material-tailwind/react";
 
 
 function Signup2({formData, setFormData}) {
+    const handleFelonyChange = (event) => {
+        setFormData({ ...formData, felony: event.target.value });
+    };
+    
+    const handleLawsuitChange = (event) => {
+        setFormData({ ...formData, lawsuit: event.target.value });
+    };
+
+    const handleFileUpload = (event) => {
+        const file = event.target.files[0];
+        setFormData({ ...formData, bankStatement: file });
+    };
+
+    const handlePoliceReportUpload = (event) => {
+        const file = event.target.files[0];
+        setFormData({ ...formData, policeReport: file });
+    };
+
     return(
     <div className="Signup2">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -18,26 +36,24 @@ function Signup2({formData, setFormData}) {
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
-                            color="purple" 
-                            name="felony" 
-                            id="felony"  
-                            label={<span style={{ fontSize: '12px' }}>Yes</span>} 
+                            color="purple"
+                            name="felony"
+                            id="felony-yes"
+                            label={<span style={{ fontSize: '12px' }}>Yes</span>}
                             className="w-4 h-4"
-                            value={formData.felony}
-                            onChange={(event)=>
-                                setFormData({...formData, felony: event.target.value})
-                            }
+                            value="yes"
+                            checked={formData.felony === 'yes'}
+                            onChange={handleFelonyChange}
                         />
                         <Radio 
-                            color="purple" 
-                            name="felony" 
-                            id="felony" 
+                            color="purple"
+                            name="felony"
+                            id="felony-no"
                             label={<span style={{ fontSize: '12px' }}>No</span>}
                             className="w-4 h-4"
-                            value={formData.felony}
-                            onclick={(event)=>
-                                setFormData({...formData, felony: event.target.value})
-                            }
+                            value="no"
+                            checked={formData.felony === 'no'}
+                            onChange={handleFelonyChange}
                         />
                     </div>    
                 </div>
@@ -50,26 +66,24 @@ function Signup2({formData, setFormData}) {
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
-                            color="purple" 
-                            name="lawsuit" 
-                            id="lawsuit"   
-                            value="yes" 
+                            color="purple"
+                            name="lawsuit"
+                            id="lawsuit-yes"
+                            value="yes"
                             className="w-4 h-4"
                             label={<span style={{ fontSize: '12px' }}>Yes</span>}
-                            onChange={(event)=>
-                                setFormData({...formData, lawsuit: event.target.value})
-                            }
+                            checked={formData.lawsuit === 'yes'}
+                            onChange={handleLawsuitChange}
                         />
                         <Radio 
-                            color="purple" 
-                            name="lawsuit" 
-                            id="lawsuit" 
+                            color="purple"
+                            name="lawsuit"
+                            id="lawsuit-no"
+                            value="no"
                             className="w-4 h-4"
-                            value="no" 
                             label={<span style={{ fontSize: '12px' }}>No</span>}
-                            onChange={(event)=>
-                                setFormData({...formData, lawsuit: event.target.value})
-                            }
+                            checked={formData.lawsuit === 'no'}
+                            onChange={handleLawsuitChange}
                         />
                     </div>    
                 </div>
@@ -82,7 +96,6 @@ function Signup2({formData, setFormData}) {
                     if so explain (date,city,state and circumstances, including precise charge and resolution of the case):
                     </label>
                     <Textarea 
-                        color="#8458B3"  
                         outline="true"
                         className="w-full" 
                         value={formData.lawsuitDetails}
@@ -96,26 +109,45 @@ function Signup2({formData, setFormData}) {
 
             <div className="row">
                 <div className="file-input-container">
-                    <label htmlFor="policeReport" className="text-main-black block mb-1 text-[14px]">
-                    Please provide a copy of any police report .
-                    </label>
-                    <input type="file" id="policeReport" name="policeReport" accept="image/png, image/jpeg" className="hidden" />
-                    <label htmlFor="policeReport" className="file-input-button">
-                        Select File
-                    </label>
-                    <span className="file-input-text">No file chosen</span>
+                <label htmlFor="policeReport" className="text-main-black block mb-1 text-[14px]">
+                    Please provide a copy of any police report.
+                </label>
+                <input
+                    type="file"
+                    id="policeReport"
+                    name="policeReport"
+                    accept="image/png, image/jpeg"
+                    className="hidden"
+                    onChange={handlePoliceReportUpload}
+                />
+                <label htmlFor="policeReport" className="file-input-button">
+                    Select File
+                </label>
+                <span className="file-input-text">
+                    {formData.policeReport ? formData.policeReport.name : 'No file chosen'}
+                </span>
                 </div>
             </div>
+
             <div className="row">
                 <div className="file-input-container">
-                    <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
+                <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
                     Please provide a copy of your bank statement.
-                    </label>
-                    <input type="file" id="bankStatement" name="bankStatement" accept="image/png, image/jpeg" className="hidden" />
-                    <label htmlFor="bankStatement" className="file-input-button">
-                        Select File
-                    </label>
-                    <span className="file-input-text">No file chosen</span>
+                </label>
+                <input
+                    type="file"
+                    id="bankStatement"
+                    name="bankStatement"
+                    accept="image/png, image/jpeg"
+                    className="hidden"
+                    onChange={handleFileUpload}
+                />
+                <label htmlFor="bankStatement" className="file-input-button">
+                    Select File
+                </label>
+                <span className="file-input-text">
+                    {formData.bankStatement ? formData.bankStatement.name : 'No file chosen'}
+                </span>
                 </div>
             </div>
         </div>

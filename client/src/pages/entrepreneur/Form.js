@@ -42,59 +42,63 @@ function Form() {
     confirmPassword: ''
   });
 
-  const [formErrors, setFormErrors] = useState({
-    firstname: '',
-    lastname: '',
-    email: '',
-    nic: '',
-    mobile: '',
-    password: '',
-    confirmPassword: ''
-  });
-
   // validation
-  const validate = (name, value) => {
-    switch (name) {
-      case 'firstname':
-        if (value.length < 3) {
-          setFormErrors({ ...formErrors, firstname: 'First name must be at least 3 characters long' });
-        } else {
-          setFormErrors({ ...formErrors, firstname: '' });
-        }
-        break;
-      case 'lastname':
-        if (value.length < 3) {
-          setFormErrors({ ...formErrors, lastname: 'Last name must be at least 3 characters long' });
-        } else {
-          setFormErrors({ ...formErrors, lastname: '' });
-        }
-        break;
-      case 'email':
-        // check using a regular expression
-        if (!/\S+@\S+\.\S+/.test(value)) {
-          setFormErrors({ ...formErrors, email: 'Email is not valid' });
-        } else {
-          setFormErrors({ ...formErrors, email: '' });
-        }
-        break;
-      case 'nic':
-        // check using a regular expression for 2 formats of NIC
-        if (!/^[0-9]{9}[vVxX]$|^[0-9]{12}$/.test(value)) {
-          setFormErrors({ ...formErrors, nic: 'NIC is not valid' });
-        } else {
-          setFormErrors({ ...formErrors, nic: '' });
-        }
-        break;
-       default:
-        break;
-    }
-  };
+  // const validateForm=()=> {
+  //   const errors = {};
+  //   //first page
+  //   if(page === 0){
+  //     if (formData.firstname.trim().length < 3) {
+  //       errors.firstname = 'First name must be at least 3 characters.';
+  //     }
+  //     if (formData.lastname.trim().length < 3) {
+  //       errors.lastname = 'Last name must be at least 3 characters.';
+  //     }
+  //     //check email using a regex
+  //     if (!/\S+@\S+\.\S+/.test(formData.email)) {
+  //       errors.email = 'Email address is invalid.';
+  //     }
+  //     //check both types of nic using a regex
+  //     if (!/^[0-9]{9}[vVxX]$/.test(formData.nic) && !/^[0-9]{12}$/.test(formData.nic)) {
+  //       errors.nic = 'NIC is invalid.';
+  //     }
+  //     //check mobile number using a regex
+  //     if (!/^[0-9]{10}$/.test(formData.mobile)) {
+  //       errors.mobile = 'Mobile number is invalid.';
+  //     }
+  //   }else if(page === 2){
+  //     //second page
+  //     if (formData.businessName.trim().length < 3) {
+  //       errors.businessName = 'Business name must be at least 3 characters.';
+  //     }
+  //     //check business contact number using a regex
+  //     if (!/^[0-9]{10}$/.test(formData.businessContact)) {
+  //       errors.businessContact = 'Business contact number is invalid.';
+  //     }
+  //     //check business email using a regex
+  //     if (!/\S+@\S+\.\S+/.test(formData.businessemail)) {
+  //       errors.businessemail = 'Business email address is invalid.';
+  //     }
+  //   }else if(page === 3){
+  //     //third page
+  //     if (formData.password.trim().length < 6) {
+  //       errors.password = 'Password must be at least 6 characters.';
+  //     }
+  //     if (formData.confirmPassword.trim().length < 6) {
+  //       errors.confirmPassword = 'Confirm password must be at least 6 characters.';
+  //     }
+  //     if (formData.password !== formData.confirmPassword) {
+  //       errors.confirmPassword = 'Passwords do not match.';
+  //     }
+  //   }
+  //   setFormErrors(errors);
+  // };
 
   const FormTitles = ['Signup1', 'Signup2', 'Signup3', 'Signup4'];
 
   const PageDisplay = () => {
     if (page === 0) {
-      return <Signup1 formData={formData} setFormData={setFormData} setPage={setPage} />;
+      // <Signup1 formData={formData} setFormData={setFormData} validateForm={validateForm} formErrors={formErrors} setFormErrors={setFormErrors} isFormValid={isFormValid} />
+      return <Signup1 formData={formData} setFormData={setFormData} />;
     } else if (page === 1) {
       return <Signup2 formData={formData} setFormData={setFormData} />;
     } else if (page === 2) {
@@ -104,30 +108,12 @@ function Form() {
     }
   };
 
-  const isFormValid = () => {
-    const hasErrors = Object.values(formErrors).some((error) => error !== '');
-    return !hasErrors;
-  };
-
   const handlePrevClick = () => {
-    if (isFormValid()) {
-      setPage((currPage) => currPage - 1);
-    } else {
-      alert('Please fix the errors before proceeding to the previous page.');
-    }
+    setPage((currPage) => currPage - 1);
   };
 
   const handleNextClick = () => {
-    if (isFormValid()) {
-      if (page === FormTitles.length - 1) {
-        alert('FORM SUBMITTED');
-        console.log(formData);
-      } else {
-        setPage((currPage) => currPage + 1);
-      }
-    } else {
-      alert('Please fix the errors before proceeding to the next page or submitting the form.');
-    }
+    setPage((currPage) => currPage + 1);
   };
 
   return (

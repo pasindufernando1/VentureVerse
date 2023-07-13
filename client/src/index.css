@@ -105,3 +105,6 @@ code {
   background-color: #cbd5e0;
   color: #2d3748;
 }
+.error-message {
+  color: red;
+}

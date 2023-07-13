@@ -4,8 +4,8 @@ import Textarea from "../webcomponent/CustomTextarea";
 import Select from "../webcomponent/CustomSelect";
 // import { Select,Option } from "@material-tailwind/react";
 
-function Signup1({formData, setFormData}) {
-  return (
+function Signup1({formData, setFormData}) {  
+    return (
     <div className="Signup1">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
         <p className="text-main-purple">
@@ -17,10 +17,9 @@ function Signup1({formData, setFormData}) {
                     type="text"
                     label={"First name:"}
                     value={formData.firstname}
-                    onChange={(event)=>
-                        setFormData({...formData, firstname: event.target.value})
-                    }
-                    className=""
+                    onChange={(event)=>{
+                        setFormData({...formData, firstname: event.target.value});
+                    }}
                 />
                 <InputField
                     type="text"
@@ -57,7 +56,7 @@ function Signup1({formData, setFormData}) {
                 <div className="row">
                     <InputField
                         type="text"
-                        label={"Town:"}
+                        label="Town:"
                         value={formData.town}
                         onChange={(event)=>
                             setFormData({...formData, town: event.target.value})

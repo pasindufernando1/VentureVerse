@@ -1,5 +1,6 @@
 import React from "react";
 import InputField from "../../webcomponent/InputField";
+import Select from "../../webcomponent/CustomSelect";
 
 function Signup1({formData, setFormData}) {
   return (
@@ -59,12 +60,12 @@ function Signup1({formData, setFormData}) {
                             setFormData({...formData, town: event.target.value})
                         }
                     />
-                    <InputField
-                        type="text"
+                    <Select 
                         label="District"
                         value={formData.district}
+                        options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
                         onChange={(event)=>
-                            setFormData({...formData, district: event.target.value})
+                            setFormData({...formData, district: event})
                         }
                     />
                 </div>
@@ -90,12 +91,12 @@ function Signup1({formData, setFormData}) {
             </div>
 
             <div className="row">
-                <InputField
-                    type="text"
+                <Select
                     label="Gender"
                     value={formData.gender}
+                    options={["Male","Female"]}
                     onChange={(event)=>
-                        setFormData({...formData,gender: event.target.value})
+                        setFormData({...formData, gender: event})
                     }
                 />
                 <InputField
