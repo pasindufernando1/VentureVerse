@@ -54,6 +54,23 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.authenticate(response, authenticationRequestDTO));
     }
 
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDTO> forgotPassword(
+            HttpServletResponse response,
+            @RequestBody AuthenticationRequestDTO authenticationRequestDTO
+    ) {
+        return ResponseEntity.ok(authenticationService.forgotPassword(response, authenticationRequestDTO.getEmail()));
+    }
+
+    @PostMapping("/reset-password/{token}")
+    public ResponseEntity<ResponseDTO> resetPassword(
+            HttpServletResponse response,
+            @RequestBody AuthenticationRequestDTO authenticationRequestDTO,
+            @PathVariable String token
+    ) {
+        return ResponseEntity.ok(authenticationService.resetPassword(response, authenticationRequestDTO.getPassword(), token));
+    }
+
     @PostMapping("/logout")
     public ResponseEntity<ResponseDTO> logout(
             HttpServletRequest request,

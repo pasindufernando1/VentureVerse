@@ -1,4 +1,5 @@
 import React from "react";
+import {useNavigate} from "react-router-dom";
 import {
     Navbar,
     Collapse,
@@ -21,17 +22,17 @@ import {
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
-import logo from "../../assets/images/VentureVerse-Black.png";
+// import logo from "../../assets/images/VentureVerse-Black.png";
 
 const NavList = (props) => {
 
     let { active } = props;
 
     let navList = [
-        {'icon': faHouse, 'title': "Home", 'link': "#"},
-        {'icon': faCircleInfo, 'title': "About", 'link': "#"},
-        {'icon': faTag, 'title': "Pricing", 'link': "#"},
-        {'icon': faPhone, 'title': "Contact", 'link': "#"},
+        {'icon': faHouse, 'title': "Home", 'link': "/"},
+        {'icon': faCircleInfo, 'title': "About", 'link': "/About"},
+        {'icon': faTag, 'title': "Pricing", 'link': "/Pricing"},
+        {'icon': faPhone, 'title': "Contact", 'link': "/Contact"},
     ]
 
     return (
@@ -59,11 +60,15 @@ const NavList = (props) => {
 
 }
 
-const NavAuthentications = () => {
+const NavAuthentications = (props) => {
+
+    const navigate = useNavigate();
+
+    const { active } = props;
 
     let navAuthentications = [
-        {'icon': faUserPlus, 'title': "Sign In", 'link': "#"},
-        {'icon': faUser, 'title': "Sign Up", 'link': "#"},
+        {'icon': faUserPlus, 'title': "Sign Up", 'link': "/Signup"},
+        {'icon': faUser, 'title': "Login", 'link': "/Login"},
     ]
 
     return (
@@ -73,8 +78,9 @@ const NavAuthentications = () => {
                     <Button
                         variant="text"
                         size="sm"
-                        className="flex items-center gap-2 navigation hover:!bg-transparent"
+                        className={active === title ? "flex items-center gap-2 navigation hover:!bg-transparent active" : "flex items-center gap-2 navigation hover:!bg-transparent"}
                         key={key}
+                        onClick={() => navigate(link)}
                     >
                         <FontAwesomeIcon icon={icon}/>
                         {title}
@@ -97,15 +103,15 @@ const NavbarHome = (props) => {
     const { active } = props;
 
     return (
-        <Navbar className="mx-auto max-w-screen-xl px-4 py-2">
+        <Navbar className="max-w-full rounded-none px-4 py-2">
             <div className="flex items-center justify-between text-blue-gray-900">
-                <img src={logo} className="w-[6rem] h-[2.5rem]" alt="Logo"/>
+                <img src="/assets/images/VentureVerse-Black.png" className="w-[6rem] h-[2.5rem]" alt="Logo"/>
 
                 <div className="hidden lg:block">
                     <NavList active={active} />
                 </div>
                 <div className="hidden gap-2 lg:flex">
-                    <NavAuthentications />
+                    <NavAuthentications active={active} />
                 </div>
                 <IconButton
                     variant="text"
@@ -123,7 +129,7 @@ const NavbarHome = (props) => {
             <Collapse open={openNav}>
                 <NavList active={active} />
                 <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden justify-center">
-                    <NavAuthentications />
+                    <NavAuthentications active={active} />
                 </div>
             </Collapse>
         </Navbar>

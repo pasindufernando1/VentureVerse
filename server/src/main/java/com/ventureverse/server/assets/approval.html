@@ -1,449 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-    <title>MicroCAPS</title>
-    <link href="../../../../../../../../client/public/favicon.ico" rel="Shortcut icon" type="image/x-icon">
-    <meta name="modern-charset" charset="UTF-8">
-    <meta name="email-subject" content="">
-    <meta name="email-preheader" content="">
-    <meta name="iterable-unsub" content=<meta name="format-detection" content="address=no, telephone=no, date=no, email=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="color-scheme" content="light dark">
-    <meta name="supported-color-schemes" content="light dark">
-    <meta name="ie-compatibility" content="IE=edge" http-equiv="X-UA-Compatible">
-
-    <style>
-
-        body {
-            margin: 0; 
-            padding: 0; 
-            background-color: #f0f2f3;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100vh;
-        }
-
-        .padding-15 {
-            padding-bottom:15px;
-            font-weight: bold;
-        }
-
-        .event {
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            margin: auto;
-            max-width: 600px;
-            padding-top: 50px;
-            background: white;
-        }
-
-        .event-nl-04 {
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-        }
-
-        .container {
-            margin: 0 auto;
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            table-layout: auto;
-        }
-
-        .event .masthead {
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-            padding: 25px;
-            background: #252f3d;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .logo-color {
-            display: block;
-            border: none;
-            width: 145px;
-            width: 10rem;
-        }
-
-        .event .event-nl-04 .section-1 .section { 
-            border-top: 1px solid #D9D9D9;
-            border-bottom: 1px solid #D9D9D9;
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-            padding: 25px;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module {
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .subtitle {
-            background-color:#fff;
-            color:#444;
-            font-family:'Amazon Ember','Helvetica Neue',Roboto,Arial,sans-serif;
-            font-size:14px;
-            line-height:140%;
-            padding:25px 35px;
-            text-align:center
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .code {
-            color: #000;
-            font-size: 36px;
-            font-weight: bold;
-        }
-        
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .tag-row {
-            padding-bottom: 13px;
-            
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .tag-row .tag,
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .copy .tag {
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-            width: 100%;
-            text-align: center;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .tag-row .txt {
-            color: #096ED1;
-            font-size: 30px;
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            white-space: wrap;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .copy {
-            color: #000000;
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            font-size: 16px;
-            font-weight: normal;
-            line-height: 26px;
-            padding: 0 0 25px;
-        }
-
-        .event .event-nl-04 .footer {
-            
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-        }
-
-        .event .event-nl-04 .footer .footer-v2 {
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-        }
-
-        .event .event-nl-04 .footer .footer-v2 .txt {
-            padding-bottom: 26px;
-            font-size: 12px;
-            line-height: 18px;
-            
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-            text-align: center;
-        }
-
-        .event .event-nl-04 .footer .footer-v2 .txt .address {
-            color: #000000;
-            text-decoration: none;
-            
-            cursor: text;
-        }
-
-        .event .event-nl-04 .footer .links {
-            
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-        }
-
-        .event .event-nl-04 .footer .links .options {
-            border: none;
-            border-collapse: collapse;
-            border-spacing: 0;
-            mso-table-lspace: 0pt;
-            mso-table-rspace: 0pt;
-            width: 100%;
-        }
-
-        .event .event-nl-04 .footer .links .options .left,
-        .event .event-nl-04 .footer .links .options .right {
-            
-            font-family: 'Helvetica Neue', 'Segoe UI', Helvetica, Arial, sans-serif;
-            color: #000000;
-            white-space: nowrap;
-            text-align: right;
-        }
-
-        .event .event-nl-04 .footer .links .options .bottom {
-            border-bottom-width: 1px;
-            border-bottom-style: solid;
-            border-bottom-color: #D9D9D9;
-            font-size: 8px;
-            letter-spacing: 1px;
-            line-height: 22px;
-            padding: 1rem;
-            text-decoration: none;
-            color: #000000;
-            text-align: center;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .event .event-nl-04 .footer .links .options .right {
-            padding: 0 30px;
-            text-align: left;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .copy .tag .th {
-            padding: 0.5rem 0;
-            background-color: #1B2B65;
-            border: 1px solid white;
-            color: white;
-            text-transform: uppercase;
-            font-family: "Montserrat", sans-serif;
-            font-size: 12px;
-            color: #fff;
-            width: 50%;
-        }
-
-        .event .event-nl-04 .section-1 .section .event-nl-feature-module .copy .tag .td {
-            padding: 0.5rem 0;
-            border-bottom: 0.5px solid #D9D9D9;
-            color: #4d565a;
-            text-transform: uppercase;
-            font-family: "Montserrat", sans-serif;
-            font-size: 12px;
-            width: 50%;
-        }
-    
-
-        @media only screen and (max-width:599px) {
-
-            .footer .footer-v2 .options .left {
-                padding: 0 0 20px 0 !important;
-                white-space: normal !important;
-                width: 100% !important
+    <title>Rating Reminder</title>
+    <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+    <meta content="width=device-width" name="viewport">
+    <style type="text/css">
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    </style>
+    <style media="screen and (max-width: 680px)">
+        @media screen and (max-width: 680px) {
+            .phone {
+                padding: 0 30px;
             }
 
-            .footer .footer-v2 .options .right {
-                padding: 0 0 20px 0 !important;
-                white-space: normal !important;
-                width: 100% !important
+            .page-center {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
             }
 
-            .footer .footer-v2 .options td {
-                text-align: center !important
-            }
-
-            .footer .footer-v2 .options td a {
-                font-size: 12px !important;
-                white-space: normal !important;
-                padding-bottom: 2px !important;
-                line-height: 28px !important
-            }
-
-            .container {
-                width: 100% !important;
-                table-layout: fixed !important
-            }
-
-            .event .footer {
-                padding-left: 25px !important;
-                padding-right: 25px !important
-            }
-
-            .copy {
-                font-size: 18px !important;
-                line-height: 32px !important
-            }
-
-            table.stacked tr.stacked-row td.stacked-cell {
-                display: block !important;
-                width: 100% !important
-            }
-
-            .full-width {
-                width: 100% !important
-            }
-
-            .event .masthead {
-                padding: 0 !important;
-                background-color: #fff !important
-            }
-
-            .event .masthead a {
-                display: block !important;
-                background-image: url('https://i.ibb.co/D4zqn6t/Email-Banner.png') !important;
-                background-repeat: no-repeat !important;
-                background-size: cover !important;
-                width: 100% !important;
-                height: auto !important;
-                min-height: 88px !important
-            }
-
-            .event .masthead a img {
-                display: none !important
-            }
-        }
-
-        @media(prefers-color-scheme:dark) {
-
-            .footer .footer-v2 .options td .print {
-                border-bottom: 1px solid #D9D9D9 !important
-            }
-
-            .footer .footer-v2 .options td .contact {
-                border-bottom: 1px solid #D9D9D9 !important
-            }
-
-            body {
-                background: #201f24 !important
-            }
-
-            .address {
-                color: #fff !important
-            }
-
-            .black {
-                color: #fff !important
-            }
-
-            .copy {
-                color: #fff !important
-            }
-
-            td {
-                color: #fff !important
-            }
-
-            .green {
-                color: #096ED1 !important
-            }
-
-            a {
-                color: #096ED1 !important
-            }
-        }
-
-        img {
-            border: 0;
-            display: block
-        }
-
-        @media only screen and (max-width:375px) and (prefers-color-scheme:dark) {
-            .event .masthead {
-                padding: 0 !important;
-                background-color: #fff !important
-            }
-
-            .event .masthead a {
-                display: block !important;
-                background-image: url('https://i.ibb.co/fHLjK4L/logo.png') !important;
-                background-repeat: no-repeat !important;
-                background-size: cover !important;
-                width: 100% !important;
-                height: auto !important;
-                min-height: 88px !important
-            }
-
-            .event .masthead a img {
-                display: none !important
+            .footer-center {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
             }
         }
     </style>
-
 </head>
+<body style="background-color: #f4f4f5;">
+<table cellpadding="0" cellspacing="0"
+       style="width: 100%; height: 100%; background-color: #f4f4f5; text-align: center;">
+    <tbody>
+    <tr>
+        <td style="text-align: center;">
+            <table align="center" cellpadding="0" cellspacing="0" id="body" class="phone"
+                   style="background-color: #fff; width: 100%; max-width: 680px; height: 100%;">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" cellpadding="0" cellspacing="0" class="page-center"
+                               style="text-align: left; padding-bottom: 88px; width: 100%; padding-left: 120px; padding-right: 120px;">
+                            <tbody>
+                            <tr>
+                                <td colspan="2"
+                                    style="padding-top: 72px; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #000000; font-family: 'Montserrat', 'sans-serif'; font-size: 48px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: -2.6px; line-height: 52px; mso-line-height-rule: exactly; text-decoration: none;">
+                                    Reset Your Password
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 48px; padding-bottom: 48px;">
+                                    <table cellpadding="0" cellspacing="0" style="width: 100%">
+                                        <tbody>
+                                        <tr>
+                                            <td style="width: 100%; height: 1px; max-height: 1px; background-color: #d9dbe0; opacity: 0.81"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="-ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #9095a2; font-family: 'Montserrat', 'sans-serif'; font-size: 16px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: -0.18px; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
+                                    You're receiving this e-mail because you requested a password reset for your <span style="color: #D0BDF4; font-weight: 500;">VentureVerse</span> account.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top: 24px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #9095a2; font-family: 'Montserrat', 'sans-serif'; font-size: 16px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: -0.18px; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
+                                    Please tap the button below to choose a new password.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <a data-click-track-id="37" href="Link"
+                                       style="margin-top: 36px; -ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #ffffff; font-family: 'Montserrat', 'sans-serif'; font-size: 12px; font-smoothing: always; font-style: normal; font-weight: 600; letter-spacing: 0.7px; line-height: 48px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 220px; background-color: #8458B3; border-radius: 28px; display: block; text-align: center; text-transform: uppercase"
+                                       target="_blank">
+                                        Reset Password
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table align="center" cellpadding="0" cellspacing="0" id="footer"
+                   style="background-color: #000; width: 100%; max-width: 680px; height: 100%;">
+                <tbody>
+                <tr>
+                    <td>
+                        <table align="center" cellpadding="0" cellspacing="0" class="footer-center"
+                               style="text-align: left; width: 100%; padding-left: 120px; padding-right: 120px;">
+                            <tbody>
+                            <tr>
+                                <td colspan="2" style="padding-top: 48px; padding-bottom: 24px; width: 100%;">
+                                    <img src="https://i.ibb.co/s1bvXHy/Venture-Verse-Email-Logo.png" style="width: 40%;">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="padding-top: 24px; padding-bottom: 48px;">
+                                    <table cellpadding="0" cellspacing="0" style="width: 100%">
+                                        <tbody>
+                                        <tr>
+                                            <td style="width: 100%; height: 1px; max-height: 1px; background-color: #EAECF2; opacity: 0.19"></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="-ms-text-size-adjust: 100%; -ms-text-size-adjust: 100%; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: 100%; color: #9095A2; font-family: 'Montserrat', 'sans-serif'; font-size: 15px; font-smoothing: always; font-style: normal; font-weight: 400; letter-spacing: 0; line-height: 24px; mso-line-height-rule: exactly; text-decoration: none; vertical-align: top; width: 100%;">
+                                    If you have any questions or concerns, we're here to help. Contact us via our <a
+                                        data-click-track-id="1053" href="#"
+                                        style="font-weight: 500; color: #ffffff" target="_blank">Help Center</a>.
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="height: 72px;"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-<body>
-    <table role="presentation" aria-hidden="true" width="100%" class="bg event" cellpadding="0" cellspacing="0">
-        <tr>
-            <td valign="top" class="event-nl-04 EMAIL-2238">
-                <table role="presentation" aria-hidden="true" width="600" class="container full-width" cellpadding="0"
-                    cellspacing="0">
-                    <tr>
-                        <td class="masthead " valign="middle">
-                            <!-- start of logo badge -->
-                            <img src="https://i.ibb.co/s1bvXHy/Venture-Verse-Email-Logo.png" alt="MicroCAPS"
-                                    title="Evernote" class="logo-color">
-                            <!-- end of logo badge -->
-                        </td>
-                    </tr>
-                    <tr class="section-1">
-                        <td class="section hr-bot">
-                            <!-- start of event-nl-feature-module -->
-                            <table role="presentation" aria-hidden="true" width="100%"
-                                class="event-nl-feature-module full-width" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="tag-row">
-                                        <table role="presentation" aria-hidden="true" class="tag"
-                                            cellpadding="0" cellspacing="0">
-                                            <tr>
-                                                <td valign="bottom" class="col-right txt">
-                                                    Verify Your Email Address
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="subtitle">
-                                        <div class="padding-15">Verification code</div>
-                                        <div class="padding-15 code">-- code --</div>
-                                        <div>(This code is valid for 10 minutes)</div>
-                                    </td>
-                                </tr>
-                            </table><!-- end of event-nl-feature-module -->
-                        </td>
-                    </tr>
-                    <tr>
-                        <td dir="ltr" class="footer section">
-                            <table role="presentation" aria-hidden="true" width="100%" class="footer-v2" cellpadding="0"
-                                cellspacing="0">
-                                <tr>
-                                    <td valign="top" class="links">
-                                        <table role="presentation" aria-hidden="true" width="1"
-                                            class="options stacked full-width" cellpadding="0" cellspacing="0">
-                                            <tr class="stacked-row">
-                                                <td valign="top" class="stacked-cell black bold uppercase">
-                                                    <div class="bottom">
-                                                        Web Services will never email you and ask you to disclose or verify your password, credit card, or banking account number.
-                                                    </div> 
-                                                </td>
-                                                <!-- <td valign="top" class="right txt-nowrap stacked-cell">
-                                                    <a href="" class="print black bold uppercase txt-nowrap"
-                                                        target="_blank" dir="ltr">Print</a>
-                                                </td> -->
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+
 </body>
-
-</html>

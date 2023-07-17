@@ -1,5 +1,6 @@
 package com.ventureverse.server.enumeration;
 
 public enum TokenType {
-    BEARER
+    BEARER,
+    RESET_PASSWORD
 }

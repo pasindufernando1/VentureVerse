@@ -1,19 +1,23 @@
 package com.ventureverse.server.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ventureverse.server.assets.Templates;
 import com.ventureverse.server.config.JwtService;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.AdminDTO;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.entity.TokenDTO;
 import com.ventureverse.server.model.entity.UserDTO;
+import com.ventureverse.server.model.entity.ResetDTO;
 import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
 import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.AdminRepository;
+import com.ventureverse.server.repository.ResetRepository;
 import com.ventureverse.server.repository.TokenRepository;
 import com.ventureverse.server.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -27,6 +31,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +42,7 @@ public class AuthenticationService {
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
     private final TokenRepository tokenRepository;
+    private final ResetRepository resetRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -58,7 +64,7 @@ public class AuthenticationService {
                 .secondLineAddress(registerRequestDTO.getSecondLineAddress())
                 .town(registerRequestDTO.getTown())
                 .district(registerRequestDTO.getDistrict())
-                .role(Role.CO_ADMIN)
+                .role(Role.ADMIN)
                 .firstname(registerRequestDTO.getFirstname())
                 .lastname(registerRequestDTO.getLastname())
                 .gender(registerRequestDTO.getGender())
@@ -127,7 +133,7 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
-        emailService.sendEmail(user.getEmail(), "Test", string);
+        emailService.sendEmail(user.getEmail(), "Test", "string");
 
         return GlobalService.response("Success", "User " + id + " Approved");
 
@@ -153,6 +159,38 @@ public class AuthenticationService {
                 user.getId(),
                 user.getRole()
         );
+    }
+
+    public ResponseDTO forgotPassword(HttpServletResponse response, String email) {
+            var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
+            var token = jwtService.generateForgotPasswordToken(user);
+            emailService.sendEmail(email, "Reset Password", Templates.forgetPasswordTemp("http://localhost:3000/reset-password/" + token));
+            saveResetToken(user, token);
+            return GlobalService.response("Success", "Email Sent");
+    }
+
+    public ResponseDTO resetPassword(HttpServletResponse response, String password, String token) {
+
+        var reset = resetRepository.findByToken(token).orElseThrow(() -> new CustomErrorException("Token Not Found"));
+
+        if (reset.isExpired()) {
+            return GlobalService.response("Error", "Token Expired");
+        }
+
+        if (password.equals("Token Check")) {
+            return GlobalService.response("Alert", "Token Valid");
+        }
+
+        var email = jwtService.extractEmail(token);
+        var salt = userRepository.findSaltByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        user.setPassword(passwordEncoder.encode(GlobalService.generateSaltedPassword(password, salt)));
+        userRepository.save(user);
+
+        reset.setExpired(true);
+        resetRepository.save(reset);
+
+        return GlobalService.response("Success", "Password Reset");
     }
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -238,6 +276,16 @@ public class AuthenticationService {
             storedToken.setRevoked(false);
             tokenRepository.save(storedToken);
         }
+    }
+
+    private void saveResetToken(UserDTO user, String jwtToken) {
+        var token = ResetDTO.builder()
+                .user(user)
+                .token(jwtToken)
+                .tokenType(TokenType.RESET_PASSWORD)
+                .expired(false)
+                .build();
+        resetRepository.save(token);
     }
 
     private void revokeAllUserTokens(UserDTO user) {
