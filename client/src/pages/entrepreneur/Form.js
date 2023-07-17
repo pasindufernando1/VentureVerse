@@ -125,7 +125,7 @@ function Form() {
     });
   }, [formData.email,formData.nic,formData.mobile,formData.businessContact,formData.businessemail,formData.password,formData.confirmPassword]);
 
-  const [requiredFields, setRequiredFields] = useState({
+  const [requiredFields] = useState({
     // Add the required fields here, corresponding to each page
     0: ['firstname', 'lastname','firstline','town','district','email', 'nic', 'gender', 'mobile'],
     1: ['felony', 'lawsuit','policeReport', 'bankStatement'],
