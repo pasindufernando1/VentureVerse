@@ -6,7 +6,7 @@ const CustomInput = (props) => {
 
     let border, labelColor;
 
-    if (state.State === "Valid" || state === "") {
+    if (state.State === "Valid" || state.State === "" || state === "") {
         border = "focus:border-main-purple "
         labelColor = " peer-focus:!text-main-purple peer-focus:before:!border-main-purple peer-focus:after:!border-main-purple  "
     } else if (state.State === "Invalid") {

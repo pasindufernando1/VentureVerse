@@ -6,8 +6,12 @@ import CustomCheckbox from "./CustomCheckbox";
 import CustomInput from "./CustomInput";
 import CustomRadio from "./CustomRadio";
 import CustomSelect from "./CustomSelect";
+import CustomFlash from "./CustomFlash";
+import {useState} from "react";
 
 const Components = () => {
+
+    const [value, setValue] = useState(false)
 
     return (
         <div className="flex flex-col gap-5 items-center">
@@ -74,7 +78,13 @@ const Components = () => {
             <NavbarAll/>
 
             <h2 className="font-bold text-xl">Investor Navbar</h2>
-            <CustomCheckbox label="This is a Checkbox"/>
+            <CustomCheckbox label="This is a Checkbox" onChange={(event) => {
+                if (event.target.checked)
+                    setValue(true)
+                else
+                    setValue(false)
+            }}
+            />
 
             <h2 className="font-bold text-xl">Investor Navbar</h2>
             <CustomRadio label="This is a Checkbox"/>
@@ -87,6 +97,9 @@ const Components = () => {
                     options={[1, 2, 3]}
                 />
             </div>
+
+            {/*<CustomFlash State="Success" Message="Complete" Show={value}/>*/}
+
         </div>
     )
 

@@ -83,7 +83,7 @@ function Signup() {
                     </div>
 
                 </div>
-                <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                <div className="bg-[url('http://localhost:3000/static/media/Listing.b277be0c23429c0c521c.png')] bg-no-repeat bg-cover w-[50%] rounded-r-[1rem] hidden lg:block">
                 </div>
             </form>
         </main>

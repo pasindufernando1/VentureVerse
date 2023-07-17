@@ -22,7 +22,7 @@ import {
     faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
-import logo from "../../assets/images/VentureVerse-Black.png";
+// import logo from "../../assets/images/VentureVerse-Black.png";
 
 const NavList = (props) => {
 
@@ -105,7 +105,7 @@ const NavbarHome = (props) => {
     return (
         <Navbar className="max-w-full rounded-none px-4 py-2">
             <div className="flex items-center justify-between text-blue-gray-900">
-                <img src={logo} className="w-[6rem] h-[2.5rem]" alt="Logo"/>
+                <img src="/assets/images/VentureVerse-Black.png" className="w-[6rem] h-[2.5rem]" alt="Logo"/>
 
                 <div className="hidden lg:block">
                     <NavList active={active} />

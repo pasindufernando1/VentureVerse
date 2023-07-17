@@ -4,8 +4,8 @@ import useAuth from "../../hooks/useAuth";
 import axios from "../../api/axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faApple, faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
-import {Alert, Avatar, Card, CardBody, CardHeader, Carousel, Typography} from "@material-tailwind/react";
-import { CommonNavbar, Footer, Input, Button } from "../webcomponent";
+import {Avatar, Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
+import { CommonNavbar, Footer, Carousel, Alert, Input, Button } from "../webcomponent";
 
 const Login = () => {
 
@@ -15,15 +15,32 @@ const Login = () => {
     const location = useLocation();
 
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [validEmail, setValidEmail] = useState({"State": "", "Message": ""});
 
-    const [errorMsg, setErrorMsg] = useState('');
+    const [password, setPassword] = useState('');
+    const [validPassword, setValidPassword] = useState({"State": "", "Message": ""});
+
+    const [errorMsg, setErrorMsg] = useState({State: false, Type: "", Message: ""});
 
     useEffect(() => {
-        setErrorMsg('');
+        setValidEmail({State: "Valid", Message: ""});
+        setValidPassword({State: "Valid", Message: ""});
+        setErrorMsg({State: false, Type: "", Message: ""});
     }, [email, password])
 
+    useEffect(() => {
+        if (errorMsg.State) {
+            setValidEmail({State: "Invalid", Message: "Email"});
+            setValidPassword({State: "Invalid", Message: "Password"});
+        }
+    }, [errorMsg])
+
     const handleSubmit = async (e) => {
+
+        if (email === '' || password === '') {
+            setErrorMsg({State: true, Type: "Error", Message: 'Username and Password are required'});
+            return;
+        }
 
         e.preventDefault();
 
@@ -43,18 +60,15 @@ const Login = () => {
             setPassword('');
 
             const from = location?.state?.from || {pathname: "/" + response?.data?.role.toLowerCase()};
-            // console.log(from);
             navigate(from, {replace: true});
 
         } catch (err) {
             if (!err?.response) {
-                setErrorMsg('No Server Response');
-            } else if (err.response?.status === 400) {
-                setErrorMsg('Missing Username or Password');
+                setErrorMsg({State: true, Type: "Error", Message: 'No Server Response'});
             } else if (err.response?.status === 403) {
-                setErrorMsg('Unauthorized');
+                setErrorMsg({State: true, Type: "Error", Message: 'Invalid Username or Password'});
             } else {
-                setErrorMsg('Login Failed');
+                setErrorMsg({State: true, Type: "Error", Message: 'Login Failed'});
             }
         }
     }
@@ -107,30 +121,12 @@ const Login = () => {
 
             <CommonNavbar active="Login"/>
 
-            <section
-                className="flex flex-col md:flex-row  md:space-y-0 md:space-x-16 justify-items-center md:mx-0 m-20 lg:my-[5rem]">
+            <section className="flex flex-col md:flex-row  md:space-y-0 md:space-x-16 justify-items-center md:mx-0 m-20 lg:my-[5rem]">
                 <div className="lg:flex hidden bg-[#c7d2fe] place-items-center">
                     <div className="max-w-lg p-10">
                         <Carousel
                             prevArrow={() => ("")}
                             nextArrow={() => ("")}
-                            autoplay={true}
-                            autoplayspeed={5000}
-                            loop={true}
-                            className="rounded-xl"
-                            navigation={({setActiveIndex, activeIndex, length}) => (
-                                <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
-                                    {new Array(length).fill("").map((_, i) => (
-                                        <span
-                                            key={i}
-                                            className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
-                                                activeIndex === i ? "bg-main-purple w-8" : "bg-light-purple w-4"
-                                            }`}
-                                            onClick={() => setActiveIndex(i)}
-                                        />
-                                    ))}
-                                </div>
-                            )}
                         >
 
                             <CarouselItem/>
@@ -149,13 +145,14 @@ const Login = () => {
                             Enter your details to Login.
                         </Typography>
                         <form className="mt-2 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleSubmit}>
-                            {errorMsg && <Alert severity="error" color="red" className="mb-2">{errorMsg}</Alert>}
+                            <Alert Type={errorMsg.Type} Message={errorMsg.Message} State={errorMsg.State} />
                             <div className="flex flex-col gap-[0.75rem] items-center">
                                 <Input
                                     type="text"
                                     label="Email"
                                     onChange={(e) => setEmail(e.target.value)}
                                     value={email || ''}
+                                    state={validEmail}
                                     required
                                 />
                                 <Input
@@ -163,6 +160,7 @@ const Login = () => {
                                     label="Password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     value={password}
+                                    state={validPassword}
                                     required
                                 />
                                 <Button

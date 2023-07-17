@@ -5,7 +5,7 @@ const CustomTextarea = (props) => {
     let {placeholder, className = "", ...rest} = props;
 
 
-    className = "focus:border-main-purple focus:!border-t-main-purple " + className
+    className = "!border-t-blue-gray-200 focus:border-main-purple focus:!border-t-main-purple " + className
 
     return (
         <Textarea
