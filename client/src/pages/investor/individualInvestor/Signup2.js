@@ -1,7 +1,7 @@
 import React from "react";
 import { Input,Checkbox } from "../../webcomponent";
 
-function Signup2({formData, setFormData}) {
+function Signup2({formData, setFormData,validateFormData}) {
     const handlePoliceReportUpload = (event) => {
         const file = event.target.files[0];
         setFormData({ ...formData, policeReport: file });
@@ -29,6 +29,8 @@ function Signup2({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handlePoliceReportUpload}
+                    state={validateFormData.policeReport}
+                    required={true}
                 />
                 <label htmlFor="policeReport" className="file-input-button">
                     Select File
@@ -50,6 +52,8 @@ function Signup2({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handleBankStatementUpload}
+                    state={validateFormData.bankStatement}
+                    required={true}
                 />
                 <label htmlFor="bankStatement" className="file-input-button">
                     Select File
@@ -69,6 +73,8 @@ function Signup2({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, password: event.target.value})
                         }
+                        state={validateFormData.password}
+                        required={true}
                     />
             </div>    
             <br></br>
@@ -81,6 +87,8 @@ function Signup2({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, confirmPassword: event.target.value})
                         }
+                        state={validateFormData.confirmPassword}
+                        required={true}
                     />
             </div> 
             <br></br>
@@ -92,6 +100,8 @@ function Signup2({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, terms: event.target.checked})
                     }
+                    state={validateFormData.terms}
+                    required={true}
                 />
             </div>            
         </div>

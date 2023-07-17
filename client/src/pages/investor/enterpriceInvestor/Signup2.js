@@ -1,7 +1,7 @@
 import React from "react";
 import { Input, Checkbox} from "../../webcomponent";
 
-function Signup4({formData, setFormData}) {
+function Signup2({formData, setFormData,validateFormData}) {
     return (
     <div className="Signup4">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -19,6 +19,8 @@ function Signup4({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, password: event.target.value})
                         }
+                        state={validateFormData.password}
+                        required={true}
                     />
             </div>    
             <br></br>
@@ -31,6 +33,8 @@ function Signup4({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, confirmPassword: event.target.value})
                         }
+                        state={validateFormData.confirmPassword}
+                        required={true}
                     />
             </div> 
             <br></br>
@@ -42,10 +46,12 @@ function Signup4({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, terms: event.target.checked})
                     }
+                    state={validateFormData.terms}
+                    required={true}
                 />
             </div>                                    
         </div>
     </div>    
     );
 }
-export default Signup4;
+export default Signup2;

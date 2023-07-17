@@ -1,10 +1,14 @@
 import React from "react";
 import { Input, Select } from "../../webcomponent";
 
-function Signup1({formData, setFormData}) {
+function Signup1({formData, setFormData,validateFormData}) {
     const handleBusinessRegDocUpload = (event) => {
         const file = event.target.files[0];
         setFormData({ ...formData, businessregdoc: file });
+    };
+    const handleBankStatement= (event) => {
+        const file = event.target.files[0];
+        setFormData({ ...formData, bankStatement: file });
     };
     return (
     <div className="Signup1">
@@ -19,9 +23,10 @@ function Signup1({formData, setFormData}) {
                     label="Company Name"
                     value={formData.companyName}
                     onChange={(event)=>
-                        setFormData({...formData, firstname: event.target.value})
+                        setFormData({...formData, companyName: event.target.value})
                     }
-                    
+                    state={validateFormData.companyName}
+                    required={true}
                 />
             </div>
 
@@ -36,7 +41,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, firstline: event.target.value})
                         }
-                       required
+                        state={validateFormData.firstline}
+                        required={true}
                     />
                     <Input
                         type="text"
@@ -57,7 +63,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, town: event.target.value})
                         }
-                        
+                        state={validateFormData.town}
+                        required={true}
                     />
                     <Select 
                         label="District"
@@ -66,7 +73,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, district: event})
                         }
-                     
+                        state={validateFormData.district}
+                        required={true}
                     />
                 </div>
             </fieldset>
@@ -79,7 +87,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, email: event.target.value})
                     }
-                    
+                    state={validateFormData.email}
+                    required={true}
                 />
                 <Input
                     type="text"
@@ -87,7 +96,9 @@ function Signup1({formData, setFormData}) {
                     value={formData.mobile}
                     onChange={(event)=>
                         setFormData({...formData, mobile: event.target.value})
-                    }               
+                    }  
+                    state={validateFormData.mobile}
+                    required={true}             
                 />
             </div>
             <div className="row">
@@ -102,6 +113,8 @@ function Signup1({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
+                    state={validateFormData.businessregdoc}
+                    required={true}
                 />
                 <label htmlFor="bregReport" className="file-input-button">
                     Select File
@@ -109,6 +122,29 @@ function Signup1({formData, setFormData}) {
                 <span className="file-input-text">
                     {formData.businessregdoc ? formData.businessregdoc.name : 'No file chosen'}
                 </span>
+                </div>
+            </div>
+            <div className="row">
+                <div className="file-input-container">
+                    <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
+                        Please upload the Bank Statement:
+                    </label>
+                    <input
+                        type="file"
+                        id="bankStatement"
+                        name="bankStatement"
+                        accept="image/png, image/jpeg"
+                        className="hidden"
+                        onChange={handleBankStatement}
+                        state={validateFormData.bankStatement}
+                        required={true}
+                    />
+                    <label htmlFor="bankStatement" className="file-input-button">
+                        Select File
+                    </label>
+                    <span className="file-input-text">
+                        {formData.bankStatement? formData.bankStatement.name : 'No file chosen'}
+                    </span>
                 </div>
             </div>
         </div>

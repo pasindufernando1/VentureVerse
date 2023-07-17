@@ -13,7 +13,8 @@ const CustomRadio = (props) => {
             }
             label={
                 <Typography color="blue-gray" className="font-medium flex">
-                    {label}
+                    {/* change the font size */}
+                    <span className="text-[12px]">{label}</span>
                 </Typography>
             }
             {...rest}

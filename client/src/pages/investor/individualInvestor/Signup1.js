@@ -2,7 +2,7 @@ import React from "react";
 import { Input, Select } from "../../webcomponent";
 
 
-function Signup1({formData, setFormData}) {
+function Signup1({formData, setFormData,validateFormData}) {
   return (
     <div className="Signup1">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Individual Investor</h3>                                
@@ -18,7 +18,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, firstname: event.target.value})
                     }
-                    
+                    state={validateFormData.firstname}
+                    required={true}
                 />
                 <Input
                     type="text"
@@ -27,7 +28,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, lastname: event.target.value})
                     }
-                    
+                    state={validateFormData.lastname}
+                    required={true}
                 />
             </div>
 
@@ -42,7 +44,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, firstline: event.target.value})
                         }
-                       
+                        state={validateFormData.firstline}
+                        required={true}
                     />
                     <Input
                         type="text"
@@ -63,7 +66,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, town: event.target.value})
                         }
-                        
+                        state={validateFormData.town}
+                        required={true}
                     />
                     <Select 
                         label="District"
@@ -72,7 +76,8 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, district: event})
                         }
-                     
+                        state={validateFormData.district}
+                        required={true}
                     />
                 </div>
             </fieldset>
@@ -85,7 +90,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, email: event.target.value})
                     }
-                    
+                    state={validateFormData.email}
+                    required={true}
                 />
                 <Input
                     type="text"
@@ -94,7 +100,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, nic: event.target.value})
                     }
-                  
+                    state={validateFormData.nic}
+                    required={true}
                 />
             </div>
 
@@ -106,7 +113,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, gender: event})
                     }
-                  
+                    state={validateFormData.gender}
+                    required={true}
                 />
                 <Input
                     type="text"
@@ -115,7 +123,8 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, mobile: event.target.value})
                     }
-                  
+                    state={validateFormData.mobile}
+                    required={true}
                 />
             </div>
    

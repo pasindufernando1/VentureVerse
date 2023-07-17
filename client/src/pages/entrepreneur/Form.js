@@ -85,8 +85,12 @@ function Form() {
   
   useEffect(() => {
     let emailFlag = emailRegex.test(formData.email);
-    let nicFlag=nicRegex.test(formData.nic)
-    let mobileFlag=mobileRegex.test(formData.mobile)
+    let nicFlag=nicRegex.test(formData.nic);
+    let mobileFlag=mobileRegex.test(formData.mobile);
+    let businessContactFlag=mobileRegex.test(formData.businessContact);
+    let businessemailFlag = emailRegex.test(formData.businessemail);
+    let passwordFlag = formData.password.length >= 8;
+    let confirmPasswordFlag = formData.password === formData.confirmPassword;
  
   // Update the validateFormData in a single call
   setValitadeFormData({
@@ -101,10 +105,47 @@ function Form() {
     mobile:{
       State: mobileFlag || !formData.mobile ? "Valid" : "Invalid",
       Message: mobileFlag || !formData.mobile ? "" : "Invalid Contact Number"
+    },
+    businessContact:{
+      State: businessContactFlag || !formData.businessContact ? "Valid" : "Invalid",
+      Message: businessContactFlag || !formData.businessContact ? "" : "Invalid Contact Number"
+    },
+    businessemail:{
+      State: businessemailFlag || !formData.businessemail ? "Valid" : "Invalid",
+      Message: businessemailFlag || !formData.businessemail ? "" : "Invalid Email"
+    },
+    password: {
+      State: passwordFlag || !formData.password ? "Valid" : "Invalid",
+      Message: passwordFlag || !formData.password ? "" : "Password must be at least 8 characters"
+    },
+    confirmPassword: {
+      State: confirmPasswordFlag || !formData.confirmPassword ? "Valid" : "Invalid",
+      Message: confirmPasswordFlag || !formData.confirmPassword ? "" : "Passwords do not match"
     }    
     });
-  }, [formData.email,formData.nic,formData.mobile]);
- 
+  }, [formData.email,formData.nic,formData.mobile,formData.businessContact,formData.businessemail,formData.password,formData.confirmPassword]);
+
+  const [requiredFields, setRequiredFields] = useState({
+    // Add the required fields here, corresponding to each page
+    0: ['firstname', 'lastname','firstline','town','district','email', 'nic', 'gender', 'mobile'],
+    1: ['felony', 'lawsuit','policeReport', 'bankStatement'],
+    2: ['businessName', 'businessContact', 'bfirstline', 'btown', 'bdistrict','businessemail', 'businessDescription', 'businessregdoc'],
+    3: ['password', 'confirmPassword', 'terms']
+  });
+
+  useEffect(() => {
+    // Check if all the required fields on the current page are filled
+    const isPageDataValid = requiredFields[page]?.every(field => formData[field]);
+
+    // Check if there are no validation errors for the current page
+    const isPageValid = Object.keys(validateFormData).every(field => validateFormData[field].State === "Valid");
+
+    // console.log("Page: " + isPageDataValid + " " + isPageValid);
+
+    // Enable/disable the Next button based on the above checks
+    setDisabled(!isPageDataValid || !isPageValid);
+  }, [formData, validateFormData, requiredFields, page]);
+
   const FormTitles = ['Signup1', 'Signup2', 'Signup3', 'Signup4'];
 
   const PageDisplay = () => {
@@ -119,7 +160,7 @@ function Form() {
     }
   };
 
-    //map the stored data to the formdata object
+  //map the stored data to the formdata object
   const requestData = {
     firstname: formData.firstname,
     lastname: formData.lastname,

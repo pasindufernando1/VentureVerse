@@ -69,9 +69,9 @@ function Signup3({formData, setFormData,validateFormData}) {
                     <Input
                         type="text"
                         label="Town"
-                        value={formData.town}
+                        value={formData.btown}
                         onChange={(event)=>
-                            setFormData({...formData, town: event.target.value})
+                            setFormData({...formData, btown: event.target.value})
                         }
                         state={validateFormData.btown}
                         required={true}
@@ -79,10 +79,10 @@ function Signup3({formData, setFormData,validateFormData}) {
                     />
                     <Select 
                         label="District"
-                        value={formData.district}
+                        value={formData.bdistrict}
                         options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
                         onChange={(event)=>
-                            setFormData({...formData, district: event})
+                            setFormData({...formData, bdistrict: event})
                         }
                         state={validateFormData.bdistrict}
                         required={true}
@@ -99,8 +99,7 @@ function Signup3({formData, setFormData,validateFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, businesswebsite: event.target.value})
                     }
-                    state={validateFormData.businesswebsite}
-                    required={true}
+                    
                 />
                 <Input
                     type="text" 
