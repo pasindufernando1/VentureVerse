@@ -1,24 +1,21 @@
-package com.ventureverse.server.model.entity;
+package com.ventureverse.server.model.normal;
 
-import jakarta.persistence.*;
+import com.ventureverse.server.model.entity.EntrepreneurDTO;
+import com.ventureverse.server.model.entity.IndustrySectorDTO;
+import com.ventureverse.server.model.entity.ListingDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "listing")
-public class ListingDTO {
-
-    @Id
-    @GeneratedValue
-    private Integer listingId;
+@NoArgsConstructor
+public class ListingRequestDTO {
     private String title;
     private String description;
     private String pitchingVideo;
@@ -43,12 +40,7 @@ public class ListingDTO {
     private String subscriptionType;
     private Timestamp publishedDate;
     private String status;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
-    private EntrepreneurDTO entrepreneurId;
-
-
-
-
+    private Integer entrepreneurId;
+    //List of sectorIDs
+    private List<Integer> sectorId;
 }
