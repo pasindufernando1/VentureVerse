@@ -1,10 +1,8 @@
 import React from "react";
-import InputField from "../webcomponent/CustomInput";
-import Textarea from "../webcomponent/CustomTextarea";
-import Select from "../webcomponent/CustomSelect";
-// import { Select,Option } from "@material-tailwind/react";
+import { Input, Select,Textarea } from "../webcomponent";
 
-function Signup1({formData, setFormData}) {  
+function Signup1({formData, setFormData, validateFormData}) {  
+
     return (
     <div className="Signup1">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -13,21 +11,25 @@ function Signup1({formData, setFormData}) {
         </p>
         <div className="mt-6">
             <div className="row">
-                <InputField
+                <Input
                     type="text"
                     label={"First name:"}
                     value={formData.firstname}
                     onChange={(event)=>{
                         setFormData({...formData, firstname: event.target.value});
                     }}
+                    state={validateFormData.firstname}
+                    required={true}
                 />
-                <InputField
+                <Input
                     type="text"
                     label={"Last name:"}
                     value={formData.lastname}
                     onChange={(event)=>
                         setFormData({...formData, lastname: event.target.value})
                     }
+                    state={validateFormData.lastname}
+                    required={true}
                 />
             </div>
 
@@ -35,15 +37,17 @@ function Signup1({formData, setFormData}) {
                 <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
                 </legend>
                 <div className="row">
-                    <InputField
+                    <Input
                         type="text"
                         label={"First Line:"}
                         value={formData.firstline}
                         onChange={(event)=>
                             setFormData({...formData, firstline: event.target.value})
                         }
+                        state={validateFormData.firstline}
+                        required={true}
                     />
-                    <InputField
+                    <Input
                         type="text"
                         label={"Second Line:"}
                         value={formData.secondline}
@@ -54,13 +58,15 @@ function Signup1({formData, setFormData}) {
                 </div>
 
                 <div className="row">
-                    <InputField
+                    <Input
                         type="text"
                         label="Town:"
                         value={formData.town}
                         onChange={(event)=>
                             setFormData({...formData, town: event.target.value})
                         }
+                        state={validateFormData.town}
+                        required={true}
                     />
                     <Select 
                         label="District"
@@ -69,26 +75,32 @@ function Signup1({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, district: event})
                         }
+                        state={validateFormData.district}
+                        required={true}
                     />
                 </div>
             </fieldset>
 
             <div className="row">
-                <InputField
+                <Input
                     type="email"
                     label={"Email:"}
                     value={formData.email}
                     onChange={(event)=>
                         setFormData({...formData, email: event.target.value})
                     }
+                    state={validateFormData.email}
+                    required={true}
                 />
-                <InputField
+                <Input
                     type="text"
                     label={"NIC:"}
                     value={formData.nic}
                     onChange={(event)=>
                         setFormData({...formData, nic: event.target.value})
                     }
+                    state={validateFormData.nic}
+                    required={true}
                 />
             </div>
 
@@ -100,14 +112,18 @@ function Signup1({formData, setFormData}) {
                     onChange={(event)=>
                         setFormData({...formData, gender: event})
                     }
+                    state={validateFormData.gender}
+                    required={true}
                 />            
-                <InputField
+                <Input
                     type="text"
                     label={"Mobile:"}
                     value={formData.mobile}
                     onChange={(event)=>
                         setFormData({...formData, mobile: event.target.value})
                     }
+                    state={validateFormData.mobile}
+                    required={true}
                 />
             </div>
  

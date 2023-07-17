@@ -1,8 +1,7 @@
 import React from "react";
-import {Textarea} from "@material-tailwind/react";
-import InputField from "../webcomponent/InputField";
+import { Input, Select,Textarea } from "../webcomponent";
 
-function Signup3({formData, setFormData}) {
+function Signup3({formData, setFormData,validateFormData}) {
     const handleBusinessRegDocUpload = (event) => {
         const file = event.target.files[0];
         setFormData({ ...formData, businessregdoc: file });
@@ -17,25 +16,27 @@ function Signup3({formData, setFormData}) {
 
         <div className="mt-6 ">
             <div className="row">                                  
-                <InputField 
+                <Input
                     type="text" 
-                    color="purple"  
                     outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Name:</span>}
                     value={formData.businessName}  
                     onChange={(event)=>
                         setFormData({...formData, businessName: event.target.value})
                     }
+                    state={validateFormData.businessName}
+                    required={true}
                 />
-                <InputField 
+                <Input
                     type="text" 
-                    color="purple"  
                     outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Contact:</span>}
                     value={formData.businessContact}
                     onChange={(event)=>
                         setFormData({...formData, businessContact: event.target.value})
                     }
+                    state={validateFormData.businessContact}
+                    required={true}
                 />
             </div>   
 
@@ -44,15 +45,17 @@ function Signup3({formData, setFormData}) {
                 </legend>
 
                 <div className="row">
-                    <InputField
+                    <Input
                         type="text"
                         label={<span style={{ fontSize: '12px' }}>First Line:</span>}
                         value={formData.bfirstline}
                         onChange={(event)=>
                             setFormData({...formData, bfirstline: event.target.value})
                         }
+                        state={validateFormData.bfirstline}
+                        required={true}
                     />
-                    <InputField
+                    <Input
                         type="text"
                         label={<span style={{ fontSize: '12px' }}>Second Line:</span>}
                         value={formData.bsecondline}
@@ -63,45 +66,52 @@ function Signup3({formData, setFormData}) {
                 </div>
 
                 <div className="row">
-                    <InputField
+                    <Input
                         type="text"
-                        label={<span style={{ fontSize: '12px' }}>Town:</span>}
-                        value={formData.btown}
+                        label="Town"
+                        value={formData.town}
                         onChange={(event)=>
-                            setFormData({...formData, btown: event.target.value})
+                            setFormData({...formData, town: event.target.value})
                         }
+                        state={validateFormData.btown}
+                        required={true}
+                        
                     />
-                    <InputField
-                        type="text"
-                        label={<span style={{ fontSize: '12px' }}>District:</span>}
-                        value={formData.bdistrict}
+                    <Select 
+                        label="District"
+                        value={formData.district}
+                        options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
                         onChange={(event)=>
-                            setFormData({...formData, bdistrict: event.target.value})
+                            setFormData({...formData, district: event})
                         }
+                        state={validateFormData.bdistrict}
+                        required={true}
                     />
                 </div>
             </fieldset>
 
             <div className="row">                                  
-                <InputField 
+                <Input
                     type="text" 
-                    color="purple"  
                     outline="true"
                     label={<span style={{ fontSize: '12px' }}>Business Website:</span>}
                     value={formData.businesswebsite}
                     onChange={(event)=>
                         setFormData({...formData, businesswebsite: event.target.value})
                     }
+                    state={validateFormData.businesswebsite}
+                    required={true}
                 />
-                <InputField 
+                <Input
                     type="text" 
-                    color="purple"  
                     outline="true" 
                     label={<span style={{ fontSize: '12px' }}>Business Email:</span>}
                     value={formData.businessemail}
                     onChange={(event)=>
                         setFormData({...formData, businessemail: event.target.value})
                     } 
+                    state={validateFormData.businessemail}
+                    required={true}
                 />
             </div>   
 
@@ -117,6 +127,8 @@ function Signup3({formData, setFormData}) {
                         onChange={(event)=>
                             setFormData({...formData, businessDescription: event.target.value})
                         }
+                        state={validateFormData.businessDescription}
+                        required={true}
                     />
                 </div>
             </div>
@@ -133,6 +145,8 @@ function Signup3({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
+                    state={validateFormData.businessregdoc}
+                    required={true}
                 />
                 <label htmlFor="bregReport" className="file-input-button">
                     Select File

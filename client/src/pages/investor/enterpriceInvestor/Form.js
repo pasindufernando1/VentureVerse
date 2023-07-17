@@ -8,15 +8,12 @@ import Footer from '../../webcomponent/Footer';
 function Form() {
     const [page, setPage] = useState(0);
     const[formData, setFormData] = useState({
-        firstname: '',
-        lastname: '',
+        companyName: '',
         firstline: '',
         secondline: '',
         town: '',
         district: '',
         email: '',
-        nic: '',
-        gender: '',
         mobile: '',
         policeReport: '',
         bankStatement: '',

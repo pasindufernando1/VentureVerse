@@ -1,5 +1,5 @@
 import React from "react";
-import { Input, Checkbox } from "../webcomponent";
+import { Input, Checkbox} from "../../webcomponent";
 
 function Signup4({formData, setFormData}) {
     return (
@@ -14,7 +14,7 @@ function Signup4({formData, setFormData}) {
                     <Input 
                         type="password" 
                         color="purple" 
-                        label="Password:"
+                        label={<span style={{ fontSize: '12px' }}>Password:</span>}
                         value={formData.password}
                         onChange={(event)=>
                             setFormData({...formData, password: event.target.value})
@@ -26,7 +26,7 @@ function Signup4({formData, setFormData}) {
                     <Input 
                         type="password" 
                         color="purple" 
-                        label="Confirm Password:"
+                        label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
                         value={formData.confirmPassword}
                         onChange={(event)=>
                             setFormData({...formData, confirmPassword: event.target.value})

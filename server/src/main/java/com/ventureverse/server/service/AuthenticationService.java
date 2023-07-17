@@ -40,7 +40,7 @@ public class AuthenticationService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
+//    private final EmailService emailService;
 
     public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO) {
 
@@ -137,8 +137,7 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
-        emailService.sendEmail(user.getEmail(), "Test", string);
-
+//        emailService.sendEmail(user.getEmail(), "Test", string);
         return GlobalService.response("Success", "User " + id + " Approved");
 
     }

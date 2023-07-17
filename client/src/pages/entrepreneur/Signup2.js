@@ -1,8 +1,8 @@
 import React from "react";
-import { Radio, Textarea} from "@material-tailwind/react";
+import { Textarea,Radio } from "../webcomponent";
 
 
-function Signup2({formData, setFormData}) {
+function Signup2({formData, setFormData,validateFormData}) {
     const handleFelonyChange = (event) => {
         setFormData({ ...formData, felony: event.target.value });
     };
@@ -39,21 +39,25 @@ function Signup2({formData, setFormData}) {
                             color="purple"
                             name="felony"
                             id="felony-yes"
-                            label={<span style={{ fontSize: '12px' }}>Yes</span>}
+                            label="Yes"
                             className="w-4 h-4"
                             value="yes"
                             checked={formData.felony === 'yes'}
                             onChange={handleFelonyChange}
+                            state={validateFormData.felony}
+                            required={true}
                         />
                         <Radio 
                             color="purple"
                             name="felony"
                             id="felony-no"
-                            label={<span style={{ fontSize: '12px' }}>No</span>}
+                            label="No"
                             className="w-4 h-4"
                             value="no"
                             checked={formData.felony === 'no'}
                             onChange={handleFelonyChange}
+                            state={validateFormData.felony}
+                            required={true}
                         />
                     </div>    
                 </div>
@@ -71,9 +75,11 @@ function Signup2({formData, setFormData}) {
                             id="lawsuit-yes"
                             value="yes"
                             className="w-4 h-4"
-                            label={<span style={{ fontSize: '12px' }}>Yes</span>}
+                            label="Yes"
                             checked={formData.lawsuit === 'yes'}
                             onChange={handleLawsuitChange}
+                            state={validateFormData.lawsuit}
+                            required={true}
                         />
                         <Radio 
                             color="purple"
@@ -81,9 +87,11 @@ function Signup2({formData, setFormData}) {
                             id="lawsuit-no"
                             value="no"
                             className="w-4 h-4"
-                            label={<span style={{ fontSize: '12px' }}>No</span>}
+                            label="No"
                             checked={formData.lawsuit === 'no'}
                             onChange={handleLawsuitChange}
+                            state={validateFormData.lawsuit}
+                            required={true}
                         />
                     </div>    
                 </div>
@@ -119,6 +127,8 @@ function Signup2({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handlePoliceReportUpload}
+                    state={validateFormData.policeReport}
+                    required={true}
                 />
                 <label htmlFor="policeReport" className="file-input-button">
                     Select File
@@ -141,6 +151,8 @@ function Signup2({formData, setFormData}) {
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handleFileUpload}
+                    state={validateFormData.bankStatement}
+                    required={true}
                 />
                 <label htmlFor="bankStatement" className="file-input-button">
                     Select File
