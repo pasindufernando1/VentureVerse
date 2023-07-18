@@ -1,13 +1,11 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.model.entity.ListingDTO;
+import com.ventureverse.server.model.entity.ListingImagesDTO;
 import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
-import com.ventureverse.server.repository.EntrepreneurRepository;
-import com.ventureverse.server.repository.IndustrySectorRepository;
-import com.ventureverse.server.repository.ListingIndustrySectorsRepository;
-import com.ventureverse.server.repository.ListingRepository;
+import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +18,7 @@ public class ListingService {
     private final EntrepreneurRepository entrepreneurRepository;
     private final IndustrySectorRepository industrySectorRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
+    private final ListingImagesRepository listingImagesRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
@@ -66,9 +65,13 @@ public class ListingService {
             listingIndustrySectorsRepository.save(listingSectorObject);
         }
 
-
-
-
+        //Update the listing images table
+        var listingImages = listingRequestDTO.getImages();
+        for (String image : listingImages) {
+            listingImagesRepository.save(ListingImagesDTO.builder()
+                    .id(new ListingImagesDTO.CompositeKey(listingId, image))
+                    .build());
+        }
         return GlobalService.response("Success","Listing added successfully");
     }
 }

@@ -1,5 +1,5 @@
 import {
-    Card, textarea
+    Card
   } from "@material-tailwind/react";
 import React from "react";
 import InputField from "../webcomponent/CustomInput";
@@ -7,10 +7,10 @@ import { useState } from "react";
 import Checkbox from "../webcomponent/CustomCheckbox";
 import CustomButton from "../webcomponent/CustomButton";
 import NavbarAll from "../webcomponent/NavbarAll";
-import Footer from "../webcomponent/Footer";
 import Radio from "../webcomponent/CustomRadio";
 import Textarea from "../webcomponent/CustomTextarea";
-import axios from "axios";
+// import axios from "axios";
+import axios from "../../api/axios";
 
 function AddListing() {
     
@@ -29,23 +29,24 @@ function AddListing() {
 
     // Hooks to handle the inputs
     const [intention, setIntention] = useState("");
-    const [startdate, setStartDate] = useState("");
-    const [howlong, setHowLong] = useState("");
-    const [lifetimesales, setLifeTimeSales] = useState("");
-    const [grossincome, setGrossIncome] = useState("");
-    const [netincome, setNetIncome] = useState("");
-    const [nextsales, setNextSales] = useState("");
-    const [projectionlogic, setProjectionLogic] = useState("");
-    const [outsideSource, setOutsideSource] = useState("");
+    const [businessStartDate, setStartDate] = useState("");
+    const [businessDuration, setHowLong] = useState("");
+    const [lifetimeSales, setLifeTimeSales] = useState("");
+    const [lastYearGrossIncome, setGrossIncome] = useState("");
+    const [lastYearNetIncome, setNetIncome] = useState("");
+    const [salesProjectionThisYear, setThisSales] = useState("");
+    const [salesProjectionNextYear, setNextSales] = useState("");
+    const [projectionMethod, setProjectionLogic] = useState("");
+    const [outsideSources, setOutsideSource] = useState("");
     const handleOutsideSourceChange = (event) => {
         setOutsideSource(event.target.value);
     };
     
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [outsidedetails, setOutsideDetails] = useState("");
-    const [attempts, setAttempts] = useState("");
-    const [proposition, setProposition] = useState("");
+    const [outsideSourceDescription, setOutsideDetails] = useState("");
+    const [attemptsToGrow, setAttempts] = useState("");
+    const [uniqueSellingProposition, setProposition] = useState("");
     const [awards, setAwards] = useState("");
     const [categories, setCategories] = useState({
         food: false,
@@ -64,26 +65,33 @@ function AddListing() {
         children: false,
         housewares: false, 
     });
+
+    // List to hold the selected categories
+    const sectorId = [];
+
+    // List to hold the image names
+    const images = [];
     
     const [stage, setStage] = useState("");
     const handleStageChange = (event) => {
         setStage(event.target.value);
     };
 
-    // Current date
-    const date = new Date();
+    // Current date as a timestamp
+    const publishedDate = new Date();
+    console.log(title);
 
 // Images and video { Section 4}
     
-    const [seek, setSeek] = useState("");
-    const [equity, setEquity] = useState("");
+    const [expectedAmount, setSeek] = useState("");
+    const [returnEquityPercentage, setEquity] = useState("");
     const [equitychecked, setEquityChecked] = useState(false);
-    const [profitunit, setProfitUnit] = useState("");
+    const [returnUnitProfitPercentage, setProfitUnit] = useState("");
     const [profitunitchecked, setProfitUnitChecked] = useState(false);
 
 
     // Pricing handling
-    const [selectedPackage, setSelectedPackage] = useState("");
+    const [subscriptionType, setSelectedPackage] = useState("");
 
     const handlePackageSelect = (packageId) => {
         setSelectedPackage(packageId);
@@ -126,7 +134,9 @@ function AddListing() {
                 file: selectedFile,
                 preview: URL.createObjectURL(selectedFile),
             });
-    }}
+        }
+            
+    }
 
     const handleVideoUpload = (event) => {
         const { name, files } = event.target;
@@ -140,41 +150,107 @@ function AddListing() {
         }
     }
 
-    // The listin object to be sent to the backend
-    const listing = {
-        "title": {title},
-        "description": {description},
-        "pitchingVideo": "https://example.com/video",
-        "intention": {intention},
-        "businessStartDate": {startdate},
-        "businessDuration": {howlong},
-        "lifetimeSales": {lifetimesales},
-        "lastYearGrossIncome": {grossincome},
-        "lastYearNetIncome": {netincome},
-        "salesProjectionThisYear": {nextsales},
-        "salesProjectionNextYear": {nextsales},
-        "projectionMethod": {projectionlogic},
-        "outsideSources": {outsideSource},
-        "outsideSourceDescription": {outsidedetails},
-        "attemptsToGrow":   {attempts},
-        "awards": {awards},
-        "uniqueSellingProposition": {proposition},
-        "stage": {stage},
-        "expectedAmount": {seek},
-        "returnUnitProfitPercentage": {profitunit},
-        "returnEquityPercentage": {equity},
-        "subscriptionType": {selectedPackage},
-        "publishedDate": {date},
-        "status": "Active",
-        "entrepreneurId": 102,
-        "sectorId": [102, 2, 3]
-    }
-
     // Sending the listing object to the backend with the post request
-    
     const onSubmit = async (e) =>{
         e.preventDefault();
-        await axios.post("http://localhost:8080/api/auth/addListing",listing)
+        // ---------------File uploading begin------------ //
+        try{
+            const generateUniqueFileName = (file) => {
+                const timestamp = new Date().getTime();
+                const randomString = Math.random().toString(36).substring(2, 7);
+                const originalFileName = file.name;
+                const fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
+                return `${timestamp}_${randomString}${fileExtension}`;
+              };
+              
+              const formData = new FormData();
+              var image1filename = "";
+              var image2filename = "";
+              var image3filename = "";
+              var videofilename = "";
+              
+              if (image1.file) {
+                image1filename = "image1" + generateUniqueFileName(image1.file);
+                formData.append("image", image1.file, image1filename);
+                images.push(image1filename);
+              }
+              
+              if (image2.file) {
+                image2filename = "image2" + generateUniqueFileName(image2.file);
+                formData.append("image", image2.file, image2filename);
+                images.push(image2filename);
+              }
+              
+              if (image3.file) {
+                image3filename = "image3" + generateUniqueFileName(image3.file);
+                formData.append("image", image3.file, image3filename);
+                images.push(image3filename);
+              }
+              
+              if (video.file) {
+                videofilename = "video" + generateUniqueFileName(video.file);
+                formData.append("video", video.file, videofilename);
+              }
+              
+              const res = await axios.post("auth/upload", formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true
+              });
+              
+              console.log(res);
+              
+
+            // Rest of the data
+            var x=1;
+            // For each category that is selected, add the category id to the list
+            for (const [key,value] of Object.entries(categories)) {
+                if (value === true) {
+                    // Push the index of the category to the list
+                    sectorId.push(x)
+                }
+                x++;
+            }
+            
+
+            //The listing object to be sent to the backend
+            const listing = {
+                title,
+                description,
+                "pitchingVideo": videofilename,
+                intention,
+                businessStartDate,
+                businessDuration,
+                lifetimeSales,
+                lastYearGrossIncome,
+                lastYearNetIncome,
+                salesProjectionThisYear,
+                salesProjectionNextYear,
+                projectionMethod,
+                outsideSources,
+                outsideSourceDescription,
+                attemptsToGrow,
+                awards,
+                uniqueSellingProposition,
+                stage,
+                expectedAmount,
+                returnUnitProfitPercentage,
+                returnEquityPercentage,
+                subscriptionType,
+                publishedDate,
+                "status": "Active",
+                "entrepreneurId": 102,
+                sectorId,
+                images
+            }
+            console.log(listing)
+            await axios.post("auth/addListing",JSON.stringify(listing),{
+                headers: {'Content-Type': 'application/json'},
+                withCredentials: true});
+        }catch(error){
+            console.error("Error uploading the files : ",error);
+        }
+        // ---------------File uploading over------------ //
+        
     }
     
     return (
@@ -211,7 +287,7 @@ function AddListing() {
                                         <InputField 
                                             type="date" 
                                             id="date" 
-                                            value={startdate}
+                                            value={businessStartDate}
                                             onChange={(e) => setStartDate(e.target.value)}
                                         />
                                         </div>
@@ -222,7 +298,7 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="years" 
-                                            value={howlong}
+                                            value={businessDuration}
                                             onChange={(e) => setHowLong(e.target.value)}
                                         />
                                         </div>
@@ -234,7 +310,7 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="lifesales" 
-                                            value={lifetimesales}
+                                            value={lifetimeSales}
                                             onChange={(e) => setLifeTimeSales(e.target.value)}
                                         />
                                         </div>
@@ -245,7 +321,7 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="grossincome" 
-                                            value={grossincome}
+                                            value={lastYearGrossIncome}
                                             onChange={(e) => setGrossIncome(e.target.value)}
                                         />
                                         </div>
@@ -257,7 +333,7 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="netincome" 
-                                            value={netincome}
+                                            value={lastYearNetIncome}
                                             onChange={(e) => setNetIncome(e.target.value)}
                                         />
                                         </div>
@@ -268,8 +344,8 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="salesprojections"
-                                            value={nextsales}
-                                            onChange={(e) => setNextSales(e.target.value)}
+                                            value={salesProjectionThisYear}
+                                            onChange={(e) => setThisSales(e.target.value)}
                                         />
                                         </div>
                                     </div>
@@ -281,7 +357,7 @@ function AddListing() {
                                         <InputField 
                                             type="text" 
                                             id="lifesales" 
-                                            value={nextsales}
+                                            value={salesProjectionNextYear}
                                             onChange={(e) => setNextSales(e.target.value)}
                                         />
                                         </div>
@@ -296,7 +372,7 @@ function AddListing() {
                                             type="text" 
                                             id="projectionlogic" 
                                             className="w-full"
-                                            value={projectionlogic}
+                                            value={projectionMethod}
                                             onChange={(e) => setProjectionLogic(e.target.value)}
                                         />
                                         </div>
@@ -356,7 +432,7 @@ function AddListing() {
                                                     name="outsource" 
                                                     value="yes"
                                                     label={<span style={{ fontSize: '12px' }}>Yes</span>}
-                                                    checked={outsideSource === 'yes'}
+                                                    checked={outsideSources === 'yes'}
                                                     onChange={handleOutsideSourceChange}
 
                                                 />
@@ -368,7 +444,7 @@ function AddListing() {
                                                     name="outsource" 
                                                     value="no"
                                                     label={<span style={{ fontSize: '12px' }}>No</span>}
-                                                    checked={outsideSource === 'no'}
+                                                    checked={outsideSources === 'no'}
                                                     onChange={handleOutsideSourceChange}
                                                 />
                                         </div>
@@ -382,7 +458,7 @@ function AddListing() {
                                             type="text" 
                                             id="outsidedetails" 
                                             className="w-full"
-                                            value={outsidedetails}
+                                            value={outsideSourceDescription}
                                             onChange={(e) => setOutsideDetails(e.target.value)}
                                             />
                                         </div>
@@ -396,7 +472,7 @@ function AddListing() {
                                             type="text" 
                                             id="attempts" 
                                             className="w-full"
-                                            value={attempts}
+                                            value={attemptsToGrow}
                                             onChange={(e) => setAttempts(e.target.value)}
                                         />
                                         </div>
@@ -410,7 +486,7 @@ function AddListing() {
                                             type="text" 
                                             id="proposition" 
                                             className="w-full"
-                                            value={proposition}
+                                            value={uniqueSellingProposition}
                                             onChange={(e) => setProposition(e.target.value)}    
                                         />
                                         </div>
@@ -641,17 +717,17 @@ function AddListing() {
                                             <div className="row">
                                             <div className="w-[100px] h-[100px] border-2 border-main-purple rounded-[1rem] flex items-center justify-center overflow-hidden">
                                                 {image1.preview && (
-                                                <img src={image1.preview} alt="Image 1" className="w-full h-full object-cover rounded-[1rem]" />
+                                                <img src={image1.preview} alt="first" className="w-full h-full object-cover rounded-[1rem]" />
                                                 )}
                                             </div>
                                             <div className="w-[100px] h-[100px] border-2 border-main-purple rounded-[1rem] flex items-center justify-center overflow-hidden">
                                                 {image2.preview && (
-                                                <img src={image2.preview} alt="Image 2" className="w-full h-full object-cover rounded-[1rem]" />
+                                                <img src={image2.preview} alt="second" className="w-full h-full object-cover rounded-[1rem]" />
                                                 )}
                                             </div>
                                             <div className="w-[100px] h-[100px] border-2 border-main-purple rounded-[1rem] flex items-center justify-center overflow-hidden">
                                                 {image3.preview && (
-                                                <img src={image3.preview} alt="Image 3" className="w-full h-full object-cover rounded-[1rem]" />
+                                                <img src={image3.preview} alt="third" className="w-full h-full object-cover rounded-[1rem]" />
                                                 )}
                                             </div>
                                             </div>
@@ -760,7 +836,7 @@ function AddListing() {
                                                 type="text" 
                                                 id="seek" 
                                                 className="w-full"
-                                                value={seek}
+                                                value={expectedAmount}
                                                 onChange={(e) => setSeek(e.target.value)}
                                                 />
                                             <label htmlFor="seek" className="text-main-gray block mb-2 mt-5 text-[14px]">
@@ -771,7 +847,7 @@ function AddListing() {
                                                     type="text" 
                                                     id="seek" 
                                                     className="w-full mr-2"
-                                                    value={equity}
+                                                    value={returnEquityPercentage}
                                                     onChange={(e) => setEquity(e.target.value)}
                                                     />
                                                 <Checkbox 
@@ -786,7 +862,7 @@ function AddListing() {
                                                     type="text" 
                                                     id="seek" 
                                                     className="w-full mr-2"
-                                                    value={profitunit}
+                                                    value={returnUnitProfitPercentage}
                                                     onChange={(e) => setProfitUnit(e.target.value)}    
                                                 />
                                                 <Checkbox 
@@ -832,7 +908,7 @@ function AddListing() {
                                         {/* Pricing 1 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                            selectedPackage === "basic" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "basic" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
                                             onClick={() => handlePackageSelect("basic")}
                                         >
@@ -933,7 +1009,7 @@ function AddListing() {
                                         {/* Pricing 2 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                            selectedPackage === "standard" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "standard" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
                                             onClick={() => handlePackageSelect("standard")}
                                         >
@@ -1034,7 +1110,7 @@ function AddListing() {
                                         {/* Pricing 3 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                            selectedPackage === "premium" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "premium" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
                                             onClick={() => handlePackageSelect("premium")}
                                         >
@@ -1138,10 +1214,10 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="clear" label="Subscribe now" onClick={onSubmit}/>
+                                            <CustomButton variant="clear" label="Subscribe now"/>
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Submit without subscribing" icon="next" type="submit" />
+                                            <CustomButton variant="primary" label="Submit without subscribing" icon="next" onClick={onSubmit} />
                                         </div>
                                     </div>
                                 </div>
@@ -1150,7 +1226,7 @@ function AddListing() {
                         )}    
                 </form>
             </main>
-            <Footer />
+            {/* <Footer /> */}
         </div>
     );
 }

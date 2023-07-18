@@ -13,6 +13,10 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   mail:
     host: sandbox.smtp.mailtrap.io
     port: 465

@@ -25,7 +25,7 @@ public class ListingController {
             HttpServletResponse response,
             @RequestBody ListingRequestDTO listingRequestDTO
     ) {
-        System.out.println("awa");
+        System.out.println(listingRequestDTO);
         return ResponseEntity.ok(listingService.addListing(response, listingRequestDTO));
     }
 

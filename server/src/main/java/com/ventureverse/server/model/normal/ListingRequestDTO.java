@@ -43,4 +43,7 @@ public class ListingRequestDTO {
     private Integer entrepreneurId;
     //List of sectorIDs
     private List<Integer> sectorId;
+
+    //List of images
+    private List<String> images;
 }

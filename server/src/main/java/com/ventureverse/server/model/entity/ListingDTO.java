@@ -44,6 +44,7 @@ public class ListingDTO {
     private Timestamp publishedDate;
     private String status;
 
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurId;
