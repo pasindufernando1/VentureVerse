@@ -76,6 +76,9 @@ public class AuthenticationService {
     }
 
     public ResponseDTO registerEntrepreneur(HttpServletResponse response,RegisterRequestDTO registerRequestDTO) {
+//        print the response
+        System.out.println(registerRequestDTO);
+
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 

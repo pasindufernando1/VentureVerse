@@ -30,8 +30,8 @@ public class RegisterRequestDTO {
     private String policeReport;
     private String incomeStatement;
     private String collaboratorDetails;
-    private Boolean felony;
-    private Boolean lawSuit;
+    private String felony;
+    private String lawSuit;
     private String felonyDescription;
 
     // INDIVIDUAL INVESTOR | ENTERPRISE INVESTOR

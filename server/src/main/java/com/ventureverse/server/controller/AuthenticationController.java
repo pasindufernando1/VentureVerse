@@ -34,6 +34,8 @@ public class AuthenticationController {
             HttpServletResponse response,
             @RequestBody RegisterRequestDTO registerRequestDTO
     ) {
+        //print out the request body
+        System.out.println(registerRequestDTO.toString());
         return ResponseEntity.ok(authenticationService.registerEntrepreneur(response, registerRequestDTO));
     }
 

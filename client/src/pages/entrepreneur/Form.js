@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
@@ -140,8 +140,6 @@ function Form() {
     // Check if there are no validation errors for the current page
     const isPageValid = Object.keys(validateFormData).every(field => validateFormData[field].State === "Valid");
 
-    // console.log("Page: " + isPageDataValid + " " + isPageValid);
-
     // Enable/disable the Next button based on the above checks
     setDisabled(!isPageDataValid || !isPageValid);
   }, [formData, validateFormData, requiredFields, page]);
@@ -176,18 +174,18 @@ function Form() {
     felony: formData.felony,
     lawsuit: formData.lawsuit,
     felonyDescription: formData.lawsuitDetails,
-    policeReport: formData.policeReport,
-    incomeStatement: formData.bankStatement,
+    policeReport: "ds",
+    incomeStatement: "lijdi",
     businessName: formData.businessName,
     businessContact: formData.businessContact,
-    bfirstlineAddress: formData.bfirstline,
-    bsecondlineAddress: formData.bsecondline,
+    bfirstLineAddress: formData.bfirstline,
+    bsecondLineAddress: formData.bsecondline,
     btown: formData.btown,
     bdistrict: formData.bdistrict,
     businessWebsite: formData.businesswebsite,
     businessEmail: formData.businessemail,
     businessDescription: formData.businessDescription,
-    businessregdoc: formData.businessregdoc,
+    businessRegDoc: "hjdh",
     password: formData.password
   }
 
@@ -200,7 +198,9 @@ function Form() {
     if (page === FormTitles.length - 1) {
       console.log(requestData);
       try {
-        const response = await axios.post('/api/auth/register/entrepreneur', requestData);
+        const response = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true});
         console.log(response.data); // Handle the response from the back-end as needed
       } catch (error) {
         console.error(error); // Handle any errors that occur during the request
@@ -208,6 +208,7 @@ function Form() {
     }else{
       setPage((currPage) => currPage + 1);
     }
+
   };
 
   return (
