@@ -276,6 +276,7 @@ function AddListing() {
                                             value={intention} 
                                             onChange={(e) => setIntention(e.target.value)} 
                                             className="w-full"
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -289,6 +290,7 @@ function AddListing() {
                                             id="date" 
                                             value={businessStartDate}
                                             onChange={(e) => setStartDate(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                         <div className="flex-grow">
@@ -300,6 +302,7 @@ function AddListing() {
                                             id="years" 
                                             value={businessDuration}
                                             onChange={(e) => setHowLong(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -312,6 +315,7 @@ function AddListing() {
                                             id="lifesales" 
                                             value={lifetimeSales}
                                             onChange={(e) => setLifeTimeSales(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                         <div>
@@ -323,6 +327,7 @@ function AddListing() {
                                             id="grossincome" 
                                             value={lastYearGrossIncome}
                                             onChange={(e) => setGrossIncome(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -335,6 +340,7 @@ function AddListing() {
                                             id="netincome" 
                                             value={lastYearNetIncome}
                                             onChange={(e) => setNetIncome(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                         <div>
@@ -346,6 +352,7 @@ function AddListing() {
                                             id="salesprojections"
                                             value={salesProjectionThisYear}
                                             onChange={(e) => setThisSales(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -359,6 +366,7 @@ function AddListing() {
                                             id="lifesales" 
                                             value={salesProjectionNextYear}
                                             onChange={(e) => setNextSales(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -374,6 +382,7 @@ function AddListing() {
                                             className="w-full"
                                             value={projectionMethod}
                                             onChange={(e) => setProjectionLogic(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -402,6 +411,7 @@ function AddListing() {
                                             value={title} 
                                             onChange={(e) => setTitle(e.target.value)} 
                                             className="w-full"
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -416,6 +426,7 @@ function AddListing() {
                                             value={description} 
                                             onChange={(e) => setDescription(e.target.value)} 
                                             className="w-full"
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -434,6 +445,7 @@ function AddListing() {
                                                     label={<span style={{ fontSize: '12px' }}>Yes</span>}
                                                     checked={outsideSources === 'yes'}
                                                     onChange={handleOutsideSourceChange}
+                                                    required={true}
 
                                                 />
                                                 
@@ -446,13 +458,14 @@ function AddListing() {
                                                     label={<span style={{ fontSize: '12px' }}>No</span>}
                                                     checked={outsideSources === 'no'}
                                                     onChange={handleOutsideSourceChange}
+                                                    required={true}
                                                 />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="w-full">
                                         <label htmlFor="outside-details" className="text-main-gray block mb-2 text-[14px]">
-                                        If yes provide details
+                                        If yes provide details else state as none
                                         </label>
                                         <InputField 
                                             type="text" 
@@ -460,6 +473,7 @@ function AddListing() {
                                             className="w-full"
                                             value={outsideSourceDescription}
                                             onChange={(e) => setOutsideDetails(e.target.value)}
+                                            required={true}
                                             />
                                         </div>
                                     </div>
@@ -474,6 +488,7 @@ function AddListing() {
                                             className="w-full"
                                             value={attemptsToGrow}
                                             onChange={(e) => setAttempts(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -487,7 +502,8 @@ function AddListing() {
                                             id="proposition" 
                                             className="w-full"
                                             value={uniqueSellingProposition}
-                                            onChange={(e) => setProposition(e.target.value)}    
+                                            onChange={(e) => setProposition(e.target.value)} 
+                                            required={true}   
                                         />
                                         </div>
                                     </div>
@@ -502,6 +518,7 @@ function AddListing() {
                                             className="w-full"
                                             value={awards}
                                             onChange={(e) => setAwards(e.target.value)}
+                                            required={true}
                                         />
                                         </div>
                                     </div>
@@ -539,6 +556,7 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, food: event.target.checked})
                                                         }
+                                                        required={true}
                                                 />
                                                 <Checkbox 
                                                         label="Technology"
@@ -547,6 +565,7 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, technology: event.target.checked})
                                                         }
+                                                        required={true}
                                                 />
                                                 <Checkbox
                                                         label="App / Website"
@@ -555,6 +574,7 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, app: event.target.checked})
                                                         }
+                                                        required={true}
                                                 />
                                                 </div>
                                             </div>
@@ -567,6 +587,7 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, fitness: event.target.checked})
                                                         }
+                                                        
                                                 />
                                                 <Checkbox 
                                                         label="Health / Wellness / Nutrition"

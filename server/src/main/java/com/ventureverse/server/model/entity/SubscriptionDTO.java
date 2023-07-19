@@ -18,6 +18,5 @@ public class SubscriptionDTO {
     private Integer subscriptionId;
     private String subscriptionName;
     private String price;
-    private Timestamp time;
-
+    private Integer days;
 }

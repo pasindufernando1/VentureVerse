@@ -20,6 +20,7 @@ public class ListingDTO {
     @GeneratedValue
     private Integer listingId;
     private String title;
+    @Column(columnDefinition = "text")
     private String description;
     private String pitchingVideo;
     private String intention;
@@ -32,6 +33,7 @@ public class ListingDTO {
     private Integer salesProjectionNextYear;
     private String projectionMethod;
     private String outsideSources;
+    @Column(columnDefinition = "text")
     private String outsideSourceDescription;
     private String attemptsToGrow;
     private String awards;
