@@ -3,8 +3,8 @@ import { Input, Select,Textarea } from "../webcomponent";
 
 function Signup3({formData, setFormData,validateFormData}) {
     const handleBusinessRegDocUpload = (event) => {
-        const file = event.target.files[0];
-        setFormData({ ...formData, businessregdoc: file });
+        const { name, files } = event.target;
+        setFormData({ ...formData, [name]: files[0] });
     };
 
     return (
@@ -120,7 +120,7 @@ function Signup3({formData, setFormData,validateFormData}) {
                     Please provide a brief non-confidential description of your business or product:
                     </label>
                     <Textarea 
-                        label={<span style={{ fontSize: '12px' }}>Business Description:</span>}
+                        label="Business Description:"
                         className="w-full"
                         value={formData.businessDescription} 
                         onChange={(event)=>
@@ -134,20 +134,20 @@ function Signup3({formData, setFormData,validateFormData}) {
 
             <div className="row">
                 <div className="file-input-container">
-                <label htmlFor="bregReport" className="text-main-black block mb-1 text-[14px]">
+                <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
                     Please upload the Business Registration Document:
                 </label>
                 <input
                     type="file"
-                    id="bregReport"
-                    name="bregReport"
+                    id="businessregdoc"
+                    name="businessregdoc"
                     accept="image/png, image/jpeg"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
                     state={validateFormData.businessregdoc}
                     required={true}
                 />
-                <label htmlFor="bregReport" className="file-input-button">
+                <label htmlFor="businessregdoc" className="file-input-button">
                     Select File
                 </label>
                 <span className="file-input-text">

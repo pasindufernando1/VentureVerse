@@ -14,6 +14,7 @@ import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.AdminRepository;
+import com.ventureverse.server.repository.EntrepreneurRepository;
 import com.ventureverse.server.repository.TokenRepository;
 import com.ventureverse.server.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
@@ -36,11 +37,30 @@ public class AuthenticationService {
     private Integer refreshExpiration;
     private final UserRepository userRepository;
     private final AdminRepository adminRepository;
+    private final EntrepreneurRepository entrepreneurRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 //    private final EmailService emailService;
+
+    public ResponseDTO checkEmail(String email) {
+        var user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return GlobalService.response("Error", "Email Already Exists");
+        } else {
+            return GlobalService.response("Success", "Email Available");
+        }
+    }
+
+    public ResponseDTO checkBusinessEmail(String email) {
+        var user = entrepreneurRepository.findByBusinessEmail(email);
+        if (user.isPresent()) {
+            return GlobalService.response("Error", "Email Already Exists");
+        } else {
+            return GlobalService.response("Success", "Email Available");
+        }
+    }
 
     public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO) {
 

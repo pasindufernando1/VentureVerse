@@ -12,13 +12,13 @@ function Signup2({formData, setFormData,validateFormData}) {
     };
 
     const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-        setFormData({ ...formData, bankStatement: file });
+        const { name, files } = event.target;
+        setFormData({ ...formData, [name]: files[0] });
     };
 
     const handlePoliceReportUpload = (event) => {
-        const file = event.target.files[0];
-        setFormData({ ...formData, policeReport: file });
+        const { name, files } = event.target;
+        setFormData({ ...formData, [name]: files[0] });
     };
 
     return(
@@ -107,7 +107,7 @@ function Signup2({formData, setFormData,validateFormData}) {
                         outline="true"
                         className="w-full" 
                         value={formData.lawsuitDetails}
-                        label={<span style={{ fontSize: '12px' }}>Lawsuit Details</span>}
+                        label="Lawsuit Details"
                         onChange={(event)=>
                             setFormData({...formData, lawsuitDetails: event.target.value})
                         }

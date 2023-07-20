@@ -49,7 +49,7 @@ function Form() {
     terms: false
   });
 
-  const [validateFormData, setValitadeFormData] = useState({
+  const [validateFormData, setValidateFormData] = useState({
     firstname: { "State":"", "Message":"" },
     lastname: { "State":"", "Message":"" },
     firstline: { "State":"", "Message":"" },
@@ -93,7 +93,7 @@ function Form() {
     let confirmPasswordFlag = formData.password === formData.confirmPassword;
  
   // Update the validateFormData in a single call
-  setValitadeFormData({
+  setValidateFormData({
     email: {
       State: emailFlag || !formData.email ? "Valid" : "Invalid",
       Message: emailFlag || !formData.email ? "" : "Invalid Email"
@@ -123,6 +123,43 @@ function Form() {
       Message: confirmPasswordFlag || !formData.confirmPassword ? "" : "Passwords do not match"
     }    
     });
+    //check email already exist state
+    if(formData.email){
+      axios.get(`/auth/checkEmail/${formData.email}`)
+      .then((res) => {
+        if(res.data.status === "Error"){
+          setValidateFormData((prevData) => ({
+            ...prevData,
+            email: {
+              State: "Invalid",
+              Message: "Email already exists"
+            }
+          }));
+        }
+      }
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+    }
+    if(formData.businessemail){
+      axios.get(`/auth/checkBusinessEmail/${formData.businessemail}`)
+      .then((res) => {
+        if(res.data.status === "Error"){
+          setValidateFormData((prevData) => ({
+            ...prevData,
+            businessemail: {
+              State: "Invalid",
+              Message: "Email already exists"
+            }
+          }));
+        }
+      }
+      )
+      .catch((error) => {
+        console.error(error);
+      });
+    }
   }, [formData.email,formData.nic,formData.mobile,formData.businessContact,formData.businessemail,formData.password,formData.confirmPassword]);
 
   const [requiredFields] = useState({
@@ -172,7 +209,7 @@ function Form() {
     contactNumber: formData.mobile,
     collaboratorDetails: formData.collobarators,
     felony: formData.felony,
-    lawsuit: formData.lawsuit,
+    lawSuit: formData.lawsuit,
     felonyDescription: formData.lawsuitDetails,
     policeReport: "ds",
     incomeStatement: "lijdi",
@@ -194,21 +231,19 @@ function Form() {
   };
 
   const handleNextClick = async () => {
-    //if the submit page then just get the data and submit the form
     if (page === FormTitles.length - 1) {
       console.log(requestData);
-      try {
-        const response = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
-        headers: { 'Content-Type': 'application/json' },
-        withCredentials: true});
-        console.log(response.data); // Handle the response from the back-end as needed
-      } catch (error) {
-        console.error(error); // Handle any errors that occur during the request
-      }
+        try {
+          const response = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true});
+          console.log(response.data); // Handle the response from the back-end as needed
+        } catch (error) {
+          console.error(error); // Handle any errors that occur during the request
+        }
     }else{
       setPage((currPage) => currPage + 1);
     }
-
   };
 
   return (

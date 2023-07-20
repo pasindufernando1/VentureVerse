@@ -21,6 +21,17 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+//    check whether the email already exits or not
+    @GetMapping("/checkEmail/{email}")
+    public ResponseEntity<ResponseDTO> checkEmail(@PathVariable String email) {
+        return ResponseEntity.ok(authenticationService.checkEmail(email));
+    }
+
+    @GetMapping("checkBusinessEmail/{email}")
+    public ResponseEntity<ResponseDTO> checkBusinessEmail(@PathVariable String email) {
+        return ResponseEntity.ok(authenticationService.checkBusinessEmail(email));
+    }
+
     @PostMapping("/register/admin")
     public ResponseEntity<ResponseDTO> register(
             HttpServletResponse response,

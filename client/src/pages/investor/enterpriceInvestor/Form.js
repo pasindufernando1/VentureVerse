@@ -4,6 +4,7 @@ import Signup2 from './Signup2';
 import Button from '../../webcomponent/Button';
 import Navbar from '../../webcomponent/NavbarHome';
 import Footer from '../../webcomponent/Footer';
+import axios from '../../../api/axios';
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
@@ -67,6 +68,25 @@ function Form() {
                 Message: confirmPasswordFlag || !formData.confirmPassword ? "" : "Password does not match"
             }
         });
+        //check email already exist state
+        if(formData.email){
+            axios.get(`/auth/checkEmail/${formData.email}`)
+            .then((res) => {
+            if(res.data.status === "Error"){
+                setValidateFormData((prevData) => ({
+                ...prevData,
+                email: {
+                    State: "Invalid",
+                    Message: "Email already exists"
+                }
+                }));
+            }
+            }
+            )
+            .catch((error) => {
+            console.error(error);
+            });
+        }
     }, [formData.email, formData.nic, formData.mobile, formData.password, formData.confirmPassword]);
 
     const FormTitles=["Signup1", "Signup2"];
@@ -93,6 +113,19 @@ function Form() {
         }else if(page === 1){
             return <Signup2 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
         }
+    };
+
+    const requestData =  {
+        businessName: formData.companyName,
+        firstLineAddress: formData.firstline,
+        secondLineAddress: formData.secondline,
+        town: formData.town,
+        district: formData.district,
+        email: formData.email,
+        contactNumber: formData.mobile,
+        businessRegistration: formData.businessregdoc,
+        financialDocument: formData.bankStatement,
+        password: formData.password
     };
 
     const handlePrevClick = () => {
