@@ -5,10 +5,7 @@ import com.ventureverse.server.config.JwtService;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
-import com.ventureverse.server.model.entity.AdminDTO;
-import com.ventureverse.server.model.entity.EntrepreneurDTO;
-import com.ventureverse.server.model.entity.TokenDTO;
-import com.ventureverse.server.model.entity.UserDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
 import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
@@ -138,6 +135,62 @@ public class AuthenticationService {
 
         userRepository.save(user); // Save the Record
         return GlobalService.response("Success", "Registration request sent");
+    }
+
+    public ResponseDTO registerIndividualInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user= IndividualInvestorDTO.builder()
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.INDIVIDUAL_INVESTOR)
+                .financialDocument(registerRequestDTO.getFinancialDocument())
+                .badgeId(null)
+                .firstname(registerRequestDTO.getFirstname())
+                .lastname(registerRequestDTO.getLastname())
+                .gender(registerRequestDTO.getGender())
+                .nic(registerRequestDTO.getNic())
+                .policeReport(registerRequestDTO.getPoliceReport())
+                .build(); // Creates IndividualInvestorDTO
+
+        userRepository.save(user); // Save the Record
+        return GlobalService.response("Success", "Registration request sent");
+    }
+
+    public ResponseDTO registerEnterpriseInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user= EnterpriseInvestorDTO.builder()
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.ENTERPRISE_INVESTOR)
+                .businessRegistration(registerRequestDTO.getBusinessRegistration())
+                .businessName(registerRequestDTO.getBusinessName())
+                .financialDocument(registerRequestDTO.getFinancialDocument())
+                .badgeId(null)
+                .build();
+
+        userRepository.save(user);
+        return GlobalService.response("Success", "Registration request sent");
+
     }
 
     public ResponseDTO authorize(HttpServletResponse response, String status, Integer id) {

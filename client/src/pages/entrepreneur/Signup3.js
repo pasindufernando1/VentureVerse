@@ -4,7 +4,7 @@ import { Input, Select,Textarea } from "../webcomponent";
 function Signup3({formData, setFormData,validateFormData}) {
     const handleBusinessRegDocUpload = (event) => {
         const { name, files } = event.target;
-        setFormData({ ...formData, [name]: files[0] });
+        setFormData({ ...formData, [name]: files[0]});
     };
 
     return (
@@ -135,7 +135,7 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
-                    Please upload the Business Registration Document:
+                    Please upload a copy of your Business Registration Document:
                 </label>
                 <input
                     type="file"

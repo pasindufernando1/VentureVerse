@@ -3,12 +3,12 @@ import { Input,Checkbox } from "../../webcomponent";
 
 function Signup2({formData, setFormData,validateFormData}) {
     const handlePoliceReportUpload = (event) => {
-        const file = event.target.files[0];
-        setFormData({ ...formData, policeReport: file });
+        const {name, files} = event.target;
+        setFormData({ ...formData, [name]: files[0]});
     };
     const handleBankStatementUpload = (event) => {
-        const file = event.target.files[0];
-        setFormData({ ...formData, bankStatement: file });
+        const {name, files} = event.target;
+        setFormData({ ...formData, [name]: files[0]});
     };
     return(
     <div className="Signup2">

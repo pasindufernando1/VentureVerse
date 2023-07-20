@@ -3,6 +3,7 @@ import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 
 import Components from "./pages/webcomponent/Components"
+import Success from "./pages/common/Success";
 import Signup from "./pages/entrepreneur/Form"
 import AddListing from "./pages/entrepreneur/AddListing";
 import IndividualInvestor from "./pages/investor/individualInvestor/Form";
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/add-listing" element={<AddListing />} />
                 <Route path="/individual-investor" element={<IndividualInvestor />} />
                 <Route path="/enterprice-investor" element={<EnterpriceInvestor />} />
+                <Route path="/success" element={<Success />} />
           {/*Protected Routes*/}
           <Route element={<PersistLogin />} >
             <Route element={<RequireAuth allowedRoles={["ADMIN","INVESTOR","ENTREPRENEUR"]} />} >

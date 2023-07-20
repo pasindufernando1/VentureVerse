@@ -13,12 +13,12 @@ function Signup2({formData, setFormData,validateFormData}) {
 
     const handleFileUpload = (event) => {
         const { name, files } = event.target;
-        setFormData({ ...formData, [name]: files[0] });
+        setFormData({ ...formData, [name]: files[0]});
     };
 
     const handlePoliceReportUpload = (event) => {
         const { name, files } = event.target;
-        setFormData({ ...formData, [name]: files[0] });
+        setFormData({ ...formData, [name]: files[0]});
     };
 
     return(

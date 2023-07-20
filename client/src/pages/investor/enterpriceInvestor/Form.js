@@ -9,6 +9,7 @@ import axios from '../../../api/axios';
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
+const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
@@ -43,7 +44,7 @@ function Form() {
         let emailFlag = emailRegex.test(formData.email);
         let nicFlag=nicRegex.test(formData.nic);
         let mobileFlag=mobileRegex.test(formData.mobile);
-        let passwordFlag = formData.password.length >= 8;
+        let passwordFlag = passwordRegex.test(formData.password);
         let confirmPasswordFlag = formData.password === formData.confirmPassword;
 
         setValidateFormData({
@@ -61,7 +62,7 @@ function Form() {
             },
             password: {
                 State: passwordFlag || !formData.password ? "Valid" : "Invalid",
-                Message: passwordFlag || !formData.password ? "" : "Password must be at least 8 characters"
+                Message: passwordFlag || !formData.password ? "" : "Password must contain at least 8 characters, one uppercase, one lowercase and one number"
             },
             confirmPassword: {
                 State: confirmPasswordFlag || !formData.confirmPassword ? "Valid" : "Invalid",
@@ -132,12 +133,44 @@ function Form() {
         setPage((currPage) => currPage - 1)
       };
     
-    const handleNextClick = () => {
-    if(page === FormTitles.length - 1){
-        console.log(formData);
-    }else{
-        setPage((currPage) => currPage + 1)
-    }
+    const handleNextClick = async () => {
+        if (page === FormTitles.length - 1) {
+            console.log(requestData);
+              try {
+                const formData = new FormData();
+      
+                //generate a unique names for images using date and a random number
+                const bankStatementFileName = Date.now() + Math.random() + requestData.financialDocument.name;
+                const businessregdocFileName = Date.now() + Math.random() + requestData.businessRegistration.name;
+      
+                //append the images to the formdata
+                formData.append("bankStatement", requestData.financialDocument, bankStatementFileName);
+                formData.append("businessregdoc", requestData.businessRegistration, businessregdocFileName);
+      
+                //send the images to the backend
+                const response = await axios.post('/auth/uploadenterprice', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true});
+                console.log(response.data); 
+      
+                //update the request data with the image names
+                requestData.financialDocument = bankStatementFileName;
+                requestData.businessRegistration = businessregdocFileName;
+      
+                const response2 = await axios.post('auth/register/enterpriseInvestor', JSON.stringify(requestData), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true});
+                console.log(response2.data); 
+                if(response2.data.status === "Success"){
+                  //redirect to success page
+                  window.location.href = "/success";
+                }
+              } catch (error) {
+                console.error(error); // Handle any errors that occur during the request
+              }
+        }else{
+            setPage((currPage) => currPage + 1);
+        }
     };
 
     return(

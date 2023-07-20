@@ -9,6 +9,7 @@ import axios from '../../../api/axios';
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
+const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
@@ -52,7 +53,7 @@ function Form() {
         let emailFlag = emailRegex.test(formData.email);
         let nicFlag=nicRegex.test(formData.nic);
         let mobileFlag=mobileRegex.test(formData.mobile);
-        let passwordFlag = formData.password.length >= 8;
+        let passwordFlag = passwordRegex.test(formData.password);
         let confirmPasswordFlag = formData.password === formData.confirmPassword;
 
         setValidateFormData({
@@ -70,7 +71,7 @@ function Form() {
               },
               password: {
                 State: passwordFlag || !formData.password ? "Valid" : "Invalid",
-                Message: passwordFlag || !formData.password ? "" : "Password must be at least 8 characters"
+                Message: passwordFlag || !formData.password ? "" : "Password must contain at least 8 characters, one uppercase, one lowercase and one number"
               },
               confirmPassword: {
                 State: confirmPasswordFlag || !formData.confirmPassword ? "Valid" : "Invalid",
@@ -127,20 +128,6 @@ function Form() {
 
     const handlePrevClick = () => {
         setPage((currPage) => currPage - 1)
-      };
-    
-    const handleNextClick = async () => {
-        if (page === FormTitles.length - 1) {
-            console.log(requestData);
-            try {
-              const response = await axios.post('/api/auth/register/entrepreneur', requestData);
-              console.log(response.data); // Handle the response from the back-end as needed
-            } catch (error) {
-              console.error(error); // Handle any errors that occur during the request
-            }
-          }else{
-            setPage((currPage) => currPage + 1);
-          }
     };
 
     const requestData ={
@@ -154,11 +141,52 @@ function Form() {
         nic: formData.nic,
         gender: formData.gender,
         contactNumber: formData.mobile,
-        policeReport: "asas",
-        financialDocument: "asdf",
+        policeReport: formData.policeReport,
+        financialDocument: formData.bankStatement,
         password: formData.password,
         confirmPassword: formData.confirmPassword
     }
+    
+    const handleNextClick = async () => {
+        if (page === FormTitles.length - 1) {
+            console.log(requestData);
+            try {
+                const formData = new FormData();
+      
+                //generate a unique names for images using date and a random number
+                const policeReportFileName = Date.now() + Math.random() + requestData.policeReport.name;
+                const bankStatementFileName = Date.now() + Math.random() + requestData.financialDocument.name;
+      
+                //append the images to the formdata
+                formData.append("policeReport", requestData.policeReport, policeReportFileName);
+                formData.append("bankStatement", requestData.financialDocument, bankStatementFileName);
+      
+                //send the images to the backend
+                const response = await axios.post('/auth/uploadindividual', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+                withCredentials: true});
+                console.log(response.data); 
+      
+                //update the request data with the image names
+                requestData.policeReport = policeReportFileName;
+                requestData.financialDocument = bankStatementFileName;
+               
+      
+                const response2 = await axios.post('auth/register/individualInvestor', JSON.stringify(requestData), {
+                headers: { 'Content-Type': 'application/json' },
+                withCredentials: true});
+                console.log(response2.data); 
+                if(response2.data.status === "Success"){
+                  //redirect to success page
+                  window.location.href = "/success";
+                }
+            }catch (error) {
+                console.error(error); // Handle any errors that occur during the request
+            }
+        }else{
+            setPage((currPage) => currPage + 1);
+        }
+    };
 
     return(
         <div>

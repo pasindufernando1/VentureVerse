@@ -50,6 +50,23 @@ public class AuthenticationController {
         return ResponseEntity.ok(authenticationService.registerEntrepreneur(response, registerRequestDTO));
     }
 
+    @PostMapping("/register/individualInvestor")
+    public ResponseEntity<ResponseDTO> registerIndividualInvestor(
+            HttpServletResponse response,
+            @RequestBody RegisterRequestDTO registerRequestDTO
+    ) {
+        return ResponseEntity.ok(authenticationService.registerIndividualInvestor(response, registerRequestDTO));
+    }
+
+    @PostMapping("/register/enterpriseInvestor")
+    public ResponseEntity<ResponseDTO> registerEnterpriseInvestor(
+            HttpServletResponse response,
+            @RequestBody RegisterRequestDTO registerRequestDTO
+    ) {
+        return ResponseEntity.ok(authenticationService.registerEnterpriseInvestor(response, registerRequestDTO));
+    }
+
+
     @PostMapping("/authorize/{status}/{id}")
     public ResponseEntity<ResponseDTO> register(
             HttpServletResponse response,

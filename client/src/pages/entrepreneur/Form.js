@@ -11,6 +11,7 @@ import Footer from '../webcomponent/Footer';
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
+const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 
 function Form() {
@@ -89,7 +90,7 @@ function Form() {
     let mobileFlag=mobileRegex.test(formData.mobile);
     let businessContactFlag=mobileRegex.test(formData.businessContact);
     let businessemailFlag = emailRegex.test(formData.businessemail);
-    let passwordFlag = formData.password.length >= 8;
+    let passwordFlag = passwordRegex.test(formData.password);
     let confirmPasswordFlag = formData.password === formData.confirmPassword;
  
   // Update the validateFormData in a single call
@@ -116,7 +117,7 @@ function Form() {
     },
     password: {
       State: passwordFlag || !formData.password ? "Valid" : "Invalid",
-      Message: passwordFlag || !formData.password ? "" : "Password must be at least 8 characters"
+      Message: passwordFlag || !formData.password ? "" : "Password must contain at least 8 characters, one uppercase, one lowercase and one number"
     },
     confirmPassword: {
       State: confirmPasswordFlag || !formData.confirmPassword ? "Valid" : "Invalid",
@@ -211,8 +212,8 @@ function Form() {
     felony: formData.felony,
     lawSuit: formData.lawsuit,
     felonyDescription: formData.lawsuitDetails,
-    policeReport: "ds",
-    incomeStatement: "lijdi",
+    policeReport:formData.policeReport, 
+    incomeStatement: formData.bankStatement,
     businessName: formData.businessName,
     businessContact: formData.businessContact,
     bfirstLineAddress: formData.bfirstline,
@@ -222,7 +223,7 @@ function Form() {
     businessWebsite: formData.businesswebsite,
     businessEmail: formData.businessemail,
     businessDescription: formData.businessDescription,
-    businessRegDoc: "hjdh",
+    businessRegDoc: formData.businessregdoc ,
     password: formData.password
   }
 
@@ -234,10 +235,37 @@ function Form() {
     if (page === FormTitles.length - 1) {
       console.log(requestData);
         try {
-          const response = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
+          const formData = new FormData();
+
+          //generate a unique names for images using date and a random number
+          const policeReportFileName = Date.now() + Math.random() + requestData.policeReport.name;
+          const bankStatementFileName = Date.now() + Math.random() + requestData.incomeStatement.name;
+          const businessregdocFileName = Date.now() + Math.random() + requestData.businessRegDoc.name;
+
+          //append the images to the formdata
+          formData.append("policeReport", requestData.policeReport, policeReportFileName);
+          formData.append("bankStatement", requestData.incomeStatement, bankStatementFileName);
+          formData.append("businessregdoc", requestData.businessRegDoc, businessregdocFileName);
+
+          //send the images to the backend
+          const response = await axios.post('/auth/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+          withCredentials: true});
+          console.log(response.data); 
+
+          //update the request data with the image names
+          requestData.policeReport = policeReportFileName;
+          requestData.incomeStatement = bankStatementFileName;
+          requestData.businessRegDoc = businessregdocFileName;
+
+          const response2 = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true});
-          console.log(response.data); // Handle the response from the back-end as needed
+          console.log(response2.data); 
+          if(response2.data.status === "Success"){
+            //redirect to success page
+            window.location.href = "/success";
+          }
         } catch (error) {
           console.error(error); // Handle any errors that occur during the request
         }
