@@ -5,7 +5,7 @@ import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/pagination';
 
-import {EffectCoverflow, Navigation, Pagination} from 'swiper/modules';
+import {EffectCoverflow, Navigation,} from 'swiper/modules';
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
@@ -26,13 +26,12 @@ const CustomSwiper = (props) => {
                     modifier: 2,
                     slideShadows: true,
                 }}
-                pagination={{el: '.swiper-pagination', clickable: true}}
                 navigation={{
                     nextEl: '.swiper-button-next',
                     prevEl: '.swiper-button-prev',
                     clickable: true,
                 }}
-                modules={[EffectCoverflow, Pagination, Navigation]}
+                modules={[EffectCoverflow, Navigation]}
                 className="hidden lg:block"
             >
                 {
