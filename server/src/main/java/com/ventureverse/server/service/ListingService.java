@@ -19,9 +19,11 @@ public class ListingService {
     private final IndustrySectorRepository industrySectorRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
     private final ListingImagesRepository listingImagesRepository;
+    private final SubscriptionRepository subscriptionRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
+        var subscription = subscriptionRepository.findById(listingRequestDTO.getSubscriptionType()).orElseThrow();
 
         var list = ListingDTO.builder()
                 .title(listingRequestDTO.getTitle())
@@ -45,7 +47,7 @@ public class ListingService {
                 .expectedAmount(listingRequestDTO.getExpectedAmount())
                 .returnUnitProfitPercentage(listingRequestDTO.getReturnUnitProfitPercentage())
                 .returnEquityPercentage(listingRequestDTO.getReturnEquityPercentage())
-                .subscriptionType(listingRequestDTO.getSubscriptionType())
+                .subscriptionType(subscription)
                 .publishedDate(listingRequestDTO.getPublishedDate())
                 .status(listingRequestDTO.getStatus())
                 .entrepreneurId(entrepreneur)

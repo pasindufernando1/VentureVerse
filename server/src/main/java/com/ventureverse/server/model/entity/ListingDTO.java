@@ -42,7 +42,13 @@ public class ListingDTO {
     private Integer expectedAmount;
     private Integer returnUnitProfitPercentage;
     private Integer returnEquityPercentage;
-    private String subscriptionType;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="subscriptionId", referencedColumnName = "subscriptionId")
+    private SubscriptionDTO subscriptionType;
+
+
     private Timestamp publishedDate;
     private String status;
 

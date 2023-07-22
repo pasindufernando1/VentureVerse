@@ -1,6 +1,4 @@
-import {
-    Card
-  } from "@material-tailwind/react";
+import {Card} from "@material-tailwind/react";
 import React from "react";
 import InputField from "../webcomponent/CustomInput";
 import { useState } from "react";
@@ -9,13 +7,21 @@ import CustomButton from "../webcomponent/CustomButton";
 import NavbarAll from "../webcomponent/NavbarAll";
 import Radio from "../webcomponent/CustomRadio";
 import Textarea from "../webcomponent/CustomTextarea";
+import StripeCheckout from 'react-stripe-checkout';
+
+
 // import axios from "axios";
 import axios from "../../api/axios";
 
+// Payment gateway
+
 function AddListing() {
+
+    
     
     const [currentSection, setCurrentSection] = useState(1);
     const [previouseSection, setPrevSection] = useState(0);
+    console.log(currentSection);
 
     const handleNext = () => {
         setCurrentSection(currentSection + 1);
@@ -79,10 +85,6 @@ function AddListing() {
 
     // Current date as a timestamp
     const publishedDate = new Date();
-    console.log(title);
-
-// Images and video { Section 4}
-    
     const [expectedAmount, setSeek] = useState("");
     const [returnEquityPercentage, setEquity] = useState("");
     const [equitychecked, setEquityChecked] = useState(false);
@@ -91,11 +93,26 @@ function AddListing() {
 
 
     // Pricing handling
-    const [subscriptionType, setSelectedPackage] = useState("");
-
+    const [subscriptionType, setSelectedPackage] = useState(4);
     const handlePackageSelect = (packageId) => {
+        if(subscriptionType === packageId){
+            setSelectedPackage(4);
+            setPrice(0);
+            return;
+        }
         setSelectedPackage(packageId);
+        console.log(subscriptionType);
+        if (packageId === "1") {
+            setPrice(2000);
+        }
+        else if (packageId === "2") {
+            setPrice(5000);
+        }
+        else if (packageId === "3") {
+            setPrice(10000);
+        }
     };
+    const [price, setPrice] = useState(0);
 
     // Handling the image upload
     const [image1, setImage1] = useState({
@@ -115,6 +132,7 @@ function AddListing() {
         preview: null,
       });
 
+    // Function to handle the image upload  
     const handleImageupload = (event) => {
         const { name, files } = event.target;
         const selectedFile = files[0];
@@ -138,6 +156,7 @@ function AddListing() {
             
     }
 
+    // Function to handle the video upload
     const handleVideoUpload = (event) => {
         const { name, files } = event.target;
         const selectedFile = files[0];
@@ -150,9 +169,8 @@ function AddListing() {
         }
     }
 
-    // Sending the listing object to the backend with the post request
-    const onSubmit = async (e) =>{
-        e.preventDefault();
+    // Sending the listing object to the backend with the post request for free-trial version
+    const onSubmitFree = async () =>{
         // ---------------File uploading begin------------ //
         try{
             const generateUniqueFileName = (file) => {
@@ -251,8 +269,41 @@ function AddListing() {
         }
         // ---------------File uploading over------------ //
         
-    }
-    
+    }    
+
+    // Sending the listing object to the backend with the post request for paid version
+   
+
+
+
+    // Payed version of the listing
+    const publishableKey = 'pk_test_51NVoO5Lg7SFuaaswzqNwoC7EQgXDKL7sSzvUDtUJmrFbOtiUPlgEzEHaEY8vZoYUUvL1O22LnW9jdFQ1K9OmSiOy00MWdEV8aT'; // Your Stripe publishable key
+
+    const handleToken = (token) => {
+        console.log(token);
+        // Send the payment token and amount to your server
+        sendPaymentToServer(token.id, price*100);
+    };
+
+    const sendPaymentToServer = async (token, amount) => {
+        try {
+            // Make a POST request to your Spring Boot server
+            const response = await axios.post('auth/pay', {
+                token,
+                amount,
+            });
+
+            // Handle the response from the server (optional)
+            console.log(response.data);
+            onSubmitFree();
+
+
+        } catch (error) {
+        console.error(error);
+        // Handle the error (e.g., show error message, etc.)
+        }
+    };
+
     return (
         <div>
             <NavbarAll />
@@ -446,7 +497,6 @@ function AddListing() {
                                                     checked={outsideSources === 'yes'}
                                                     onChange={handleOutsideSourceChange}
                                                     required={true}
-
                                                 />
                                                 
                                                 <Radio 
@@ -929,9 +979,9 @@ function AddListing() {
                                         {/* Pricing 1 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                                subscriptionType === "basic" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "1" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
-                                            onClick={() => handlePackageSelect("basic")}
+                                            onClick={() => handlePackageSelect("1")}
                                         >
                                             <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
                                             <h3 className="mb-4 text-2xl font-semibold">Basic</h3>
@@ -1030,9 +1080,9 @@ function AddListing() {
                                         {/* Pricing 2 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                                subscriptionType === "standard" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "2" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
-                                            onClick={() => handlePackageSelect("standard")}
+                                            onClick={() => handlePackageSelect("2")}
                                         >
                                             <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-main-gray bg-opacity-90 rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
                                             <h3 className="mb-4 text-2xl text-white font-semibold">Standard</h3>
@@ -1131,9 +1181,9 @@ function AddListing() {
                                         {/* Pricing 3 */}
                                         <div
                                             className={`grid-cols-3 ${
-                                                subscriptionType === "premium" ? "border-[5px] border-main-purple shadow-lg" : ""
+                                                subscriptionType === "3" ? "border-[5px] border-main-purple shadow-lg" : ""
                                             }`}
-                                            onClick={() => handlePackageSelect("premium")}
+                                            onClick={() => handlePackageSelect("3")}
                                         >
                                             <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
                                             <h3 className="mb-4 text-2xl font-semibold">Premium</h3>
@@ -1235,16 +1285,31 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="clear" label="Subscribe now"/>
+                                            <StripeCheckout
+                                                amount={price*100}
+                                                label={'Pay Now'}
+                                                name='VentureVerse'
+                                                description={'Your Total Price is Rs.'+(price)}
+                                                panelLabel='Pay Now'
+                                                token={handleToken}
+                                                stripeKey={publishableKey}
+                                                currency='LKR'
+                                                image="https://imgur.com/sACn7cR.png"
+                                                fontfamily='Montserrat'
+                                                type="button"   
+                                            > 
+                                                <CustomButton variant="clear" label="Proceed with the payment" onClick={(e)=>{e.preventDefault()}} />
+                                            </StripeCheckout>
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Submit without subscribing" icon="next" onClick={onSubmit} />
+                                            <CustomButton variant="primary" label="Submit without subscribing" icon="next" onClick={onSubmitFree}  type="button"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             </>
-                        )}    
+                        )}
+     
                 </form>
             </main>
             {/* <Footer /> */}

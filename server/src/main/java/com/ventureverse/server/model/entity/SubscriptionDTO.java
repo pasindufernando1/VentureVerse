@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
@@ -12,6 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @Entity
 @Table(name = "subscription")
+@PrimaryKeyJoinColumn(name = "subscriptionId")
 public class SubscriptionDTO {
     @Id
     @GeneratedValue
@@ -19,4 +21,7 @@ public class SubscriptionDTO {
     private String subscriptionName;
     private String price;
     private Integer days;
+
+    @OneToMany(mappedBy = "subscriptionType")
+    List<ListingDTO> listing;
 }

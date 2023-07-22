@@ -37,7 +37,7 @@ public class ListingRequestDTO {
     private Integer expectedAmount;
     private Integer returnUnitProfitPercentage;
     private Integer returnEquityPercentage;
-    private String subscriptionType;
+    private Integer subscriptionType;
     private Timestamp publishedDate;
     private String status;
     private Integer entrepreneurId;
