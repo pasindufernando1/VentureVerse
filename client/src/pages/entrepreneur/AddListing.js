@@ -1,5 +1,5 @@
 import {Card} from "@material-tailwind/react";
-import React from "react";
+import React, { useEffect } from "react";
 import InputField from "../webcomponent/CustomInput";
 import { useState } from "react";
 import Checkbox from "../webcomponent/CustomCheckbox";
@@ -8,20 +8,18 @@ import NavbarAll from "../webcomponent/NavbarAll";
 import Radio from "../webcomponent/CustomRadio";
 import Textarea from "../webcomponent/CustomTextarea";
 import StripeCheckout from 'react-stripe-checkout';
-
-
-// import axios from "axios";
 import axios from "../../api/axios";
 
-// Payment gateway
+// Regular expressions to validate the inputs
+// Integers only regex
+const integerRegex = /^[0-9]*$/;
+
 
 function AddListing() {
 
-    
-    
+    // Section Handling
     const [currentSection, setCurrentSection] = useState(1);
     const [previouseSection, setPrevSection] = useState(0);
-    console.log(currentSection);
 
     const handleNext = () => {
         setCurrentSection(currentSection + 1);
@@ -74,6 +72,16 @@ function AddListing() {
 
     // List to hold the selected categories
     const sectorId = [];
+    // Rest of the data
+    var x=1;
+    // For each category that is selected, add the category id to the list
+    for (const [key,value] of Object.entries(categories)) {
+        if (value === true) {
+            // Push the index of the category to the list
+            sectorId.push(x)
+        }
+        x++;
+    }
 
     // List to hold the image names
     const images = [];
@@ -119,18 +127,18 @@ function AddListing() {
         file: null,
         preview: null,
       });
-      const [image2, setImage2] = useState({
+    const [image2, setImage2] = useState({
         file: null,
         preview: null,
-      });
-      const [image3, setImage3] = useState({
+    });
+    const [image3, setImage3] = useState({
         file: null,
         preview: null,
-      });
-      const [video, setVideo] = useState({
+    });
+    const [video, setVideo] = useState({
         file: null,
         preview: null,
-      });
+    });
 
     // Function to handle the image upload  
     const handleImageupload = (event) => {
@@ -218,16 +226,6 @@ function AddListing() {
               console.log(res);
               
 
-            // Rest of the data
-            var x=1;
-            // For each category that is selected, add the category id to the list
-            for (const [key,value] of Object.entries(categories)) {
-                if (value === true) {
-                    // Push the index of the category to the list
-                    sectorId.push(x)
-                }
-                x++;
-            }
             
 
             //The listing object to be sent to the backend
@@ -264,6 +262,7 @@ function AddListing() {
             await axios.post("auth/addListing",JSON.stringify(listing),{
                 headers: {'Content-Type': 'application/json'},
                 withCredentials: true});
+            console.log("Listing added successfully");
         }catch(error){
             console.error("Error uploading the files : ",error);
         }
@@ -271,17 +270,10 @@ function AddListing() {
         
     }    
 
-    // Sending the listing object to the backend with the post request for paid version
-   
-
-
-
     // Payed version of the listing
-    const publishableKey = 'pk_test_51NVoO5Lg7SFuaaswzqNwoC7EQgXDKL7sSzvUDtUJmrFbOtiUPlgEzEHaEY8vZoYUUvL1O22LnW9jdFQ1K9OmSiOy00MWdEV8aT'; // Your Stripe publishable key
-
+    const publishableKey = 'pk_test_51NVoO5Lg7SFuaaswzqNwoC7EQgXDKL7sSzvUDtUJmrFbOtiUPlgEzEHaEY8vZoYUUvL1O22LnW9jdFQ1K9OmSiOy00MWdEV8aT';
     const handleToken = (token) => {
-        console.log(token);
-        // Send the payment token and amount to your server
+        // Send the payment token and amount to server
         sendPaymentToServer(token.id, price*100);
     };
 
@@ -299,10 +291,246 @@ function AddListing() {
 
 
         } catch (error) {
-        console.error(error);
+            console.error(error);
         // Handle the error (e.g., show error message, etc.)
         }
     };
+
+    // Validations section
+    const [validateFormData, setValidateFormData] = useState({
+        intention:{"State":"","Message":""},
+        businessStartDate:{"State":"","Message":""},
+        businessDuration:{"State":"","Message":""},
+        lifetimeSales:{"State":"","Message":""},
+        lastYearGrossIncome:{"State":"","Message":""},
+        lastYearNetIncome:{"State":"","Message":""},
+        salesProjectionThisYear:{"State":"","Message":""},
+        salesProjectionNextYear:{"State":"","Message":""},
+        projectionMethod:{"State":"","Message":""},
+        outsideSources:{"State":"","Message":""},
+        title:{"State":"","Message":""},
+        description:{"State":"","Message":""},
+        outsideSourceDescription:{"State":"","Message":""},
+        attemptsToGrow:{"State":"","Message":""},
+        uniqueSellingProposition:{"State":"","Message":""},
+        awards:{"State":"","Message":""},
+        sectorId:{"State":"","Message":""},
+        stage:{"State":"","Message":""},
+        images:{"State":"","Message":""},
+        video:{"State":"","Message":""},
+        expectedAmount:{"State":"","Message":""},
+        returnUnitProfitPercentage:{"State":"","Message":""},
+        returnEquityPercentage:{"State":"","Message":""},
+        subscriptionType:{"State":"","Message":""},
+    });
+
+    // Disabling the next button if the fields are not filled
+    const [disableNext1, setDisableNext1] = useState(true);
+    const [disableNext2, setDisableNext2] = useState(true);
+    const [disableNext3, setDisableNext3] = useState(true);
+    const [disableNext4, setDisableNext4] = useState(true);
+    const [disableNext5, setDisableNext5] = useState(true);
+
+    useEffect(() => {
+        let businessDurationFlag = integerRegex.test(businessDuration);
+        let lifetimeSalesFlag = integerRegex.test(lifetimeSales);
+        let lastYearGrossIncomeFlag = integerRegex.test(lastYearGrossIncome);
+        let lastYearNetIncomeFlag = integerRegex.test(lastYearNetIncome);
+        let salesProjectionThisYearFlag = integerRegex.test(salesProjectionThisYear);
+        let salesProjectionNextYearFlag = integerRegex.test(salesProjectionNextYear);
+        let expectedAmountFlag = integerRegex.test(expectedAmount);
+        let returnUnitProfitPercentageFlag = integerRegex.test(returnUnitProfitPercentage);
+        let returnEquityPercentageFlag = integerRegex.test(returnEquityPercentage);
+
+        setValidateFormData((prevData) => ({
+            ...prevData,
+            intention: {
+                State: intention ? "Valid" : "Invalid",
+                Message: intention ? "" : "Intention",
+            },
+            businessStartDate: {
+                State: businessStartDate ? "Valid" : "Invalid",
+                Message: businessStartDate ? "" : "Business start date",
+            },
+            businessDuration: {
+                State: businessDurationFlag && businessDuration ? "Valid" : "Invalid",
+                Message: businessDurationFlag && businessDuration ? "" : "No. of years",
+            },
+            lifetimeSales: {
+                State: lifetimeSalesFlag && lifetimeSales ? "Valid" : "Invalid",
+                Message: lifetimeSalesFlag && lifetimeSales ? "" : "Lifetime sales(Rs.)",
+            },
+            lastYearGrossIncome: {
+                State: lastYearGrossIncomeFlag && lastYearGrossIncome ? "Valid" : "Invalid",
+                Message: lastYearGrossIncomeFlag && lastYearGrossIncome ? "" : "Last year gross income(Rs.)",
+            },
+            lastYearNetIncome: {
+                State: lastYearNetIncomeFlag && lastYearNetIncome ? "Valid" : "Invalid",
+                Message: lastYearNetIncomeFlag && lastYearNetIncome ? "" : "Last year net income(Rs.)",
+            },
+            salesProjectionThisYear: {
+                State: salesProjectionThisYearFlag && salesProjectionThisYear ? "Valid" : "Invalid",
+                Message: salesProjectionThisYearFlag && salesProjectionThisYear ? "" : "Sales projection for this year(Rs.)",
+            },
+            salesProjectionNextYear: {
+                State: salesProjectionNextYearFlag && salesProjectionNextYear ? "Valid" : "Invalid",
+                Message: salesProjectionNextYearFlag && salesProjectionNextYear ? "" : "Sales projection for next year(Rs.)",
+            },
+            projectionMethod: {
+                State: projectionMethod ? "Valid" : "Invalid",
+                Message: projectionMethod ? "" : "Projection method",
+            },
+            outsideSources: {
+                State: outsideSources ? "Valid" : "Invalid",
+                Message: outsideSources ? "" : "Outside sources",
+            },
+            title: {
+                State: title ? "Valid" : "Invalid",
+                Message: title ? "" : "Please enter the title",
+            },
+            description: {
+                State: description ? "Valid" : "Invalid",
+                Message: description ? "" : "Please enter the description",
+            },
+            outsideSourceDescription: {
+                State: outsideSourceDescription ? "Valid" : "Invalid",
+                Message: outsideSourceDescription ? "" : "Outside source description",
+            },
+            attemptsToGrow: {
+                State: attemptsToGrow ? "Valid" : "Invalid",
+                Message: attemptsToGrow ? "" : "Attempts to grow",
+            },
+            uniqueSellingProposition: {
+                State: uniqueSellingProposition ? "Valid" : "Invalid",
+                Message: uniqueSellingProposition ? "" : "Unique selling proposition",
+            },
+            awards: {
+                State: awards ? "Valid" : "Invalid",
+                Message: awards ? "" : "Awards",
+            },
+            sectorId: {
+                State: sectorId.length > 0 ? "Valid" : "Invalid",
+                Message: sectorId.length > 0 ? "" : "Please select at least one category",
+            },
+            stage: {
+                State: stage ? "Valid" : "Invalid",
+                Message: stage ? "" : "Please select the stage",
+            },
+            images: {
+                State: image1.file ? "Valid" : "Invalid",
+                Message: image1.file ? "" : "Please upload at least one image",
+            },
+            video: {
+                State: video.file ? "Valid" : "Invalid",
+                Message: video.file ? "" : "Please upload a video",
+            },
+            expectedAmount: {
+                State: expectedAmountFlag && expectedAmount ? "Valid" : "Invalid",
+                Message: expectedAmountFlag && expectedAmount ? "" : "Expected amount(Rs.)",
+            },
+            returnUnitProfitPercentage: {
+                State: returnUnitProfitPercentageFlag && returnUnitProfitPercentage ? "Valid" : "Invalid",
+                Message: returnUnitProfitPercentageFlag && returnUnitProfitPercentage ? "" : "Return unit profit percentage(Out of 100)",
+            },
+            returnEquityPercentage: {
+                State: returnEquityPercentageFlag && returnEquityPercentage ? "Valid" : "Invalid",
+                Message: returnEquityPercentageFlag && returnEquityPercentage ? "" : "Return equity percentage(Out of 100)",
+            },
+            subscriptionType: {
+                State: subscriptionType ? "Valid" : "Invalid",
+                Message: subscriptionType ? "" : "Please enter the subscription type",
+            }
+        }));
+      }, [intention,businessStartDate,businessDuration,lifetimeSales,lastYearGrossIncome,lastYearNetIncome,salesProjectionThisYear,salesProjectionNextYear,projectionMethod,outsideSources,title,description,outsideSourceDescription,attemptsToGrow,uniqueSellingProposition,awards,stage,expectedAmount,returnUnitProfitPercentage,returnEquityPercentage,subscriptionType,sectorId.length,image1.file,video.file]);
+
+    const [requiredFields] = useState({
+        0:["intention","businessStartDate","businessDuration","lifetimeSales","lastYearGrossIncome","lastYearNetIncome","salesProjectionThisYear","salesProjectionNextYear","projectionMethod"],
+        1:["outsideSources","title","description","outsideSourceDescription","attemptsToGrow","uniqueSellingProposition","awards"],
+        2:["sectorId","stage"],
+        3:["images","video"],
+        4:["expectedAmount"]
+    })
+
+    useEffect(() => {
+        var flag1 = true;
+        var flag2 = true;
+        var flag3 = true;
+        var flag4 = true;
+        var flag5 = true;
+        requiredFields[0].forEach((field) => {
+            if (validateFormData[field].State === "Invalid") {
+                flag1 = false;
+            }
+        });
+        setDisableNext1(!flag1);
+        requiredFields[1].forEach((field) => {
+            if (validateFormData[field].State === "Invalid") {
+                flag2 = false;
+            }
+        }
+        );
+        setDisableNext2(!flag2);
+        requiredFields[2].forEach((field) => {
+            if (validateFormData[field].State === "Invalid") {
+                flag3 = false;
+            }
+        }
+        );
+        setDisableNext3(!flag3);
+        requiredFields[3].forEach((field) => {
+            if (validateFormData[field].State === "Invalid") {
+                flag4 = false;
+            }
+        }
+        );
+        setDisableNext4(!flag4);
+        if (validateFormData["expectedAmount"].State === "Invalid") {
+            flag5 = false;
+        }
+        // Disable next if expected amount is not valid or if either of the investment return fields are not valid
+        setDisableNext5(!flag5 || (!equitychecked && !profitunitchecked));
+    }, [validateFormData,requiredFields,equitychecked,profitunitchecked]);
+
+    // Handling the return on investment section
+    // If the user types on the equity percentage field check the equity checkbox and if the input is empty uncheck the checkbox
+    const handleEquityPercentageChange = (event) => {
+        if (event.target.value) {
+            setEquityChecked(true);
+        } else {
+            setEquityChecked(false);
+        }
+        setEquity(event.target.value);
+    }
+
+    // If the user types on the profit unit percentage field check the profit unit checkbox and if the input is empty uncheck the checkbox
+    const handleProfitUnitPercentageChange = (event) => {
+        if (event.target.value) {
+            setProfitUnitChecked(true);
+        } else {
+            setProfitUnitChecked(false);
+        }
+        setProfitUnit(event.target.value);
+    }
+
+    // If a package is selected disable the free trial button
+    const [disableFreeTrial, setDisableFreeTrial] = useState(false);
+    useEffect(() => {
+        if (subscriptionType !== 4) {
+            setDisableFreeTrial(true);
+        } else {
+            setDisableFreeTrial(false);
+        }
+    }, [subscriptionType]);
+
+    //If a package is not selected disable the pay button
+    const [disablePay, setDisablePay] = useState(true);
+    useEffect(() => {
+        if (subscriptionType === 4) {
+            setDisablePay(true);
+        } else {
+            setDisablePay(false);
+        }
+    }, [subscriptionType]);
 
     return (
         <div>
@@ -328,6 +556,7 @@ function AddListing() {
                                             onChange={(e) => setIntention(e.target.value)} 
                                             className="w-full"
                                             required={true}
+                                            state={validateFormData.intention}
                                         />
                                         </div>
                                     </div>
@@ -342,6 +571,7 @@ function AddListing() {
                                             value={businessStartDate}
                                             onChange={(e) => setStartDate(e.target.value)}
                                             required={true}
+                                            state={validateFormData.businessStartDate}
                                         />
                                         </div>
                                         <div className="flex-grow">
@@ -353,6 +583,7 @@ function AddListing() {
                                             id="years" 
                                             value={businessDuration}
                                             onChange={(e) => setHowLong(e.target.value)}
+                                            state={validateFormData.businessDuration}
                                             required={true}
                                         />
                                         </div>
@@ -367,6 +598,7 @@ function AddListing() {
                                             value={lifetimeSales}
                                             onChange={(e) => setLifeTimeSales(e.target.value)}
                                             required={true}
+                                            state={validateFormData.lifetimeSales}
                                         />
                                         </div>
                                         <div>
@@ -379,6 +611,7 @@ function AddListing() {
                                             value={lastYearGrossIncome}
                                             onChange={(e) => setGrossIncome(e.target.value)}
                                             required={true}
+                                            state={validateFormData.lastYearGrossIncome}
                                         />
                                         </div>
                                     </div>
@@ -392,6 +625,7 @@ function AddListing() {
                                             value={lastYearNetIncome}
                                             onChange={(e) => setNetIncome(e.target.value)}
                                             required={true}
+                                            state={validateFormData.lastYearNetIncome}
                                         />
                                         </div>
                                         <div>
@@ -404,6 +638,7 @@ function AddListing() {
                                             value={salesProjectionThisYear}
                                             onChange={(e) => setThisSales(e.target.value)}
                                             required={true}
+                                            state={validateFormData.salesProjectionThisYear}
                                         />
                                         </div>
                                     </div>
@@ -418,6 +653,7 @@ function AddListing() {
                                             value={salesProjectionNextYear}
                                             onChange={(e) => setNextSales(e.target.value)}
                                             required={true}
+                                            state={validateFormData.salesProjectionNextYear}
                                         />
                                         </div>
                                     </div>
@@ -434,11 +670,12 @@ function AddListing() {
                                             value={projectionMethod}
                                             onChange={(e) => setProjectionLogic(e.target.value)}
                                             required={true}
+                                            state={validateFormData.projectionMethod}
                                         />
                                         </div>
                                     </div>
                                     <div className="row flex justify-end">
-                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
+                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext1}/>
                                     </div>
                                 </div>
                             </div>
@@ -463,6 +700,8 @@ function AddListing() {
                                             onChange={(e) => setTitle(e.target.value)} 
                                             className="w-full"
                                             required={true}
+                                            state={validateFormData.title}
+
                                         />
                                         </div>
                                     </div>
@@ -470,6 +709,7 @@ function AddListing() {
                                         <div className="w-full">
                                         <label htmlFor="title" className="text-main-gray block mb-2 text-[14px] ">
                                         Give a brief description about your listing
+                                        <span style={{ color: 'red'}}>*</span>
                                         </label>
                                         <Textarea 
                                             type="text" 
@@ -478,6 +718,7 @@ function AddListing() {
                                             onChange={(e) => setDescription(e.target.value)} 
                                             className="w-full"
                                             required={true}
+                                            state={validateFormData.description}
                                         />
                                         </div>
                                     </div>
@@ -486,6 +727,7 @@ function AddListing() {
                                         <div>
                                             <label htmlFor="outside-sources" className="text-main-gray block mb-2 text-[14px]">
                                             Have you ever tried to raise money from outside sources?
+                                            <span style={{ color: 'red'}}>*</span>
                                             </label>
                                                 <Radio 
                                                     color="purple"
@@ -497,6 +739,7 @@ function AddListing() {
                                                     checked={outsideSources === 'yes'}
                                                     onChange={handleOutsideSourceChange}
                                                     required={true}
+                                                    state={validateFormData.outsideSources}
                                                 />
                                                 
                                                 <Radio 
@@ -509,6 +752,7 @@ function AddListing() {
                                                     checked={outsideSources === 'no'}
                                                     onChange={handleOutsideSourceChange}
                                                     required={true}
+                                                    state={validateFormData.outsideSources}
                                                 />
                                         </div>
                                     </div>
@@ -524,6 +768,7 @@ function AddListing() {
                                             value={outsideSourceDescription}
                                             onChange={(e) => setOutsideDetails(e.target.value)}
                                             required={true}
+                                            state={validateFormData.outsideSourceDescription}
                                             />
                                         </div>
                                     </div>
@@ -539,6 +784,7 @@ function AddListing() {
                                             value={attemptsToGrow}
                                             onChange={(e) => setAttempts(e.target.value)}
                                             required={true}
+                                            state={validateFormData.attemptsToGrow}
                                         />
                                         </div>
                                     </div>
@@ -553,14 +799,15 @@ function AddListing() {
                                             className="w-full"
                                             value={uniqueSellingProposition}
                                             onChange={(e) => setProposition(e.target.value)} 
-                                            required={true}   
+                                            required={true} 
+                                            state={validateFormData.uniqueSellingProposition}  
                                         />
                                         </div>
                                     </div>
                                     <div className="row">
                                         <div className="w-full">
                                         <label htmlFor="awards" className="text-main-gray block mb-2 text-[14px]">
-                                        List any awards or accolades you've received?
+                                        List any awards or accolades you've received? State as none if not applicable
                                         </label>
                                         <InputField 
                                             type="text" 
@@ -569,6 +816,7 @@ function AddListing() {
                                             value={awards}
                                             onChange={(e) => setAwards(e.target.value)}
                                             required={true}
+                                            state={validateFormData.awards}
                                         />
                                         </div>
                                     </div>
@@ -577,7 +825,7 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
+                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext2}/>
                                         </div>
                                     </div>
                                 </div>
@@ -595,7 +843,8 @@ function AddListing() {
                                         {/* Label */}
                                         <div className="w-full">
                                             <label htmlFor="category" className="text-main-gray block mb-2 text-[14px]">
-                                                What category describes your business or product? (check all that apply): *
+                                                What category describes your business or product? (check all that apply): 
+                                                <span style={{ color: 'red'}}>*</span>
                                             </label>
                                             <div className="flex flex-cols gap-2">
                                                 <div className="row parent w-full">
@@ -606,7 +855,7 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, food: event.target.checked})
                                                         }
-                                                        required={true}
+        
                                                 />
                                                 <Checkbox 
                                                         label="Technology"
@@ -747,13 +996,14 @@ function AddListing() {
                                     <div className="row">
                                         <div className="w-full">
                                         <label htmlFor="stage" className="text-main-gray block mb-2 text-[14px]">
-                                        What stage describes your business or product? (check all that apply): *
+                                        What stage describes your business or product? (check all that apply):
+                                        <span style={{ color: 'red' }}>*</span>
                                         </label>
                                         <div className="flex flex-rows">
                                             <div className="row">
-                                            <Radio label={<span style={{ fontSize: '12px' }}>Shopping Live</span>} name="stage" value="live" checked={stage === 'live'} onChange={handleStageChange}/>
-                                            <Radio label={<span style={{ fontSize: '12px' }}>Revenue</span>} name="stage" value="revenue" checked={stage === 'revenue'} onChange={handleStageChange}/>
-                                            <Radio label={<span style={{ fontSize: '12px' }}>Expansion</span>} name="stage" value="expansion" checked={stage === 'expansion'} onChange={handleStageChange}/>
+                                            <Radio label={<span style={{ fontSize: '12px' }}>Shopping Live</span>} name="stage" value="live" checked={stage === 'live'} onChange={handleStageChange} required={true} state={validateFormData.stage}/>
+                                            <Radio label={<span style={{ fontSize: '12px' }}>Revenue</span>} name="stage" value="revenue" checked={stage === 'revenue'} onChange={handleStageChange} required={true} state={validateFormData.stage}/>
+                                            <Radio label={<span style={{ fontSize: '12px' }}>Expansion</span>} name="stage" value="expansion" checked={stage === 'expansion'} onChange={handleStageChange} required={true} state={validateFormData.stage}/>
                                             </div>
                                         </div>
                                         </div>
@@ -764,7 +1014,7 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
+                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext3}/>
                                         </div>
                                     </div>
                                 </div>
@@ -781,7 +1031,8 @@ function AddListing() {
                                     <div className="row">
                                         <div className="w-full">
                                         <label htmlFor="image1" className="text-main-gray block mb-2 text-[14px]">
-                                            Please upload a photo of your business or product if applicable:
+                                            Please upload a photo of your business or product (At least one image is required):
+                                            <span style={{ color: 'red'}}>*</span>
                                         </label>
                                         {/* Three divs to hold the three images uploaded */}
                                         <div className="flex flex-cols gap-2">
@@ -831,7 +1082,8 @@ function AddListing() {
                                     <div className="row">
                                         <div className="w-full">
                                         <label htmlFor="video" className="text-main-gray block mb-2 text-[14px]">
-                                            Please upload a pitch video of your business:
+                                            Please upload a pitch video of your business less than 50MB (Make it well organized and professional):
+                                            <span style={{ color: 'red'}}>*</span>
                                         </label>
                                         <div className="flex flex-cols gap-2">
                                             <div className="row">
@@ -871,7 +1123,7 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                             </div>
                                             <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
+                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext4}/>
                                             </div>
                                         </div>
                                     </div>
@@ -902,6 +1154,7 @@ function AddListing() {
                                         <Card className="w-500 shadow-lg p-6 border-2 border-main-purple">
                                             <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px]">
                                                 I am seeking (Rs) :
+                                                <span style={{ color: 'red'}}>*</span>
                                             </label>
                                             <InputField 
                                                 type="text" 
@@ -909,21 +1162,26 @@ function AddListing() {
                                                 className="w-full"
                                                 value={expectedAmount}
                                                 onChange={(e) => setSeek(e.target.value)}
+                                                required={true}
+                                                state={validateFormData.expectedAmount}
                                                 />
                                             <label htmlFor="seek" className="text-main-gray block mb-2 mt-5 text-[14px]">
-                                                And willing to give up :
+                                                And willing to give up (Should select at least one option) :
+                                                <span style={{ color: 'red'}}>*</span>
                                             </label>
                                             <div className="flex items-center mb-3">
                                                 <InputField 
                                                     type="text" 
-                                                    id="seek" 
+                                                    id="equityinput" 
                                                     className="w-full mr-2"
                                                     value={returnEquityPercentage}
-                                                    onChange={(e) => setEquity(e.target.value)}
+                                                    onChange={handleEquityPercentageChange}
+                                                    state={validateFormData.returnEquityPercentage}
                                                     />
                                                 <Checkbox 
                                                     label="On Equity" 
-                                                    name="equity" 
+                                                    name="equitybox" 
+                                                    id="equity"
                                                     checked={equitychecked}
                                                     onChange={(event) => setEquityChecked(event.target.checked)}
                                                 />
@@ -931,16 +1189,19 @@ function AddListing() {
                                             <div className="flex items-center">
                                                 <InputField 
                                                     type="text" 
-                                                    id="seek" 
+                                                    id="profitinput" 
                                                     className="w-full mr-2"
                                                     value={returnUnitProfitPercentage}
-                                                    onChange={(e) => setProfitUnit(e.target.value)}    
+                                                    onChange={handleProfitUnitPercentageChange}  
+                                                    state={validateFormData.returnUnitProfitPercentage}  
                                                 />
                                                 <Checkbox 
                                                     label="Profit per unit" 
                                                     name="profitunit"
+                                                    id="profitunitpercentage"
                                                     checked={profitunitchecked}
                                                     onChange={(event) => setProfitUnitChecked(event.target.checked)}
+                                                    
                                                 />
                                             </div>
                                         </Card>
@@ -952,7 +1213,7 @@ function AddListing() {
                                             <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} />
+                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext5}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1298,11 +1559,11 @@ function AddListing() {
                                                 fontfamily='Montserrat'
                                                 type="button"   
                                             > 
-                                                <CustomButton variant="clear" label="Proceed with the payment" onClick={(e)=>{e.preventDefault()}} />
+                                                <CustomButton variant="clear" label="Proceed with the payment" onClick={(e)=>{e.preventDefault()}} disabled={disablePay}/>
                                             </StripeCheckout>
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Submit without subscribing" icon="next" onClick={onSubmitFree}  type="button"/>
+                                            <CustomButton variant="primary" label="Proceed with the free trial" icon="next" onClick={onSubmitFree}  type="button" disabled={disableFreeTrial}/>
                                         </div>
                                     </div>
                                 </div>
