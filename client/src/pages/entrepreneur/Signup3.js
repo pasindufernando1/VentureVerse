@@ -117,7 +117,8 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row2">
                 <div>
                     <label htmlFor="businessDescription" className="text-main-black block mb-2 text-[14px]">
-                    Please provide a brief non-confidential description of your business or product:
+                    Please provide a brief non-confidential description of your business or product
+                    <span style={{ color: 'red' }}>*</span>
                     </label>
                     <Textarea 
                         label="Business Description:"
@@ -135,7 +136,8 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
-                    Please upload a copy of your Business Registration Document:
+                    Please upload a copy of your Business Registration Document
+                    <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"

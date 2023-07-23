@@ -104,7 +104,8 @@ function Signup1({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
-                    Please upload the Business Registration Document:
+                    Please upload the Business Registration Document
+                    <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
@@ -127,7 +128,8 @@ function Signup1({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                     <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
-                        Please upload the Bank Statement:
+                        Please upload the Bank Statement
+                        <span style={{ color: 'red' }}>*</span>
                     </label>
                     <input
                         type="file"

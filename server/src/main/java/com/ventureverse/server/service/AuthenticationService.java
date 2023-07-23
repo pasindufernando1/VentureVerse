@@ -6,14 +6,8 @@ import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
 import com.ventureverse.server.model.entity.*;
-import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
-import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
-import com.ventureverse.server.model.normal.RegisterRequestDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
-import com.ventureverse.server.repository.AdminRepository;
-import com.ventureverse.server.repository.EntrepreneurRepository;
-import com.ventureverse.server.repository.TokenRepository;
-import com.ventureverse.server.repository.UserRepository;
+import com.ventureverse.server.model.normal.*;
+import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -33,14 +27,18 @@ public class AuthenticationService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private Integer refreshExpiration;
     private final UserRepository userRepository;
+    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
+    private final IndividualInvestorRepository individualInvestorRepository;
     private final AdminRepository adminRepository;
     private final EntrepreneurRepository entrepreneurRepository;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-//    private final EmailService emailService;
+    private final InvestorInterestedSectorRepository sectorRepository;
+    public InvestorInterestedSectorDTO sectorDTO;
 
+//    private final EmailService emailService;
     public ResponseDTO checkEmail(String email) {
         var user = userRepository.findByEmail(email);
         if (user.isPresent()) {
@@ -163,6 +161,15 @@ public class AuthenticationService {
                 .build(); // Creates IndividualInvestorDTO
 
         userRepository.save(user); // Save the Record
+
+        var investor=individualInvestorRepository.getLastInsertedId();
+        var listingSectors=registerRequestDTO.getSectorId();
+
+        for (Integer sectorId:listingSectors){
+            individualInvestorRepository.saveInvestorSector(investor,sectorId);
+        }
+
+
         return GlobalService.response("Success", "Registration request sent");
     }
 
@@ -189,6 +196,16 @@ public class AuthenticationService {
                 .build();
 
         userRepository.save(user);
+
+        //get the last inserted id
+        var investor= enterpriseInvestorRepository.getLastInsertedId();
+        //get the sector id list
+        var listingSectors=registerRequestDTO.getSectorId();
+
+        for (Integer sectorId:listingSectors){
+            enterpriseInvestorRepository.saveInvestorSector(investor,sectorId);
+        }
+
         return GlobalService.response("Success", "Registration request sent");
 
     }

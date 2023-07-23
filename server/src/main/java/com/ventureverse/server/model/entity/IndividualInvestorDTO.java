@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "individual-investor")
+@Table(name = "individual_investor")
 @PrimaryKeyJoinColumn(name = "individualinvestorId")
 public class IndividualInvestorDTO extends InvestorDTO{
 

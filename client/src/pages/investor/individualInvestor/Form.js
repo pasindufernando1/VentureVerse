@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
+import Signup3 from './Signup3';
 import Button from '../../webcomponent/Button';
 import Navbar from '../../webcomponent/NavbarHome';
 import Footer from '../../webcomponent/Footer';
@@ -9,7 +10,7 @@ import axios from '../../../api/axios';
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
@@ -28,7 +29,38 @@ function Form() {
         bankStatement: '',
         password: '',
         confirmPassword: ''
-    });    
+    });  
+    
+    const [categories, setCategories] = useState({
+        food: false,
+        technology: false,
+        app: false,
+        fitness: false,
+        healthcare: false,
+        sports: false,
+        beauty: false,
+        clothing: false,
+        toys: false,
+        entertainment: false,
+        pets: false,
+        music: false,
+        holiday: false,
+        children: false,
+        housewares: false, 
+    });
+
+    const sectorId=[];
+
+    var x=1;
+    // For each category that is selected, add the category id to the list
+    for (const [key,value] of Object.entries(categories)) {
+        if (value === true) {
+            // Push the index of the category to the list
+            sectorId.push(x)
+            console.log(x);
+        }
+        x++;
+    }
 
     const[validateFormData, setValidateFormData] = useState({
         firstname: { "State":"", "Message":"" },
@@ -102,7 +134,8 @@ function Form() {
     const [requiredFields] = useState({
         // Add the required fields here, corresponding to each page
         0: ['firstname', 'lastname','firstline','town','district','email', 'nic', 'gender', 'mobile'],
-        1: ['policeReport', 'bankStatement','password', 'confirmPassword', 'terms']
+        1:[],
+        2: ['policeReport', 'bankStatement','password', 'confirmPassword', 'terms']
     });
 
     useEffect(() => {
@@ -111,18 +144,32 @@ function Form() {
 
         // Check if there are no validation errors for the current page
         const isPageValid = Object.keys(validateFormData).every(field => validateFormData[field].State === "Valid");
+
+        //check at least 5 from the categories are selected
+        if(page===1){
+            const isCategoriesValid = sectorId.length >= 1;
+               setValidateFormData((prevData) => ({
+                   ...prevData,
+                   categories: {
+                       State: isCategoriesValid ? "Valid" : "Invalid",
+                       Message: isCategoriesValid ? "" : "Please select at least 5 categories"
+                   }
+               }));
+       } 
         
         // Enable/disable the Next button based on the above checks
         setDisabled((!isPageDataValid || !isPageValid));
     }, [formData, validateFormData, requiredFields, page]);
 
-    const FormTitles=["Signup1", "Signup2"];
+    const FormTitles=["Signup1", "Signup2", "Signup3"];
 
     const PageDisplay = () => {
         if(page === 0){
             return <Signup1 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
         }else if(page === 1){
-            return <Signup2 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
+            return <Signup2 formData={formData} setFormData={setFormData} validateFormData={validateFormData} categories={categories} setCategories={setCategories}/>
+        }else if(page === 2){
+            return <Signup3 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
         }
     };
 
@@ -144,7 +191,8 @@ function Form() {
         policeReport: formData.policeReport,
         financialDocument: formData.bankStatement,
         password: formData.password,
-        confirmPassword: formData.confirmPassword
+        confirmPassword: formData.confirmPassword,
+        sectorId: sectorId
     }
     
     const handleNextClick = async () => {

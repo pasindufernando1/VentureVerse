@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -37,6 +39,7 @@ public class RegisterRequestDTO {
     // INDIVIDUAL INVESTOR | ENTERPRISE INVESTOR
     private String financialDocument;
 
+
     // ENTERPRISE INVESTOR | ENTREPRENEUR
     private String businessName;
     private String businessRegistration;
@@ -51,6 +54,6 @@ public class RegisterRequestDTO {
     private String businessEmail;
     private String businessDescription;
     private String businessRegDoc;
-
+    private List<Integer> sectorId;
 
 }

@@ -1,7 +1,7 @@
 import React from "react";
-import { Input, Checkbox } from "../webcomponent";
+import { Input, Checkbox} from "../../webcomponent";
 
-function Signup4({formData, setFormData,validateFormData}) {
+function Signup3({formData, setFormData,validateFormData, categories, setCategories}) {
     return (
     <div className="Signup4">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -14,7 +14,7 @@ function Signup4({formData, setFormData,validateFormData}) {
                     <Input 
                         type="password" 
                         color="purple" 
-                        label="Password:"
+                        label={<span style={{ fontSize: '12px' }}>Password:</span>}
                         value={formData.password}
                         onChange={(event)=>
                             setFormData({...formData, password: event.target.value})
@@ -28,7 +28,7 @@ function Signup4({formData, setFormData,validateFormData}) {
                     <Input 
                         type="password" 
                         color="purple" 
-                        label="Confirm Password:"
+                        label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
                         value={formData.confirmPassword}
                         onChange={(event)=>
                             setFormData({...formData, confirmPassword: event.target.value})
@@ -54,4 +54,4 @@ function Signup4({formData, setFormData,validateFormData}) {
     </div>    
     );
 }
-export default Signup4;
+export default Signup3;

@@ -33,6 +33,7 @@ function Signup2({formData, setFormData,validateFormData}) {
                 <div>
                     <label htmlFor="felony" className="text-main-black block mb-1 text-[14px]">
                     Have you ever been charged with any felony or misdemeanor?
+                    <span style={{ color: 'red' }}>*</span>
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
@@ -67,6 +68,7 @@ function Signup2({formData, setFormData,validateFormData}) {
                 <div>
                     <label htmlFor="lawsuit" className="text-main-black block mb-1 text-[14px]">
                     Have you ever been party to a lawsuit? 
+                    <span style={{ color: 'red' }}>*</span>
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
@@ -101,7 +103,7 @@ function Signup2({formData, setFormData,validateFormData}) {
             <div className="row2">
                 <div>
                     <label htmlFor="lawsuitDetails" className="text-main-black block mb-2 text-[14px]">
-                    if so explain (date,city,state and circumstances, including precise charge and resolution of the case):
+                    if so explain (date,city,state and circumstances, including precise charge and resolution of the case)
                     </label>
                     <Textarea 
                         outline="true"
@@ -118,7 +120,8 @@ function Signup2({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="policeReport" className="text-main-black block mb-1 text-[14px]">
-                    Please provide a copy of any police report.
+                    Please provide a copy of any police report
+                    <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
@@ -142,7 +145,8 @@ function Signup2({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
-                    Please provide a copy of your bank statement.
+                    Please provide a copy of your bank statement
+                    <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"

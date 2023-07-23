@@ -130,7 +130,7 @@ function Signup1({formData, setFormData, validateFormData}) {
             <div className="row2">
                 <div>
                     <label htmlFor="collabarators" className="text-main-black block mb-2 text-[14px]">
-                    If applying as a part of a group, the name(s) of your collaborator(s) :
+                    If applying as a part of a group, the name(s) of your collaborator(s)
                     </label>
                     <Textarea 
                         placeholder="Write here..." 
