@@ -8,7 +8,8 @@ import Signup from "./pages/entrepreneur/Form"
 import AddListing from "./pages/entrepreneur/AddListing";
 import IndividualInvestor from "./pages/investor/individualInvestor/Form";
 import EnterpriceInvestor from "./pages/investor/enterpriceInvestor/Form";
-
+import AddListing from "./pages/entrepreneur/AddListing";
+import Payment from "./pages/entrepreneur/Payment";
 // Import Pages Here
 import Home from "./pages/common/Home";
 import About from "./pages/common/About";
@@ -43,7 +44,9 @@ function App() {
                 <Route path="/add-listing" element={<AddListing />} />
                 <Route path="/individual-investor" element={<IndividualInvestor />} />
                 <Route path="/enterprice-investor" element={<EnterpriceInvestor />} />
-                <Route path="/success" element={<Success />} />
+                <Route path="/success" element={<Success />} /> 
+                <Route path="/addListing" element={<AddListing />} />
+                <Route path="/payment" element={<Payment />} />
                 <Route path="/comp" element={<Components />}/>
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>

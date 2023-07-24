@@ -20,6 +20,7 @@ public class ListingDTO {
     @GeneratedValue
     private Integer listingId;
     private String title;
+    @Column(columnDefinition = "text")
     private String description;
     private String pitchingVideo;
     private String intention;
@@ -32,6 +33,7 @@ public class ListingDTO {
     private Integer salesProjectionNextYear;
     private String projectionMethod;
     private String outsideSources;
+    @Column(columnDefinition = "text")
     private String outsideSourceDescription;
     private String attemptsToGrow;
     private String awards;
@@ -40,16 +42,22 @@ public class ListingDTO {
     private Integer expectedAmount;
     private Integer returnUnitProfitPercentage;
     private Integer returnEquityPercentage;
-    private String subscriptionType;
+
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="subscriptionId", referencedColumnName = "subscriptionId")
+    private SubscriptionDTO subscriptionType;
+
+
     private Timestamp publishedDate;
     private String status;
+
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurId;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "sectorId", referencedColumnName = "sectorId")
-    private IndustrySectorDTO sectorId;
+
+
 
 }

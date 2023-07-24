@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Data
 @SuperBuilder
@@ -34,5 +36,8 @@ public class EntrepreneurDTO extends UserDTO {
     private String businessEmail;
     private String businessDescription;
     private String businessRegDoc;
+
+    @OneToMany(mappedBy = "entrepreneurId")
+    List<ListingDTO> listing;
 
 }
