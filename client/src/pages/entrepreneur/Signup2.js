@@ -1,5 +1,5 @@
 import React from "react";
-import { Textarea,Radio } from "../webcomponent";
+import { Textarea, Radio } from "../webcomponent";
 
 
 function Signup2({formData, setFormData,validateFormData}) {
@@ -37,11 +37,9 @@ function Signup2({formData, setFormData,validateFormData}) {
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
-                            color="purple"
                             name="felony"
                             id="felony-yes"
                             label="Yes"
-                            className="w-4 h-4"
                             value="yes"
                             checked={formData.felony === 'yes'}
                             onChange={handleFelonyChange}
@@ -49,11 +47,9 @@ function Signup2({formData, setFormData,validateFormData}) {
                             required={true}
                         />
                         <Radio 
-                            color="purple"
                             name="felony"
                             id="felony-no"
                             label="No"
-                            className="w-4 h-4"
                             value="no"
                             checked={formData.felony === 'no'}
                             onChange={handleFelonyChange}
@@ -72,11 +68,9 @@ function Signup2({formData, setFormData,validateFormData}) {
                     </label>
                     <div className="flex gap-20 text-main-black block mb-1 text-[14px] h-4 w-4">
                         <Radio 
-                            color="purple"
                             name="lawsuit"
                             id="lawsuit-yes"
                             value="yes"
-                            className="w-4 h-4"
                             label="Yes"
                             checked={formData.lawsuit === 'yes'}
                             onChange={handleLawsuitChange}
@@ -84,11 +78,9 @@ function Signup2({formData, setFormData,validateFormData}) {
                             required={true}
                         />
                         <Radio 
-                            color="purple"
                             name="lawsuit"
                             id="lawsuit-no"
                             value="no"
-                            className="w-4 h-4"
                             label="No"
                             checked={formData.lawsuit === 'no'}
                             onChange={handleLawsuitChange}

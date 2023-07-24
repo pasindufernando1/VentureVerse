@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 
-@RequestMapping("/api/auth")
+@RequestMapping("/api/entrepreneur")
 @RestController
 @RequiredArgsConstructor
 public class PaymentController {

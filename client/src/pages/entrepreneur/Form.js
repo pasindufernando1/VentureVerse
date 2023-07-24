@@ -14,6 +14,7 @@ const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
 
 
 function Form() {
+
   const [page, setPage] = useState(0);
 
   // form data
@@ -195,7 +196,7 @@ function Form() {
     }
   };
 
-  //map the stored data to the formdata object
+  //map the stored data to the form data object
   const requestData = {
     firstname: formData.firstname,
     lastname: formData.lastname,
@@ -241,7 +242,7 @@ function Form() {
           const bankStatementFileName = Date.now() + Math.random() + requestData.incomeStatement.name;
           const businessregdocFileName = Date.now() + Math.random() + requestData.businessRegDoc.name;
 
-          //append the images to the formdata
+          //append the images to the form data
           formData.append("policeReport", requestData.policeReport, policeReportFileName);
           formData.append("bankStatement", requestData.incomeStatement, bankStatementFileName);
           formData.append("businessregdoc", requestData.businessRegDoc, businessregdocFileName);
@@ -276,7 +277,7 @@ function Form() {
   return (
     //Add navbar
     <div>
-    <CommonNavbar />
+    <CommonNavbar active="Sign Up" />
     <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
       <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
         <div className="text-gray-700 p-[2rem] w-full">

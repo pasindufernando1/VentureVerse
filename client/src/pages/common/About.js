@@ -57,12 +57,12 @@ const Video1 = () => {
 }
 const OurTeam = () => {
     const teamMembers = [
-        { name: 'Pasindu Fernando', image: 'chris' },
-        { name: 'Nadeesha Epa', image: 'chris' },
-        { name: 'Samidu Cooray', image: 'chris' },
-        { name: 'Kavishka Fernando', image: 'chris' },
-        { name: 'Pamith Welikala', image: 'chris' },
-        { name: 'Chris M. Perera', image: 'chris' },
+        { name: 'Pasindu Fernando', image: 'pasindu.jpg' },
+        { name: 'Nadeesha Epa', image: 'nadeesha.jpg' },
+        { name: 'Samindu Cooray', image: 'samindu.jpg' },
+        { name: 'Kavishka Fernando', image: 'kavishka.jpg' },
+        { name: 'Pamith Welikala', image: 'pamith.jpg' },
+        { name: 'Chris M. Perera', image: 'chris.jpg' },
     ];
     return (
         <div className='w-full py-[1rem] px-4 bg-white mt-10'>
@@ -75,7 +75,7 @@ const OurTeam = () => {
                     {teamMembers.map((member, index) => (
                         <div key={index} className="flex justify-center items-center flex-col w-48 h-auto rounded-xl bg-main-gray hover:scale-105 duration-300">
                             <div className="relative overflow-hidden bg-cover bg-no-repeat">
-                                <img className="w-48 h-auto rounded-t-xl" src={"/assets/images/" + member.image} alt="/" />
+                                <img className="w-48 h-auto rounded-t-xl" src={"/assets/images/team/" + member.image} alt="/" />
                             </div>
                             <div className="p-6">
                                 <h5 className="text-center text-xl text-white font-bold">{member.name}</h5>
@@ -89,11 +89,10 @@ const OurTeam = () => {
 };
 const EnterpriseInvestors = () => {
     const logos = [
-        {Image: 'entlogo1'},
-        {Image: 'entlogo2'},
-        {Image: 'entlogo3'},
-        {Image: 'entlogo4'},
-        {Image: 'entlogo5'},
+        {Image: 'entlogo1.png'},
+        {Image: 'entlogo2.png'},
+        {Image: 'entlogo3.png'},
+        {Image: 'entlogo4.png'},
     ]
     return (
         <div className='w-full py-[1rem] px-4 bg-white mt-10'>
@@ -104,7 +103,7 @@ const EnterpriseInvestors = () => {
             <div className='max-w-[1240px] mx-auto grid md:grid-cols-5 gap-8 justify-center items-center'>
                 {logos.map((img,index) =>
                     (
-                        <img className="w-48 text-center content-center" src={"/assets/images/" + img.Image} alt="logo" />
+                        <img className="w-48 text-center content-center" src={"/assets/images/company/" + img.Image} alt="logo" />
                     )
                 )}
             </div>

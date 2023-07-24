@@ -6,6 +6,7 @@ import com.ventureverse.server.config.JwtService;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.*;
 import com.ventureverse.server.repository.*;
@@ -29,19 +30,19 @@ public class AuthenticationService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private Integer refreshExpiration;
     private final UserRepository userRepository;
-    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
-    private final IndividualInvestorRepository individualInvestorRepository;
     private final AdminRepository adminRepository;
-    private final EntrepreneurRepository entrepreneurRepository;
     private final TokenRepository tokenRepository;
     private final ResetRepository resetRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
+    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
+    private final IndividualInvestorRepository individualInvestorRepository;
+    private final EntrepreneurRepository entrepreneurRepository;
     private final InvestorInterestedSectorRepository sectorRepository;
     public InvestorInterestedSectorDTO sectorDTO;
 
-//    private final EmailService emailService;
     public ResponseDTO checkEmail(String email) {
         var user = userRepository.findByEmail(email);
         if (user.isPresent()) {

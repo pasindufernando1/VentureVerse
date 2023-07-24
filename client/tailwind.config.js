@@ -42,29 +42,6 @@ module.exports = withMT({
             },
         }
     },
-    colors: {
-      'main-purple' : '#8458B3',
-      'light-purple' : '#D0BDF4',
-      'main-gray' : '#494D5F',
-      'white' : '#FFFFFF',
-      'black' : '#000000',
-      'success-green' : '#29CC97',
-      'error-red' : '#CC4545',
-    },
-    fontFamily: {
-      sans: ['Montserrat', 'sans-serif'],
-      serif: ['Montserrat', 'serif'],
-    },
-    extend: {
-      spacing: {
-        '128': '32rem',
-        '144': '36rem',
-      },
-      borderRadius: {
-        '4xl': '2rem',
-      }
-    }
-  },
-  plugins: [],
+    plugins: [],
 });
 

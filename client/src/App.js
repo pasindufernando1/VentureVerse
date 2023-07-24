@@ -8,6 +8,7 @@ import Home from "./pages/common/Home";
 import About from "./pages/common/About";
 import Pricing from "./pages/common/Pricing";
 import Contact from "./pages/common/Contact";
+import Signup from "./pages/common/Signup";
 import EntrepreneurSignup from "./pages/entrepreneur/Form"
 import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
 import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
@@ -41,9 +42,10 @@ function App() {
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword/>}/>
                 <Route path="/reset-password/:token" element={<ResetPassword/>}/>
+                <Route path="/signup" element={<Signup />} />
                 <Route path="/signup/entrepreneur" element={<EntrepreneurSignup />} />
                 <Route path="/signup/individual-investor" element={<IndividualInvestorSignup />} />
-                <Route path="/signup/enterprice-investor" element={<EnterpriseInvestorSignup />} />
+                <Route path="/signup/enterprise-investor" element={<EnterpriseInvestorSignup />} />
                 <Route path="/success" element={<Success/>}/>
                 <Route path="/comp" element={<Components />}/>
                 {/*Protected Routes*/}

@@ -80,6 +80,11 @@ code {
     monospace;
 }
 
+.signup {
+    background: url("../public/assets/images/signup.jpg") no-repeat;
+    background-size: cover;
+}
+
 .listing {
     background: url("../public/assets/images/Listing.png") no-repeat;
     background-size: cover;
@@ -169,20 +174,20 @@ code {
 }
 
 .video-container {
-  background: url("./assets/images/video-bg2.jpg") no-repeat;
+  background: url("../public/assets/images/video-bg2.jpg") no-repeat;
   background-size:cover;
 }
 
 /* Image inside a container */
 .play-image{
   /* Image link */
-  background: url("./assets/images/play-button.png") no-repeat;
+  background: url("../public/assets/images/play-button.png") no-repeat;
   background-size:cover;
 }
 
 .venture-logo{
   /* Image link */
-  background: url("./assets/images/VentureVerse-Black.png") no-repeat;
+  background: url("../public/assets/images/VentureVerse-Black.png") no-repeat;
   background-size:cover;
 }
 

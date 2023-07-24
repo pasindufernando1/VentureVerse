@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { CommonNavbar, Checkbox, Radio, Textarea, Input, Button } from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
-import axios from "../../api/axios";
+import { axiosPrivate } from "../../api/axios";
 
 // Regular expressions to validate the inputs
 // Integers only regex
@@ -213,10 +213,7 @@ function AddListing() {
                 formData.append("video", video.file, videofilename);
               }
               
-              const res = await axios.post("auth/upload", formData, {
-                headers: { 'Content-Type': 'multipart/form-data' },
-                withCredentials: true
-              });
+              const res = await axiosPrivate.post("entrepreneur/upload", formData);
               
               console.log(res);
               
@@ -254,9 +251,7 @@ function AddListing() {
                 images
             }
             console.log(listing)
-            await axios.post("auth/addListing",JSON.stringify(listing),{
-                headers: {'Content-Type': 'application/json'},
-                withCredentials: true});
+            await axiosPrivate.post("entrepreneur/addListing",JSON.stringify(listing));
             console.log("Listing added successfully");
         }catch(error){
             console.error("Error uploading the files : ",error);
@@ -275,7 +270,7 @@ function AddListing() {
     const sendPaymentToServer = async (token, amount) => {
         try {
             // Make a POST request to your Spring Boot server
-            const response = await axios.post('auth/pay', {
+            const response = await axiosPrivate.post('entrepreneur/pay', {
                 token,
                 amount,
             });
