@@ -28,7 +28,7 @@ function Signup() {
                         </Typography>
                     </div>
                     <div className="flex flex-col justify-center items-center w-full gap-[1rem]">
-                        <Link to="/signup/individual-investor" className="flex flex-row justify-between rounded-[1rem] border border-light-purple cursor-pointer transform transition-all hover:-translate-y-2 duration-300 hover:border-main-purple p-[1rem]  w-[90%] lg:w-[38rem]">
+                        <Link to="/signup/individual-investor" className="flex flex-row justify-between rounded-[1rem] border border-light-purple cursor-pointer transform transition-all hover:scale-105 duration-300 hover:border-main-purple p-[1rem]  w-[90%] lg:w-[38rem]">
                             <div className="flex flex-col items-start">
                                 <Typography className="font-[600] text-[1.25rem] tracking-[0.4px] leading-normal">
                                     I’m an Investor
@@ -38,7 +38,7 @@ function Signup() {
                                 </Typography>
                             </div>
                         </Link>
-                        <Link to="/signup/entrepreneur" className="flex flex-row justify-between rounded-[1rem] border border-light-purple cursor-pointer transform transition-all hover:translate-y-2 duration-300 hover:border-main-purple p-[1rem] w-[90%] lg:w-[38rem]">
+                        <Link to="/signup/entrepreneur" className="flex flex-row justify-between rounded-[1rem] border border-light-purple cursor-pointer transform transition-all hover:scale-105 duration-300 hover:border-main-purple p-[1rem] w-[90%] lg:w-[38rem]">
                             <div className="flex flex-col items-start">
                                 <Typography className="font-[600] text-[1.25rem] tracking-[0.4px] leading-normal">
                                     I’m an Entrepreneur
