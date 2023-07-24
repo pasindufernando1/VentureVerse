@@ -100,6 +100,20 @@ const Components = () => {
 
             {/*<CustomFlash State="Success" Message="Complete" Show={value}/>*/}
 
+            <h2 className="font-bold text-xl">Investor Navbar</h2>
+            <CustomCheckbox label="This is a Checkbox"/>
+
+            <h2 className="font-bold text-xl">Investor Navbar</h2>
+            <CustomRadio label="This is a Checkbox"/>
+
+
+            <h2 className="font-bold text-xl">Investor Navbar</h2>
+            <div className="flex flex-col gap-2 justify-center">
+                <CustomSelect
+                    label="This is a Select"
+                    options={[1, 2, 3]}
+                />
+            </div>
         </div>
     )
 

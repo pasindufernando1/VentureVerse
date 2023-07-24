@@ -131,3 +131,39 @@ code {
 .alert div:first-child {
     margin-right: 0;
 }
+
+.file-input-container {
+  position: relative;
+}
+
+.file-input-button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #8458B3;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 35px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.file-input-text {
+  display: inline-block;
+  margin-left: 8px;
+  color: #4a5568;
+  font-size: 13px;
+}
+
+/* Style for when a file is selected */
+.file-input-container input[type="file"]:not(.hidden):focus + .file-input-button {
+  outline: 2px solid #4c51bf;
+}
+
+.file-input-container input[type="file"]:not(.hidden):focus + .file-input-button,
+.file-input-container input[type="file"]:not(.hidden):hover + .file-input-button {
+  background-color: #cbd5e0;
+  color: #2d3748;
+}
+.error-message {
+  color: red;
+}

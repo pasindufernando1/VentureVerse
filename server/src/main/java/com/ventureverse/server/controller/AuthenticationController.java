@@ -21,6 +21,17 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
+//    check whether the email already exits or not
+    @GetMapping("/checkEmail/{email}")
+    public ResponseEntity<ResponseDTO> checkEmail(@PathVariable String email) {
+        return ResponseEntity.ok(authenticationService.checkEmail(email));
+    }
+
+    @GetMapping("checkBusinessEmail/{email}")
+    public ResponseEntity<ResponseDTO> checkBusinessEmail(@PathVariable String email) {
+        return ResponseEntity.ok(authenticationService.checkBusinessEmail(email));
+    }
+
     @PostMapping("/register/admin")
     public ResponseEntity<ResponseDTO> register(
             HttpServletResponse response,
@@ -34,8 +45,27 @@ public class AuthenticationController {
             HttpServletResponse response,
             @RequestBody RegisterRequestDTO registerRequestDTO
     ) {
+        //print out the request body
+        System.out.println(registerRequestDTO.toString());
         return ResponseEntity.ok(authenticationService.registerEntrepreneur(response, registerRequestDTO));
     }
+
+    @PostMapping("/register/individualInvestor")
+    public ResponseEntity<ResponseDTO> registerIndividualInvestor(
+            HttpServletResponse response,
+            @RequestBody RegisterRequestDTO registerRequestDTO
+    ) {
+        return ResponseEntity.ok(authenticationService.registerIndividualInvestor(response, registerRequestDTO));
+    }
+
+    @PostMapping("/register/enterpriseInvestor")
+    public ResponseEntity<ResponseDTO> registerEnterpriseInvestor(
+            HttpServletResponse response,
+            @RequestBody RegisterRequestDTO registerRequestDTO
+    ) {
+        return ResponseEntity.ok(authenticationService.registerEnterpriseInvestor(response, registerRequestDTO));
+    }
+
 
     @PostMapping("/authorize/{status}/{id}")
     public ResponseEntity<ResponseDTO> register(

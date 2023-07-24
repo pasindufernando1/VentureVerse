@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "investor-interested-sector")
+@Table(name = "investor_interested_sector")
 public class InvestorInterestedSectorDTO implements Serializable {
 
     @EmbeddedId

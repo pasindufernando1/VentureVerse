@@ -6,20 +6,9 @@ import com.ventureverse.server.config.JwtService;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
-import com.ventureverse.server.exception.CustomErrorException;
-import com.ventureverse.server.model.entity.AdminDTO;
-import com.ventureverse.server.model.entity.EntrepreneurDTO;
-import com.ventureverse.server.model.entity.TokenDTO;
-import com.ventureverse.server.model.entity.UserDTO;
-import com.ventureverse.server.model.entity.ResetDTO;
-import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
-import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
-import com.ventureverse.server.model.normal.RegisterRequestDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
-import com.ventureverse.server.repository.AdminRepository;
-import com.ventureverse.server.repository.ResetRepository;
-import com.ventureverse.server.repository.TokenRepository;
-import com.ventureverse.server.repository.UserRepository;
+import com.ventureverse.server.model.entity.*;
+import com.ventureverse.server.model.normal.*;
+import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,13 +29,36 @@ public class AuthenticationService {
     @Value("${application.security.jwt.refresh-token.expiration}")
     private Integer refreshExpiration;
     private final UserRepository userRepository;
+    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
+    private final IndividualInvestorRepository individualInvestorRepository;
     private final AdminRepository adminRepository;
+    private final EntrepreneurRepository entrepreneurRepository;
     private final TokenRepository tokenRepository;
     private final ResetRepository resetRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
-    private final EmailService emailService;
+    private final InvestorInterestedSectorRepository sectorRepository;
+    public InvestorInterestedSectorDTO sectorDTO;
+
+//    private final EmailService emailService;
+    public ResponseDTO checkEmail(String email) {
+        var user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            return GlobalService.response("Error", "Email Already Exists");
+        } else {
+            return GlobalService.response("Success", "Email Available");
+        }
+    }
+
+    public ResponseDTO checkBusinessEmail(String email) {
+        var user = entrepreneurRepository.findByBusinessEmail(email);
+        if (user.isPresent()) {
+            return GlobalService.response("Error", "Email Already Exists");
+        } else {
+            return GlobalService.response("Success", "Email Available");
+        }
+    }
 
     public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO) {
 
@@ -82,6 +94,9 @@ public class AuthenticationService {
     }
 
     public ResponseDTO registerEntrepreneur(HttpServletResponse response,RegisterRequestDTO registerRequestDTO) {
+//        print the response
+        System.out.println(registerRequestDTO);
+
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
@@ -107,10 +122,95 @@ public class AuthenticationService {
                 .felony(registerRequestDTO.getFelony())
                 .lawSuit(registerRequestDTO.getLawSuit())
                 .felonyDescription(registerRequestDTO.getFelonyDescription())
+                .businessName(registerRequestDTO.getBusinessName())
+                .businessContact(registerRequestDTO.getBusinessContact())
+                .bfirstLineAddress(registerRequestDTO.getBfirstLineAddress())
+                .bsecondLineAddress(registerRequestDTO.getBsecondLineAddress())
+                .btown(registerRequestDTO.getBtown())
+                .bdistrict(registerRequestDTO.getBdistrict())
+                .businessWebsite(registerRequestDTO.getBusinessWebsite())
+                .businessEmail(registerRequestDTO.getBusinessEmail())
+                .businessDescription(registerRequestDTO.getBusinessDescription())
+                .businessRegDoc(registerRequestDTO.getBusinessRegDoc())
                 .build(); // Creates EntrepreneurDTO
 
         userRepository.save(user); // Save the Record
         return GlobalService.response("Success", "Registration request sent");
+    }
+
+    public ResponseDTO registerIndividualInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user= IndividualInvestorDTO.builder()
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.INDIVIDUAL_INVESTOR)
+                .financialDocument(registerRequestDTO.getFinancialDocument())
+                .badgeId(null)
+                .firstname(registerRequestDTO.getFirstname())
+                .lastname(registerRequestDTO.getLastname())
+                .gender(registerRequestDTO.getGender())
+                .nic(registerRequestDTO.getNic())
+                .policeReport(registerRequestDTO.getPoliceReport())
+                .build(); // Creates IndividualInvestorDTO
+
+        userRepository.save(user); // Save the Record
+
+        var investor=individualInvestorRepository.getLastInsertedId();
+        var listingSectors=registerRequestDTO.getSectorId();
+
+        for (Integer sectorId:listingSectors){
+            individualInvestorRepository.saveInvestorSector(investor,sectorId);
+        }
+
+
+        return GlobalService.response("Success", "Registration request sent");
+    }
+
+    public ResponseDTO registerEnterpriseInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+        // Generate a Random Salt
+        var salt = GlobalService.generateSalt();
+
+        var user= EnterpriseInvestorDTO.builder()
+                .email(registerRequestDTO.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .approvalStatus(Status.PENDING)
+                .profileImage("profileImage.jpg")
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .firstLineAddress(registerRequestDTO.getFirstLineAddress())
+                .secondLineAddress(registerRequestDTO.getSecondLineAddress())
+                .town(registerRequestDTO.getTown())
+                .district(registerRequestDTO.getDistrict())
+                .role(Role.ENTERPRISE_INVESTOR)
+                .businessRegistration(registerRequestDTO.getBusinessRegistration())
+                .businessName(registerRequestDTO.getBusinessName())
+                .financialDocument(registerRequestDTO.getFinancialDocument())
+                .badgeId(null)
+                .build();
+
+        userRepository.save(user);
+
+        //get the last inserted id
+        var investor= enterpriseInvestorRepository.getLastInsertedId();
+        //get the sector id list
+        var listingSectors=registerRequestDTO.getSectorId();
+
+        for (Integer sectorId:listingSectors){
+            enterpriseInvestorRepository.saveInvestorSector(investor,sectorId);
+        }
+
+        return GlobalService.response("Success", "Registration request sent");
+
     }
 
     public ResponseDTO authorize(HttpServletResponse response, String status, Integer id) {

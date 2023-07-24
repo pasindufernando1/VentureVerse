@@ -42,4 +42,8 @@ const CustomButton = (Object) => {
 
 }
 
+<<<<<<<< HEAD:client/src/pages/webcomponent/CustomButton.js
 export default CustomButton;
+========
+export default Button;
+>>>>>>>> feature-02-registration:client/src/pages/webcomponent/Button.js
