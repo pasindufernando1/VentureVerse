@@ -1,11 +1,10 @@
 import React from "react";
-import Navbar from '../webcomponent/NavbarHome';
-import Footer from '../webcomponent/Footer';
+import { CommonNavbar, Footer } from "../webcomponent";
 
 function Success({formData, setFormData,validateFormData}) {
     return (
         <div>
-        <Navbar />
+        <CommonNavbar />
         <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
           <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
             <div className="text-gray-700 p-[2rem] w-full">

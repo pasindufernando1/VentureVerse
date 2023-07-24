@@ -2,30 +2,32 @@ import Layout from "./components/Layout";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
 
-import Components from "./pages/webcomponent/Components"
-import Success from "./pages/common/Success";
-import Signup from "./pages/entrepreneur/Form"
-import AddListing from "./pages/entrepreneur/AddListing";
-import IndividualInvestor from "./pages/investor/individualInvestor/Form";
-import EnterpriceInvestor from "./pages/investor/enterpriceInvestor/Form";
-import AddListing from "./pages/entrepreneur/AddListing";
-import Payment from "./pages/entrepreneur/Payment";
 // Import Pages Here
+// Common Pages
 import Home from "./pages/common/Home";
 import About from "./pages/common/About";
 import Pricing from "./pages/common/Pricing";
 import Contact from "./pages/common/Contact";
-import Signup from "./pages/common/Signup";
+import EntrepreneurSignup from "./pages/entrepreneur/Form"
+import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
+import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
+import Success from "./pages/common/Success";
 import Login from "./pages/common/Login";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import ResetPassword from "./pages/common/ResetPassword";
+import Components from "./pages/webcomponent/Components";
 
+// Entrepreneur Pages
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
+import AddListing from "./pages/entrepreneur/AddListing";
+
+// Investor Pages
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
+
+// Admin Pages
 import AdminTestHome from "./pages/admin/AdminTestHome";
 
 import {Routes, Route} from "react-router-dom";
-import Components from "./pages/webcomponent/Components";
 
 function App() {
     return (
@@ -37,16 +39,12 @@ function App() {
                 <Route path="/pricing" element={<Pricing/>}/>
                 <Route path="/contact" element={<Contact/>}/>
                 <Route path="/login" element={<Login/>}/>
-                <Route path="/signup" element={<Signup/>}/>
                 <Route path="/forgot-password" element={<ForgotPassword/>}/>
                 <Route path="/reset-password/:token" element={<ResetPassword/>}/>
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/add-listing" element={<AddListing />} />
-                <Route path="/individual-investor" element={<IndividualInvestor />} />
-                <Route path="/enterprice-investor" element={<EnterpriceInvestor />} />
-                <Route path="/success" element={<Success />} /> 
-                <Route path="/addListing" element={<AddListing />} />
-                <Route path="/payment" element={<Payment />} />
+                <Route path="/signup/entrepreneur" element={<EntrepreneurSignup />} />
+                <Route path="/signup/individual-investor" element={<IndividualInvestorSignup />} />
+                <Route path="/signup/enterprice-investor" element={<EnterpriseInvestorSignup />} />
+                <Route path="/success" element={<Success/>}/>
                 <Route path="/comp" element={<Components />}/>
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
@@ -64,6 +62,7 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
+                        <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                     </Route>
                 </Route>
                 {/*404*/}

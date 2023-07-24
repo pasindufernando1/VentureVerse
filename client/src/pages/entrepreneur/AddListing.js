@@ -1,12 +1,7 @@
 import {Card} from "@material-tailwind/react";
 import React, { useEffect } from "react";
-import InputField from "../webcomponent/CustomInput";
 import { useState } from "react";
-import Checkbox from "../webcomponent/CustomCheckbox";
-import CustomButton from "../webcomponent/CustomButton";
-import NavbarAll from "../webcomponent/NavbarAll";
-import Radio from "../webcomponent/CustomRadio";
-import Textarea from "../webcomponent/CustomTextarea";
+import { CommonNavbar, Checkbox, Radio, Textarea, Input, Button } from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
 import axios from "../../api/axios";
 
@@ -534,7 +529,7 @@ function AddListing() {
 
     return (
         <div>
-            <NavbarAll />
+            <CommonNavbar />
             <main className="h-auto min-h-[100vh] p-[2rem] flex justify-center items-center bg-gray-200">
                 
                 <form className=" bg-white flex drop-shadow-md mb-4 w-full h-full  rounded-[1rem] lg:w-9/12 lg:h-auto">
@@ -549,7 +544,7 @@ function AddListing() {
                                         <div className="w-full">
                                         <label htmlFor="last-name" className="text-main-gray block mb-2 text-[14px] ">
                                         What are your plans with the investment fund ? Where will the money go?</label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="INTEN"  
                                             value={intention} 
@@ -565,7 +560,7 @@ function AddListing() {
                                         <label htmlFor="startdate" className="text-main-gray block mb-2 text-[14px]">
                                         When did you start the business?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="date" 
                                             id="date" 
                                             value={businessStartDate}
@@ -578,7 +573,7 @@ function AddListing() {
                                         <label htmlFor="howlong" className="text-main-gray block mb-2 text-[14px]">
                                         How long have you been operating as a business (Years) ?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="years" 
                                             value={businessDuration}
@@ -592,7 +587,7 @@ function AddListing() {
                                         <div>
                                         <label htmlFor="lifetimesales" className="text-main-gray block mb-2 text-[14px]">
                                         What are your business's total lifetime sales since starting (Rs.)?</label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="lifesales" 
                                             value={lifetimeSales}
@@ -605,7 +600,7 @@ function AddListing() {
                                         <label htmlFor="grossincome" className="text-main-gray block mb-2 text-[14px]">
                                         What was the gross income from your business last year?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="grossincome" 
                                             value={lastYearGrossIncome}
@@ -619,7 +614,7 @@ function AddListing() {
                                         <div>
                                         <label htmlFor="netincome" className="text-main-gray block mb-2 text-[14px]">
                                         What was the net income from your business last year?</label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="netincome" 
                                             value={lastYearNetIncome}
@@ -632,7 +627,7 @@ function AddListing() {
                                         <label htmlFor="grossincome" className="text-main-gray block mb-2 text-[14px]">
                                         What are your sale projections for THIS CALENDAR YEAR ? 
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="salesprojections"
                                             value={salesProjectionThisYear}
@@ -647,7 +642,7 @@ function AddListing() {
                                         <label htmlFor="nextsales" className="text-main-gray block mb-2 text-[14px]">
                                         What are your sale projections for NEXT CALENDAR YEAR ?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="lifesales" 
                                             value={salesProjectionNextYear}
@@ -663,7 +658,7 @@ function AddListing() {
                                         <label htmlFor="projectionlogic" className="text-main-gray block mb-2 text-[14px]">
                                         How did you come up with those projections?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="projectionlogic" 
                                             className="w-full"
@@ -675,7 +670,7 @@ function AddListing() {
                                         </div>
                                     </div>
                                     <div className="row flex justify-end">
-                                        <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext1}/>
+                                        <Button variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext1}/>
                                     </div>
                                 </div>
                             </div>
@@ -693,7 +688,7 @@ function AddListing() {
                                         <label htmlFor="title" className="text-main-gray block mb-2 text-[14px] ">
                                         Give a good title for your listing
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="title"  
                                             value={title} 
@@ -761,7 +756,7 @@ function AddListing() {
                                         <label htmlFor="outside-details" className="text-main-gray block mb-2 text-[14px]">
                                         If yes provide details else state as none
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="outsidedetails" 
                                             className="w-full"
@@ -777,7 +772,7 @@ function AddListing() {
                                         <label htmlFor="attempts" className="text-main-gray block mb-2 text-[14px]">
                                         What attempts have you made to build your business? Have you been successful?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="attempts" 
                                             className="w-full"
@@ -793,7 +788,7 @@ function AddListing() {
                                         <label htmlFor="proposition" className="text-main-gray block mb-2 text-[14px]">
                                         What is your unique selling proposition? What is your “hook”, and why is your business Notable?
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="proposition" 
                                             className="w-full"
@@ -809,7 +804,7 @@ function AddListing() {
                                         <label htmlFor="awards" className="text-main-gray block mb-2 text-[14px]">
                                         List any awards or accolades you've received? State as none if not applicable
                                         </label>
-                                        <InputField 
+                                        <Input 
                                             type="text" 
                                             id="awards" 
                                             className="w-full"
@@ -822,10 +817,10 @@ function AddListing() {
                                     </div>
                                     <div className="row w-full flex">
                                         <div className="justify-begin">
-                                            <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
+                                            <Button variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext2}/>
+                                            <Button variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext2}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1011,10 +1006,10 @@ function AddListing() {
                                             
                                     <div className="row w-full flex">
                                         <div className="justify-begin">
-                                            <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
+                                            <Button variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext3}/>
+                                            <Button variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext3}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1120,10 +1115,10 @@ function AddListing() {
                                     </div>
                                         <div className="row w-full flex">
                                             <div className="justify-begin">
-                                            <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
+                                            <Button variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                             </div>
                                             <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext4}/>
+                                            <Button variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext4}/>
                                             </div>
                                         </div>
                                     </div>
@@ -1156,7 +1151,7 @@ function AddListing() {
                                                 I am seeking (Rs) :
                                                 <span style={{ color: 'red'}}>*</span>
                                             </label>
-                                            <InputField 
+                                            <Input 
                                                 type="text" 
                                                 id="seek" 
                                                 className="w-full"
@@ -1170,7 +1165,7 @@ function AddListing() {
                                                 <span style={{ color: 'red'}}>*</span>
                                             </label>
                                             <div className="flex items-center mb-3">
-                                                <InputField 
+                                                <Input 
                                                     type="text" 
                                                     id="equityinput" 
                                                     className="w-full mr-2"
@@ -1187,7 +1182,7 @@ function AddListing() {
                                                 />
                                             </div>
                                             <div className="flex items-center">
-                                                <InputField 
+                                                <Input 
                                                     type="text" 
                                                     id="profitinput" 
                                                     className="w-full mr-2"
@@ -1210,10 +1205,10 @@ function AddListing() {
                                     </div>
                                     <div className="row w-full flex">
                                         <div className="justify-begin">
-                                            <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
+                                            <Button variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext5}/>
+                                            <Button variant="primary" label="Next" icon="next" onClick={handleNext} disabled={disableNext5}/>
                                         </div>
                                     </div>
                                 </div>
@@ -1543,7 +1538,7 @@ function AddListing() {
                                     </div>
                                     <div className="row w-full flex mt-5">
                                         <div className="justify-begin">
-                                            <CustomButton variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
+                                            <Button variant="clear" label="Previous" icon="previous" onClick={handlePrevious} />
                                         </div>
                                         <div className="justify-end">
                                             <StripeCheckout
@@ -1559,11 +1554,11 @@ function AddListing() {
                                                 fontfamily='Montserrat'
                                                 type="button"   
                                             > 
-                                                <CustomButton variant="clear" label="Proceed with the payment" onClick={(e)=>{e.preventDefault()}} disabled={disablePay}/>
+                                                <Button variant="clear" label="Proceed with the payment" onClick={(e)=>{e.preventDefault()}} disabled={disablePay}/>
                                             </StripeCheckout>
                                         </div>
                                         <div className="justify-end">
-                                            <CustomButton variant="primary" label="Proceed with the free trial" icon="next" onClick={onSubmitFree}  type="button" disabled={disableFreeTrial}/>
+                                            <Button variant="primary" label="Proceed with the free trial" icon="next" onClick={onSubmitFree}  type="button" disabled={disableFreeTrial}/>
                                         </div>
                                     </div>
                                 </div>
