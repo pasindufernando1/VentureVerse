@@ -90,6 +90,13 @@ code {
     background-size: cover;
 }
 
+.coadmin{
+    background: url("../public/assets/images/coadmin.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+}
+
 .swiper-slide {
     background-position: center;
     background-size: cover;

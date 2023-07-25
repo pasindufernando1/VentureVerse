@@ -12,7 +12,7 @@ function Signup1({formData, setFormData,validateFormData}) {
     };
     return (
     <div className="Signup1">
-        <h3 className="text-3xl text-main-purple self-center">Sign up as an Individual Investor</h3>                                
+        <h3 className="text-3xl text-main-purple self-center">Sign up as an Enterprice Investor</h3>                                
         <p className="text-main-purple">
         Tell us about you
         </p>

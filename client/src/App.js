@@ -27,6 +27,7 @@ import InvestorTestHome from "./pages/investor/InvestorTestHome";
 
 // Admin Pages
 import AdminTestHome from "./pages/admin/AdminTestHome";
+import AddCoAdmin from "./pages/admin/AddCoAdmin";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -56,6 +57,7 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
                         <Route path="/admin" element={<AdminTestHome/>}/>
+                        <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

@@ -259,7 +259,7 @@ function Form() {
                     >
                     {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
                     </Button>                
-                    </div> 
+                </div> 
                 <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
                 </div>             
             </form>
