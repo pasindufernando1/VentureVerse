@@ -669,7 +669,7 @@ function AddListing() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                            <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block">
                             </div>
                             </>
                         )}
@@ -820,7 +820,7 @@ function AddListing() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                            <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block">
                         </div>
                             </>
                         )}
@@ -1009,7 +1009,7 @@ function AddListing() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                            <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block">
                             </div>
                             </>
                         )}
@@ -1118,7 +1118,7 @@ function AddListing() {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block"></div>
+                                <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block"></div>
                             </>
                         )}
                         {currentSection === 5 && (
@@ -1208,7 +1208,7 @@ function AddListing() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                            <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block">
                             </div>
                             </>
                         )}

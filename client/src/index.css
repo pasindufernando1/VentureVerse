@@ -90,13 +90,45 @@ code {
     background-size: cover;
 }
 
+.addlisting{
+    background: url("../public/assets/images/addlisting.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    margin-right: 3rem; 
+}
+
 .coadmin{
     background: url("../public/assets/images/coadmin.jpg");
     background-size:contain;
     background-repeat:no-repeat;
     background-position:center;
+    margin-right: 3rem;
 }
 
+.enterprice{
+    background: url("../public/assets/images/enterprice.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    margin-right: 3rem;
+}
+
+.individual_investor{
+    background: url("../public/assets/images/individual_investor.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    margin-right: 3rem;
+}
+
+.entrepreneur{
+    background: url("../public/assets/images/entrepreneur.jpg");
+    background-size:contain;
+    background-repeat:no-repeat;
+    background-position:center;
+    margin-right: 3rem;
+}
 .swiper-slide {
     background-position: center;
     background-size: cover;

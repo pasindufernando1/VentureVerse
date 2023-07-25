@@ -6,7 +6,7 @@ import axios from '../../api/axios';
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 const AdminTestHome = () => {
     const[formData, setFormData] =useState({

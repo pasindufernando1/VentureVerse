@@ -10,7 +10,7 @@ import { CommonNavbar, Footer, Button } from "../webcomponent";
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 
 function Form() {
@@ -301,7 +301,7 @@ function Form() {
             {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
           </Button>
         </div>
-        <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block"></div>
+        <div className="entrepreneur w-[50%] rounded-r-[1rem] hidden lg:block"></div>
       </form>
     </main>
     <Footer />

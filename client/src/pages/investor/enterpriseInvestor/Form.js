@@ -3,12 +3,12 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import { CommonNavbar, Footer, Button } from "../../webcomponent"
+import { Navbar, Footer, Button } from "../../webcomponent"
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
@@ -224,7 +224,7 @@ function Form() {
 
     return(
         <div>
-        <CommonNavbar active="Sign Up"/>
+        <Navbar active="Sign Up"/>
         <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
             <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
                 <div className="text-gray-700 p-20 w-full">
@@ -247,11 +247,10 @@ function Form() {
                     {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
                     </Button>                
                     </div> 
-                <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                <div className="enterprice w-[60%] rounded-r-[1rem] hidden lg:block">
                 </div>             
             </form>
         </main> 
-        <Footer/>
         </div>   
     )
 }
