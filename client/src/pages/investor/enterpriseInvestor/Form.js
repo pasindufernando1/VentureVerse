@@ -161,7 +161,6 @@ function Form() {
         }else if(page === 2){
             return <Signup3 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
         }
-
     };
 
     const requestData =  {

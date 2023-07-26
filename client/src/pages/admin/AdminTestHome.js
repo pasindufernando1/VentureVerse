@@ -15,6 +15,10 @@ const AdminTestHome = () => {
                 <Button>
                     <a href="/signup/enterprise-investor">Add New Enterprice Investor</a>
                 </Button>
+                <br></br>
+                <Button>
+                    <a href="/admin/view-requests">View Registration Requests</a>
+                </Button>
             </div>
         </>
 
