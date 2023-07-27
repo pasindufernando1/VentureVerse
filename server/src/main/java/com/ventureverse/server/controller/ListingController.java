@@ -7,10 +7,7 @@ import com.ventureverse.server.service.ListingService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -27,6 +24,12 @@ public class ListingController {
     ) {
         System.out.println(listingRequestDTO);
         return ResponseEntity.ok(listingService.addListing(response, listingRequestDTO));
+    }
+
+    //Get listing by id
+    @GetMapping("/getListing/{id}")
+    public ResponseEntity<ListingDTO> getListing(@PathVariable Integer id) {
+        return ResponseEntity.ok(listingService.getListing(id));
     }
 
 }

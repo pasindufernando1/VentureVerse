@@ -76,4 +76,9 @@ public class ListingService {
         }
         return GlobalService.response("Success","Listing added successfully");
     }
+
+    //Function to get the listing details by id
+    public ListingDTO getListing(int id) {
+        return listingRepository.findById(id).orElseThrow();
+    }
 }

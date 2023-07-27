@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { CommonNavbar, Checkbox, Radio, Textarea, Input, Button } from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
-import { axiosPrivate } from "../../api/axios";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 // Regular expressions to validate the inputs
 // Integers only regex
@@ -11,6 +11,9 @@ const integerRegex = /^[0-9]*$/;
 
 
 function AddListing() {
+
+    const {post} = useAxiosMethods();
+    const [res, setRes] = useState("")
 
     // Section Handling
     const [currentSection, setCurrentSection] = useState(1);
@@ -213,7 +216,7 @@ function AddListing() {
                 formData.append("video", video.file, videofilename);
               }
               
-              const res = await axiosPrivate.post("entrepreneur/upload", formData);
+              post("/entrepreneur/upload", formData, setRes, true);
               
               console.log(res);
               
@@ -251,7 +254,7 @@ function AddListing() {
                 images
             }
             console.log(listing)
-            await axiosPrivate.post("entrepreneur/addListing",JSON.stringify(listing));
+            post("/entrepreneur/addListing", JSON.stringify(listing),setRes);
             console.log("Listing added successfully");
         }catch(error){
             console.error("Error uploading the files : ",error);
@@ -270,13 +273,10 @@ function AddListing() {
     const sendPaymentToServer = async (token, amount) => {
         try {
             // Make a POST request to your Spring Boot server
-            const response = await axiosPrivate.post('entrepreneur/pay', {
-                token,
-                amount,
-            });
+            post('/entrepreneur/pay', { token, amount }, setRes);
 
             // Handle the response from the server (optional)
-            console.log(response.data);
+            console.log(res.data);
             onSubmitFree();
 
 
@@ -669,7 +669,7 @@ function AddListing() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
+                            <div className="addlisting w-[50%] rounded-r-[1rem] hidden lg:block">
                             </div>
                             </>
                         )}

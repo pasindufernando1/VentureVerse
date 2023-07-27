@@ -21,6 +21,8 @@ import Components from "./pages/webcomponent/Components";
 // Entrepreneur Pages
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
+import ViewListing from "./pages/entrepreneur/ViewListing";
+import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 
 // Investor Pages
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
@@ -65,6 +67,8 @@ function App() {
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
+                        <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
+                        <Route path="/entrepreneur/view-listingfull" element={<ViewListingFull />} />
                     </Route>
                 </Route>
                 {/*404*/}
