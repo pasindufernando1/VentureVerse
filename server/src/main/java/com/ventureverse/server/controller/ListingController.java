@@ -26,7 +26,7 @@ public class ListingController {
         return ResponseEntity.ok(listingService.addListing(response, listingRequestDTO));
     }
 
-    //Get listing by id
+//    Get listing by id
     @GetMapping("/getListing/{id}")
     public ResponseEntity<ListingDTO> getListing(@PathVariable Integer id) {
         return ResponseEntity.ok(listingService.getListing(id));

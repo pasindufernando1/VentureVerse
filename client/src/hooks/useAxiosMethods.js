@@ -15,6 +15,7 @@ const useAxiosMethods = () => {
                     signal: controller.signal,
                 });
                 isMounted && setResponse(response.data);
+                console.log(response.data);
             } catch (err) {
                 console.log(err);
             }

@@ -9,7 +9,7 @@ import {
 
 import CustomButton from "../webcomponent/CustomButton";
 import ViewListingFull from "./ViewListingFull";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 
@@ -18,13 +18,11 @@ function ViewListing() {
     // Get request to get the listing details
     const { get } = useAxiosMethods();
     const [listing, setListing] = useState({});
-    
-    const getListing = () => {
-        get("/entrepreneur/listing/1", setListing);
-    }
 
-
-
+    useEffect(() => {
+        get("/entrepreneur/getListing/1604", setListing);
+        console.log(listing)
+    }, [])
 
     const [subView, setSubView] = useState(false);
     const [fullView, setFullView] = useState(true);
@@ -46,7 +44,7 @@ function ViewListing() {
                         controls
                         autoPlay
                     >
-                        <source src="video.mp4" type="video/mp4" />
+                        <source src="/assets/videos/video.mp4" type="video/mp4" />
                         Your browser does not support the video tag.
                     </video>
                 </CardHeader>
