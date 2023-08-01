@@ -1,5 +1,5 @@
 import Navbar from "../webcomponent/NavbarAll";
-import {Button } from "../webcomponent"
+import {Button } from "../webcomponent";
 
 const AdminTestHome = () => {
 
@@ -16,9 +16,11 @@ const AdminTestHome = () => {
                     <a href="/signup/enterprise-investor">Add New Enterprice Investor</a>
                 </Button>
                 <br></br>
+                {/* send request array to the ViewRequests.js page */}
                 <Button>
-                    <a href="/admin/view-requests">View Registration Requests</a>
+                    <a href="/admin/view-requests">View Requests</a>
                 </Button>
+                    
             </div>
         </>
 

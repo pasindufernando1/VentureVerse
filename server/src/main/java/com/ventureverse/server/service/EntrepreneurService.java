@@ -17,7 +17,6 @@ public class EntrepreneurService {
     }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
-        System.out.println("EntrepreneurService.findByApprovalStatus");
         return entrepreneurRepository.findByApprovalStatus(status);
     }
 }

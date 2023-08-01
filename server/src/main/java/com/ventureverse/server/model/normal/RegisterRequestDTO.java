@@ -1,5 +1,9 @@
 package com.ventureverse.server.model.normal;
 
+import com.ventureverse.server.enumeration.Role;
+import com.ventureverse.server.enumeration.Status;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +25,12 @@ public class RegisterRequestDTO {
     private String secondLineAddress;
     private String town;
     private String district;
+
+    @Enumerated(EnumType.STRING)
+    private Status approvalStatus = Status.PENDING;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // ADMIN | ENTREPRENEUR |INDIVIDUAL INVESTOR
     private String firstname;
