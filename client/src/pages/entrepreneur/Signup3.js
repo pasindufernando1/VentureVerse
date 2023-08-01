@@ -143,7 +143,7 @@ function Signup3({formData, setFormData,validateFormData}) {
                     type="file"
                     id="businessregdoc"
                     name="businessregdoc"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf,image/png, image/jpeg"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
                     state={validateFormData.businessregdoc}

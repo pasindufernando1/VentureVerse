@@ -19,4 +19,12 @@ public class EntrepreneurService {
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
         return entrepreneurRepository.findByApprovalStatus(status);
     }
+
+    public EntrepreneurDTO findById(Integer id) {
+        return entrepreneurRepository.findById(id).orElse(null);
+    }
+
+    public EntrepreneurDTO getEntrepreneurById(Integer id) {
+        return entrepreneurRepository.findById(id).orElse(null);
+    }
 }

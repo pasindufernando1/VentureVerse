@@ -1,12 +1,12 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.model.normal.ResponseDTO;
+import jakarta.annotation.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -29,7 +29,6 @@ public class RegistrationDocController {
 
         // Example paths for saving images and videos
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/regImages";
-        System.out.println("imageUploadPath: " + imageUploadPath);
 
         try {
             // Save images
@@ -108,4 +107,19 @@ public class RegistrationDocController {
         }
     }
 
+    @GetMapping("/get-image/{imageName}")
+    public ResponseEntity <UrlResource> getImage(@PathVariable String imageName) {
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/regImages";
+
+        try {
+            UrlResource file = new UrlResource(Paths.get(imageUploadPath, imageName).toUri());
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

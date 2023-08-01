@@ -119,7 +119,7 @@ function Signup2({formData, setFormData,validateFormData}) {
                     type="file"
                     id="policeReport"
                     name="policeReport"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf,image/png, image/jpeg"
                     className="hidden"
                     onChange={handlePoliceReportUpload}
                     state={validateFormData.policeReport}
@@ -144,7 +144,7 @@ function Signup2({formData, setFormData,validateFormData}) {
                     type="file"
                     id="bankStatement"
                     name="bankStatement"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf,image/png, image/jpeg"
                     className="hidden"
                     onChange={handleFileUpload}
                     state={validateFormData.bankStatement}

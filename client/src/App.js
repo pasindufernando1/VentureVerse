@@ -29,7 +29,7 @@ import InvestorTestHome from "./pages/investor/InvestorTestHome";
 import AdminTestHome from "./pages/admin/AdminTestHome";
 import AddCoAdmin from "./pages/admin/AddCoAdmin";
 import ViewRequest from "./pages/admin/ViewRequests.js"
-import ViewRequestDetails from "./pages/admin/ViewRequestDetails.js"
+import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails.js"
 
 import {Routes, Route} from "react-router-dom";
 
@@ -61,7 +61,7 @@ function App() {
                         <Route path="/admin" element={<AdminTestHome/>}/>
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
-                        <Route path="/admin/view-request-details/:id" element={<ViewRequestDetails/>}/>                   
+                        <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>                   
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

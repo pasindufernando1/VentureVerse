@@ -1,9 +1,8 @@
-import React,{useState} from "react";
+import React,{useState, Link} from "react";
 import Navbar from "../webcomponent/NavbarAll";
 import { Button, Select } from "../webcomponent";
 import { useEffect } from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-
 
 const ViewRequests = () => {
   const { get } = useAxiosMethods();
@@ -107,9 +106,15 @@ const ViewRequests = () => {
                         <td className="px-6 py-4">{request.email}</td>
                         <td className="px-6 py-4">{request.role}</td>
                         <td className="flex justify-center items-center py-2">
-                            <Button>
-                            <a href={`/admin/view-request-details/${request.id}`}>Details</a>
-                            </Button>
+                            {request.role === "Entrepreneur" ? (
+                                <Button>
+                                  <a href={`/admin/view-entrepreneur-details/${request.id}`}>View</a>
+                                </Button>
+                            ) : (
+                                <Button>
+                                  <a href={`/admin/view-entrepreneur-details/${request.id}`}>View</a>
+                                </Button>
+                            )}
                         </td>
                         </tr>
                     ))}

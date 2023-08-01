@@ -12,6 +12,8 @@ public interface EntrepreneurRepository extends JpaRepository<EntrepreneurDTO, I
     //check whether there are two business emails or not
     Optional<EntrepreneurDTO> findByBusinessEmail(String businessEmail);
 
+    Optional<EntrepreneurDTO> findById(Integer id);
+
     List<EntrepreneurDTO> findByApprovalStatus(Status ApprovalStatus);
 
 
