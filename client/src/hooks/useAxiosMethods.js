@@ -36,7 +36,7 @@ const useAxiosMethods = () => {
 
             const postRecord = async () => {
                 try {
-                    const response = await axiosPrivate.post('/admin/post', data, {
+                    const response = await axiosPrivate.post(url, data, {
                         signal: controller.signal,
                     });
                     isMounted && setResponse(response.data);
