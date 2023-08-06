@@ -235,7 +235,6 @@ public class AuthenticationService {
         emailService.sendEmail(user.getEmail(), "Test", "string");
 
         return GlobalService.response("Success", "User " + id + " Approved");
-
     }
 
     public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {

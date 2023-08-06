@@ -1,10 +1,9 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.model.normal.ResponseDTO;
-import jakarta.annotation.Resource;
+import com.ventureverse.server.service.EntrepreneurService;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,11 +12,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
 public class RegistrationDocController {
+    private final EntrepreneurService entrepreneurService;
 
+    public RegistrationDocController(EntrepreneurService entrepreneurService) {
+        this.entrepreneurService = entrepreneurService;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity <ResponseDTO> uploadFile(
@@ -88,7 +92,6 @@ public class RegistrationDocController {
 
         // Example paths for saving images and videos
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/regImages";
-        System.out.println("imageUploadPath: " + imageUploadPath);
 
         try {
             // Save images
@@ -107,19 +110,16 @@ public class RegistrationDocController {
         }
     }
 
-    @GetMapping("/get-image/{imageName}")
-    public ResponseEntity <UrlResource> getImage(@PathVariable String imageName) {
-        String rootDirectory = System.getProperty("user.dir");
-        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/regImages";
-
-        try {
-            UrlResource file = new UrlResource(Paths.get(imageUploadPath, imageName).toUri());
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(file);
-        } catch (IOException e) {
-            e.printStackTrace();
+    @GetMapping("/get-pdf/{id}")
+    public ResponseEntity <List<UrlResource>> getPDF(@PathVariable Integer id) {
+        List<UrlResource> urlResources = entrepreneurService.getPDF(id);
+        for(UrlResource urlResource : urlResources) {
+            System.out.println(urlResource);
+        }
+        if(urlResources == null) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }else{
+            return ResponseEntity.ok(urlResources);
         }
     }
 }

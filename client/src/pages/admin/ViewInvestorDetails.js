@@ -6,23 +6,21 @@ import Button from "../webcomponent/CustomButton";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
 
-const ViewEntrepreneurDetails = () => {
+const ViewInvestorDetails = () => {
   const { get } = useAxiosMethods();
   const [response, setResponse] = useState([]);
-  const[pdf,setPdf]=useState([]);
+  const[sectors,setSectors]=useState([]);
   
   const { id } = useParams();
 
   useEffect(() => {
-    get(`/entrepreneurs/pending-details/${id}`, setResponse);
+    get(`/investors/pending-details/${id}`, setResponse);
   }, [id]);
- 
+
   useEffect(() => {
-    get(`/auth/get-pdf/${id}`, setPdf);
+    get(`/investors/interested-sectors/${id}`, setSectors);
   }, [id]);
 
-
-  // create registrationRequestDetails using the response
   const registrationRequestDetails = {
     id: response.id,
     email: response.email,
@@ -37,21 +35,7 @@ const ViewEntrepreneurDetails = () => {
     gender:response.gender,
     nic:response.nic,
     policeReport:"/assets/images/20000499.pdf",
-    incomeStatement:"/assets/images/20000499.pdf",
-    collaboratorDetails:response.collaboratorDetails,
-    businessName:response.businessName,
-    businessContact:response.businessContact,
-    bfirstline:response.bfirstLineAddress,
-    bsecondline:response.bsecondLineAddress,
-    btown:response.btown,
-    bdistrict:response.bdistrict,
-    businessEmail:response.businessEmail,
-    businessWebsite:response.businessWebsite,
-    businessDescription:response.businessDescription,
-    businessRegDoc:"/assets/images/20000499.pdf",
-    felony: response.felony,
-    felonyDescription: response.felonyDescription,
-    lawsuit: response.lawSuit,
+    incomeStatement:"/assets/images/20000499.pdf"
   };
 
   const handleDocumentDownload = (documentUrl, documentName) => {
@@ -114,80 +98,25 @@ const ViewEntrepreneurDetails = () => {
               </div>
               <br></br>
               <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Business Information</h3>
+                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Investor Interested Sectors</h3>  
                 <div className="grid grid-cols-2 gap-2 ml-10">
-                  <p><strong>Business Name:</strong></p>
-                  <p>{registrationRequestDetails.businessName}</p>
-
-                  <p><strong>Business Contact:</strong></p>
-                  <p>{registrationRequestDetails.businessContact}</p>
-
-                  <p><strong>Business Address:</strong></p>
-                  <p>
-                    {registrationRequestDetails.bfirstline},{" "}
-                    {registrationRequestDetails.bsecondline?registrationRequestDetails.bsecondline:""}
-                    {registrationRequestDetails.btown},{" "}
-                    {registrationRequestDetails.bdistrict}
-                  </p>
-
-                  <p><strong>Business Email:</strong></p>
-                  <p>{registrationRequestDetails.businessEmail}</p>
-
-                  <p><strong>Business Website:</strong></p>
-                  <p>
-                    {registrationRequestDetails.businessWebsite?registrationRequestDetails.businessWebsite:"N/A"}
-                  </p>
-
-                  <p><strong>Business Description:</strong></p>
-                  <p>{registrationRequestDetails.businessDescription}</p>
-
-                  <p><strong>Collaborator Details:</strong></p>
-                  <p>
-                    {registrationRequestDetails.collaboratorDetails?registrationRequestDetails.collaboratorDetails:"N/A"}
-                  </p>
-
-                  <p><strong>Lawsuit</strong></p>
-                  <p>{registrationRequestDetails.lawsuit}</p>
-
-                  <p><strong>Felony</strong></p>
-                  <p>{registrationRequestDetails.felony}</p>
-
-                  {registrationRequestDetails.felony === "Yes" && (
-                    <p>
-                      <strong>Felony Description:</strong>
-                      {registrationRequestDetails.felonyDescription}
-                    </p>
-                  )}
-           
+                  <p><strong>Interested Sectors</strong></p>    
+                  <p>{sectors.map((sector) => (
+                   <ul class="space-y-4 text-left dark:text-gray-400">
+                   <li class="flex items-center space-x-3 mb-2">
+                       <svg class="flex-shrink-0 w-5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                       </svg>
+                       <span>{sector}</span>
+                   </li>
+                   </ul>
+                  ))}</p>            
                 </div>
-              </div>  
-              <br></br>  
+              </div>
+              <br></br>
               <div>
                 <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="document-container">
-                    <p><strong>Business Registration Document:</strong></p>
-                    <p>
-                    <iframe
-                      src={registrationRequestDetails.businessRegDoc}
-                      width="100%"
-                      height="520px"
-                      title="Business Registration Document"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          registrationRequestDetails.businessRegDoc,
-                          registrationRequestDetails.id + "_business_reg_doc"
-                        )
-                      }
-                      label="Download"
-                    />
-                    </p>
-                  </div>
+                <div className="grid grid-cols-2 gap-8">
                   <div className="document-container">  
                     <p><strong>Police Report:</strong></p>
                     <p>
@@ -240,13 +169,13 @@ const ViewEntrepreneurDetails = () => {
                 <Button
                   type="button"
                   // send post request to backend to accept the registration request
-                  // onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
+                  onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
                   label="Accept"                 
                 >
                 </Button>  
                 <Button
                   type="button"
-                  // onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
+                  onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
                   label="Reject"
                   >
                 </Button>
@@ -258,4 +187,4 @@ const ViewEntrepreneurDetails = () => {
   );
 };
 
-export default ViewEntrepreneurDetails;
+export default ViewInvestorDetails;

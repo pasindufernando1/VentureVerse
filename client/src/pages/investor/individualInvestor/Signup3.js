@@ -20,14 +20,14 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="policeReport" className="text-main-black block mb-1 text-[14px]">
-                    Please provide a copy of any police report
+                    Please provide a copy of any police report. upload it as a scanned pdf file
                     <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
                     id="policeReport"
                     name="policeReport"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf"
                     className="hidden"
                     onChange={handlePoliceReportUpload}
                     state={validateFormData.policeReport}
@@ -44,14 +44,14 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
-                    Please provide a copy of your bank statement
+                    Please provide a copy of your bank statement. upload it as a scanned pdf file
                     <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
                     id="bankStatement"
                     name="bankStatement"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf"
                     className="hidden"
                     onChange={handleBankStatementUpload}
                     state={validateFormData.bankStatement}

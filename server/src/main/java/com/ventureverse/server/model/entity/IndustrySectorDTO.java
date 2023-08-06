@@ -21,4 +21,7 @@ public class IndustrySectorDTO {
     private Integer sectorId;
     private String sectorName;
 
+    public String getName() {
+        return sectorName;
+    }
 }

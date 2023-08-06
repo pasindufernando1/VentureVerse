@@ -30,6 +30,7 @@ import AdminTestHome from "./pages/admin/AdminTestHome";
 import AddCoAdmin from "./pages/admin/AddCoAdmin";
 import ViewRequest from "./pages/admin/ViewRequests.js"
 import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails.js"
+import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -61,7 +62,8 @@ function App() {
                         <Route path="/admin" element={<AdminTestHome/>}/>
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
-                        <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>                   
+                        <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
+                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>               
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

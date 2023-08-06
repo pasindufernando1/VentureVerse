@@ -2,6 +2,7 @@ package com.ventureverse.server.repository;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
