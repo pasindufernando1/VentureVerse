@@ -232,7 +232,7 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
-        emailService.sendEmail(user.getEmail(), "Test", "string");
+//       emailService.sendEmail(user.getEmail(), "Test", "string");
 
         return GlobalService.response("Success", "User " + id + " Approved");
     }

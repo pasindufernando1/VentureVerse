@@ -1,12 +1,13 @@
 import Navbar from "../webcomponent/NavbarAll";
 import {Button } from "../webcomponent";
+import Sidebar from "../webcomponent/CustomSideBar";
 
 const AdminTestHome = () => {
 
     return (
         <>
-            <Navbar />
-            <div>
+        <Sidebar active="Dashboard">
+            <div>        
                 <h1>Admin Test Home</h1>
                 <Button>
                     <a href="/admin/add-co-admin">Add New Co Admin</a>
@@ -18,9 +19,10 @@ const AdminTestHome = () => {
                 <br></br>
                 <Button>
                     <a href="/admin/view-requests">View Requests</a>
-                </Button>
-                    
-            </div>
+                </Button>        
+            </div>    
+        </Sidebar>
+        
         </>
 
     )

@@ -2,6 +2,7 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
 import com.ventureverse.server.repository.IndividualInvestorRepository;
 import com.ventureverse.server.repository.IndustrySectorRepository;
@@ -39,5 +40,7 @@ public class InvestorService {
         return sectorNames;
     }
 
-
+    public IndividualInvestorDTO getInvestorById(int i) {
+        return individualInvestorRepository.findById(i).orElse(null);
+    }
 }

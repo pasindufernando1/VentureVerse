@@ -6,7 +6,7 @@ import Signup3 from './Signup3';
 import { Navbar, Footer, Button } from "../../webcomponent"
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
+const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 

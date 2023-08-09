@@ -60,6 +60,7 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
                         <Route path="/admin" element={<AdminTestHome/>}/>
+                        <Route path="/dashboard" element={<AdminTestHome/>}/>
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
                         <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    

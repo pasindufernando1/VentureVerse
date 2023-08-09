@@ -1,4 +1,5 @@
-import React,{useState, Link} from "react";
+import React,{useState} from "react";
+import { Link } from "react-router-dom";
 import Navbar from "../webcomponent/NavbarAll";
 import { Button, Select } from "../webcomponent";
 import { useEffect } from "react";
@@ -107,13 +108,13 @@ const ViewRequests = () => {
                         <td className="px-6 py-4">{request.role}</td>
                         <td className="flex justify-center items-center py-2">
                             {request.role === "Entrepreneur" ? (
-                                <Button>
-                                  <a href={`/admin/view-entrepreneur-details/${request.id}`}>View</a>
-                                </Button>
+                              <Button>
+                                <Link to={`/admin/view-entrepreneur-details/${request.id}`}>View</Link>
+                              </Button>
                             ) : (
-                                <Button>
-                                  <a href={`/admin/view-investor-details/${request.id}`}>View</a>
-                                </Button>
+                              <Button>
+                                <Link to={`/admin/view-investor-details/${request.id}`}>View</Link>
+                              </Button>
                             )}
                         </td>
                         </tr>

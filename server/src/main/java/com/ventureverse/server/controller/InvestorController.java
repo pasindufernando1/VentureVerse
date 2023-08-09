@@ -46,7 +46,6 @@ public class InvestorController {
         if (interestedSectors.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        System.out.println("SEctors"+interestedSectors);
         return ResponseEntity.ok(interestedSectors);
     }
 }

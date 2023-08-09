@@ -1,7 +1,7 @@
 import {Card} from "@material-tailwind/react";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { CommonNavbar, Checkbox, Radio, Textarea, Input, Button } from "../webcomponent";
+import { Navbar, Checkbox, Radio, Textarea, Input, Button } from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
 import { axiosPrivate } from "../../api/axios";
 
@@ -524,7 +524,7 @@ function AddListing() {
 
     return (
         <div>
-            <CommonNavbar />
+            <Navbar />
             <main className="h-auto min-h-[100vh] p-[2rem] flex justify-center items-center bg-gray-200">
                 
                 <form className=" bg-white flex drop-shadow-md mb-4 w-full h-full  rounded-[1rem] lg:w-9/12 lg:h-auto">

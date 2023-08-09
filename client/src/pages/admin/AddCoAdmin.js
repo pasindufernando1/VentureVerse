@@ -1,6 +1,7 @@
 import {Navbar,Button} from "../webcomponent";
 import React, {useState, useEffect} from "react";
 import { Input, Select } from "../webcomponent";
+import Sidebar from "../webcomponent/CustomSideBar";
 import axios from '../../api/axios';
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -142,172 +143,173 @@ const AdminTestHome = () => {
 
     return(
         <div>
-        <Navbar/>
-        <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
-            <form className=" bg-white flex drop-shadow-md w-[50rem] h-auto lg:rounded-[1rem] lg:w-9/12">
-                <div className="text-gray-700 p-20 w-full">
-                <div className="Signup1">
-                <h3 className="text-3xl text-main-purple self-center">Add New Co-Admin</h3>                                
-                    <div className="mt-6">
-                        <div className="row">
-                            <Input
-                                type="text"
-                                label="First Name"
-                                value={formData.firstname}
-                                onChange={(event)=>
-                                    setFormData({...formData, firstname: event.target.value})
-                                }
-                                state={validateFormData.firstname}
-                                required={true}
-                            />
-                            <Input
-                                type="text"
-                                label="Last name"
-                                value={formData.lastname}
-                                onChange={(event)=>
-                                    setFormData({...formData, lastname: event.target.value})
-                                }
-                                state={validateFormData.lastname}
-                                required={true}
-                            />
-                        </div>
-
-                        <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
-                            <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
-                            </legend>
+        <Sidebar active="Dashboard">
+            <main className="h-auto flex justify-center items-center g:h-screen">
+                <form className=" bg-white flex border-[1px] border-main-purple mt-[-2.5rem] h-auto lg:rounded-[1rem] lg:w-full">
+                    <div className="text-gray-700 p-20 w-full">
+                    <div className="Signup1">
+                    <h3 className="text-3xl text-main-purple self-center">Add New Co-Admin</h3>                                
+                        <div className="mt-6">
                             <div className="row">
                                 <Input
                                     type="text"
-                                    label="First Line"
-                                    value={formData.firstline}
+                                    label="First Name"
+                                    value={formData.firstname}
                                     onChange={(event)=>
-                                        setFormData({...formData, firstline: event.target.value})
+                                        setFormData({...formData, firstname: event.target.value})
                                     }
-                                    state={validateFormData.firstline}
+                                    state={validateFormData.firstname}
                                     required={true}
                                 />
                                 <Input
                                     type="text"
-                                    label="Second Line"
-                                    value={formData.secondline}
+                                    label="Last name"
+                                    value={formData.lastname}
                                     onChange={(event)=>
-                                        setFormData({...formData, secondline: event.target.value})
+                                        setFormData({...formData, lastname: event.target.value})
                                     }
-                                    
+                                    state={validateFormData.lastname}
+                                    required={true}
+                                />
+                            </div>
+
+                            <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
+                                <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
+                                </legend>
+                                <div className="row">
+                                    <Input
+                                        type="text"
+                                        label="First Line"
+                                        value={formData.firstline}
+                                        onChange={(event)=>
+                                            setFormData({...formData, firstline: event.target.value})
+                                        }
+                                        state={validateFormData.firstline}
+                                        required={true}
+                                    />
+                                    <Input
+                                        type="text"
+                                        label="Second Line"
+                                        value={formData.secondline}
+                                        onChange={(event)=>
+                                            setFormData({...formData, secondline: event.target.value})
+                                        }
+                                        
+                                    />
+                                </div>
+
+                                <div className="row">
+                                    <Input
+                                        type="text"
+                                        label="Town"
+                                        value={formData.town}
+                                        onChange={(event)=>
+                                            setFormData({...formData, town: event.target.value})
+                                        }
+                                        state={validateFormData.town}
+                                        required={true}
+                                    />
+                                    <Select 
+                                        label="District"
+                                        value={formData.district}
+                                        options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
+                                        onChange={(event)=>
+                                            setFormData({...formData, district: event})
+                                        }
+                                        state={validateFormData.district}
+                                        required={true}
+                                    />
+                                </div>
+                            </fieldset>
+
+                            <div className="row">
+                                <Input
+                                    type="email"
+                                    label="Email"
+                                    value={formData.email}
+                                    onChange={(event)=>
+                                        setFormData({...formData, email: event.target.value})
+                                    }
+                                    state={validateFormData.email}
+                                    required={true}
+                                />
+                                <Input
+                                    type="text"
+                                    label="NIC"
+                                    value={formData.nic}
+                                    onChange={(event)=>
+                                        setFormData({...formData, nic: event.target.value})
+                                    }
+                                    state={validateFormData.nic}
+                                    required={true}
                                 />
                             </div>
 
                             <div className="row">
-                                <Input
-                                    type="text"
-                                    label="Town"
-                                    value={formData.town}
+                                <Select
+                                    label="Gender"
+                                    value={formData.gender}
+                                    options={["Male","Female"]}
                                     onChange={(event)=>
-                                        setFormData({...formData, town: event.target.value})
+                                        setFormData({...formData, gender: event})
                                     }
-                                    state={validateFormData.town}
+                                    state={validateFormData.gender}
                                     required={true}
                                 />
-                                <Select 
-                                    label="District"
-                                    value={formData.district}
-                                    options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
+                                <Input
+                                    type="text"
+                                    label="mobile number"
+                                    value={formData.mobile}
                                     onChange={(event)=>
-                                        setFormData({...formData, district: event})
+                                        setFormData({...formData, mobile: event.target.value})
                                     }
-                                    state={validateFormData.district}
+                                    state={validateFormData.mobile}
                                     required={true}
                                 />
                             </div>
-                        </fieldset>
 
-                        <div className="row">
-                            <Input
-                                type="email"
-                                label="Email"
-                                value={formData.email}
-                                onChange={(event)=>
-                                    setFormData({...formData, email: event.target.value})
-                                }
-                                state={validateFormData.email}
-                                required={true}
-                            />
-                            <Input
-                                type="text"
-                                label="NIC"
-                                value={formData.nic}
-                                onChange={(event)=>
-                                    setFormData({...formData, nic: event.target.value})
-                                }
-                                state={validateFormData.nic}
-                                required={true}
-                            />
-                        </div>
-
-                        <div className="row">
-                            <Select
-                                label="Gender"
-                                value={formData.gender}
-                                options={["Male","Female"]}
-                                onChange={(event)=>
-                                    setFormData({...formData, gender: event})
-                                }
-                                state={validateFormData.gender}
-                                required={true}
-                            />
-                            <Input
-                                type="text"
-                                label="mobile number"
-                                value={formData.mobile}
-                                onChange={(event)=>
-                                    setFormData({...formData, mobile: event.target.value})
-                                }
-                                state={validateFormData.mobile}
-                                required={true}
-                            />
-                        </div>
-
-                        <div className="row">                                  
-                            <Input 
-                                type="password" 
-                                color="purple" 
-                                label={<span style={{ fontSize: '12px' }}>Password:</span>}
-                                value={formData.password}
-                                onChange={(event)=>
-                                    setFormData({...formData, password: event.target.value})
-                                }
-                                state={validateFormData.password}
-                                required={true}
-                            />
-                            <Input 
+                            <div className="row">                                  
+                                <Input 
                                     type="password" 
                                     color="purple" 
-                                    label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
-                                    value={formData.confirmPassword}
+                                    label={<span style={{ fontSize: '12px' }}>Password:</span>}
+                                    value={formData.password}
                                     onChange={(event)=>
-                                        setFormData({...formData, confirmPassword: event.target.value})
+                                        setFormData({...formData, password: event.target.value})
                                     }
-                                    state={validateFormData.confirmPassword}
+                                    state={validateFormData.password}
                                     required={true}
-                            />
-                        </div> 
+                                />
+                                <Input 
+                                        type="password" 
+                                        color="purple" 
+                                        label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
+                                        value={formData.confirmPassword}
+                                        onChange={(event)=>
+                                            setFormData({...formData, confirmPassword: event.target.value})
+                                        }
+                                        state={validateFormData.confirmPassword}
+                                        required={true}
+                                />
+                            </div> 
 
-                        <Button
-                            type="button"
-                            className="float-right"
-                            onClick={handleNextClick}
-                            label="Submit"
-                            disabled={disabled}
-                            >
-                        </Button>    
+                            <Button
+                                type="button"
+                                className="float-right"
+                                onClick={handleNextClick}
+                                label="Submit"
+                                disabled={disabled}
+                                >
+                            </Button>    
+                        </div>
                     </div>
-                </div>
-                                   
-                </div> 
-                <div className="coadmin w-[60%] rounded-r-[1rem] hidden lg:block">
-                </div>           
-            </form>
-        </main> 
+                                    
+                    </div> 
+                    <div className="coadmin w-[60%] rounded-r-[1rem] hidden lg:block">
+                    </div>           
+                </form>
+            </main> 
+        </Sidebar>  
         </div>   
     )
 

@@ -10,6 +10,7 @@ const ViewInvestorDetails = () => {
   const { get } = useAxiosMethods();
   const [response, setResponse] = useState([]);
   const[sectors,setSectors]=useState([]);
+  const [pdf, setPdf] = useState([]);
   
   const { id } = useParams();
 
@@ -38,17 +39,33 @@ const ViewInvestorDetails = () => {
     incomeStatement:"/assets/images/20000499.pdf"
   };
 
-  const handleDocumentDownload = (documentUrl, documentName) => {
-    const link = document.createElement("a");
-    link.href = documentUrl;
-    link.download = documentName;
-    link.click(); 
+  useEffect(() => {
+    get(`/auth/get-investor-pdf/${id}`, setPdf);
+  }, []);
+
+  const pdfs = {
+    policeReport:pdf[0],
+    incomeStatement:pdf[1],
+  }
+
+  const handleDocumentDownload = (documentData, documentName) => {
+    const linkSource = `data:application/pdf;base64,${documentData}`;
+    const downloadLink = document.createElement("a");
+    const fileName = `${documentName}.pdf`;
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+    
   };
 
   const handleAuthorization = async (status,id) => {   
-  //  post request to backend
     const response = await axios.post(`/auth/authorize/${status}/${id}`);
-    console.log(response);
+    const data = response.data;
+
+    const datastatus= data.status;
+    const statusMessage = data.message;
+
   };
   
   return (
@@ -121,9 +138,9 @@ const ViewInvestorDetails = () => {
                     <p><strong>Police Report:</strong></p>
                     <p>
                     <iframe
-                      src={registrationRequestDetails.policeReport}
+                      src={`data:application/pdf;base64,${pdfs.policeReport}`}
                       width="100%"
-                      height="520px"
+                      height="530px"
                       title="Police Report"
                     ></iframe>
                     <br></br>
@@ -132,7 +149,7 @@ const ViewInvestorDetails = () => {
                       type="button"
                       onClick={() =>
                         handleDocumentDownload(
-                          registrationRequestDetails.policeReport,
+                          pdfs.policeReport,
                           registrationRequestDetails.id + "_police_report"
                         )
                       }
@@ -144,9 +161,9 @@ const ViewInvestorDetails = () => {
                     <p><strong>Income Statement:</strong></p>
                     <p>
                     <iframe
-                      src={registrationRequestDetails.incomeStatement}
+                      src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
                       width="100%"
-                      height="520px"
+                      height="530px"
                       title="Income Statement"
                     ></iframe>
                     <br></br>
@@ -155,7 +172,7 @@ const ViewInvestorDetails = () => {
                       type="button"
                       onClick={() =>
                         handleDocumentDownload(
-                          registrationRequestDetails.incomeStatement,
+                          pdfs.incomeStatement,
                           registrationRequestDetails.id + "_income_statement"
                         )
                       }
@@ -168,7 +185,6 @@ const ViewInvestorDetails = () => {
               <div className="mt-4 flex justify-end space-x-4">
                 <Button
                   type="button"
-                  // send post request to backend to accept the registration request
                   onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
                   label="Accept"                 
                 >

@@ -15,12 +15,11 @@ const ViewEntrepreneurDetails = () => {
 
   useEffect(() => {
     get(`/entrepreneurs/pending-details/${id}`, setResponse);
-  }, [id]);
+  }, [id,get]);
  
   useEffect(() => {
     get(`/auth/get-pdf/${id}`, setPdf);
-  }, [id]);
-
+  }, []);
 
   // create registrationRequestDetails using the response
   const registrationRequestDetails = {
@@ -36,8 +35,8 @@ const ViewEntrepreneurDetails = () => {
     lastname: response.lastname,
     gender:response.gender,
     nic:response.nic,
-    policeReport:"/assets/images/20000499.pdf",
-    incomeStatement:"/assets/images/20000499.pdf",
+    policeReport:response.policeReport,
+    incomeStatement:response.incomeStatement,
     collaboratorDetails:response.collaboratorDetails,
     businessName:response.businessName,
     businessContact:response.businessContact,
@@ -48,23 +47,43 @@ const ViewEntrepreneurDetails = () => {
     businessEmail:response.businessEmail,
     businessWebsite:response.businessWebsite,
     businessDescription:response.businessDescription,
-    businessRegDoc:"/assets/images/20000499.pdf",
+    businessRegDoc:response.businessRegDoc,
     felony: response.felony,
     felonyDescription: response.felonyDescription,
     lawsuit: response.lawSuit,
   };
 
-  const handleDocumentDownload = (documentUrl, documentName) => {
-    const link = document.createElement("a");
-    link.href = documentUrl;
-    link.download = documentName;
-    link.click(); 
+  const pdfs = {
+    policeReport:pdf[0],
+    incomeStatement:pdf[1],
+    businessRegDoc:pdf[2],
+  }
+
+  const handleDocumentDownload = (documentData, documentName) => {
+    //download the pdf
+    const linkSource = `data:application/pdf;base64,${documentData}`;
+    const downloadLink = document.createElement("a");
+    const fileName = `${documentName}.pdf`;
+
+    downloadLink.href = linkSource;
+    downloadLink.download = fileName;
+    downloadLink.click();
+    
   };
 
   const handleAuthorization = async (status,id) => {   
-  //  post request to backend
     const response = await axios.post(`/auth/authorize/${status}/${id}`);
-    console.log(response);
+    const statusResponse = response.data.status;
+    const message = response.data.message;
+
+    console.log(statusResponse);
+    console.log(message);
+
+    if(statusResponse === "success"){
+      window.location.href = `/admin/registration-request-success/${message}`;
+    }else{
+      alert(message);
+    }
   };
   
   return (
@@ -169,10 +188,10 @@ const ViewEntrepreneurDetails = () => {
                     <p><strong>Business Registration Document:</strong></p>
                     <p>
                     <iframe
-                      src={registrationRequestDetails.businessRegDoc}
+                      src={`data:application/pdf;base64,${pdfs.businessRegDoc}`}
                       width="100%"
-                      height="520px"
-                      title="Business Registration Document"
+                      height="530px"
+                      title="Police Report"
                     ></iframe>
                     <br></br>
                     <Button
@@ -180,7 +199,7 @@ const ViewEntrepreneurDetails = () => {
                       type="button"
                       onClick={() =>
                         handleDocumentDownload(
-                          registrationRequestDetails.businessRegDoc,
+                          pdfs.businessRegDoc,
                           registrationRequestDetails.id + "_business_reg_doc"
                         )
                       }
@@ -192,9 +211,9 @@ const ViewEntrepreneurDetails = () => {
                     <p><strong>Police Report:</strong></p>
                     <p>
                     <iframe
-                      src={registrationRequestDetails.policeReport}
+                      src={`data:application/pdf;base64,${pdfs.policeReport}`}
                       width="100%"
-                      height="520px"
+                      height="530px"
                       title="Police Report"
                     ></iframe>
                     <br></br>
@@ -203,7 +222,7 @@ const ViewEntrepreneurDetails = () => {
                       type="button"
                       onClick={() =>
                         handleDocumentDownload(
-                          registrationRequestDetails.policeReport,
+                          pdfs.policeReport,
                           registrationRequestDetails.id + "_police_report"
                         )
                       }
@@ -215,9 +234,9 @@ const ViewEntrepreneurDetails = () => {
                     <p><strong>Income Statement:</strong></p>
                     <p>
                     <iframe
-                      src={registrationRequestDetails.incomeStatement}
+                      src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
                       width="100%"
-                      height="520px"
+                      height="530px"
                       title="Income Statement"
                     ></iframe>
                     <br></br>
@@ -226,7 +245,7 @@ const ViewEntrepreneurDetails = () => {
                       type="button"
                       onClick={() =>
                         handleDocumentDownload(
-                          registrationRequestDetails.incomeStatement,
+                          pdfs.incomeStatement,
                           registrationRequestDetails.id + "_income_statement"
                         )
                       }
@@ -239,14 +258,13 @@ const ViewEntrepreneurDetails = () => {
               <div className="mt-4 flex justify-end space-x-4">
                 <Button
                   type="button"
-                  // send post request to backend to accept the registration request
-                  // onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
+                  onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
                   label="Accept"                 
                 >
                 </Button>  
                 <Button
                   type="button"
-                  // onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
+                  onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
                   label="Reject"
                   >
                 </Button>
