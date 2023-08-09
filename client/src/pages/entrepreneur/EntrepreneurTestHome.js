@@ -1,12 +1,11 @@
-import { Navbar } from "../webcomponent";
+import { Header } from "../webcomponent";
 const EntrepreneurTestHome = () => {
 
     return (
         <>
-            <Navbar />
-            <div>
-                <h1>Entrepreneur Test Home</h1>
-            </div>
+            <Header active="Listing">
+                <h1>My Listings</h1>
+            </Header>
         </>
 
     )

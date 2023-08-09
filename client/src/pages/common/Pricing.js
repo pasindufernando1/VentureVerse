@@ -1,5 +1,5 @@
 import React from "react";
-import { CommonNavbar, Footer } from "../webcomponent";
+import { Navbar, Footer } from "../webcomponent";
 
 const Pricing = () => {
 
@@ -7,7 +7,7 @@ const Pricing = () => {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar active="Pricing"/>
+            <Navbar active="Pricing"/>
 
             <Footer/>
 

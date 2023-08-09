@@ -19,6 +19,7 @@ import ResetPassword from "./pages/common/ResetPassword";
 import Components from "./pages/webcomponent/Components";
 
 // Entrepreneur Pages
+import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
 
@@ -55,15 +56,18 @@ function App() {
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
+                        {/*<Route path="/dashboard" element={<AdminDashboard />}/>*/}
                         <Route path="/admin" element={<AdminTestHome/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
+                        {/*<Route path="/dashboard" element={<InvestorDashboard />}/>*/}
                         <Route path="/investor" element={<InvestorTestHome/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
-                        <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
+                        <Route path="/dashboard" element={<EntrepreneurDashboard />}/>
+                        <Route path="/listing" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                     </Route>
                 </Route>

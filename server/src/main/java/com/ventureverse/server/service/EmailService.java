@@ -28,7 +28,6 @@ public class EmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom("noreply@ventureverse.com");
-            System.out.println("Send");
             mailSender.send(mimeMessage);
         } catch (MessagingException Error) {
             LOGGER.error("Failed to send email", Error);

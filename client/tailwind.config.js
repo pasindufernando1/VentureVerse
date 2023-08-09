@@ -24,13 +24,6 @@ module.exports = withMT({
             serif: ['Montserrat', 'serif'],
         },
         extend: {
-            // spacing: {
-            //     '128': '32rem',
-            //     '144': '36rem',
-            // },
-            // borderRadius: {
-            //     '4xl': '2rem',
-            // },
             colors: {
                 'main-purple': '#8458B3',
                 'light-purple': '#D0BDF4',
@@ -40,6 +33,9 @@ module.exports = withMT({
                 'success-green': '#29CC97',
                 'error-red': '#CC4545',
             },
+            transitionProperty: {
+                'height': 'height',
+            }
         }
     },
     plugins: [],

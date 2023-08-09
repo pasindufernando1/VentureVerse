@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Carousel, CommonNavbar, Footer, Swiper} from "../webcomponent";
+import {Button, Carousel, Navbar, Footer, Swiper} from "../webcomponent";
 import {Avatar, Card, CardBody, CardHeader, Typography,} from "@material-tailwind/react";
 import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -99,7 +99,7 @@ const Home = () => {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar active="Home"/>
+            <Navbar active="Home"/>
 
             <section className="flex justify-center items-start w-full px-[1rem] lg:px-[5rem] py-[2rem]">
                 <Carousel

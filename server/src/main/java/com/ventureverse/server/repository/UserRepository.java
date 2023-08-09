@@ -1,5 +1,6 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.UserDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,5 +25,12 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
     Status findApprovalById(Integer id);
 
     Optional<UserDTO> findByEmail(String email);
+
+    @Query("""
+        SELECT u.role
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    Role findRoleById(Integer id);
 
 }
