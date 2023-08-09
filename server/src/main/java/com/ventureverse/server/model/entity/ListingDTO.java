@@ -1,7 +1,8 @@
 package com.ventureverse.server.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,10 +46,10 @@ public class ListingDTO {
     private Integer returnUnitProfitPercentage;
     private Integer returnEquityPercentage;
 
-    //Eliminate the circular reference
-    @JsonManagedReference
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="subscriptionId", referencedColumnName = "subscriptionId")
+    @JsonIgnore
     private SubscriptionDTO subscriptionType;
 
 
@@ -58,6 +59,7 @@ public class ListingDTO {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
+    @JsonIgnore
     private EntrepreneurDTO entrepreneurId;
 
 

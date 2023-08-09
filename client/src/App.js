@@ -23,6 +23,7 @@ import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
 import ViewListing from "./pages/entrepreneur/ViewListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
+import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
 
 // Investor Pages
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
@@ -68,7 +69,8 @@ function App() {
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
-                        <Route path="/entrepreneur/view-listingfull" element={<ViewListingFull />} />
+                        <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
+                        <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
                     </Route>
                 </Route>
                 {/*404*/}

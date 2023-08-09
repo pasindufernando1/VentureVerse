@@ -1,5 +1,6 @@
 package com.ventureverse.server.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -36,6 +37,7 @@ public class EntrepreneurDTO extends UserDTO {
     private String businessEmail;
     private String businessDescription;
     private String businessRegDoc;
+
 
     @OneToMany(mappedBy = "entrepreneurId")
     List<ListingDTO> listing;

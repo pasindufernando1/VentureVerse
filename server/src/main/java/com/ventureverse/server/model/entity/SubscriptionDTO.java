@@ -1,6 +1,8 @@
 package com.ventureverse.server.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,8 +26,7 @@ public class SubscriptionDTO {
     private String price;
     private Integer days;
 
-    //Eliminate the circular reference
-    @JsonBackReference
+
     @OneToMany(mappedBy = "subscriptionType")
     List<ListingDTO> listing;
 }
