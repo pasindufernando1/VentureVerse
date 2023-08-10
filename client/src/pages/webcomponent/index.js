@@ -28,5 +28,6 @@ export {
     Select,
     Navbar,
     Header,
+    InvestorHeader,
     Footer
 }

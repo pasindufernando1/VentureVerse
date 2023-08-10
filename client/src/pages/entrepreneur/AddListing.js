@@ -1553,7 +1553,7 @@ function AddListing() {
                                                 </StripeCheckout>
                                             </div>
                                             <div className="justify-end">
-                                                <Button variant="primary" label="Proceed with the free trial" icon="next" onClick={onSubmitFree}  type="button" disabled={disableFreeTrial}/>
+                                                c
                                             </div>
                                         </div>
                                     </div>

@@ -1,12 +1,12 @@
-import {Header} from "../webcomponent";
+import {InvestorHeader} from "../webcomponent";
 
 const InvestorDashboard = () => {
 
     return (
         <>
-            <Header active="Dashboard">
+            <InvestorHeader active="Dashboard">
                 <h1>Dashboard</h1>
-            </Header>
+            </InvestorHeader>
         </>
 
     )
