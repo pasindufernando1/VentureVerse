@@ -858,9 +858,8 @@ function AddListing() {
                                                         onChange={(event) =>
                                                             setCategories({...categories, food: event.target.checked})
                                                         }
-
                                                     />
-                                                    <Checkbox
+                                                    <Checkbox 
                                                         label="Technology"
                                                         name="Technology"
                                                         checked={categories.technology}

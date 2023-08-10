@@ -32,6 +32,10 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AdminTestHome from "./pages/admin/AdminTestHome";
 
 import {Routes, Route} from "react-router-dom";
+import ProfileInvestor from "./pages/investor/ProfileInvestor";
+import ProfileEntrepreneur from "./pages/entrepreneur/ProfileEntrepreneur";
+import ProfileAdmin from "./pages/admin/ProfileAdmin";
+import TermsAndCondition from "./pages/common/TermsAndCondition";
 
 function App() {
     return (
@@ -51,6 +55,8 @@ function App() {
                 <Route path="/signup/enterprise-investor" element={<EnterpriseInvestorSignup />} />
                 <Route path="/success" element={<Success/>}/>
                 <Route path="/comp" element={<Components />}/>
+                <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
+
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
                     <Route element={<RequireAuth allowedRoles={["ADMIN", "INVESTOR", "ENTREPRENEUR"]}/>}>
@@ -60,17 +66,22 @@ function App() {
                         {/* Routes Authorized to Admins */}
                         <Route path="/admin/dashboard" element={<AdminDashboard />}/>
                         <Route path="/admin" element={<AdminTestHome/>}/>
+                        <Route path="/profileAdmin" element={<ProfileAdmin/>}/>
+
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor" element={<InvestorTestHome/>}/>
+                        <Route path="/profileInvestor" element={<ProfileInvestor/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur/listing" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
+                        <Route path="/profileEntrepreneur" element={<ProfileEntrepreneur/>}/>
+
                     </Route>
                 </Route>
                 {/*404*/}
