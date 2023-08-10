@@ -18,6 +18,7 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
+    faCircleExclamation
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -68,6 +69,7 @@ const CustomHeader = (props) => {
     const menu = [
         {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
         {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/entrepreneur/view-listingfull"},
+        {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/complains"},
     ]
 
     const accountMenu = [
