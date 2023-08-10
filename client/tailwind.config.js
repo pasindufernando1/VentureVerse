@@ -17,6 +17,10 @@ module.exports = withMT({
             'white': '#FFFFFF',
             'black': '#000000',
             'success-green': '#29CC97',
+            'label-green-dark': '#03543f',
+            'label-green-light': '#def7ec',
+            'label-purple-dark': '#5521b5',
+            'label-purple-light': '#edebfe',
             'error-red': '#CC4545',
         },
         fontFamily: {
@@ -35,9 +39,12 @@ module.exports = withMT({
             },
             transitionProperty: {
                 'height': 'height',
+                'rotate': 'rotate',
             }
         }
     },
-    plugins: [],
+    plugins: [
+
+    ],
 });
 

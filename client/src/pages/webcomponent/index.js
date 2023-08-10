@@ -9,6 +9,12 @@ import Textarea from "./CustomTextarea";
 import Checkbox from "./CustomCheckbox";
 import Radio from "./CustomRadio";
 import Select from "./CustomSelect";
+import Popover from "./CustomPopOver";
+
+import BarChart from "./CustomBarChart";
+import DoughnutChart from "./CustomDoughnutChart";
+import AreaChart from "./CustomAreaChart";
+import Calendar from "./CustomCalendar";
 
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
@@ -25,7 +31,12 @@ export {
     Textarea,
     Radio,
     Select,
+    Popover,
+    AreaChart,
+    BarChart,
+    DoughnutChart,
+    Calendar,
     Navbar,
     Header,
-    Footer
+    Footer,
 }

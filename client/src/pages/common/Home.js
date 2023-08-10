@@ -4,7 +4,6 @@ import {Avatar, Card, CardBody, CardHeader, Typography,} from "@material-tailwin
 import {useNavigate} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faStar} from "@fortawesome/free-solid-svg-icons";
-import CustomButton from "../webcomponent/CustomButton";
 
 const Home = () => {
 
@@ -327,14 +326,14 @@ const Home = () => {
                                     <Typography className="w-[14rem] text-justify">
                                         {item.description}
                                     </Typography>
-                                    <CustomButton
+                                    <Button
                                         type="button"
                                         variant="clear"
                                         icon="next"
                                         className="!rounded-[2.5rem]"
                                     >
                                         Read More
-                                    </CustomButton>
+                                    </Button>
                                 </div>
                             </CardBody>
                         </Card>
@@ -368,14 +367,14 @@ const Home = () => {
                                     <Typography className="lg:w-[14rem] text-justify">
                                         {item.description}
                                     </Typography>
-                                    <CustomButton
+                                    <Button
                                         type="button"
                                         variant="clear"
                                         icon="next"
                                         className="!rounded-[2.5rem]"
                                     >
                                         Read More
-                                    </CustomButton>
+                                    </Button>
                                 </div>
                             </CardBody>
                         </Card>

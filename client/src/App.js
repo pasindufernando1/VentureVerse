@@ -24,9 +24,11 @@ import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
 
 // Investor Pages
+import InvestorDashboard from "./pages/investor/Dashboard";
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
 
 // Admin Pages
+import AdminDashboard from "./pages/admin/Dashboard";
 import AdminTestHome from "./pages/admin/AdminTestHome";
 
 import {Routes, Route} from "react-router-dom";
@@ -56,10 +58,12 @@ function App() {
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
+                        <Route path="/admin/dashboard" element={<AdminDashboard />}/>
                         <Route path="/admin" element={<AdminTestHome/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
+                        <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor" element={<InvestorTestHome/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
