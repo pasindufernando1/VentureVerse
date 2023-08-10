@@ -3,7 +3,8 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import { Navbar, Footer, Button } from "../../webcomponent"
+import { Navbar, Footer, Button } from "../../webcomponent";
+import SuccessNotification from "../../webcomponent/Success.js";
 
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -13,6 +14,8 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+
     const[formData, setFormData] = useState({
         firstname: '',
         lastname: '',
@@ -134,7 +137,7 @@ function Form() {
         // Add the required fields here, corresponding to each page
         0: ['firstname', 'lastname','firstline','town','district','email', 'nic', 'gender', 'mobile'],
         1:[],
-        2: ['policeReport', 'bankStatement','password', 'confirmPassword', 'terms']
+        2: ['policeReport', 'bankStatement','password', 'confirmPassword']
     });
 
     useEffect(() => {
@@ -196,7 +199,6 @@ function Form() {
     
     const handleNextClick = async () => {
         if (page === FormTitles.length - 1) {
-            console.log(requestData);
             try {
                 const formData = new FormData();
       
@@ -212,7 +214,6 @@ function Form() {
                 const response = await axios.post('/auth/uploadindividual', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
                 withCredentials: true});
-                console.log(response.data); 
       
                 //update the request data with the image names
                 requestData.policeReport = policeReportFileName;
@@ -222,10 +223,11 @@ function Form() {
                 const response2 = await axios.post('auth/register/individualInvestor', JSON.stringify(requestData), {
                 headers: { 'Content-Type': 'application/json' },
                 withCredentials: true});
-                console.log(response2.data); 
+
                 if(response2.data.status === "Success"){
-                  //redirect to success page
-                  window.location.href = "/success";
+                    setShowSuccessNotification(true);
+                }else{
+                    console.log("Error");
                 }
             }catch (error) {
                 console.error(error); // Handle any errors that occur during the request
@@ -264,6 +266,15 @@ function Form() {
                 </div>             
             </form>
         </main> 
+        <div>
+            {showSuccessNotification && (
+                <SuccessNotification
+                successTitle="Registration Request sent Successfully"
+                successMessage="Please wait for admin to check and approve your request"
+                redirectUrl="/"
+                />
+            )}
+        </div>
         <Footer/>
         </div>   
     )

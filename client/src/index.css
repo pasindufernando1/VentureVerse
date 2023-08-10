@@ -351,3 +351,15 @@ code {
     position: relative; 
     border-radius: 5px;
   }
+  .custom-toast {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    background-color: white;
+    color: #4caf50;
+    border-radius: 8px;
+}
+
+.toast-icon {
+    margin-right: 10px;
+}

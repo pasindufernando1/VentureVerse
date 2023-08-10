@@ -6,12 +6,15 @@ import Button from "../webcomponent/CustomButton";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
 import { Sidebar } from "../webcomponent";
+import SuccessNotification from "../webcomponent/Success";
 
 const ViewInvestorDetails = () => {
   const { get } = useAxiosMethods();
   const [response, setResponse] = useState([]);
   const[sectors,setSectors]=useState([]);
   const [pdf, setPdf] = useState([]);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
   
   const { id } = useParams();
 
@@ -62,10 +65,18 @@ const ViewInvestorDetails = () => {
 
   const handleAuthorization = async (status,id) => {   
     const response = await axios.post(`/auth/authorize/${status}/${id}`);
-    const data = response.data;
+    const statusResponse = response.data.status;
+    const message = response.data.message;
 
-    const datastatus= data.status;
-    const statusMessage = data.message;
+    if(statusResponse === "Success"){
+      if(status ==="PENDING"){
+        setShowSuccessNotification(true);
+      }else{
+        setShowErrorNotification(true);
+      }
+    }else{
+      alert(message);
+    }
 
   };
   
@@ -117,7 +128,7 @@ const ViewInvestorDetails = () => {
                 <br></br>
                 <div>
                   <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Investor Interested Sectors</h3>  
-                  <div className="grid grid-cols-2 gap-2 ml-10">
+                  <div className="grid grid-cols-2 ml-10">
                     <p><strong>Interested Sectors</strong></p>    
                     <p>{sectors.map((sector) => (
                     <ul class="space-y-4 text-left dark:text-gray-400">
@@ -140,7 +151,7 @@ const ViewInvestorDetails = () => {
                       <p>
                       <iframe
                         src={`data:application/pdf;base64,${pdfs.policeReport}`}
-                        width="100%"
+                        width="88%"
                         height="510px"
                         title="Police Report"
                       ></iframe>
@@ -163,7 +174,7 @@ const ViewInvestorDetails = () => {
                       <p>
                       <iframe
                         src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
-                        width="100%"
+                        width="88%"
                         height="510px"
                         title="Income Statement"
                       ></iframe>
@@ -200,6 +211,22 @@ const ViewInvestorDetails = () => {
             </div>
           </form>
         </main>
+        <div>
+            {showSuccessNotification && (
+                <SuccessNotification
+                successTitle="Registration request accepted!"
+                successMessage="New Individual Investor is added to the system successfully!"
+                redirectUrl="/admin/view-requests"
+                />
+            )}
+            {showErrorNotification && (
+              <SuccessNotification
+              successTitle="Registration request rejected!"
+              successMessage="Registration request is rejected successfully!"
+              redirectUrl="/admin/view-requests"
+              />
+            )}
+        </div>
       </Sidebar>
     </div>
   );

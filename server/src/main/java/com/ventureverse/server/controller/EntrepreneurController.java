@@ -41,17 +41,15 @@ public class EntrepreneurController {
         }
         return ResponseEntity.ok(pendingEntrepreneur);
     }
-
-    @PostMapping("/addcomplain/{id}")
-    public ResponseEntity<ResponseDTO> addComplain(
+    @PostMapping("/addcomplaint/{id}")
+    public ResponseEntity<ResponseDTO> addComplaint(
             @PathVariable Integer id,
-            HttpServletResponse response,
-            @RequestBody ComplainDTO complainDTO
-    ){
-        System.out.println("id"+id);
+            @RequestBody ComplainDTO complainDTO,
+            HttpServletResponse response
+    ) {
+        System.out.println("id = " + id);
         return ResponseEntity.ok(entrepreneurService.addComplain(response, complainDTO));
     }
-
 
 }
 

@@ -7,6 +7,7 @@ import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.ComplainRepository;
 import com.ventureverse.server.repository.EntrepreneurRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,8 +35,15 @@ public class EntrepreneurService {
         return entrepreneurRepository.findById(id).orElse(null);
     }
 
+
     public ResponseDTO addComplain(HttpServletResponse response, ComplainDTO complainDTO) {
-        complainRepository.save(complainDTO);
-        return new ResponseDTO("Success", "Complain added successfully");
+        var complain = ComplainDTO.builder()
+                .description(complainDTO.getDescription())
+                .date(complainDTO.getDate())
+                .userId(complainDTO.getUserId())
+                .build();
+
+        complainRepository.save(complain);
+        return GlobalService.response("Success", "Complain added successfully");
     }
 }

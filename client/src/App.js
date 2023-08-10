@@ -12,11 +12,12 @@ import Signup from "./pages/common/Signup";
 import EntrepreneurSignup from "./pages/entrepreneur/Form"
 import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
 import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
-import Success from "./pages/common/Success";
+import Success from "./pages/webcomponent/Success";
 import Login from "./pages/common/Login";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import ResetPassword from "./pages/common/ResetPassword";
 import Components from "./pages/webcomponent/Components";
+import Terms from "./pages/common/Terms";
 
 // Entrepreneur Pages
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
@@ -54,6 +55,7 @@ function App() {
                 <Route path="/signup/enterprise-investor" element={<EnterpriseInvestorSignup />} />
                 <Route path="/success" element={<Success/>}/>
                 <Route path="/comp" element={<Components />}/>
+                <Route path="/terms" element={<Terms/>}/>
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
                     <Route element={<RequireAuth allowedRoles={["ADMIN", "INVESTOR", "ENTREPRENEUR"]}/>}>

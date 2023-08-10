@@ -6,11 +6,14 @@ import Button from "../webcomponent/CustomButton";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
 import { Sidebar } from "../webcomponent";
+import SuccessNotification from "../webcomponent/Success";
 
 const ViewEntrepreneurDetails = () => {
   const { get } = useAxiosMethods();
   const [response, setResponse] = useState([]);
   const[pdf,setPdf]=useState([]);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+  const [showErrorNotification, setShowErrorNotification] = useState(false);
   
   const { id } = useParams();
 
@@ -77,11 +80,12 @@ const ViewEntrepreneurDetails = () => {
     const statusResponse = response.data.status;
     const message = response.data.message;
 
-    console.log(statusResponse);
-    console.log(message);
-
-    if(statusResponse === "success"){
-      window.location.href = `/admin/registration-request-success`;
+    if(statusResponse === "Success"){
+      if(status ==="PENDING"){
+        setShowSuccessNotification(true);
+      }else{
+        setShowErrorNotification(true);
+      }
     }else{
       alert(message);
     }
@@ -184,13 +188,13 @@ const ViewEntrepreneurDetails = () => {
                 <br></br>  
                 <div>
                   <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
-                  <div className="grid grid-cols-2 gap-5 ml-10">
+                  <div className="grid grid-cols-2  ml-10 ">
                     <div className="document-container">
                       <p><strong>Business Registration Document:</strong></p>
                       <p>
                       <iframe
                         src={`data:application/pdf;base64,${pdfs.businessRegDoc}`}
-                        width="100%"
+                        width="88%"
                         height="520px"
                         title="Police Report"
                       ></iframe>
@@ -213,7 +217,7 @@ const ViewEntrepreneurDetails = () => {
                       <p>
                       <iframe
                         src={`data:application/pdf;base64,${pdfs.policeReport}`}
-                        width="100%"
+                        width="88%"
                         height="520px"
                         title="Police Report"
                       ></iframe>
@@ -236,7 +240,7 @@ const ViewEntrepreneurDetails = () => {
                       <p>
                       <iframe
                         src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
-                        width="100%"
+                        width="88%"
                         height="520px"
                         title="Income Statement"
                       ></iframe>
@@ -273,6 +277,22 @@ const ViewEntrepreneurDetails = () => {
             </div>
           </form>
         </main>
+        <div>
+            {showSuccessNotification && (
+                <SuccessNotification
+                successTitle="Registration request accepted!"
+                successMessage="New entrepreneur is added to the system successfully!"
+                redirectUrl="/admin/view-requests"
+                />
+            )}
+            {showErrorNotification && (
+                <SuccessNotification
+                successTitle="Registration request rejected!"
+                successMessage="Registration request is rejected successfully!"
+                redirectUrl="/admin/view-requests"
+                />
+            )}
+        </div>
       </Sidebar>
     </div>
   );

@@ -63,11 +63,11 @@ const ViewRequests = () => {
       <Sidebar active="Registration requests">
         <div>
           <main className="h-auto flex justify-center items-center bg-white lg:h-screen mt-[-11rem]">
-            <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">
+            <form className="bg-white flex border-[1px] border-main-purple w-full h-auto lg:rounded-[1rem]">
               <div className="text-gray-700 p-[2rem] w-full">
                 <div className="row flex justify-between items-center">
                   <div>
-                    <h2 className="text-xl font-bold mb-4">Registration Requests</h2>  
+                    <h2 className="text-xl font-bold text-main-purple mb-4">Registration Requests</h2>  
                   </div>
                   <div className="register_select">
                     <Select

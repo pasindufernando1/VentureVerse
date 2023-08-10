@@ -3,9 +3,11 @@ import React, {useState, useEffect} from "react";
 import { Input, Select } from "../webcomponent";
 import Sidebar from "../webcomponent/CustomSideBar";
 import axios from '../../api/axios';
+import SuccessNotification from "../webcomponent/Success.js";
+
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
+const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
 const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
@@ -41,6 +43,8 @@ const AdminTestHome = () => {
     });
 
     const[disabled, setDisabled] = useState(true);
+
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 
     useEffect(() => {
         let emailFlag = emailRegex.test(formData.email);
@@ -108,15 +112,16 @@ const AdminTestHome = () => {
 
     const handleNextClick = async () => {
         const response2 = await axios.post('auth/register/admin', JSON.stringify(requestData), {
-            headers: { 'Content-Type': 'application/json' },
-            withCredentials: true});
+        headers: { 'Content-Type': 'application/json' },
+        withCredentials: true});
 
-            console.log(response2.data);
+        console.log(response2.data);
 
-            if(response2.data.status === "Success"){
-              window.location.href = "/success";
-            }
-
+        if(response2.data.status === "Success"){
+            setShowSuccessNotification(true);
+        }else{
+            console.log("Error");
+        }
     };
 
     //check all fields are valid and required fields are not empty
@@ -302,13 +307,21 @@ const AdminTestHome = () => {
                                 >
                             </Button>    
                         </div>
-                    </div>
-                                    
+                    </div>                             
                     </div> 
                     <div className="coadmin w-[60%] rounded-r-[1rem] hidden lg:block">
                     </div>           
                 </form>
             </main> 
+            <div>
+                {showSuccessNotification && (
+                    <SuccessNotification
+                    successTitle="Registration Successful"
+                    successMessage="You have successfully registered a new Co-Admin!"
+                    redirectUrl="/dashboard"
+                    />
+                )}
+            </div>
         </Sidebar>  
         </div>   
     )

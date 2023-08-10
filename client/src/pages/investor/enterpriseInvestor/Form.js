@@ -3,8 +3,9 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import { Navbar, Footer, Button } from "../../webcomponent"
+import {Button } from "../../webcomponent"
 import Sidebar from "../../webcomponent/CustomSideBar";
+import SuccessNotification from "../../webcomponent/Success.js";
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
@@ -13,6 +14,7 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 
     const[formData, setFormData] = useState({
         companyName: '',
@@ -129,7 +131,7 @@ function Form() {
     const [requiredFields] = useState({
         0: ['companyName','firstline','town','district','email', 'mobile','businessregdoc', 'bankStatement'],
         1:[],
-        2: ['password', 'confirmPassword', 'terms']
+        2: ['password', 'confirmPassword']
     });
 
     useEffect(() => {
@@ -211,8 +213,9 @@ function Form() {
                 withCredentials: true});
                 console.log(response2.data); 
                 if(response2.data.status === "Success"){
-                  //redirect to success page
-                  window.location.href = "/success";
+                    setShowSuccessNotification(true);
+                }else{
+                    console.log("Error");
                 }
               } catch (error) {
                 console.error(error); // Handle any errors that occur during the request
@@ -251,6 +254,15 @@ function Form() {
                     </div>             
                 </form>
             </main> 
+            <div>
+                {showSuccessNotification && (
+                    <SuccessNotification
+                    successTitle="Registration Successful"
+                    successMessage="You have successfully registered a new Enterprise Investor!"
+                    redirectUrl="/dashboard"
+                    />
+                )}
+            </div>
         </Sidebar>
         </div>   
     )

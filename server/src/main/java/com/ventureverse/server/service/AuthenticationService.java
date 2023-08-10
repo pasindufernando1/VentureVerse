@@ -219,7 +219,11 @@ public class AuthenticationService {
         }
 
         if (status.equals("decline")) {
-            userRepository.deleteById(id);
+            userRepository.findById(id).ifPresent(user -> {
+                user.setApprovalStatus(Status.DELETED);
+                userRepository.save(user);
+            }
+            );
             return GlobalService.response("Success", "Registration of User " + id + " is Declined");
         }
 
