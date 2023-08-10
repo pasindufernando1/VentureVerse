@@ -4,7 +4,7 @@ import { Input, Checkbox} from "../../webcomponent";
 function Signup3({formData, setFormData,validateFormData, categories, setCategories}) {
     return (
     <div className="Signup4">
-        <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
+        <h3 className="text-3xl text-main-purple self-center">Sign up as an Enterprice Investor</h3>                                
         <p className="text-main-purple">
         Finally, create a password
         </p>
@@ -37,19 +37,7 @@ function Signup3({formData, setFormData,validateFormData, categories, setCategor
                         required={true}
                     />
             </div> 
-            <br></br>
-            <div>
-                <Checkbox 
-                    color="purple" 
-                    label="I agree to the Terms and Conditions" 
-                    checked={formData.terms}
-                    onChange={(event)=>
-                        setFormData({...formData, terms: event.target.checked})
-                    }
-                    state={validateFormData.terms}
-                    required={true}
-                />
-            </div>                                    
+            <br></br>                                  
         </div>
     </div>    
     );

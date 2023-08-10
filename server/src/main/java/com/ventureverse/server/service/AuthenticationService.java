@@ -219,7 +219,11 @@ public class AuthenticationService {
         }
 
         if (status.equals("decline")) {
-            userRepository.deleteById(id);
+            userRepository.findById(id).ifPresent(user -> {
+                user.setApprovalStatus(Status.DELETED);
+                userRepository.save(user);
+            }
+            );
             return GlobalService.response("Success", "Registration of User " + id + " is Declined");
         }
 
@@ -232,10 +236,9 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
-        emailService.sendEmail(user.getEmail(), "Test", "string");
+//       emailService.sendEmail(user.getEmail(), "Test", "string");
 
         return GlobalService.response("Success", "User " + id + " Approved");
-
     }
 
     public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {

@@ -19,6 +19,7 @@ import Calendar from "./CustomCalendar";
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
 import InvestorHeader from "./InvestorHeader";
+import Sidebar from "./CustomSideBar";
 import Footer from "./Footer";
 
 export {
@@ -40,5 +41,6 @@ export {
     Navbar,
     Header,
     InvestorHeader,
+    Sidebar,
     Footer,
 }

@@ -1,7 +1,12 @@
 import React from "react";
-import { Input, Checkbox } from "../webcomponent";
+import { Input, Checkbox,Button } from "../webcomponent";
+import Modal from "react-modal";
+import { useState } from "react";
+import Terms from "../common/Terms";
+
 
 function Signup4({formData, setFormData,validateFormData}) {
+    const [isModalOpen, setIsModalOpen] = useState(false); 
     return (
     <div className="Signup4">
         <h3 className="text-3xl text-main-purple self-center">Sign up as an Entrepreneur</h3>                                
@@ -39,18 +44,33 @@ function Signup4({formData, setFormData,validateFormData}) {
             </div> 
             <br></br>
             <div>
+            <div>
                 <Checkbox 
-                    color="purple" 
-                    label="I agree to the Terms and Conditions" 
-                    checked={formData.terms}
-                    onChange={(event)=>
-                        setFormData({...formData, terms: event.target.checked})
-                    }
-                    state={validateFormData.terms}
-                    required={true}
+                color="purple" 
+                label="I agree to the terms and conditions"
+                name="terms"
+                checked={formData.terms}
+                onChange={(event) =>
+                    setFormData({ ...formData, terms: event.target.checked })
+                }
+                state={validateFormData.terms}
+                onClick={() => setIsModalOpen(true)}
+                required={true}
                 />
+            </div>  
             </div>                                    
         </div>
+        <Modal isOpen={isModalOpen} onRequestClose={() => setIsModalOpen(false)}>
+            {/* display  terms and consitions*/}
+            <Terms />
+            <Button
+                type="button"
+                className="float-right"
+                onClick={() => setIsModalOpen(false)}
+            >
+                Agree
+            </Button>
+        </Modal>
     </div>    
     );
 }

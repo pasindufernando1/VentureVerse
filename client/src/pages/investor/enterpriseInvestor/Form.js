@@ -3,15 +3,18 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import { Navbar, Footer, Button } from "../../webcomponent"
+import {Button } from "../../webcomponent"
+import Sidebar from "../../webcomponent/CustomSideBar";
+import SuccessNotification from "../../webcomponent/Success.js";
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
+const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 function Form() {
     const [page, setPage] = useState(0);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 
     const[formData, setFormData] = useState({
         companyName: '',
@@ -128,7 +131,7 @@ function Form() {
     const [requiredFields] = useState({
         0: ['companyName','firstline','town','district','email', 'mobile','businessregdoc', 'bankStatement'],
         1:[],
-        2: ['password', 'confirmPassword', 'terms']
+        2: ['password', 'confirmPassword']
     });
 
     useEffect(() => {
@@ -161,7 +164,6 @@ function Form() {
         }else if(page === 2){
             return <Signup3 formData={formData} setFormData={setFormData} validateFormData={validateFormData}/>
         }
-
     };
 
     const requestData =  {
@@ -211,8 +213,9 @@ function Form() {
                 withCredentials: true});
                 console.log(response2.data); 
                 if(response2.data.status === "Success"){
-                  //redirect to success page
-                  window.location.href = "/success";
+                    setShowSuccessNotification(true);
+                }else{
+                    console.log("Error");
                 }
               } catch (error) {
                 console.error(error); // Handle any errors that occur during the request
@@ -224,34 +227,43 @@ function Form() {
 
     return(
         <div>
-        <Navbar active="Sign Up"/>
-        <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
-            <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
-                <div className="text-gray-700 p-20 w-full">
-                    {PageDisplay()}
-                    <Button
-                        type="button"
-                        className={'float-left' + (page === 0 ? ' hidden' : '')}
-                        icon="previous"
-                        onClick={handlePrevClick}
-                    >
-                    Prev
-                    </Button>
-                    <Button
-                        type="button"
-                        className="float-right"
-                        onClick={handleNextClick}
-                        icon={page === FormTitles.length - 1 ? '' : 'next'}
-                        disabled={disabled}
-                    >
-                    {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
-                    </Button>                
-                    </div> 
-                <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block">
-                </div>             
-            </form>
-        </main> 
-        <Footer/>
+        <Sidebar active="Dashboard">
+            <main className="h-auto flex justify-center items-center lg:h-screen">
+                <form className=" bg-white flex border-[1px] border-main-purple mt-[-11rem] w-full h-auto lg:rounded-[1rem]">
+                    <div className="text-gray-700 p-10 w-full">
+                        {PageDisplay()}
+                        <Button
+                            type="button"
+                            className={'float-left' + (page === 0 ? ' hidden' : '')}
+                            icon="previous"
+                            onClick={handlePrevClick}
+                        >
+                        Prev
+                        </Button>
+                        <Button
+                            type="button"
+                            className="float-right"
+                            onClick={handleNextClick}
+                            icon={page === FormTitles.length - 1 ? '' : 'next'}
+                            disabled={disabled}
+                        >
+                        {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
+                        </Button>                
+                        </div> 
+                    <div className="enterprice w-[60%] rounded-r-[1rem] hidden lg:block">
+                    </div>             
+                </form>
+            </main> 
+            <div>
+                {showSuccessNotification && (
+                    <SuccessNotification
+                    successTitle="Registration Successful"
+                    successMessage="You have successfully registered a new Enterprise Investor!"
+                    redirectUrl="/dashboard"
+                    />
+                )}
+            </div>
+        </Sidebar>
         </div>   
     )
 }

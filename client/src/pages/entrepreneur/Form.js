@@ -5,17 +5,19 @@ import Signup2 from './Signup2';
 import Signup3 from './Signup3';
 import Signup4 from './Signup4';
 import { Navbar, Footer, Button } from "../webcomponent";
+import SuccessNotification from "../webcomponent/Success.js";
 
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
-const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
+const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
 const mobileRegex=/^(?:\+94|0)(?:\d{9})$/;
-const passwordRegex=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 
 function Form() {
 
   const [page, setPage] = useState(0);
+  const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 
   // form data
   const [formData, setFormData] = useState({
@@ -263,8 +265,7 @@ function Form() {
           withCredentials: true});
           console.log(response2.data); 
           if(response2.data.status === "Success"){
-            //redirect to success page
-            window.location.href = "/success";
+           setShowSuccessNotification(true);
           }
         } catch (error) {
           console.error(error); // Handle any errors that occur during the request
@@ -301,9 +302,18 @@ function Form() {
             {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
           </Button>
         </div>
-        <div className="listing w-[50%] rounded-r-[1rem] hidden lg:block"></div>
+        <div className="entrepreneur w-[50%] rounded-r-[1rem] hidden lg:block"></div>
       </form>
     </main>
+    <div>
+        {showSuccessNotification && (
+            <SuccessNotification
+            successTitle="Registration Request sent Successfully"
+            successMessage="Please wait for admin to check and approve your request"
+            redirectUrl="/"
+            />
+        )}
+    </div>
     <Footer />
     </div>
   );

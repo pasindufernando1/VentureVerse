@@ -136,14 +136,14 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
-                    Please upload a copy of your Business Registration Document
+                    Please upload a copy of your Business Registration Document. upload it as a scanned pdf file
                     <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
                     id="businessregdoc"
                     name="businessregdoc"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
                     state={validateFormData.businessregdoc}

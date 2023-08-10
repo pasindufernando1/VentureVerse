@@ -1,11 +1,15 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface IndividualInvestorRepository extends JpaRepository<IndividualInvestorDTO, Integer> {
 
@@ -17,4 +21,6 @@ public interface IndividualInvestorRepository extends JpaRepository<IndividualIn
     @Query(value = "INSERT INTO investor_interested_sector (investor_id, sector_id) " +
             "SELECT :investor, :sectorId", nativeQuery = true)
     int saveInvestorSector(@Param("investor") Integer investor, @Param("sectorId") Integer sectorId);
+
+    List<IndividualInvestorDTO> findByApprovalStatus(Status approvalStatus);
 }

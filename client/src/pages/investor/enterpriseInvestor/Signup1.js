@@ -12,7 +12,7 @@ function Signup1({formData, setFormData,validateFormData}) {
     };
     return (
     <div className="Signup1">
-        <h3 className="text-3xl text-main-purple self-center">Sign up as an Individual Investor</h3>                                
+        <h3 className="text-3xl text-main-purple self-center">Sign up as an Enterprice Investor</h3>                                
         <p className="text-main-purple">
         Tell us about you
         </p>
@@ -104,14 +104,14 @@ function Signup1({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                 <label htmlFor="businessregdoc" className="text-main-black block mb-1 text-[14px]">
-                    Please upload the Business Registration Document
+                    Please upload the Business Registration Document. upload it as a scanned pdf file
                     <span style={{ color: 'red' }}>*</span>
                 </label>
                 <input
                     type="file"
                     id="businessregdoc"
                     name="businessregdoc"
-                    accept="image/png, image/jpeg"
+                    accept=".pdf"
                     className="hidden"
                     onChange={handleBusinessRegDocUpload}
                     state={validateFormData.businessregdoc}
@@ -128,14 +128,14 @@ function Signup1({formData, setFormData,validateFormData}) {
             <div className="row">
                 <div className="file-input-container">
                     <label htmlFor="bankStatement" className="text-main-black block mb-1 text-[14px]">
-                        Please upload the Bank Statement
+                        Please upload the Bank Statement. upload it as a scanned pdf file
                         <span style={{ color: 'red' }}>*</span>
                     </label>
                     <input
                         type="file"
                         id="bankStatement"
                         name="bankStatement"
-                        accept="image/png, image/jpeg"
+                        accept=".pdf"
                         className="hidden"
                         onChange={handleBankStatement}
                         state={validateFormData.bankStatement}

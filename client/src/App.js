@@ -14,11 +14,12 @@ import InvestorDashboard from "./pages/investor/InvestorDashboard";
 import EntrepreneurSignup from "./pages/entrepreneur/Form"
 import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
 import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
-import Success from "./pages/common/Success";
+import Success from "./pages/webcomponent/Success";
 import Login from "./pages/common/Login";
 import ForgotPassword from "./pages/common/ForgotPassword";
 import ResetPassword from "./pages/common/ResetPassword";
 import Components from "./pages/webcomponent/Components";
+import Terms from "./pages/common/Terms";
 
 // Entrepreneur Pages
 import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
@@ -38,6 +39,11 @@ import InvestorTestHome from "./pages/investor/InvestorTestHome";
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminTestHome from "./pages/admin/AdminTestHome";
+import AddCoAdmin from "./pages/admin/AddCoAdmin";
+import ViewRequest from "./pages/admin/ViewRequests";
+import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
+import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
+
 
 import {Routes, Route} from "react-router-dom";
 import ProfileInvestor from "./pages/investor/ProfileInvestor";
@@ -75,7 +81,11 @@ function App() {
                         <Route path="/admin/dashboard" element={<AdminDashboard />}/>
                         <Route path="/admin" element={<AdminTestHome/>}/>
                         <Route path="/profileAdmin" element={<ProfileAdmin/>}/>
-
+                        <Route path="/dashboard" element={<AdminTestHome/>}/>
+                        <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
+                        <Route path="/admin/view-requests" element={<ViewRequest/>}/>
+                        <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
+                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>            
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -103,6 +113,7 @@ function App() {
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
+                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />
                     </Route>
                 </Route>
                 {/*404*/}
