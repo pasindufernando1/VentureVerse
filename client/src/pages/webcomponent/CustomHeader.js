@@ -66,8 +66,8 @@ const CustomHeader = (props) => {
     }, []);
 
     const menu = [
-        {'icon': faHouse, 'title': "Dashboard", 'link': "/dashboard"},
-        {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/listing"},
+        {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
+        {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/entrepreneur/listing"},
     ]
 
     const accountMenu = [

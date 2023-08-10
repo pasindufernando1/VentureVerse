@@ -56,18 +56,16 @@ function App() {
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
-                        {/*<Route path="/dashboard" element={<AdminDashboard />}/>*/}
                         <Route path="/admin" element={<AdminTestHome/>}/>
                     </Route>
-                    <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
+                    <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
-                        {/*<Route path="/dashboard" element={<InvestorDashboard />}/>*/}
                         <Route path="/investor" element={<InvestorTestHome/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
-                        <Route path="/dashboard" element={<EntrepreneurDashboard />}/>
-                        <Route path="/listing" element={<EntrepreneurTestHome/>}/>
+                        <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
+                        <Route path="/entrepreneur/listing" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                     </Route>
                 </Route>

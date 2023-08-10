@@ -54,12 +54,20 @@ const Login = () => {
                 }
             );
 
+            response.data.role = response?.data?.role.replace("_", " ");
             setAuth(response?.data);
 
             setEmail('');
             setPassword('');
 
-            const from = location?.state?.from || {pathname: "/dashboard"};
+            let role;
+            if (response?.data?.role === "INDIVIDUAL INVESTOR" || response?.data?.role === "ENTERPRISE INVESTOR") {
+                role = "investor";
+            } else {
+                role = response?.data?.role.toLowerCase();
+            }
+
+            const from = location?.state?.from || {pathname: "/" + role +"/dashboard"};
             navigate(from, {replace: true});
 
         } catch (err) {
