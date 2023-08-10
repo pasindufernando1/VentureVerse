@@ -170,7 +170,7 @@ function ViewListing() {
                                     label="Show more"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/view-listingfull">Show more</Link>
+                                    <Link to="/investor/view-listingfull">Show more</Link>
                                 </CustomButton>
                             </CardFooter>
                         </Card>
@@ -287,7 +287,7 @@ function ViewListing() {
                                     label="Show more"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/view-listingfull">Show more</Link>
+                                    <Link to="/investor/view-listingfull">Show more</Link>
                                 </CustomButton>
                             </CardFooter>
                         </Card>
@@ -404,7 +404,7 @@ function ViewListing() {
                                     label="Show more"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/view-listingfull">Show more</Link>
+                                    <Link to="/investor/view-listingfull">Show more</Link>
                                 </CustomButton>
                             </CardFooter>
                         </Card>
@@ -521,7 +521,7 @@ function ViewListing() {
                                     label="Show more"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/view-listingfull">Show more</Link>
+                                    <Link to="/investor/view-listingfull">Show more</Link>
                                 </CustomButton>
                             </CardFooter>
                         </Card>
@@ -529,7 +529,7 @@ function ViewListing() {
 
                     </div>
                     {/* Section for the filtering */}
-                    <div className="mr-[-5rem] right-2">
+                    <div className="mr-[-3rem]">
                         <Card
                             className={`transition-all duration-500  w-full flex items-center max-h-full p-4 shadow-xl shadow-blue-gray-900/5 rounded-none border-[1px] mt-[-3vh]`}>
 

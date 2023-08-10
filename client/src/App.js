@@ -25,6 +25,7 @@ import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
 import ViewListing from "./pages/entrepreneur/ViewListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
+import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
 
 // Investor Pages
@@ -67,10 +68,11 @@ function App() {
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor" element={<InvestorTestHome/>}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
+                        <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
-                        <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
+                        <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard/>}/>
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
