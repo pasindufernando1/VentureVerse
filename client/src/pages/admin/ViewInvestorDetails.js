@@ -5,6 +5,7 @@ import { useState } from "react";
 import Button from "../webcomponent/CustomButton";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
+import { Sidebar } from "../webcomponent";
 
 const ViewInvestorDetails = () => {
   const { get } = useAxiosMethods();
@@ -70,135 +71,136 @@ const ViewInvestorDetails = () => {
   
   return (
     <div>
-      <Navbar />
-      <main className="h-auto flex justify-center items-center bg-white">
-        <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-7/12 mt-8 mb-8">
-          <div className="text-gray-700 p-[2rem] w-full">
-            <div className="row flex justify-between items-center">
-              <div>
-                <h2 className="text-xl font-bold mb-4">Registration Request Details</h2>
-              </div>
-              </div>
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Personal Information</h3>  
-                <div className="grid grid-cols-2 gap-2 ml-10">
-                  <p><strong>User Role:</strong></p>
-                  <p>{registrationRequestDetails.role}</p>
-
-                  <p><strong>Email:</strong></p>
-                  <p>{registrationRequestDetails.email}</p>
-
-                  <p><strong>Contact Number:</strong></p>
-                  <p>{registrationRequestDetails.contactNum}</p>
-
-                  <p><strong>Address:</strong></p>
-                  <p>
-                    {registrationRequestDetails.firstline},{" "}
-                    {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""}
-                    {registrationRequestDetails.town},{" "}
-                    {registrationRequestDetails.district}
-                  </p>
-
-                  <p><strong>Full Name:</strong></p>
-                  <p>
-                    {registrationRequestDetails.firstname}{" "}
-                    {registrationRequestDetails.lastname}
-                  </p>
-
-                  <p><strong>Gender:</strong></p>
-                  <p>{registrationRequestDetails.gender}</p>
-
-                  <p><strong>NIC:</strong></p>
-                  <p>{registrationRequestDetails.nic}</p>
-
+      <Sidebar active="Registration requests">
+        <main className="h-auto flex justify-center items-center bg-white">
+          <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] mb-8">
+            <div className="text-gray-700 p-[2rem] w-full">
+              <div className="row flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-bold mb-4">Registration Request Details</h2>
                 </div>
-              </div>
-              <br></br>
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Investor Interested Sectors</h3>  
-                <div className="grid grid-cols-2 gap-2 ml-10">
-                  <p><strong>Interested Sectors</strong></p>    
-                  <p>{sectors.map((sector) => (
-                   <ul class="space-y-4 text-left dark:text-gray-400">
-                   <li class="flex items-center space-x-3 mb-2">
-                       <svg class="flex-shrink-0 w-5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
-                           <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
-                       </svg>
-                       <span>{sector}</span>
-                   </li>
-                   </ul>
-                  ))}</p>            
                 </div>
-              </div>
-              <br></br>
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
-                <div className="grid grid-cols-2 gap-8">
-                  <div className="document-container">  
-                    <p><strong>Police Report:</strong></p>
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Personal Information</h3>  
+                  <div className="grid grid-cols-2 gap-2 ml-10">
+                    <p><strong>User Role:</strong></p>
+                    <p>{registrationRequestDetails.role}</p>
+
+                    <p><strong>Email:</strong></p>
+                    <p>{registrationRequestDetails.email}</p>
+
+                    <p><strong>Contact Number:</strong></p>
+                    <p>{registrationRequestDetails.contactNum}</p>
+
+                    <p><strong>Address:</strong></p>
                     <p>
-                    <iframe
-                      src={`data:application/pdf;base64,${pdfs.policeReport}`}
-                      width="100%"
-                      height="530px"
-                      title="Police Report"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          pdfs.policeReport,
-                          registrationRequestDetails.id + "_police_report"
-                        )
-                      }
-                      label="Download"
-                    />
+                      {registrationRequestDetails.firstline},{" "}
+                      {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""}
+                      {registrationRequestDetails.town},{" "}
+                      {registrationRequestDetails.district}
                     </p>
-                  </div>
-                  <div className="document-container">
-                    <p><strong>Income Statement:</strong></p>
+
+                    <p><strong>Full Name:</strong></p>
                     <p>
-                    <iframe
-                      src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
-                      width="100%"
-                      height="530px"
-                      title="Income Statement"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          pdfs.incomeStatement,
-                          registrationRequestDetails.id + "_income_statement"
-                        )
-                      }
-                      label="Download"
-                    />
+                      {registrationRequestDetails.firstname}{" "}
+                      {registrationRequestDetails.lastname}
                     </p>
+
+                    <p><strong>Gender:</strong></p>
+                    <p>{registrationRequestDetails.gender}</p>
+
+                    <p><strong>NIC:</strong></p>
+                    <p>{registrationRequestDetails.nic}</p>
+
                   </div>
                 </div>
-              </div>  
-              <div className="mt-4 flex justify-end space-x-4">
-                <Button
-                  type="button"
-                  onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
-                  label="Accept"                 
-                >
-                </Button>  
-                <Button
-                  type="button"
-                  onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
-                  label="Reject"
+                <br></br>
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Investor Interested Sectors</h3>  
+                  <div className="grid grid-cols-2 gap-2 ml-10">
+                    <p><strong>Interested Sectors</strong></p>    
+                    <p>{sectors.map((sector) => (
+                    <ul class="space-y-4 text-left dark:text-gray-400">
+                    <li class="flex items-center space-x-3 mb-2">
+                        <svg class="flex-shrink-0 w-5 h-3.5 text-green-500 dark:text-green-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 12">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5.917 5.724 10.5 15 1.5"/>
+                        </svg>
+                        <span>{sector}</span>
+                    </li>
+                    </ul>
+                    ))}</p>            
+                  </div>
+                </div>
+                <br></br>
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
+                  <div className="grid grid-cols-2 gap-5 ml-10">
+                    <div className="document-container">  
+                      <p><strong>Police Report:</strong></p>
+                      <p>
+                      <iframe
+                        src={`data:application/pdf;base64,${pdfs.policeReport}`}
+                        width="100%"
+                        height="510px"
+                        title="Police Report"
+                      ></iframe>
+                      <br></br>
+                      <Button
+                        className="download-button"
+                        type="button"
+                        onClick={() =>
+                          handleDocumentDownload(
+                            pdfs.policeReport,
+                            registrationRequestDetails.id + "_police_report"
+                          )
+                        }
+                        label="Download"
+                      />
+                      </p>
+                    </div>
+                    <div className="document-container">
+                      <p><strong>Income Statement:</strong></p>
+                      <p>
+                      <iframe
+                        src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
+                        width="100%"
+                        height="510px"
+                        title="Income Statement"
+                      ></iframe>
+                      <br></br>
+                      <Button
+                        className="download-button"
+                        type="button"
+                        onClick={() =>
+                          handleDocumentDownload(
+                            pdfs.incomeStatement,
+                            registrationRequestDetails.id + "_income_statement"
+                          )
+                        }
+                        label="Download"
+                      />
+                      </p>
+                    </div>
+                  </div>
+                </div>  
+                <div className="mt-4 flex justify-end space-x-4">
+                  <Button
+                    type="button"
+                    onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
+                    label="Accept"                 
                   >
-                </Button>
-              </div>
-          </div>
-        </form>
-      </main>
+                  </Button>  
+                  <Button
+                    type="button"
+                    onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
+                    label="Reject"
+                    >
+                  </Button>
+                </div>
+            </div>
+          </form>
+        </main>
+      </Sidebar>
     </div>
   );
 };

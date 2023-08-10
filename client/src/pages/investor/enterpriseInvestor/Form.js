@@ -4,6 +4,7 @@ import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
 import { Navbar, Footer, Button } from "../../webcomponent"
+import Sidebar from "../../webcomponent/CustomSideBar";
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
@@ -223,33 +224,34 @@ function Form() {
 
     return(
         <div>
-        <Navbar active="Sign Up"/>
-        <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
-            <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
-                <div className="text-gray-700 p-20 w-full">
-                    {PageDisplay()}
-                    <Button
-                        type="button"
-                        className={'float-left' + (page === 0 ? ' hidden' : '')}
-                        icon="previous"
-                        onClick={handlePrevClick}
-                    >
-                    Prev
-                    </Button>
-                    <Button
-                        type="button"
-                        className="float-right"
-                        onClick={handleNextClick}
-                        icon={page === FormTitles.length - 1 ? '' : 'next'}
-                        disabled={disabled}
-                    >
-                    {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
-                    </Button>                
-                    </div> 
-                <div className="enterprice w-[60%] rounded-r-[1rem] hidden lg:block">
-                </div>             
-            </form>
-        </main> 
+        <Sidebar active="Dashboard">
+            <main className="h-auto flex justify-center items-center lg:h-screen">
+                <form className=" bg-white flex border-[1px] border-main-purple mt-[-11rem] w-full h-auto lg:rounded-[1rem]">
+                    <div className="text-gray-700 p-10 w-full">
+                        {PageDisplay()}
+                        <Button
+                            type="button"
+                            className={'float-left' + (page === 0 ? ' hidden' : '')}
+                            icon="previous"
+                            onClick={handlePrevClick}
+                        >
+                        Prev
+                        </Button>
+                        <Button
+                            type="button"
+                            className="float-right"
+                            onClick={handleNextClick}
+                            icon={page === FormTitles.length - 1 ? '' : 'next'}
+                            disabled={disabled}
+                        >
+                        {page === FormTitles.length - 1 ? 'Submit' : 'Next'}
+                        </Button>                
+                        </div> 
+                    <div className="enterprice w-[60%] rounded-r-[1rem] hidden lg:block">
+                    </div>             
+                </form>
+            </main> 
+        </Sidebar>
         </div>   
     )
 }

@@ -21,6 +21,7 @@ import Components from "./pages/webcomponent/Components";
 // Entrepreneur Pages
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
+import AddComplaints from "./pages/entrepreneur/AddComplaints";
 
 // Investor Pages
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
@@ -28,9 +29,10 @@ import InvestorTestHome from "./pages/investor/InvestorTestHome";
 // Admin Pages
 import AdminTestHome from "./pages/admin/AdminTestHome";
 import AddCoAdmin from "./pages/admin/AddCoAdmin";
-import ViewRequest from "./pages/admin/ViewRequests.js"
-import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails.js"
+import ViewRequest from "./pages/admin/ViewRequests";
+import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
 import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
+
 
 import {Routes, Route} from "react-router-dom";
 
@@ -64,7 +66,7 @@ function App() {
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
                         <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
-                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>               
+                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>            
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -74,6 +76,7 @@ function App() {
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
+                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />
                     </Route>
                 </Route>
                 {/*404*/}

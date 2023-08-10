@@ -67,7 +67,9 @@ const CustomSideBar = (props) => {
 
     const menu = [
         {'icon': faHouse, 'title': "Dashboard", 'link': "/admin"},
-        {'icon': faSquarePollVertical, 'title': "Users", 'link': "/admin/users"},
+        {'icon': faSquarePollVertical, 'title': "Registration requests", 'link': "/admin/view-requests"},
+        {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"},
+
     ]
 
     const accountMenu = [

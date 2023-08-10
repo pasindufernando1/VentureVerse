@@ -1,21 +1,25 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.ComplainDTO;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
+import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.repository.ComplainRepository;
 import com.ventureverse.server.repository.EntrepreneurRepository;
-import org.springframework.core.io.UrlResource;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class EntrepreneurService {
 
     private final EntrepreneurRepository entrepreneurRepository;
+    private final ComplainRepository complainRepository;
 
-    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository) {
+    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository) {
         this.entrepreneurRepository = entrepreneurRepository;
+        this.complainRepository = complainRepository;
     }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
@@ -30,4 +34,8 @@ public class EntrepreneurService {
         return entrepreneurRepository.findById(id).orElse(null);
     }
 
+    public ResponseDTO addComplain(HttpServletResponse response, ComplainDTO complainDTO) {
+        complainRepository.save(complainDTO);
+        return new ResponseDTO("Success", "Complain added successfully");
+    }
 }

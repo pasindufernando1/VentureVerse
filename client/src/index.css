@@ -217,6 +217,14 @@ code {
   background-size:cover;
 }
 
+.complaints{
+  background: url("../public/assets/images/complaints.jpg") no-repeat;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  margin-right: 3rem;
+}
+
 /* Image inside a container */
 .play-image{
   /* Image link */

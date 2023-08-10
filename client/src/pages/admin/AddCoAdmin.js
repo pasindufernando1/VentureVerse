@@ -145,8 +145,8 @@ const AdminTestHome = () => {
         <div>
         <Sidebar active="Dashboard">
             <main className="h-auto flex justify-center items-center g:h-screen">
-                <form className=" bg-white flex border-[1px] border-main-purple mt-[-2.5rem] h-auto lg:rounded-[1rem] lg:w-full">
-                    <div className="text-gray-700 p-20 w-full">
+                <form className=" bg-white flex border-[1px] border-main-purple mt-[-0.5rem] h-auto lg:rounded-[1rem] lg:w-full">
+                    <div className="text-gray-700 p-10 w-full">
                     <div className="Signup1">
                     <h3 className="text-3xl text-main-purple self-center">Add New Co-Admin</h3>                                
                         <div className="mt-6">

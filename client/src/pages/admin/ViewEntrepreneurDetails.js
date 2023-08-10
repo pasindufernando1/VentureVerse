@@ -5,6 +5,7 @@ import { useState } from "react";
 import Button from "../webcomponent/CustomButton";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
+import { Sidebar } from "../webcomponent";
 
 const ViewEntrepreneurDetails = () => {
   const { get } = useAxiosMethods();
@@ -80,7 +81,7 @@ const ViewEntrepreneurDetails = () => {
     console.log(message);
 
     if(statusResponse === "success"){
-      window.location.href = `/admin/registration-request-success/${message}`;
+      window.location.href = `/admin/registration-request-success`;
     }else{
       alert(message);
     }
@@ -88,190 +89,191 @@ const ViewEntrepreneurDetails = () => {
   
   return (
     <div>
-      <Navbar />
-      <main className="h-auto flex justify-center items-center bg-white">
-        <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-7/12 mt-8 mb-8">
-          <div className="text-gray-700 p-[2rem] w-full">
-            <div className="row flex justify-between items-center">
-              <div>
-                <h2 className="text-xl font-bold mb-4">Registration Request Details</h2>
-              </div>
-              </div>
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Personal Information</h3>  
-                <div className="grid grid-cols-2 gap-2 ml-10">
-                  <p><strong>User Role:</strong></p>
-                  <p>{registrationRequestDetails.role}</p>
-
-                  <p><strong>Email:</strong></p>
-                  <p>{registrationRequestDetails.email}</p>
-
-                  <p><strong>Contact Number:</strong></p>
-                  <p>{registrationRequestDetails.contactNum}</p>
-
-                  <p><strong>Address:</strong></p>
-                  <p>
-                    {registrationRequestDetails.firstline},{" "}
-                    {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""}
-                    {registrationRequestDetails.town},{" "}
-                    {registrationRequestDetails.district}
-                  </p>
-
-                  <p><strong>Full Name:</strong></p>
-                  <p>
-                    {registrationRequestDetails.firstname}{" "}
-                    {registrationRequestDetails.lastname}
-                  </p>
-
-                  <p><strong>Gender:</strong></p>
-                  <p>{registrationRequestDetails.gender}</p>
-
-                  <p><strong>NIC:</strong></p>
-                  <p>{registrationRequestDetails.nic}</p>
-
+      <Sidebar active="Registration requests">
+        <main className="h-auto flex justify-center items-center bg-white">
+          <form className="bg-white flex drop-shadow-md w-full mt-[-2rem] h-auto lg:rounded-[1rem] mt-8 mb-8">
+            <div className="text-gray-700 p-[2rem] w-full">
+              <div className="row flex justify-between items-center">
+                <div>
+                  <h2 className="text-xl font-bold mb-4">Registration Request Details</h2>
                 </div>
-              </div>
-              <br></br>
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Business Information</h3>
-                <div className="grid grid-cols-2 gap-2 ml-10">
-                  <p><strong>Business Name:</strong></p>
-                  <p>{registrationRequestDetails.businessName}</p>
-
-                  <p><strong>Business Contact:</strong></p>
-                  <p>{registrationRequestDetails.businessContact}</p>
-
-                  <p><strong>Business Address:</strong></p>
-                  <p>
-                    {registrationRequestDetails.bfirstline},{" "}
-                    {registrationRequestDetails.bsecondline?registrationRequestDetails.bsecondline:""}
-                    {registrationRequestDetails.btown},{" "}
-                    {registrationRequestDetails.bdistrict}
-                  </p>
-
-                  <p><strong>Business Email:</strong></p>
-                  <p>{registrationRequestDetails.businessEmail}</p>
-
-                  <p><strong>Business Website:</strong></p>
-                  <p>
-                    {registrationRequestDetails.businessWebsite?registrationRequestDetails.businessWebsite:"N/A"}
-                  </p>
-
-                  <p><strong>Business Description:</strong></p>
-                  <p>{registrationRequestDetails.businessDescription}</p>
-
-                  <p><strong>Collaborator Details:</strong></p>
-                  <p>
-                    {registrationRequestDetails.collaboratorDetails?registrationRequestDetails.collaboratorDetails:"N/A"}
-                  </p>
-
-                  <p><strong>Lawsuit</strong></p>
-                  <p>{registrationRequestDetails.lawsuit}</p>
-
-                  <p><strong>Felony</strong></p>
-                  <p>{registrationRequestDetails.felony}</p>
-
-                  {registrationRequestDetails.felony === "Yes" && (
-                    <p>
-                      <strong>Felony Description:</strong>
-                      {registrationRequestDetails.felonyDescription}
-                    </p>
-                  )}
-           
                 </div>
-              </div>  
-              <br></br>  
-              <div>
-                <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="document-container">
-                    <p><strong>Business Registration Document:</strong></p>
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Personal Information</h3>  
+                  <div className="grid grid-cols-2 gap-2 ml-10">
+                    <p><strong>User Role:</strong></p>
+                    <p>{registrationRequestDetails.role}</p>
+
+                    <p><strong>Email:</strong></p>
+                    <p>{registrationRequestDetails.email}</p>
+
+                    <p><strong>Contact Number:</strong></p>
+                    <p>{registrationRequestDetails.contactNum}</p>
+
+                    <p><strong>Address:</strong></p>
                     <p>
-                    <iframe
-                      src={`data:application/pdf;base64,${pdfs.businessRegDoc}`}
-                      width="100%"
-                      height="530px"
-                      title="Police Report"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          pdfs.businessRegDoc,
-                          registrationRequestDetails.id + "_business_reg_doc"
-                        )
-                      }
-                      label="Download"
-                    />
+                      {registrationRequestDetails.firstline},{" "}
+                      {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""}
+                      {registrationRequestDetails.town},{" "}
+                      {registrationRequestDetails.district}
                     </p>
-                  </div>
-                  <div className="document-container">  
-                    <p><strong>Police Report:</strong></p>
+
+                    <p><strong>Full Name:</strong></p>
                     <p>
-                    <iframe
-                      src={`data:application/pdf;base64,${pdfs.policeReport}`}
-                      width="100%"
-                      height="530px"
-                      title="Police Report"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          pdfs.policeReport,
-                          registrationRequestDetails.id + "_police_report"
-                        )
-                      }
-                      label="Download"
-                    />
+                      {registrationRequestDetails.firstname}{" "}
+                      {registrationRequestDetails.lastname}
                     </p>
-                  </div>
-                  <div className="document-container">
-                    <p><strong>Income Statement:</strong></p>
-                    <p>
-                    <iframe
-                      src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
-                      width="100%"
-                      height="530px"
-                      title="Income Statement"
-                    ></iframe>
-                    <br></br>
-                    <Button
-                      className="download-button"
-                      type="button"
-                      onClick={() =>
-                        handleDocumentDownload(
-                          pdfs.incomeStatement,
-                          registrationRequestDetails.id + "_income_statement"
-                        )
-                      }
-                      label="Download"
-                    />
-                    </p>
+
+                    <p><strong>Gender:</strong></p>
+                    <p>{registrationRequestDetails.gender}</p>
+
+                    <p><strong>NIC:</strong></p>
+                    <p>{registrationRequestDetails.nic}</p>
+
                   </div>
                 </div>
-              </div>  
-              <div className="mt-4 flex justify-end space-x-4">
-                <Button
-                  type="button"
-                  onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
-                  label="Accept"                 
-                >
-                </Button>  
-                <Button
-                  type="button"
-                  onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
-                  label="Reject"
+                <br></br>
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Business Information</h3>
+                  <div className="grid grid-cols-2 gap-2 ml-10">
+                    <p><strong>Business Name:</strong></p>
+                    <p>{registrationRequestDetails.businessName}</p>
+
+                    <p><strong>Business Contact:</strong></p>
+                    <p>{registrationRequestDetails.businessContact}</p>
+
+                    <p><strong>Business Address:</strong></p>
+                    <p>
+                      {registrationRequestDetails.bfirstline},{" "}
+                      {registrationRequestDetails.bsecondline?registrationRequestDetails.bsecondline:""}
+                      {registrationRequestDetails.btown},{" "}
+                      {registrationRequestDetails.bdistrict}
+                    </p>
+
+                    <p><strong>Business Email:</strong></p>
+                    <p>{registrationRequestDetails.businessEmail}</p>
+
+                    <p><strong>Business Website:</strong></p>
+                    <p>
+                      {registrationRequestDetails.businessWebsite?registrationRequestDetails.businessWebsite:"N/A"}
+                    </p>
+
+                    <p><strong>Business Description:</strong></p>
+                    <p>{registrationRequestDetails.businessDescription}</p>
+
+                    <p><strong>Collaborator Details:</strong></p>
+                    <p>
+                      {registrationRequestDetails.collaboratorDetails?registrationRequestDetails.collaboratorDetails:"N/A"}
+                    </p>
+
+                    <p><strong>Lawsuit</strong></p>
+                    <p>{registrationRequestDetails.lawsuit}</p>
+
+                    <p><strong>Felony</strong></p>
+                    <p>{registrationRequestDetails.felony}</p>
+
+                    {registrationRequestDetails.felony === "Yes" && (
+                      <p>
+                        <strong>Felony Description:</strong>
+                        {registrationRequestDetails.felonyDescription}
+                      </p>
+                    )}
+            
+                  </div>
+                </div>  
+                <br></br>  
+                <div>
+                  <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
+                  <div className="grid grid-cols-2 gap-5 ml-10">
+                    <div className="document-container">
+                      <p><strong>Business Registration Document:</strong></p>
+                      <p>
+                      <iframe
+                        src={`data:application/pdf;base64,${pdfs.businessRegDoc}`}
+                        width="100%"
+                        height="520px"
+                        title="Police Report"
+                      ></iframe>
+                      <br></br>
+                      <Button
+                        className="download-button"
+                        type="button"
+                        onClick={() =>
+                          handleDocumentDownload(
+                            pdfs.businessRegDoc,
+                            registrationRequestDetails.id + "_business_reg_doc"
+                          )
+                        }
+                        label="Download"
+                      />
+                      </p>
+                    </div>
+                    <div className="document-container">  
+                      <p><strong>Police Report:</strong></p>
+                      <p>
+                      <iframe
+                        src={`data:application/pdf;base64,${pdfs.policeReport}`}
+                        width="100%"
+                        height="520px"
+                        title="Police Report"
+                      ></iframe>
+                      <br></br>
+                      <Button
+                        className="download-button"
+                        type="button"
+                        onClick={() =>
+                          handleDocumentDownload(
+                            pdfs.policeReport,
+                            registrationRequestDetails.id + "_police_report"
+                          )
+                        }
+                        label="Download"
+                      />
+                      </p>
+                    </div>
+                    <div className="document-container">
+                      <p><strong>Income Statement:</strong></p>
+                      <p>
+                      <iframe
+                        src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
+                        width="100%"
+                        height="520px"
+                        title="Income Statement"
+                      ></iframe>
+                      <br></br>
+                      <Button
+                        className="download-button"
+                        type="button"
+                        onClick={() =>
+                          handleDocumentDownload(
+                            pdfs.incomeStatement,
+                            registrationRequestDetails.id + "_income_statement"
+                          )
+                        }
+                        label="Download"
+                      />
+                      </p>
+                    </div>
+                  </div>
+                </div>  
+                <div className="mt-4 flex justify-end space-x-4">
+                  <Button
+                    type="button"
+                    onClick={() => handleAuthorization("PENDING", registrationRequestDetails.id)}
+                    label="Accept"                 
                   >
-                </Button>
-              </div>
-          </div>
-        </form>
-      </main>
+                  </Button>  
+                  <Button
+                    type="button"
+                    onClick={() => handleAuthorization("decline", registrationRequestDetails.id)}
+                    label="Reject"
+                    >
+                  </Button>
+                </div>
+            </div>
+          </form>
+        </main>
+      </Sidebar>
     </div>
   );
 };
