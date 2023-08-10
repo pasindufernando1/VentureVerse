@@ -250,3 +250,10 @@ code {
 .stripe-checkout-button:hover {
   background-color: #5229a5;
 }
+.complaints{
+  background: url("../public/assets/images/complaints.jpg") no-repeat;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  margin-right:3rem;
+}

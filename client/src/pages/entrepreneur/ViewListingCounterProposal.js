@@ -5,8 +5,11 @@ import { Avatar } from "@material-tailwind/react";
 import {Header} from "../webcomponent";
 import {Link} from "react-router-dom";
 import CustomButton from "../webcomponent/CustomButton";
+import {useState} from "react";
 
 function ViewListingCounterProposal() {
+
+    const [showsuccessNotification, setshowsuccessNotification] = useState(false);
 
     //Array of objects with the following fields - Investor interested, Amount offered, Equity expected, Profit per unit expected, Actions
     const registrationRequests = [
@@ -35,9 +38,9 @@ function ViewListingCounterProposal() {
     return (
         <div>
             <Header active="Listing">
-                <main className="h-auto flex justify-center items-center bg-white lg:h-screen"
-                      style={{marginTop: '-70px'}}>
-                    <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-10/12">
+                <main className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
+                      >
+                    <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">
                         <div className="text-gray-700 p-[2rem] w-full">
                             <div className="row flex justify-between items-center">
                                 <div>

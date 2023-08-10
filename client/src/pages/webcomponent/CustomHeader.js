@@ -18,7 +18,8 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
-    faCircleExclamation
+    faCircleExclamation,
+    faCalendar
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -68,8 +69,10 @@ const CustomHeader = (props) => {
 
     const menu = [
         {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
-        {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/entrepreneur/view-listingfull"},
-        {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/complains"},
+        {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/entrepreneur/view-listingfull"},
+        {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
+        {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"},
+
     ]
 
     const accountMenu = [

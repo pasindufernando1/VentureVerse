@@ -27,6 +27,8 @@ import ViewListing from "./pages/entrepreneur/ViewListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
+import AddComplaints from "./pages/entrepreneur/AddComplaints";
+import Schedule from "./pages/entrepreneur/Schedule";
 
 // Investor Pages
 import InvestorTestHome from "./pages/investor/InvestorTestHome";
@@ -78,6 +80,8 @@ function App() {
                         <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
+                        <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
+                        <Route path="/entrepreneur/schedules" element={<Schedule />} />
                     </Route>
                 </Route>
                 {/*404*/}

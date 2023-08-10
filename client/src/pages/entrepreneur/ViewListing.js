@@ -63,6 +63,7 @@ function ViewListing() {
                                     style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                     controls
                                     autoPlay = {true}
+                                    muted
                                 >
                                     <source src="/assets/videos/video1.mp4" type="video/mp4"/>
                                     Your browser does not support the video tag.
@@ -180,6 +181,7 @@ function ViewListing() {
                                     style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                     controls
                                     autoPlay
+                                    muted
                                 >
                                     <source src="/assets/videos/video2.mp4" type="video/mp4"/>
                                     Your browser does not support the video tag.
@@ -297,6 +299,7 @@ function ViewListing() {
                                     style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                     controls
                                     autoPlay
+                                    muted
                                 >
                                     <source src="/assets/videos/video3.mp4" type="video/mp4"/>
                                     Your browser does not support the video tag.
@@ -414,6 +417,7 @@ function ViewListing() {
                                     style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                     controls
                                     autoPlay
+                                    muted
                                 >
                                     <source src="/assets/videos/video4.mp4" type="video/mp4"/>
                                     Your browser does not support the video tag.

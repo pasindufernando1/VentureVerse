@@ -7,6 +7,7 @@ import {
     Button,
 } from "@material-tailwind/react";
 import {InvestorHeader, Input, Checkbox} from "../webcomponent";
+import SuccessNotification from "../webcomponent/Success";
 
 import {
     Dialog,
@@ -20,12 +21,18 @@ import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import React from "react";
+import {useState} from "react";
 
 
 function ViewListingFullInvestor() {
+    const [showsuccessNotification, setshowsuccessNotification] = useState(false);
     const [open, setOpen] = React.useState(false);
 
     const handleInterested = () => setOpen(!open);
+    const submit =() =>{
+        setshowsuccessNotification(true);
+        setOpen(false);
+    }
 
     return (
         <div>
@@ -457,14 +464,24 @@ function ViewListingFullInvestor() {
                         >
                             <span>Continue without counter-offering</span>
                         </CustomButton>
-                        <CustomButton variant="primary" color="green" onClick={handleInterested}>
+                        <CustomButton variant="primary" color="green" onClick={submit}>
                             <span>Continue</span>
                         </CustomButton>
                         
                     </DialogFooter>
                 </Dialog>
             </InvestorHeader>
+            <div>
+            {showsuccessNotification && (
+                <SuccessNotification
+                successTitle="Counter proposal added successfully!"
+                successMessage="You can contact the entrepreneur directly to discuss further."
+                redirectUrl="/investor/view-listing"
+                />
+            )}
+            </div>
         </div>
+        
 
 
     );

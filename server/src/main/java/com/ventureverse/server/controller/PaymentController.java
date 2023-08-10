@@ -40,7 +40,7 @@ public class PaymentController {
 
             // Do any additional processing here (e.g., record the transaction in your database)
 
-            return ResponseEntity.ok("Payment successful! Charge ID: " + charge.getId());
+            return ResponseEntity.ok("Payment successful!");
         } catch (StripeException e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed!");

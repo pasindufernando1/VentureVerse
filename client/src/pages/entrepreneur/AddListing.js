@@ -272,7 +272,7 @@ function AddListing() {
             post('/entrepreneur/pay', {token, amount}, setRes);
 
             // Handle the response from the server (optional)
-            console.log(res.data);
+            console.log(res);
             onSubmitFree();
 
 
