@@ -845,7 +845,6 @@ function AddListing() {
                                                         onChange={(event)=>
                                                             setCategories({...categories, food: event.target.checked})
                                                         }
-        
                                                 />
                                                 <Checkbox 
                                                         label="Technology"
@@ -979,6 +978,7 @@ function AddListing() {
                                                             setCategories({...categories, housewares: event.target.checked})
                                                         }
                                                 />
+
                                                 </div>
                                             </div>
                                         </div>
