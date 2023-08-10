@@ -15,6 +15,7 @@ const useAxiosMethods = () => {
                     signal: controller.signal,
                 });
                 isMounted && setResponse(response.data);
+                console.log(response.data);
             } catch (err) {
                 console.log(err);
             }
@@ -29,7 +30,7 @@ const useAxiosMethods = () => {
 
     }
 
-    const post = (url, data, setResponse) => {
+    const post = (url, data, setResponse, images = false) => {
 
             let isMounted = true;
             const controller = new AbortController();
@@ -45,7 +46,23 @@ const useAxiosMethods = () => {
                 }
             }
 
-            postRecord().then();
+            const postImage = async () => {
+                try {
+                    const response = await axiosPrivate.post(url, data, {
+                        signal: controller.signal,
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                    isMounted && setResponse(response.data);
+                } catch (err) {
+                    console.log(err);
+                }
+            }
+
+            if (images) {
+                postImage().then();
+            } else {
+                postRecord().then();
+            }
 
             return () => {
                 isMounted = false;

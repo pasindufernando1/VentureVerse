@@ -9,7 +9,7 @@ import { Navbar, Footer, Carousel, Alert, Input, Button } from "../webcomponent"
 
 const Login = () => {
 
-    const {setAuth} = useAuth();
+    const {auth,setAuth} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,7 +46,7 @@ const Login = () => {
 
         try {
 
-            const response = await axios.post('/auth/authenticate',
+            let response = await axios.post('/auth/authenticate',
                 JSON.stringify({email, password}),
                 {
                     headers: {'Content-Type': 'application/json'},
@@ -56,7 +56,7 @@ const Login = () => {
 
             response.data.role = response?.data?.role.replace("_", " ");
             setAuth(response?.data);
-
+            
             setEmail('');
             setPassword('');
 

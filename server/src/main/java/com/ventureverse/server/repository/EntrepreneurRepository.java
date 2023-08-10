@@ -9,5 +9,7 @@ public interface EntrepreneurRepository extends JpaRepository<EntrepreneurDTO, I
     //check whether there are two business emails or not
     Optional<EntrepreneurDTO> findByBusinessEmail(String businessEmail);
 
+    //Function to get the entrepreneur by the userId
+
 
 }

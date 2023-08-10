@@ -18,6 +18,7 @@ import Calendar from "./CustomCalendar";
 
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
+import InvestorHeader from "./InvestorHeader";
 import Footer from "./Footer";
 
 export {
@@ -38,5 +39,6 @@ export {
     Calendar,
     Navbar,
     Header,
+    InvestorHeader,
     Footer,
 }

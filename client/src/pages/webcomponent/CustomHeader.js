@@ -18,13 +18,14 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
+    faCircleExclamation,
+    faCalendar
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 import axios from "../../api/axios";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {MenuButton} from "./index";
-
 const CustomHeader = (props) => {
 
     let {active, children} = props;
@@ -77,7 +78,9 @@ const CustomHeader = (props) => {
     } else if (auth?.role === "ENTREPRENEUR") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
-            {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/entrepreneur/listing"},
+            {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/entrepreneur/view-listingfull"},
+            {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"}
         )
     } else if (auth?.role === "INDIVIDUAL INVESTOR" || auth?.role === "ENTERPRISE INVESTOR") {
         menu.push(

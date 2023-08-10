@@ -3,12 +3,15 @@ package com.ventureverse.server.service;
 import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.ListingImagesDTO;
 import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
+import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import static java.lang.System.exit;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,7 @@ public class ListingService {
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
     private final ListingImagesRepository listingImagesRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final ListingSubscriptionRepository listingSubscriptionRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
@@ -75,5 +79,17 @@ public class ListingService {
                     .build());
         }
         return GlobalService.response("Success","Listing added successfully");
+    }
+
+    //Function to get the listing details by id
+    public ListingDTO getListing(int id) {
+        return listingRepository.findById(id).orElseThrow();
+    }
+
+    //Function to get the subscriptiontype of a listing
+    public ListingSubscriptionDTO getSubscriptionType(int id) {
+        //Get the listigDTO object
+        var listing = listingRepository.findById(id).orElseThrow();
+        return listingSubscriptionRepository.findByListingId(listing).orElseThrow();
     }
 }

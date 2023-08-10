@@ -90,6 +90,14 @@ code {
     background-size: cover;
 }
 
+.addlisting{
+  background: url("../public/assets/images/addlisting.jpg");
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  margin-right:3rem;
+}
+
 .swiper-slide {
     background-position: center;
     background-size: cover;
@@ -311,4 +319,12 @@ code {
 
 .apexcharts-yaxis {
     width: 10rem !important;
+}
+
+.complaints{
+  background: url("../public/assets/images/complaints.jpg") no-repeat;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  margin-right:3rem;
 }

@@ -9,6 +9,8 @@ import About from "./pages/common/About";
 import Pricing from "./pages/common/Pricing";
 import Contact from "./pages/common/Contact";
 import Signup from "./pages/common/Signup";
+import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
+import InvestorDashboard from "./pages/investor/InvestorDashboard";
 import EntrepreneurSignup from "./pages/entrepreneur/Form"
 import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
 import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
@@ -22,6 +24,12 @@ import Components from "./pages/webcomponent/Components";
 import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
 import EntrepreneurTestHome from "./pages/entrepreneur/EntrepreneurTestHome";
 import AddListing from "./pages/entrepreneur/AddListing";
+import ViewListing from "./pages/entrepreneur/ViewListing";
+import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
+import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
+import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
+import AddComplaints from "./pages/entrepreneur/AddComplaints";
+import Schedule from "./pages/entrepreneur/Schedule";
 
 // Investor Pages
 import InvestorDashboard from "./pages/investor/Dashboard";
@@ -82,6 +90,19 @@ function App() {
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/profileEntrepreneur" element={<ProfileEntrepreneur/>}/>
 
+                        <Route path="/investor/view-listing" element={<ViewListing />} />
+                        <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
+                    </Route>
+                    <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
+                        {/* Routes Authorized to Entrepreneurs */}
+                        <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard/>}/>
+                        <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
+                        <Route path="/entrepreneur/add-listing" element={<AddListing />} />
+                        <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
+                        <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
+                        <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
+                        <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
+                        <Route path="/entrepreneur/schedules" element={<Schedule />} />
                     </Route>
                 </Route>
                 {/*404*/}
