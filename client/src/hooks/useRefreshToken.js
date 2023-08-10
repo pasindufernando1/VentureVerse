@@ -10,6 +10,7 @@ const useRefreshToken = () => {
         const response = await axios.get('/auth/refresh-token', {
             withCredentials: true
         });
+        response.data.role = response?.data?.role.replace("_", " ");
         setAuth(response?.data);
         return response.data.accessToken;
     };

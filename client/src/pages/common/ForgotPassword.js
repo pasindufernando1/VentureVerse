@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Avatar, Card, CardBody, CardHeader, Carousel, Typography} from "@material-tailwind/react";
 
-import { CommonNavbar, Footer, Input, Button } from "../webcomponent";
+import { Navbar, Footer, Input, Button } from "../webcomponent";
 
 import axios from "../../api/axios";
 
@@ -111,7 +111,7 @@ const ForgotPassword = () => {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar/>
+            <Navbar/>
 
             <section
                 className="flex flex-col md:flex-row  md:space-y-0 md:space-x-16 justify-items-center md:mx-0 m-20 lg:my-[5rem]">

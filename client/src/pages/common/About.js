@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, CommonNavbar, Footer } from "../webcomponent";
+import { Button, Navbar, Footer } from "../webcomponent";
 
 function Jumbotron() {
     // do something to the image
@@ -155,7 +155,7 @@ const About = () => {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar active="About"/>
+            <Navbar active="About"/>
             <Jumbotron/>
             <Cards/>
             <Video1/>

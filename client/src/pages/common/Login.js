@@ -5,11 +5,11 @@ import axios from "../../api/axios";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faApple, faFacebook, faGoogle} from "@fortawesome/free-brands-svg-icons";
 import {Avatar, Card, CardBody, CardHeader, Typography} from "@material-tailwind/react";
-import { CommonNavbar, Footer, Carousel, Alert, Input, Button } from "../webcomponent";
+import { Navbar, Footer, Carousel, Alert, Input, Button } from "../webcomponent";
 
 const Login = () => {
 
-    const {setAuth} = useAuth();
+    const {auth,setAuth} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -46,7 +46,7 @@ const Login = () => {
 
         try {
 
-            const response = await axios.post('/auth/authenticate',
+            let response = await axios.post('/auth/authenticate',
                 JSON.stringify({email, password}),
                 {
                     headers: {'Content-Type': 'application/json'},
@@ -54,12 +54,20 @@ const Login = () => {
                 }
             );
 
+            response.data.role = response?.data?.role.replace("_", " ");
             setAuth(response?.data);
-
+            
             setEmail('');
             setPassword('');
 
-            const from = location?.state?.from || {pathname: "/" + response?.data?.role.toLowerCase()};
+            let role;
+            if (response?.data?.role === "INDIVIDUAL INVESTOR" || response?.data?.role === "ENTERPRISE INVESTOR") {
+                role = "investor";
+            } else {
+                role = response?.data?.role.toLowerCase();
+            }
+
+            const from = location?.state?.from || {pathname: "/" + role+"/dashboard"};
             navigate(from, {replace: true});
 
         } catch (err) {
@@ -119,7 +127,7 @@ const Login = () => {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar active="Login"/>
+            <Navbar active="Login"/>
 
             <section className="flex flex-col md:flex-row  md:space-y-0 md:space-x-16 justify-items-center md:mx-0 m-20 lg:my-[5rem]">
                 <div className="lg:flex hidden bg-[#c7d2fe] place-items-center">

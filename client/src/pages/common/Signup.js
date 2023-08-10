@@ -1,5 +1,5 @@
 import React from "react";
-import {CommonNavbar, Footer} from "../webcomponent";
+import {Navbar, Footer} from "../webcomponent";
 import {Typography} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -10,7 +10,7 @@ function Signup() {
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
 
-            <CommonNavbar active="Sign Up"/>
+            <Navbar active="Sign Up"/>
             <section className="flex flex-col md:flex-row w-full ">
                 <div className="flex flex-col justify-center items-center w-full lg:w-[50%] gap-[2.5rem] my-[5rem]">
                     <div className="flex flex-col justify-center items-center w-[80%] lg:w-full">

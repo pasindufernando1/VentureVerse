@@ -9,6 +9,8 @@ import About from "./pages/common/About";
 import Pricing from "./pages/common/Pricing";
 import Contact from "./pages/common/Contact";
 import Signup from "./pages/common/Signup";
+import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
+import InvestorDashboard from "./pages/investor/InvestorDashboard";
 import EntrepreneurSignup from "./pages/entrepreneur/Form"
 import IndividualInvestorSignup from "./pages/investor/individualInvestor/Form";
 import EnterpriseInvestorSignup from "./pages/investor/enterpriseInvestor/Form";
@@ -60,12 +62,15 @@ function App() {
                         {/* Routes Authorized to Admins */}
                         <Route path="/admin" element={<AdminTestHome/>}/>
                     </Route>
-                    <Route element={<RequireAuth allowedRoles={["INVESTOR"]}/>}>
+                    <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
+                        <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor" element={<InvestorTestHome/>}/>
+                        <Route path="/investor/view-listing" element={<ViewListing />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
+                        <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur" element={<EntrepreneurTestHome/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listing" element={<ViewListing />} />

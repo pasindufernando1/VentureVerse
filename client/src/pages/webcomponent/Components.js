@@ -1,5 +1,5 @@
 import CustomButton from "./CustomButton";
-import NavbarHome from "./NavbarHome";
+import CustomNavbar from "./CustomNavbar";
 import CustomTextarea from "./CustomTextarea";
 import NavbarAll from "./NavbarAll";
 import CustomCheckbox from "./CustomCheckbox";
@@ -7,8 +7,9 @@ import CustomInput from "./CustomInput";
 import CustomRadio from "./CustomRadio";
 import CustomSelect from "./CustomSelect";
 import CustomFlash from "./CustomFlash";
+import CustomMenuButton from "./CustomMenuButton";
 import {useState} from "react";
-
+        
 const Components = () => {
 
     const [value, setValue] = useState(false)
@@ -17,6 +18,8 @@ const Components = () => {
         <div className="flex flex-col gap-5 items-center">
 
             <h1 className="font-bold text-2xl">Components Page</h1>
+
+            <CustomMenuButton/>
 
             <h2 className="font-bold text-xl">Buttons</h2>
             <div className="flex flex-row gap-2 justify-center">
@@ -72,7 +75,7 @@ const Components = () => {
             </div>
 
             <h2 className="font-bold text-xl">Home Navbar</h2>
-            <NavbarHome active="Home"/>
+            <CustomNavbar active="Home"/>
 
             <h2 className="font-bold text-xl">Investor Navbar</h2>
             <NavbarAll/>

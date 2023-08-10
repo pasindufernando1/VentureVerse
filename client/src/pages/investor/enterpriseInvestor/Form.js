@@ -3,7 +3,7 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import { CommonNavbar, Footer, Button } from "../../webcomponent"
+import { Navbar, Footer, Button } from "../../webcomponent"
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex=/^\d{10}(?:\d{2}|-\d{2}v)$/;
@@ -224,7 +224,7 @@ function Form() {
 
     return(
         <div>
-        <CommonNavbar active="Sign Up"/>
+        <Navbar active="Sign Up"/>
         <main className="h-auto flex justify-center items-center bg-gray-200 lg:h-screen">
             <form className=" bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] lg:w-9/12">
                 <div className="text-gray-700 p-20 w-full">
