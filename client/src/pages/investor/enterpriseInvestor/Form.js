@@ -3,7 +3,8 @@ import axios from '../../../api/axios';
 import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
-import {Button, Footer, Navbar, StatusPopUp} from "../../webcomponent"
+import {Button, Footer, Navbar, StatusPopUp} from "../../webcomponent";
+import { Header } from '../../webcomponent';
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 const nicRegex = /^[0-9]{9}[vVxX]|[0-9]{12}$/;
@@ -228,7 +229,7 @@ function Form() {
 
     return (
         <div>
-            <Navbar active="Sign Up"/>
+            <Header active="Users">
             <main className="h-auto flex justify-center items-center lg:h-screen">
                 <form
                     className=" bg-white flex border-[1px] border-main-purple mt-[-11rem] w-full h-auto lg:rounded-[1rem]">
@@ -256,6 +257,7 @@ function Form() {
                     </div>
                 </form>
             </main>
+            </Header>
             <div>
                 {showSuccessNotification && (
                     <StatusPopUp
@@ -265,7 +267,6 @@ function Form() {
                     />
                 )}
             </div>
-            <Footer/>
         </div>
     )
 }

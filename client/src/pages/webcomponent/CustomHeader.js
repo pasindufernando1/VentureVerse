@@ -74,8 +74,7 @@ const CustomHeader = (props) => {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Registration Requests", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/add-co-admin"}
+            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users"}
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
