@@ -98,9 +98,9 @@ const CustomHeader = (props) => {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing"},
-            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"},
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/investor/schedules"},
             {'icon': faHeart, 'title': "Interested", 'link': "/investor/interests"},
-            {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
+            {'icon': faCircleExclamation, 'title': "Complains", 'link': "/investor/add-complaints"},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},

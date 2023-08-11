@@ -91,7 +91,8 @@ function App() {
                         <Route path="/investor/view-listing" element={<ViewListing />} />
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
-                        
+                        <Route path="/investor/schedules" element={<Schedule />} />
+                        <Route path="/investor/add-complaints" element={<AddComplaints />} />                        
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
@@ -103,9 +104,7 @@ function App() {
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
-                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />
-                        
-                        
+                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />                        
                     </Route>
                 </Route>
                 {/*404*/}
