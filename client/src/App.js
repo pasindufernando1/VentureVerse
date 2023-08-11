@@ -46,7 +46,10 @@ import ViewRequest from "./pages/admin/ViewRequests";
 import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
 import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
 import Users from "./pages/admin/Users";
-
+import ViewCoAdmin from "./pages/admin/ViewCoAdmin";
+import ViewEnterpreneurs from "./pages/admin/ViewEnterpreneurs";
+import IndividualInvestors from "./pages/admin/ViewIndividualInvestors";
+import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -82,7 +85,11 @@ function App() {
                         <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
                         <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>  
                         <Route path="/admin/users" element={<Users/>}/>  
-                        <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />        
+                        <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />
+                        <Route path="/admin/users/enterpreneurs" element={<ViewEnterpreneurs/>}/>   
+                        <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
+                        <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
+                        <Route path="/admin/users/enterpriseInvestors" element={<EnterpriceInvestors/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

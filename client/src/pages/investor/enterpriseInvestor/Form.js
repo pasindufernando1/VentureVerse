@@ -229,7 +229,7 @@ function Form() {
 
     return (
         <div>
-            <Header active="Users">
+            <Header active="Enterprise Investors">
             <main className="h-auto flex justify-center items-center lg:h-screen">
                 <form
                     className=" bg-white flex border-[1px] border-main-purple mt-[-11rem] w-full h-auto lg:rounded-[1rem]">

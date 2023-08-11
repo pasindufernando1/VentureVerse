@@ -24,8 +24,6 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
-    faCircleExclamation,
-    faCalendar,
     faHeart
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
@@ -89,7 +87,12 @@ const CustomHeader = (props) => {
                 'link': "/admin/view-requests",
                 'subcategory': false
             },
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory': false},
+            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory':[
+                {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coadmins"},
+                {'icon': faChevronRight, 'title': "Enterpreneurs", 'link': "/admin/users/enterpreneurs"},
+                {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
+                {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
+            ]},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
