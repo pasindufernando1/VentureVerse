@@ -44,7 +44,7 @@ function ViewInterests() {
 
     return (
         <div>
-            <Header active="Interested">
+            <Header active="Interests">
                 <main className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
                       >
                     <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">

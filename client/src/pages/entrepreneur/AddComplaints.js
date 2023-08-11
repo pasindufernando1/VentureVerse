@@ -29,12 +29,12 @@ function AddComplaints() {
 
     return (
         <div>
-        <Header active="Complains">
+        <Header active="Add Complain">
         <main className="h-auto flex justify-center items-center ">
             <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] mt-[-2rem] border-[1px] border-main-purple rounded-[1rem]">
                 <div className="text-gray-700 p-[2rem] w-full">
                     <div className="Signup1">
-                        <h3 className="text-3xl text-main-purple self-center">Add New Complaint</h3>                                
+                        <h3 className="text-3xl text-main-purple self-center">Add New Complain</h3>                                
                         <p className="text-main-purple">
                         Please provide your information below to help us understand your complaint better.
                         </p>

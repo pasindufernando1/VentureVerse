@@ -24,6 +24,7 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
+    
     faHeart
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
@@ -41,7 +42,7 @@ const CustomHeader = (props) => {
 
     const [user, setUser] = useState();
 
-    const [toggle, setToggle] = useState(false);
+    const [toggle, setToggle] = useState(0);
 
     const {get} = useAxiosMethods();
 
@@ -93,38 +94,48 @@ const CustomHeader = (props) => {
                 {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
                 {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
             ]},
+            {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complaints", 'subcategory': false },
+            
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/admin/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
+        // Entrepreneur
     } else if (auth?.role === "ENTREPRENEUR") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard", 'subcategory': false},
             {
                 'icon': faSquarePollVertical, 'title': "Listings", 'link': null, 'subcategory': [
-                    {'icon': faChevronRight, 'title': "View", 'link': "/entrepreneur/view-listing"},
-                    {'icon': faChevronRight, 'title': "Add", 'link': "/entrepreneur/add-listing"},
+                    {'icon': faChevronRight, 'title': "View Listing", 'link': "/entrepreneur/view-listingfull"},
+                    {'icon': faChevronRight, 'title': "Add Listing", 'link': "/entrepreneur/add-listing"},
                 ]
             },
-            {
-                'icon': faCircleExclamation,
-                'title': "Complains",
-                'link': "/entrepreneur/add-complain",
-                'subcategory': false
-            },
-            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules", 'subcategory': false}
+            
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules", 'subcategory': false},
+            {'icon': faCircleExclamation,'title': "Complains",'link': null, 'subcategory': [
+                {'icon': faChevronRight, 'title': "Add Complain", 'link': "/entrepreneur/add-complain"},
+                {'icon': faChevronRight, 'title': "Past Complains", 'link': "/entrepreneur/view-complaints"},
+            ]},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/entrepreneur/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
+        /// Investor
     } else if (auth?.role === "INDIVIDUAL INVESTOR" || auth?.role === "ENTERPRISE INVESTOR") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard", 'subcategory': false},
             {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing", 'subcategory': false},
+            {'icon': faHeart, 'title': "Interests", 'link': "/investor/interests", 'subcategory': false},
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/investor/schedules", 'subcategory': false},
+            {'icon': faCircleExclamation,'title': "Complains",'link': null , 'subcategory': [
+                    {'icon': faChevronRight, 'title': "Add Complain", 'link': "/investor/add-complaints"},
+                    {'icon': faChevronRight, 'title': "Past Complains", 'link': "/investor/view-complaints"},
+                ]},
+
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -149,7 +160,7 @@ const CustomHeader = (props) => {
             key={key}
         >
             <ListItem
-                className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
                 <ListItemPrefix>
                     <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
                 </ListItemPrefix>
@@ -164,28 +175,34 @@ const CustomHeader = (props) => {
         </Typography>);
     }
 
+    const handleOpen = (key) => {
+        if (toggle === key) {
+            setToggle(0);
+        } else {
+            setToggle(key);
+        }
+    }
+
     const subLink = ({icon, title, subcategory, key}) => {
 
         return (
             <Accordion
-                open={toggle}
+                open={toggle === key}
                 key={key}
             >
-                <ListItem
-                    className={`custom ${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90 " : " "} ${toggle ? "bg-light-purple/20 !text-main-purple/90" : ""} hover:bg-light-purple/20 hover:!text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90 p-0`}
-                    selected={toggle}>
+                
                     <ListItem
-                        onClick={() => setToggle(!toggle)}
-                        className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                        onClick={() => handleOpen(key)}
+                        className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}
+                        selected={toggle === key}>
                         <ListItemPrefix>
                             <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
                         </ListItemPrefix>
                         {title}
                         <ListItemSuffix>
                             <FontAwesomeIcon icon={faAngleDown}
-                                             className={`${toggle ? "rotate-180" : ""} transition-transform duration-500 w-4 h-4`}/>
+                                             className={`${toggle === key ? "rotate-180" : ""} transition-transform duration-500 w-4 h-4`}/>
                         </ListItemSuffix>
-                    </ListItem>
                 </ListItem>
                 <AccordionBody className="py-1">
                     <List className="p-0">

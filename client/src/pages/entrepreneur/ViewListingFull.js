@@ -16,7 +16,7 @@ function ViewListingFull() {
 
     return (
         <div>
-            <Header active="Listings">
+            <Header active="View Listing">
                 <div className="h-auto min-h-[100vh] flex justify-center items-center">
                     <div>
                         <Card className="mt-[-3rem]">

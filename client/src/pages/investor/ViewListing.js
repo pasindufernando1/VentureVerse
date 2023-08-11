@@ -51,7 +51,7 @@ function ViewListing() {
 
     return (
 
-            <Header active="View">
+            <Header active="Listing">
                 <div className="flex flex-row">
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
                         <Card className="w-96 mt-2">
