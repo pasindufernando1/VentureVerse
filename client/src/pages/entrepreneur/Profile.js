@@ -1,6 +1,7 @@
 import React from 'react';
 import { Header} from "../webcomponent";
 import {DisableAccount, NotificationSettings, ProfileInfo} from "../sectioncomponent";
+import TopBar from "../sectioncomponent/TopBar";
 const UpdatedDocuments = () => {
     return (
         <div
@@ -47,6 +48,7 @@ const UpdatedDocuments = () => {
 const Profile = () => {
     return (
         <Header active="Profile">
+            <TopBar />
             <ProfileInfo/>
             <NotificationSettings/>
             <UpdatedDocuments/>

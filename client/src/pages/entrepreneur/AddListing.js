@@ -517,7 +517,7 @@ function AddListing() {
 
     return (
         <div>
-            <Header active="Listing">
+            <Header active="Add">
                 <main className="h-auto min-h-[100vh] flex justify-center items-center w-full ">
 
                     <form

@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {
+    Accordion,
+    AccordionBody,
     Avatar,
     Card,
     Chip,
@@ -12,20 +14,23 @@ import {
 } from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
+    faAngleDown,
+    faCalendar,
+    faChevronRight,
+    faCircleExclamation,
     faCircleUser,
     faGear,
     faHouse,
     faInbox,
     faPowerOff,
-    faSquarePollVertical,
-    faCircleExclamation,
-    faCalendar
+    faSquarePollVertical
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
 import axios from "../../api/axios";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {MenuButton} from "./index";
+
 const CustomHeader = (props) => {
 
     let {active, children} = props;
@@ -34,6 +39,8 @@ const CustomHeader = (props) => {
     const navigate = useNavigate();
 
     const [user, setUser] = useState();
+
+    const [toggle, setToggle] = useState(false);
 
     const {get} = useAxiosMethods();
 
@@ -72,10 +79,14 @@ const CustomHeader = (props) => {
 
     if (auth?.role === "ADMIN") {
         menu.push(
-            {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard"},
-            {'icon': faSquarePollVertical, 'title': "Registration Requests", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/add-co-admin"}
+            {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard", 'subcategory': false},
+            {
+                'icon': faSquarePollVertical,
+                'title': "Registration Requests",
+                'link': "/admin/view-requests",
+                'subcategory': false
+            },
+            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory': false},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -84,10 +95,20 @@ const CustomHeader = (props) => {
         )
     } else if (auth?.role === "ENTREPRENEUR") {
         menu.push(
-            {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
-            {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/entrepreneur/view-listingfull"},
-            {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
-            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"}
+            {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard", 'subcategory': false},
+            {
+                'icon': faSquarePollVertical, 'title': "Listings", 'link': null, 'subcategory': [
+                    {'icon': faChevronRight, 'title': "View", 'link': "/entrepreneur/view-listing"},
+                    {'icon': faChevronRight, 'title': "Add", 'link': "/entrepreneur/add-listing"},
+                ]
+            },
+            {
+                'icon': faCircleExclamation,
+                'title': "Complains",
+                'link': "/entrepreneur/add-complain",
+                'subcategory': false
+            },
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules", 'subcategory': false}
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -96,8 +117,8 @@ const CustomHeader = (props) => {
         )
     } else if (auth?.role === "INDIVIDUAL INVESTOR" || auth?.role === "ENTERPRISE INVESTOR") {
         menu.push(
-            {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard"},
-            {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing"},
+            {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard", 'subcategory': false},
+            {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing", 'subcategory': false},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -114,6 +135,78 @@ const CustomHeader = (props) => {
         name = user?.firstname + " " + user?.lastname
     }
 
+    const normalLink = ({icon, title, link, key}) => {
+        return (<Typography
+            as="a"
+            href={link}
+            className="font-normal"
+            key={key}
+        >
+            <ListItem
+                className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                <ListItemPrefix>
+                    <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
+                </ListItemPrefix>
+                {title}
+            </ListItem>
+            <ListItem
+                className={`${openNav ? "!hidden" : "!flex justify-center"} lg:!hidden ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                <ListItemPrefix className=" m-0">
+                    <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
+                </ListItemPrefix>
+            </ListItem>
+        </Typography>);
+    }
+
+    const subLink = ({icon, title, subcategory, key}) => {
+
+        return (
+            <Accordion
+                open={toggle}
+                key={key}
+            >
+                <ListItem
+                    className={`custom ${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90 " : " "} ${toggle ? "bg-light-purple/20 !text-main-purple/90" : ""} hover:bg-light-purple/20 hover:!text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90 p-0`}
+                    selected={toggle}>
+                    <ListItem
+                        onClick={() => setToggle(!toggle)}
+                        className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                        <ListItemPrefix>
+                            <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
+                        </ListItemPrefix>
+                        {title}
+                        <ListItemSuffix>
+                            <FontAwesomeIcon icon={faAngleDown}
+                                             className={`${toggle ? "rotate-180" : ""} transition-transform duration-500 w-4 h-4`}/>
+                        </ListItemSuffix>
+                    </ListItem>
+                </ListItem>
+                <AccordionBody className="py-1">
+                    <List className="p-0">
+                        {
+                            subcategory.map(({icon, title, link}, key) => (
+                                <Typography
+                                    as="a"
+                                    href={link}
+                                    className="font-normal"
+                                    key={key}
+                                >
+                                    <ListItem
+                                        className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
+                                        <ListItemPrefix>
+                                            <FontAwesomeIcon icon={icon} className="ml-3 h-3 w-3"/>
+                                        </ListItemPrefix>
+                                        {title}
+                                    </ListItem>
+                                </Typography>
+                            ))
+                        }
+                    </List>
+                </AccordionBody>
+            </Accordion>
+        );
+    }
+
     return (
         <div className="flex flex-row h-max">
             {/* SideBar */}
@@ -128,27 +221,20 @@ const CustomHeader = (props) => {
                 <div className={`flex flex-col justify-between w-full h-full`}>
                     <List className="px-0 py-6 min-w-[1.5rem]">
                         {
-                            menu.map(({icon, title, link}, key) => (
-                                <Typography
-                                    as="a"
-                                    href={link}
-                                    className="font-normal"
-                                    key={key}
-                                >
-                                    <ListItem
-                                        className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
-                                        <ListItemPrefix>
-                                            <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
-                                        </ListItemPrefix>
-                                        {title}
-                                    </ListItem>
-                                    <ListItem
-                                        className={`${openNav ? "!hidden" : "!flex justify-center"} lg:!hidden ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}>
-                                        <ListItemPrefix className=" m-0">
-                                            <FontAwesomeIcon icon={icon} className="h-5 w-5"/>
-                                        </ListItemPrefix>
-                                    </ListItem>
-                                </Typography>
+                            menu.map(({icon, title, link, subcategory}, key) => (
+                                subcategory
+                                    ? subLink({
+                                        icon,
+                                        title,
+                                        subcategory,
+                                        key
+                                    })
+                                    : normalLink({
+                                        icon,
+                                        title,
+                                        link,
+                                        key
+                                    })
                             ))
                         }
                         <hr className="my-2 border-blue-gray-50"/>
@@ -204,9 +290,11 @@ const CustomHeader = (props) => {
                     </List>
                 </div>
             </Card>
-            <div className={`flex flex-col lg:w-[calc(100%-20rem)] lg:ml-[20rem] ${openNav ? "ml-[20rem] w-[calc(100%-20rem)]" : "ml-[5rem] w-[calc(100%-5rem)]"}`}>
+            <div
+                className={`flex flex-col lg:w-[calc(100%-20rem)] lg:ml-[20rem] ${openNav ? "ml-[20rem] w-[calc(100%-20rem)]" : "ml-[5rem] w-[calc(100%-5rem)]"}`}>
                 {/* NavBar */}
-                <Navbar className={`max-w-full fixed z-[500] rounded-none px-4 py-2 w-[calc(100%-5rem)] lg:w-[calc(100%-20rem)]`}>
+                <Navbar
+                    className={`max-w-full fixed z-[500] rounded-none px-4 py-2 w-[calc(100%-5rem)] lg:w-[calc(100%-20rem)]`}>
                     <div className="flex justify-end items-center lg:justify-end">
                         <div className="flex flex-row gap-[1rem]">
                             <div className="flex flex-col gap-0 items-end justify-center text-black">

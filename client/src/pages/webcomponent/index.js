@@ -19,7 +19,6 @@ import StatusPopUp from "./CustomStatusPopUp";
 
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
-import Sidebar from "./CustomSideBar";
 import Footer from "./CustomFooter";
 
 export {
@@ -41,6 +40,5 @@ export {
     StatusPopUp,
     Navbar,
     Header,
-    Sidebar,
     Footer,
 }

@@ -5,26 +5,20 @@ import {
     Collapse,
     Typography,
     Button,
-    IconButton,
     List,
     ListItem
 } from "@material-tailwind/react";
 
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {
-    faBars,
     faCircleInfo,
     faHouse,
-    faPhone,
     faTag,
     faUser,
     faUserPlus,
-    faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
 import {MenuButton} from "../webcomponent"
-
-// import logo from "../../assets/images/VentureVerse-Black.png";
 
 const NavList = (props) => {
 

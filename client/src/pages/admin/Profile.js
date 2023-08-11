@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {Header, Input, Select, Button} from "../webcomponent";
+import TopBar from "../sectioncomponent/TopBar";
 
 const AdminProfileInformation = ({formData, setFormData, validateFormData}) => {
 
@@ -152,6 +153,7 @@ const AdminProfileInformation = ({formData, setFormData, validateFormData}) => {
 const Profile = () => {
     return (
         <Header active="Profile">
+            <TopBar />
             <AdminProfileInformation/>
         </Header>
 

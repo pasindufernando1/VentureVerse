@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Button, Checkbox, Header, Input, Select} from "../webcomponent";
 import {DisableAccount, NotificationSettings} from "../sectioncomponent";
+import TopBar from "../sectioncomponent/TopBar";
 
 const ProfileInformation = ({formData, setFormData, validateFormData}) => {
     const [editMode, setEditMode] = useState(false);
@@ -18,10 +19,6 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
     }
 
     const handleSubmit = () => {
-        // Perform form submission or data updating logic here
-        // ...
-
-        // After submission, exit edit mode
         setEditMode(false);
         setEditForm(true);
     };
@@ -348,6 +345,7 @@ function UpdatedDocuments2() {
 const Profile = () => {
     return (
         <Header active="Profile">
+            <TopBar />
             <ProfileInformation/>
             <Preferences/>
             <NotificationSettings/>
