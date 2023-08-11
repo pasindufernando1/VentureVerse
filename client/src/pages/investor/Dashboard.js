@@ -109,31 +109,35 @@ const DashBoard = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col">
-                                {interestedInvestors.map((investor, index) => (
-                                    <div key={index} className="flex items-center py-[1rem] border-b-[1px] justify-between">
-                                        <div className="flex items-center gap-4 ">
-                                            <Avatar
-                                                src={investor.image}
-                                                alt="avatar"
-                                            />
-                                            <div>
-                                                <Typography variant="h6">{investor.name}</Typography>
-                                                <Typography variant="small" color="gray"
-                                                            className="font-normal hidden lg:block">
-                                                    {investor.date}
-                                                </Typography>
+                                {
+                                    interestedInvestors.map((investor, index) => (
+                                        <div key={index}
+                                             className="flex items-center py-[1rem] border-b-[1px] justify-between">
+                                            <div className="flex items-center gap-4  w-[25%]">
+                                                <Avatar
+                                                    src={investor.image}
+                                                    alt="avatar"
+                                                />
+                                                <div>
+                                                    <Typography variant="h6">{investor.name}</Typography>
+                                                    <Typography variant="small" color="gray"
+                                                                className="font-normal hidden lg:block">
+                                                        {investor.date}
+                                                    </Typography>
+                                                </div>
                                             </div>
+                                            <span
+                                                className={`inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                            <Button
+                                                variant="clear"
+                                                className="px-[0.75rem] py-[0.1rem] !border-none"
+                                                icon={"next"}
+                                            >
+                                                View All
+                                            </Button>
                                         </div>
-                                        <span
-                                            className={`inline-flex items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg `}>{investor.counter ? "Counter" : "Interested"}</span>
-                                        <Button
-                                            variant="clear"
-                                            className="px-[0.75rem] py-[0.1rem] !border-none"
-                                            icon={"next"}
-                                        >
-                                            View All
-                                        </Button>
-                                    </div>))}
+                                    ))
+                                }
                             </div>
                         </div>
                     </div>
@@ -161,7 +165,7 @@ const DashBoard = () => {
                                     <FontAwesomeIcon icon={faChevronRight}/>
                                 </div>
                                 <div className="flex justify-center items-center gap-[1rem]">
-                                    <Calendar />
+                                    <Calendar/>
                                 </div>
                             </div>
                         </div>

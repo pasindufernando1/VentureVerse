@@ -24,9 +24,6 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
-    faCircleExclamation,
-    faCalendar,
-    faHeart
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
