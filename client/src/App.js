@@ -27,12 +27,14 @@ import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
 import AddComplaints from "./pages/entrepreneur/AddComplaints";
 import Schedule from "./pages/entrepreneur/Schedule";
+import Conference from "./pages/videoconference/Conference";
 
 
 // Investor Pages
 import InvestorDashboard from "./pages/investor/Dashboard";
 import InvestorProfile from "./pages/investor/Profile";
 import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
+import ViewInterests from "./pages/investor/ViewInterests";
 
 
 
@@ -43,6 +45,7 @@ import AddCoAdmin from "./pages/admin/AddCoAdmin";
 import ViewRequest from "./pages/admin/ViewRequests";
 import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
 import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
+import Users from "./pages/admin/Users";
 
 
 import {Routes, Route} from "react-router-dom";
@@ -61,7 +64,7 @@ function App() {
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/signup/entrepreneur" element={<EntrepreneurSignup />} />
                 <Route path="/signup/individual-investor" element={<IndividualInvestorSignup />} />
-                <Route path="/signup/enterprise-investor" element={<EnterpriseInvestorSignup />} />
+                <Route path="/meeting/:id/:user/:time" element={<Conference />} />
                 <Route path="/comp" element={<Components />}/>
                 <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
 
@@ -77,7 +80,9 @@ function App() {
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
                         <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
-                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>            
+                        <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>  
+                        <Route path="/admin/users" element={<Users/>}/>  
+                        <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />        
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -85,6 +90,9 @@ function App() {
                         <Route path="/investor/profile" element={<InvestorProfile/>}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
+                        <Route path="/investor/interests" element={<ViewInterests />} />
+                        <Route path="/investor/schedules" element={<Schedule />} />
+                        <Route path="/investor/add-complaints" element={<AddComplaints />} />                        
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
@@ -96,7 +104,7 @@ function App() {
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
-                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />
+                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />                        
                     </Route>
                 </Route>
                 {/*404*/}

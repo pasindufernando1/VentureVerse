@@ -2,6 +2,7 @@ import {AreaChart, Button, Calendar, Header, Popover} from "../webcomponent";
 import {faArrowDown, faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
+
 import React from "react";
 
 const Dashboard = () => {
@@ -170,6 +171,7 @@ const Dashboard = () => {
             </div>
         </Header>
     )
+
 
 }
 
