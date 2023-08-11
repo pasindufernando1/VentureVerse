@@ -1,7 +1,6 @@
 import CustomButton from "./CustomButton";
 import CustomNavbar from "./CustomNavbar";
 import CustomTextarea from "./CustomTextarea";
-import NavbarAll from "./NavbarAll";
 import CustomCheckbox from "./CustomCheckbox";
 import CustomInput from "./CustomInput";
 import CustomRadio from "./CustomRadio";
@@ -77,8 +76,6 @@ const Components = () => {
             <h2 className="font-bold text-xl">Home Navbar</h2>
             <CustomNavbar active="Home"/>
 
-            <h2 className="font-bold text-xl">Investor Navbar</h2>
-            <NavbarAll/>
 
             <h2 className="font-bold text-xl">Investor Navbar</h2>
             <CustomCheckbox label="This is a Checkbox" onChange={(event) => {

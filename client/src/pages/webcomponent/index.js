@@ -15,12 +15,12 @@ import BarChart from "./CustomBarChart";
 import DoughnutChart from "./CustomDoughnutChart";
 import AreaChart from "./CustomAreaChart";
 import Calendar from "./CustomCalendar";
+import StatusPopUp from "./CustomStatusPopUp";
 
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
-import InvestorHeader from "./InvestorHeader";
 import Sidebar from "./CustomSideBar";
-import Footer from "./Footer";
+import Footer from "./CustomFooter";
 
 export {
     Swiper,
@@ -38,9 +38,9 @@ export {
     BarChart,
     DoughnutChart,
     Calendar,
+    StatusPopUp,
     Navbar,
     Header,
-    InvestorHeader,
     Sidebar,
     Footer,
 }

@@ -2,8 +2,6 @@ import React from "react";
 import {Navbar, Footer} from "../webcomponent";
 import {Typography} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faCheckCircle, faCircle} from "@fortawesome/free-solid-svg-icons";
 
 function Signup() {
     return (

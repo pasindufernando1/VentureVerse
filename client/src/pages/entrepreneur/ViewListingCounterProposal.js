@@ -1,10 +1,6 @@
-import Button from "../webcomponent/CustomButton"
-import Select from "../webcomponent/CustomSelect"
-import {Navbar} from "../webcomponent"
 import { Avatar } from "@material-tailwind/react";
-import {Header} from "../webcomponent";
+import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
-import CustomButton from "../webcomponent/CustomButton";
 import {useState} from "react";
 
 function ViewListingCounterProposal() {
@@ -103,14 +99,14 @@ function ViewListingCounterProposal() {
                                 </table>
 
                             </div>
-                            <CustomButton
+                            <Button
                                 variant="clear"
                                 label="Show less"
                                 icon="previous"
                                 className="mt-4"
                             >
                                 <Link to="/entrepreneur/view-listingfull">Back</Link>
-                            </CustomButton>
+                            </Button>
                         </div>
 
                     </form>

@@ -1,10 +1,7 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../webcomponent/NavbarAll";
-import { Button, Select } from "../webcomponent";
-import { useEffect } from "react";
+import { Button, Select, Header } from "../webcomponent";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-import Sidebar from "../webcomponent/CustomSideBar";
 
 const ViewRequests = () => {
   const { get } = useAxiosMethods();
@@ -60,7 +57,7 @@ const ViewRequests = () => {
 
   return (
     <>
-      <Sidebar active="Registration requests">
+      <Header active="Registration Requests">
         <div>
           <main className="h-auto flex justify-center items-center bg-white lg:h-screen mt-[-11rem]">
             <form className="bg-white flex border-[1px] border-main-purple w-full h-auto lg:rounded-[1rem]">
@@ -127,7 +124,7 @@ const ViewRequests = () => {
             </form>
           </main>
         </div>
-      </Sidebar>  
+      </Header>
     </>
   );
 };

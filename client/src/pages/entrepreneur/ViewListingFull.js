@@ -4,12 +4,8 @@ import {
     CardBody,
     CardFooter,
     Typography,
-    Button,
 } from "@material-tailwind/react";
-import {Header} from "../webcomponent";
-
-
-import CustomButton from "../webcomponent/CustomButton";
+import {Header,Button} from "../webcomponent";
 import {Carousel, IconButton} from "@material-tailwind/react";
 import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
@@ -361,21 +357,21 @@ function ViewListingFull() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="clear"
                                     label="Show less"
                                     icon="previous"
                                 >
                                     <Link to="/entrepreneur/view-listing">Show less</Link>
-                                </CustomButton>
-                                <CustomButton
+                                </Button>
+                                <Button
                                     variant="primary"
                                     label="View offerings"
                                     className="ml-2"
                                     icon="next"
                                 >
                                     <Link to="/entrepreneur/view-listingCounterProposal">View offerings</Link>
-                                </CustomButton>
+                                </Button>
                             </CardFooter>
                         </Card>
                     </div>

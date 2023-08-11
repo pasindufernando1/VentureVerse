@@ -12,7 +12,7 @@ const Dashboard = () => {
         name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
     },]
 
-    const interstedInvestors = [{
+    const interestedInvestors = [{
         name: "Bhasa Lanka",
         date: "10 August 2023",
         image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
@@ -109,7 +109,7 @@ const Dashboard = () => {
                                 </div>
                             </div>
                             <div className="flex flex-col">
-                                {interstedInvestors.map((investor, index) => (
+                                {interestedInvestors.map((investor, index) => (
                                     <div key={index} className="flex items-center py-[1rem] border-b-[1px] justify-between">
                                         <div className="flex items-center gap-4 ">
                                             <Avatar

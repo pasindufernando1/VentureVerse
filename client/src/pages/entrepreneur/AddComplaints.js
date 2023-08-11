@@ -1,9 +1,6 @@
 import React, {useState } from 'react';
-import {Button } from "../webcomponent";
-import {Textarea } from "../webcomponent";
-import Sidebar from "../webcomponent/CustomHeader";
+import {Button, Textarea, Header } from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
-import { axiosPrivate } from "../../api/axios";
 
 function AddComplaints() {
     const [formData, setFormData] = useState({
@@ -15,7 +12,7 @@ function AddComplaints() {
 
     const {post} = useAxiosMethods();
 
-    const handlesubmit = async () => {
+    const handleSubmit = async () => {
         if (!formData.complaintDesc) {
             setFormData({ ...formData, showError: true }); 
         } else {
@@ -32,7 +29,7 @@ function AddComplaints() {
 
     return (
         <div>
-        <Sidebar active="Complains">
+        <Header active="Complains">
         <main className="h-auto flex justify-center items-center ">
             <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] mt-[-2rem] border-[1px] border-main-purple rounded-[1rem]">
                 <div className="text-gray-700 p-[2rem] w-full">
@@ -66,7 +63,7 @@ function AddComplaints() {
                     <Button
                         type="button"
                         className="float-right"
-                        onClick={handlesubmit}
+                        onClick={handleSubmit}
                     >
                     Submit    
                     </Button>
@@ -74,7 +71,7 @@ function AddComplaints() {
                 <div className="complaints w-[50%] rounded-r-[1rem] hidden lg:block"></div>
             </form>
         </main>
-        </Sidebar>
+        </Header>
         </div>
     );
 }

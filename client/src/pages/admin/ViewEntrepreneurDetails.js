@@ -1,12 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom';
-import Navbar from "../webcomponent/NavbarAll";
-import { useState } from "react";
-import Button from "../webcomponent/CustomButton";
-import useAxiosMethods from "../../hooks/useAxiosMethods";
 import axios from '../../api/axios';
-import { Sidebar } from "../webcomponent";
-import SuccessNotification from "../webcomponent/Success";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import { Header, StatusPopUp, Button } from "../webcomponent";
 
 const ViewEntrepreneurDetails = () => {
   const { get } = useAxiosMethods();
@@ -93,7 +89,7 @@ const ViewEntrepreneurDetails = () => {
   
   return (
     <div>
-      <Sidebar active="Registration requests">
+      <Header active="Registration Requests">
         <main className="h-auto flex justify-center items-center bg-white">
           <form className="bg-white flex drop-shadow-md w-full mt-[-2rem] h-auto lg:rounded-[1rem] mt-8 mb-8">
             <div className="text-gray-700 p-[2rem] w-full">
@@ -279,21 +275,21 @@ const ViewEntrepreneurDetails = () => {
         </main>
         <div>
             {showSuccessNotification && (
-                <SuccessNotification
+                <StatusPopUp
                 successTitle="Registration request accepted!"
                 successMessage="New entrepreneur is added to the system successfully!"
                 redirectUrl="/admin/view-requests"
                 />
             )}
             {showErrorNotification && (
-                <SuccessNotification
+                <StatusPopUp
                 successTitle="Registration request rejected!"
                 successMessage="Registration request is rejected successfully!"
                 redirectUrl="/admin/view-requests"
                 />
             )}
         </div>
-      </Sidebar>
+      </Header>
     </div>
   );
 };

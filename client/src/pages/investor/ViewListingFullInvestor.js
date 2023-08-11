@@ -4,10 +4,8 @@ import {
     CardBody,
     CardFooter,
     Typography,
-    Button,
 } from "@material-tailwind/react";
-import {InvestorHeader, Input, Checkbox} from "../webcomponent";
-import SuccessNotification from "../webcomponent/Success";
+import {Header, Input, Checkbox, StatusPopUp, Button} from "../webcomponent";
 
 import {
     Dialog,
@@ -15,7 +13,6 @@ import {
     DialogBody,
     DialogFooter,
 } from "@material-tailwind/react";
-import CustomButton from "../webcomponent/CustomButton";
 import {Carousel, IconButton} from "@material-tailwind/react";
 import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
@@ -36,7 +33,7 @@ function ViewListingFullInvestor() {
 
     return (
         <div>
-            <InvestorHeader active="Listing">
+            <Header>
                 <div className="h-auto min-h-[100vh] flex justify-center items-center">
                     <div>
                         <Card className="mt-[-3rem]">
@@ -377,14 +374,14 @@ function ViewListingFullInvestor() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="clear"
                                     label="Show less"
                                     icon="previous"
                                 >
                                     <Link to="/investor/view-listing">Show less</Link>
-                                </CustomButton>
-                                <CustomButton
+                                </Button>
+                                <Button
                                     variant="primary"
                                     className="ml-2"
                                     onClick={handleInterested}
@@ -456,24 +453,24 @@ function ViewListingFullInvestor() {
                         </Card>
                     </DialogBody>
                     <DialogFooter>
-                        <CustomButton
+                        <Button
                             variant="clear"
                             color="red"
                             onClick={handleInterested}
                             className="mr-1"
                         >
                             <span>Continue without counter-offering</span>
-                        </CustomButton>
-                        <CustomButton variant="primary" color="green" onClick={submit}>
+                        </Button>
+                        <Button variant="primary" color="green" onClick={submit}>
                             <span>Continue</span>
-                        </CustomButton>
+                        </Button>
                         
                     </DialogFooter>
                 </Dialog>
-            </InvestorHeader>
+            </Header>
             <div>
             {showsuccessNotification && (
-                <SuccessNotification
+                <StatusPopUp
                 successTitle="Counter proposal added successfully!"
                 successMessage="You can contact the entrepreneur directly to discuss further."
                 redirectUrl="/investor/view-listing"

@@ -4,7 +4,7 @@ import {
     AccordionHeader,
     AccordionBody,
 } from "@material-tailwind/react";
-import {CommonNavbar, Footer} from "../webcomponent";
+import {Navbar, Footer} from "../webcomponent";
 
 function Icon({ id, open }) {
     return (
@@ -126,7 +126,7 @@ const TermsAndConditions = () => {
     return (
 
         <div className="flex flex-col justify-between items-center w-full overflow-hidden">
-        <CommonNavbar/>
+        <Navbar/>
         <Description/>
         <Footer/>
         </div>

@@ -1,9 +1,6 @@
-import {Navbar,Button} from "../webcomponent";
 import React, {useState, useEffect} from "react";
-import { Input, Select } from "../webcomponent";
-import Sidebar from "../webcomponent/CustomSideBar";
+import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
-import SuccessNotification from "../webcomponent/Success.js";
 
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -148,7 +145,7 @@ const AdminTestHome = () => {
 
     return(
         <div>
-        <Sidebar active="Dashboard">
+        <Header active="Dashboard">
             <main className="h-auto flex justify-center items-center g:h-screen">
                 <form className=" bg-white flex border-[1px] border-main-purple mt-[-0.5rem] h-auto lg:rounded-[1rem] lg:w-full">
                     <div className="text-gray-700 p-10 w-full">
@@ -315,14 +312,14 @@ const AdminTestHome = () => {
             </main> 
             <div>
                 {showSuccessNotification && (
-                    <SuccessNotification
+                    <StatusPopUp
                     successTitle="Registration Successful"
                     successMessage="You have successfully registered a new Co-Admin!"
                     redirectUrl="/dashboard"
                     />
                 )}
             </div>
-        </Sidebar>  
+        </Header>
         </div>   
     )
 

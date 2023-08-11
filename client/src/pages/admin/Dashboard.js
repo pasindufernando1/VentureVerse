@@ -1,5 +1,5 @@
 import React from 'react';
-import {Header, BarChart, DoughnutChart, UserList} from '../webcomponent';
+import {Header, BarChart, DoughnutChart} from '../webcomponent';
 import {Card, CardBody, Rating, Typography} from "@material-tailwind/react";
 
 const DashBoard = () => {

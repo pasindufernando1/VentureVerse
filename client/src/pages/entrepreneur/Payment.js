@@ -11,7 +11,7 @@ function Payment() {
     setToken(token.id);
     console.log(token);
     // Send the payment token and amount to your server
-    sendPaymentToServer(token.id, amount);
+    sendPaymentToServer(token.id, amount).then();
   };
 
   const sendPaymentToServer = async (token, amount) => {

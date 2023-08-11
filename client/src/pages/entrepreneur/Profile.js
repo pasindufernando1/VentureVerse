@@ -1,13 +1,10 @@
-import React, { useState } from 'react';
-import {Checkbox, CommonNavbar, Footer, Input, Select} from "../webcomponent";
-import { Navbar } from "../webcomponent";
-import Topbar from "../common/Topbar";
-import ProfileInformation from "../webcomponent/ProfileInformation";
-import NotificationSettings from "../webcomponent/NotificationSettings";
-import DisableAccount from "../webcomponent/DisableAccount";
-function UpdatedDocuments(){
-    return(
-        <div className=' mb-24 flex flex-col mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>
+import React from 'react';
+import { Header} from "../webcomponent";
+import {DisableAccount, NotificationSettings, ProfileInfo} from "../sectioncomponent";
+const UpdatedDocuments = () => {
+    return (
+        <div
+            className=' mb-24 flex flex-col mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>
             <h1 className="text-2xl text-main-purple self-center ">Documents Uploaded</h1>
             <div className="flex flex-row items-center w-full text-center mt-6">
                 <div className="applicationNotifications w-1/2">
@@ -44,30 +41,19 @@ function UpdatedDocuments(){
                 </div>
             </div>
         </div>
-    )}
-const ProfileEntrepreneur = () => {
-    return (
-        <div className="flex flex-col justify-between items-center w-full overflow-hidden ">
-            <Navbar />
-            <Topbar/>
-            <div className='grid grid-cols-3'></div>
-            <div >
-                {/*left*/}
-            </div>
-            <div>
-                <ProfileInformation/>
-                <NotificationSettings/>
-                <UpdatedDocuments/>
-                <DisableAccount/>
-            </div>
-            <div>
-                {/*right*/}
-            </div>
-            <Footer/>
-        </div>
-
     )
 }
 
-export default ProfileEntrepreneur
+const Profile = () => {
+    return (
+        <Header active="Profile">
+            <ProfileInfo/>
+            <NotificationSettings/>
+            <UpdatedDocuments/>
+            <DisableAccount/>
+        </Header>
+    )
+}
+
+export default Profile
 

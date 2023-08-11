@@ -8,7 +8,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 import {faFacebook, faInstagram, faTwitter} from "@fortawesome/free-brands-svg-icons";
 
-const Footer = () => {
+const CustomFooter = () => {
 
     const footerLinks = [
         {
@@ -136,4 +136,4 @@ const Footer = () => {
 }
 
 
-export default Footer;
+export default CustomFooter;

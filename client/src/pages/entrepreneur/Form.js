@@ -4,8 +4,7 @@ import Signup1 from './Signup1';
 import Signup2 from './Signup2';
 import Signup3 from './Signup3';
 import Signup4 from './Signup4';
-import { Navbar, Footer, Button } from "../webcomponent";
-import SuccessNotification from "../webcomponent/Success.js";
+import { Navbar, Footer, Button, StatusPopUp } from "../webcomponent";
 
 
 const emailRegex = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
@@ -307,7 +306,7 @@ function Form() {
     </main>
     <div>
         {showSuccessNotification && (
-            <SuccessNotification
+            <StatusPopUp
             successTitle="Registration Request sent Successfully"
             successMessage="Please wait for admin to check and approve your request"
             redirectUrl="/"

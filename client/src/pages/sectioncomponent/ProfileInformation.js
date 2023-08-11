@@ -1,6 +1,5 @@
 import React, {useState} from "react";
-import {Input, Select} from "./index";
-import {Button} from "@material-tailwind/react";
+import {Input, Select, Button} from "../webcomponent";
 
 function ProfileInformation({formData, setFormData,validateFormData}) {
     const [editMode, setEditMode] = useState(false);

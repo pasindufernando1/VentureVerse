@@ -5,11 +5,8 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import {InvestorHeader, Input} from "../webcomponent";
- 
-import {Checkbox} from "../webcomponent";
-import {Button} from "../webcomponent";
-import CustomButton from "../webcomponent/CustomButton";
+import {} from "../webcomponent";
+import {Checkbox,Button,Input,Header} from "../webcomponent";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {Progress} from "@material-tailwind/react";
@@ -53,8 +50,8 @@ function ViewListing() {
 
 
     return (
-        <div>
-            <InvestorHeader active="Listing">
+
+            <Header active="Listing">
                 <div className="flex flex-row">
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
                         <Card className="w-96 mt-2">
@@ -166,13 +163,13 @@ function ViewListing() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="primary"
                                     label="Show more"
                                     icon="next"
                                 >
                                     <Link to="/investor/view-listingfull">Show more</Link>
-                                </CustomButton>
+                                </Button>
                             </CardFooter>
                         </Card>
                         <Card className="w-96 mt-2">
@@ -284,13 +281,13 @@ function ViewListing() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="primary"
                                     label="Show more"
                                     icon="next"
                                 >
                                     <Link to="/investor/view-listingfull">Show more</Link>
-                                </CustomButton>
+                                </Button>
                             </CardFooter>
                         </Card>
                         <Card className="w-96 mt-2">
@@ -402,13 +399,13 @@ function ViewListing() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="primary"
                                     label="Show more"
                                     icon="next"
                                 >
                                     <Link to="/investor/view-listingfull">Show more</Link>
-                                </CustomButton>
+                                </Button>
                             </CardFooter>
                         </Card>
                         <Card className="w-96 mt-2">
@@ -520,13 +517,13 @@ function ViewListing() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <CustomButton
+                                <Button
                                     variant="primary"
                                     label="Show more"
                                     icon="next"
                                 >
                                     <Link to="/investor/view-listingfull">Show more</Link>
-                                </CustomButton>
+                                </Button>
                             </CardFooter>
                         </Card>
 
@@ -644,8 +641,7 @@ function ViewListing() {
                     </div>
                 </div>
 
-            </InvestorHeader>
-        </div>
+            </Header>
 
 
     )

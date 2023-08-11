@@ -1,12 +1,10 @@
 import {Card} from "@material-tailwind/react";
 import React, {useEffect} from "react";
 import {useState} from "react";
-import {Navbar, Checkbox, Radio, Textarea, Input, Button} from "../webcomponent";
+import {Header, Checkbox, Radio, Textarea, Input, Button} from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-import {Header} from "../webcomponent";
-// Regular expressions to validate the inputs
-// Integers only regex
+
 const integerRegex = /^[0-9]*$/;
 
 function AddListing() {
@@ -1636,7 +1634,7 @@ function AddListing() {
                 </main>
             </Header>
 
-            {/* <Footer /> */}
+            {/* <CustomFooter /> */}
         </div>
     );
 }

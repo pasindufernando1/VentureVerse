@@ -1,6 +1,7 @@
-import {Button} from "@material-tailwind/react";
 import React from "react";
 import {NavLink} from "react-router-dom";
+import {Button} from "../webcomponent";
+
 
 function DisableAccount(){
     return (

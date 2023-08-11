@@ -68,12 +68,19 @@ const CustomHeader = (props) => {
     }, []);
 
     const menu = []
+    const accountMenu = []
 
     if (auth?.role === "ADMIN") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard"},
-            {'icon': faSquarePollVertical, 'title': "Registration requests", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"}
+            {'icon': faSquarePollVertical, 'title': "Registration Requests", 'link': "/admin/view-requests"},
+            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"},
+            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/add-co-admin"}
+        );
+        accountMenu.push(
+            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/admin/profile", "suffix": false},
+            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
     } else if (auth?.role === "ENTREPRENEUR") {
         menu.push(
@@ -81,19 +88,23 @@ const CustomHeader = (props) => {
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/entrepreneur/view-listingfull"},
             {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
             {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"}
+        );
+        accountMenu.push(
+            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/entrepreneur/profile", "suffix": false},
+            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
     } else if (auth?.role === "INDIVIDUAL INVESTOR" || auth?.role === "ENTERPRISE INVESTOR") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing"},
+        );
+        accountMenu.push(
+            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/investor/profile", "suffix": false},
+            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
     }
-
-    const accountMenu = [
-        {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
-        {'icon': faCircleUser, 'title': "Profile", 'link': "#", "suffix": false},
-        {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
-    ]
 
     let name = "";
 

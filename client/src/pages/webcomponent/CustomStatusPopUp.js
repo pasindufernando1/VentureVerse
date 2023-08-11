@@ -1,21 +1,18 @@
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 import {
   Button,
   Dialog,
-  DialogHeader,
   DialogBody,
-  DialogFooter,
   Typography,
 } from "@material-tailwind/react";
 
 
-function SuccessNotification({successTitle, successMessage, redirectUrl }) {
+function CustomStatusPopUp({successTitle, successMessage, redirectUrl }) {
   const [open, setOpen] = useState(true);
 
   const handleOpen = () => setOpen(!open);
 
-  const handlesubmit = () => {
+  const handleSubmit = () => {
     window.location.href = redirectUrl;
   }
 
@@ -25,7 +22,6 @@ function SuccessNotification({successTitle, successMessage, redirectUrl }) {
       <div>
         
         <Dialog open={open} handler={handleOpen}>
-          <DialogHeader></DialogHeader>
           <DialogBody className="grid place-items-center gap-4">
             <svg
               viewBox="0 0 24 24"
@@ -46,7 +42,7 @@ function SuccessNotification({successTitle, successMessage, redirectUrl }) {
             <Typography className="text-center font-normal">
               {successMessage}
             </Typography>
-            <Button variant="gradient" color="green" onClick={handlesubmit}>
+            <Button variant="gradient" color="green" onClick={handleSubmit}>
               Ok, Got it
             </Button>
           </DialogBody>
@@ -55,4 +51,4 @@ function SuccessNotification({successTitle, successMessage, redirectUrl }) {
   );
 }
 
-export default SuccessNotification;
+export default CustomStatusPopUp;

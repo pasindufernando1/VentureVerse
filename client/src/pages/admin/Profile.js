@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import {Checkbox, CommonNavbar, Footer, Input, Select} from "../webcomponent";
-import { Navbar } from "../webcomponent";
-import Topbar from "../common/Topbar";
-import {Button} from "@material-tailwind/react";
+import React, {useState} from 'react';
+import {Header, Input, Select, Button} from "../webcomponent";
 
-function AdminProfileInformation({formData, setFormData,validateFormData}) {
+const AdminProfileInformation = ({formData, setFormData, validateFormData}) => {
+
     const [editMode, setEditMode] = useState(false);
-    const[editForm, setEditForm] = useState(true);
-    const[changePassword, setchangePassword] = useState(false)
+    const [editForm, setEditForm] = useState(true);
+    const [changePassword, setchangePassword] = useState(false)
     const handleEditClick = () => {
         setEditMode(true);
         setEditForm(false);
@@ -28,7 +26,8 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
         setEditForm(true);
     };
     return (
-        <div className='flex mt-24 relative justify-center items-start w-full px-72 mb-24 rounded-2xl py-[2rem] border border-main-purple '>
+        <div
+            className='flex mt-24 relative justify-center items-start w-full px-72 mb-24 rounded-2xl py-[2rem] border border-main-purple '>
             {changePassword ? (
                 /* Display change password form */
                 <div>
@@ -50,7 +49,8 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
                             required
                         />
                         <div className="row">
-                            <Button color="purple" size="sm" ripple={true} type='submit' onClick={noHandleChangePasswordClick}>back</Button>
+                            <Button color="purple" size="sm" ripple={true} type='submit'
+                                    onClick={noHandleChangePasswordClick}>back</Button>
                             <Button color="purple" size="sm" ripple={true} type='submit'>Submit</Button>
                         </div>
                     </div>
@@ -62,7 +62,7 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
                         {editMode ? (
                             <Button color="purple" ripple={true} onClick={handleSubmit}>Submit</Button>
                         ) : (
-                            <Button color="purple" ripple={true} onClick={handleEditClick} >Edit</Button>
+                            <Button color="purple" ripple={true} onClick={handleEditClick}>Edit</Button>
                         )}
                     </div>
                     <div className="mt-6">
@@ -71,30 +71,31 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
                                 type="text"
                                 label="First Name"
                                 value="Chris"
-                                disabled ={editForm}
+                                disabled={editForm}
                             />
                             <Input
                                 type="text"
                                 label="Last name"
                                 value="Perera"
-                                disabled ={editForm}
+                                disabled={editForm}
                             />
 
                         </div>
                         <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
-                            <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address</legend>
+                            <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
+                            </legend>
                             <div className="row">
                                 <Input
                                     type="text"
                                     label="First Line"
                                     value="216"
-                                    disabled ={editForm}
+                                    disabled={editForm}
                                 />
                                 <Input
                                     type="text"
                                     label="Second Line"
                                     value="st. antony'rd"
-                                    disabled ={editForm}
+                                    disabled={editForm}
                                 />
                             </div>
 
@@ -104,34 +105,34 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
                                     type="text"
                                     label="Town"
                                     value="Karuneriya"
-                                    disabled ={editForm}
+                                    disabled={editForm}
                                 />
                                 <Select
                                     label="District"
                                     options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
-                                    disabled ={editForm}
+                                    disabled={editForm}
                                 />
                             </div>
                         </fieldset>
                         <div className="row">
                             <Select
                                 label="Gender"
-                                options={["Male","Female"]}
-                                disabled ={editForm}
+                                options={["Male", "Female"]}
+                                disabled={editForm}
                             />
                             <Input
                                 type="text"
                                 label="mobile number"
-                                disabled ={editForm}
+                                disabled={editForm}
                             />
                         </div>
                         <div className="row">
-                            <Select
-                                type="text"
-                                label="Admin Type"
-                                value="Super Admin"
-                                disabled
-                            />
+                            {/*<Select*/}
+                            {/*    type="text"*/}
+                            {/*    label="Admin Type"*/}
+                            {/*    value="Super Admin"*/}
+                            {/*    disabled*/}
+                            {/*/>*/}
                             <Input
                                 type="text"
                                 label="NIC"
@@ -140,28 +141,22 @@ function AdminProfileInformation({formData, setFormData,validateFormData}) {
                             />
                         </div>
                     </div>
-                    <button className="text-sm text-main-purple" onClick={handleChangePasswordClick}>Change Password</button>
+                    <button className="text-sm text-main-purple" onClick={handleChangePasswordClick}>Change Password
+                    </button>
                 </div>
             )}
         </div>
     )
 }
 
-const ProfileAdmin = () => {
+const Profile = () => {
     return (
-        <div className="flex flex-col justify-between items-center w-full overflow-hidden ">
-            <Navbar />
-            <Topbar/>
-            <div className='flex flex-col  w-full items-center'>
-            <div>
-                <AdminProfileInformation/>
-            </div>
-            </div>
-            <Footer/>
-        </div>
+        <Header active="Profile">
+            <AdminProfileInformation/>
+        </Header>
 
     )
 }
 
-export default ProfileAdmin
+export default Profile
 
