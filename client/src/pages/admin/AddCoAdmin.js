@@ -315,7 +315,7 @@ const AdminTestHome = () => {
                     <StatusPopUp
                     successTitle="Registration Successful"
                     successMessage="You have successfully registered a new Co-Admin!"
-                    redirectUrl="/dashboard"
+                    redirectUrl="/admin/dashboard"
                     />
                 )}
             </div>

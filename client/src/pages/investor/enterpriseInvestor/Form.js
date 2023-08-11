@@ -263,7 +263,7 @@ function Form() {
                     <StatusPopUp
                         successTitle="Registration Successful"
                         successMessage="You have successfully registered a new Enterprise Investor!"
-                        redirectUrl="/dashboard"
+                        redirectUrl="/admin/dashboard"
                     />
                 )}
             </div>
