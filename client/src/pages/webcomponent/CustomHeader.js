@@ -19,7 +19,8 @@ import {
     faPowerOff,
     faSquarePollVertical,
     faCircleExclamation,
-    faCalendar
+    faCalendar,
+    faHeart
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -75,7 +76,6 @@ const CustomHeader = (props) => {
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Registration Requests", 'link': "/admin/view-requests"},
             {'icon': faCircleUser, 'title': "Users", 'link': "/admin/view-requests"},
-            {'icon': faCircleUser, 'title': "Users", 'link': "/admin/add-co-admin"}
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -86,8 +86,8 @@ const CustomHeader = (props) => {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/entrepreneur/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/entrepreneur/view-listingfull"},
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"},
             {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
-            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"}
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
@@ -98,6 +98,9 @@ const CustomHeader = (props) => {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/investor/dashboard"},
             {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing"},
+            {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules"},
+            {'icon': faHeart, 'title': "Interested", 'link': "/investor/interests"},
+            {'icon': faCircleExclamation, 'title': "Complains", 'link': "/entrepreneur/add-complain"},
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},

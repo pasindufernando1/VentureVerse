@@ -3,11 +3,11 @@ import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 
-function ViewListingCounterProposal() {
+function ViewInterests() {
 
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
-            '/meeting/01/entrepreneur/' + new Date().toISOString(),
+            '/meeting/01/investor/' + new Date().toISOString(),
             '_blank'
         );
         if (conferenceWindow) {
@@ -44,15 +44,14 @@ function ViewListingCounterProposal() {
 
     return (
         <div>
-            <Header active="Listing">
+            <Header active="Interested">
                 <main className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
                       >
                     <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">
                         <div className="text-gray-700 p-[2rem] w-full">
                             <div className="row flex justify-between items-center">
                                 <div>
-                                    <h2 className="text-xl font-bold mb-4 text-main-purple">Current investor
-                                        offerings</h2>
+                                    <h2 className="text-xl font-bold mb-4 text-main-purple">Your initial offers</h2>
                                 </div>
                             </div>
 
@@ -62,7 +61,7 @@ function ViewListingCounterProposal() {
                                         className="text-xs text-gray-900 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
                                         <th scope="col" className="px-6 py-3">
-                                            Investor interested
+                                            Entrepreneur
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Amount offered
@@ -131,4 +130,4 @@ function ViewListingCounterProposal() {
     )
 }
 
-export default ViewListingCounterProposal
+export default ViewInterests
