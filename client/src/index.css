@@ -440,3 +440,21 @@ code {
 .toast-icon {
     margin-right: 10px;
 }
+
+.image-cell {
+    width: 50px; /* Adjust the width as needed */
+    height: 50px; /* Adjust the height as needed */
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%; /* For a circular image appearance */
+    margin: auto;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+

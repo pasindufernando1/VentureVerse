@@ -22,12 +22,12 @@ import TermsAndCondition from "./pages/common/TermsAndCondition";
 import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
 import EntrepreneurProfile from "./pages/entrepreneur/Profile";
 import AddListing from "./pages/entrepreneur/AddListing";
-import ViewListing from "./pages/entrepreneur/ViewListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
 import AddComplaints from "./pages/entrepreneur/AddComplaints";
 import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
+import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
 
 
 // Investor Pages
@@ -35,6 +35,9 @@ import InvestorDashboard from "./pages/investor/Dashboard";
 import InvestorProfile from "./pages/investor/Profile";
 import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewInterests from "./pages/investor/ViewInterests";
+import ViewListing from "./pages/investor/ViewListing";
+import ViewComplaints from "./pages/investor/ViewComplaints";
+import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
 
 
 
@@ -50,6 +53,7 @@ import ViewCoAdmin from "./pages/admin/ViewCoAdmin";
 import ViewEnterpreneurs from "./pages/admin/ViewEnterpreneurs";
 import IndividualInvestors from "./pages/admin/ViewIndividualInvestors";
 import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
+import AdminViewComplaints from "./pages/admin/ViewComplaints";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -90,6 +94,7 @@ function App() {
                         <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriceInvestors/>}/>
+                        <Route path="/admin/view-complaints" element={<AdminViewComplaints />} /> 
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -99,19 +104,23 @@ function App() {
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
-                        <Route path="/investor/add-complaints" element={<AddComplaints />} />                        
+                        <Route path="/investor/add-complaints" element={<AddComplaints />} />  
+                        <Route path="/investor/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur/profile" element={<EntrepreneurProfile/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
-                        <Route path="/entrepreneur/view-listing" element={<ViewListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
-                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />                        
+                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />    
+                        <Route path="/entrepreneur/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
+                                            
                     </Route>
                 </Route>
                 {/*404*/}

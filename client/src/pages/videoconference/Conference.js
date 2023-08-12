@@ -93,7 +93,7 @@ const Conference = () => {
             },
 
             waitingScreen: {
-                imageUrl: "https://imgur.com/sACn7cR.png",
+                imageUrl: "https://i.imgur.com/9WAcrpj.png",
                 text: "Connecting to the meeting...",
             },
 
