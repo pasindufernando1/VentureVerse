@@ -24,7 +24,7 @@ import {
     faInbox,
     faPowerOff,
     faSquarePollVertical,
-    
+    faRankingStar,
     faHeart
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
@@ -114,6 +114,7 @@ const CustomHeader = (props) => {
             },
             
             {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules", 'subcategory': false},
+            {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/entrepreneur/view-leaderboard", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null, 'subcategory': [
                 {'icon': faChevronRight, 'title': "Add Complain", 'link': "/entrepreneur/add-complain"},
                 {'icon': faChevronRight, 'title': "Past Complains", 'link': "/entrepreneur/view-complaints"},
@@ -131,6 +132,7 @@ const CustomHeader = (props) => {
             {'icon': faSquarePollVertical, 'title': "Listing", 'link': "/investor/view-listing", 'subcategory': false},
             {'icon': faHeart, 'title': "Interests", 'link': "/investor/interests", 'subcategory': false},
             {'icon': faCalendar, 'title': "Schedules", 'link': "/investor/schedules", 'subcategory': false},
+            {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/investor/view-leaderboard", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null , 'subcategory': [
                     {'icon': faChevronRight, 'title': "Add Complain", 'link': "/investor/add-complaints"},
                     {'icon': faChevronRight, 'title': "Past Complains", 'link': "/investor/view-complaints"},

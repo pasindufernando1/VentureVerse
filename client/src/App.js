@@ -27,6 +27,7 @@ import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterP
 import AddComplaints from "./pages/entrepreneur/AddComplaints";
 import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
+import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
 
 
 // Investor Pages
@@ -36,6 +37,7 @@ import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewInterests from "./pages/investor/ViewInterests";
 import ViewListing from "./pages/investor/ViewListing";
 import ViewComplaints from "./pages/investor/ViewComplaints";
+import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
 
 
 
@@ -103,7 +105,8 @@ function App() {
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
                         <Route path="/investor/add-complaints" element={<AddComplaints />} />  
-                        <Route path="/investor/view-complaints" element={<ViewComplaints />} />                      
+                        <Route path="/investor/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
@@ -116,6 +119,7 @@ function App() {
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
                         <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />    
                         <Route path="/entrepreneur/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
                                             
                     </Route>
                 </Route>
