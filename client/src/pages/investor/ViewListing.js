@@ -89,13 +89,13 @@ function ViewListing() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            Rs. {listing.expectedAmount}
+                                            Rs.5000000
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnEquityPercentage}%
+                                            5%
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnUnitProfitPercentage}
+                                            25
                                         </Typography>
                                     </div>
                                 </div>
@@ -207,13 +207,13 @@ function ViewListing() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            Rs. {listing.expectedAmount}
+                                            Rs. 6000000               
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnEquityPercentage}%
+                                            6%
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnUnitProfitPercentage}
+                                            30
                                         </Typography>
                                     </div>
                                 </div>
@@ -325,13 +325,13 @@ function ViewListing() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            Rs. {listing.expectedAmount}
+                                            Rs. 7000000
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnEquityPercentage}%
+                                            10%
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnUnitProfitPercentage}
+                                            35
                                         </Typography>
                                     </div>
                                 </div>
@@ -443,13 +443,13 @@ function ViewListing() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            Rs. {listing.expectedAmount}
+                                            Rs. 8000000
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnEquityPercentage}%
+                                            12%
                                         </Typography>
                                         <Typography variant="h6" color="blue-gray" className="mb-2">
-                                            {listing.returnUnitProfitPercentage}
+                                            40
                                         </Typography>
                                     </div>
                                 </div>

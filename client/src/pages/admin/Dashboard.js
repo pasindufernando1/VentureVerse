@@ -81,7 +81,7 @@ const DashBoard = () => {
                 </div>
             </div>
             <div className="sm:grid sm:grid-cols-2 gap-4">
-                <div className="flex items-center justify-center rounded">
+                {/* <div className="flex items-center justify-center rounded">
                     <div className="w-full max-w-2xl px-4">
                         <div className="border rounded-lg pb-6 border-gray-200 dark:border-gray-700 ">
                             <div
@@ -201,8 +201,8 @@ const DashBoard = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="flex items-center justify-center rounded ">
+                </div> */}
+                {/* <div className="flex items-center justify-center rounded ">
                     <div className="w-full max-w-2xl px-4">
                         <div className="border rounded-lg pb-6 border-gray-200 dark:border-gray-700 ">
                             <div
@@ -328,7 +328,7 @@ const DashBoard = () => {
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> */}
             </div>
         </Header>
     )

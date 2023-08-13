@@ -3,8 +3,9 @@ import { PieChart, Pie, Cell, Legend } from 'recharts';
 
 const CustomDoughnutChart = () => {
     const data = [
-        { name: 'Geeksforgeeks', students: 400, color: 'purple' },
-        { name: 'Technical scripter', students: 700, color: 'green' }
+        { name: 'Completed', students: 400, color: 'purple' },
+        { name: 'Pending', students: 700, color: 'green' },
+        { name: 'Interested', students: 200, color: 'red' }
     ];
 
     const COLORS = data.map((entry) => entry.color || 'purple');
