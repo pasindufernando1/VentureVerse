@@ -114,7 +114,7 @@ const DashBoard = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-[1rem]">
+                <div className="w-full flex flex-col lg:flex-row gap-[1rem]">
                     <div className="w-full lg:w-[50%] bg-white rounded-lg border-[1px] p-4 md:p-6">
                         <div className="flex flex-col gap-[0.2rem] border-gray-200 border-b py-2">
                             <div>
@@ -172,7 +172,7 @@ const DashBoard = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-[1rem]">
+                <div className="w-full flex flex-col lg:flex-row gap-[1rem]">
                     <div className="w-full lg:w-[65%] bg-white rounded-lg border-[1px] p-4 md:p-6">
                         <div className="flex flex-col gap-[2rem]">
                             <div className="flex flex-row justify-between items-center">
