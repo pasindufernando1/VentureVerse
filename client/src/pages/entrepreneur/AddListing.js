@@ -216,10 +216,10 @@ function AddListing() {
             }
 
             post("/entrepreneur/upload", formData, setRes, true);
-
+            console.log("=============");
             console.log(res.status);
             console.log(res.message);
-
+            console.log("=============");
 
             //The listing object to be sent to the backend
             const listing = {
