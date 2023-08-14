@@ -12,12 +12,13 @@ const Dashboard = () => {
         chart1: {
             series: [
                 {
-                    name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
+                    name: "Added", data: [10, 5, 8, 9, 5, 7], color: "#1a56db"
                 },
                 {
-                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
-                },
+                    name: "Completed", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c"
+                }
             ],
+            colors: ["#1a56db", "#fdba8c"],
             categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
     }
