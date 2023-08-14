@@ -4,17 +4,23 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
 
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Dashboard = () => {
 
-    const series = [
-        {
-            name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
+    const areaChart = {
+        chart1: {
+            series: [
+                {
+                    name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
+                },
+                {
+                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
+                },
+            ],
+            categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
-        {
-            name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
-        },
-    ]
+    }
 
     const interestedInvestors = [
         {
@@ -49,8 +55,6 @@ const Dashboard = () => {
         }
     ]
 
-    const categories = ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
-
     return (
         <Header active="Dashboard">
             <div className="flex flex-col gap-[1rem] flex-wrap lg:flex-nowrap">
@@ -80,7 +84,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <AreaChart series={series} categories={categories}/>
+                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
@@ -100,7 +104,7 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-[1rem]">
+                <div className="w-full flex flex-col lg:flex-row gap-[1rem]">
                     <div className="w-full lg:w-[65%] bg-white rounded-lg border-[1px] p-4 md:p-6">
                         <div className="flex flex-col gap-[2rem]">
                             <div className="flex flex-row justify-between items-center">
@@ -114,7 +118,9 @@ const Dashboard = () => {
                                         variant="clear"
                                         className="px-[0.75rem] !border-none"
                                     >
-                                        View All
+                                        <Link to="/entrepreneur/view-listingCounterProposal">
+                                            View All
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>
@@ -123,7 +129,7 @@ const Dashboard = () => {
                                     interestedInvestors.map((investor, index) => (
                                         <div key={index}
                                              className="flex items-center py-[1rem] border-b-[1px] justify-between">
-                                            <div className="flex items-center gap-4  w-[25%]">
+                                            <div className="flex items-center gap-4  w-[50%]">
                                                 <Avatar
                                                     src={investor.image}
                                                     alt="avatar"
@@ -137,7 +143,7 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
                                             <span
-                                                className={`inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
@@ -164,7 +170,9 @@ const Dashboard = () => {
                                         variant="clear"
                                         className="px-[0.75rem] !border-none"
                                     >
-                                        View Schedule
+                                        <Link to="/entrepreneur/schedules">
+                                            View Schedule
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>

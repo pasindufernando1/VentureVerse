@@ -1,25 +1,28 @@
-import React from 'react';
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faArrowDown, faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {AreaChart, Button, Calendar, Header, Popover} from "../webcomponent";
+import {faArrowDown, faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
 
+import React from "react";
+import {Link} from "react-router-dom";
 
-const DashBoard = () => {
+const Dashboard = () => {
 
-    const series = [{
-        name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
-    }, {
-        name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
-    },]
+    const areaChart = {
+        chart1: {
+            series: [
+                {
+                    name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
+                },
+                {
+                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
+                },
+            ],
+            categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
+        },
+    }
 
     const interestedInvestors = [
-        {
-            name: "Bhasa Lanka",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: true
-        },
         {
             name: "Chris Perera",
             date: "10 August 2023",
@@ -27,16 +30,10 @@ const DashBoard = () => {
             counter: false
         },
         {
-            name: "Wishwa Lanka",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: true
-        },
-        {
             name: "Pamith Welikala",
             date: "10 August 2023",
             image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: false
+            counter: true
         },
         {
             name: "Nadeesha Epa",
@@ -45,8 +42,6 @@ const DashBoard = () => {
             counter: false
         }
     ]
-
-    const categories = ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
 
     return (
         <Header active="Dashboard">
@@ -77,7 +72,7 @@ const DashBoard = () => {
                             </div>
                         </div>
                     </div>
-                    <AreaChart series={series} categories={categories}/>
+                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
@@ -97,13 +92,13 @@ const DashBoard = () => {
                         </div>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-[1rem]">
+                <div className="w-full flex flex-col lg:flex-row gap-[1rem]">
                     <div className="w-full lg:w-[65%] bg-white rounded-lg border-[1px] p-4 md:p-6">
                         <div className="flex flex-col gap-[2rem]">
                             <div className="flex flex-row justify-between items-center">
                                 <div>
                                     <h5 className="leading-none text-2xl font-bold text-gray-900 dark:text-white pb-2">
-                                        Interested Investors
+                                        My Offers
                                     </h5>
                                 </div>
                                 <div>
@@ -111,7 +106,9 @@ const DashBoard = () => {
                                         variant="clear"
                                         className="px-[0.75rem] !border-none"
                                     >
-                                        View All
+                                        <Link to="/investor/interests">
+                                            View All
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>
@@ -120,7 +117,7 @@ const DashBoard = () => {
                                     interestedInvestors.map((investor, index) => (
                                         <div key={index}
                                              className="flex items-center py-[1rem] border-b-[1px] justify-between">
-                                            <div className="flex items-center gap-4  w-[25%]">
+                                            <div className="flex items-center gap-4  w-[50%]">
                                                 <Avatar
                                                     src={investor.image}
                                                     alt="avatar"
@@ -134,13 +131,13 @@ const DashBoard = () => {
                                                 </div>
                                             </div>
                                             <span
-                                                className={`inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
                                                 icon={"next"}
                                             >
-                                                View All
+                                                View More
                                             </Button>
                                         </div>
                                     ))
@@ -161,7 +158,9 @@ const DashBoard = () => {
                                         variant="clear"
                                         className="px-[0.75rem] !border-none"
                                     >
-                                        View Schedule
+                                        <Link to="/investor/schedules">
+                                            View Schedule
+                                        </Link>
                                     </Button>
                                 </div>
                             </div>
@@ -181,8 +180,8 @@ const DashBoard = () => {
             </div>
         </Header>
     )
+
+
 }
 
-export default DashBoard
-
-
+export default Dashboard
