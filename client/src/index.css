@@ -225,6 +225,14 @@ code {
   margin-right: 3rem;
 }
 
+.investments{
+    background: url("../public/assets/images/Investment.jpg") no-repeat;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  margin-right: 3rem;
+}
+
 /* Image inside a container */
 .play-image{
   /* Image link */

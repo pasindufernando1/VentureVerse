@@ -28,6 +28,7 @@ import AddComplaints from "./pages/entrepreneur/AddComplaints";
 import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
 import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
+import EntrepreneurFinalizeListing from "./pages/entrepreneur/FinalizeListing";
 
 
 // Investor Pages
@@ -120,7 +121,7 @@ function App() {
                         <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />    
                         <Route path="/entrepreneur/view-complaints" element={<ViewComplaints />} />   
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
-                                            
+                        <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
                     </Route>
                 </Route>
                 {/*404*/}

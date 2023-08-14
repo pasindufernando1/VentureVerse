@@ -372,6 +372,14 @@ function ViewListingFull() {
                                 >
                                     <Link to="/entrepreneur/view-listingCounterProposal">View offerings</Link>
                                 </Button>
+                                <Button
+                                    variant="primary"
+                                    label="Finalize Investment"
+                                    className="ml-2"
+                                    icon="next"
+                                >
+                                    <Link to="/entrepreneur/finalize-listing">Finalize Investment</Link>
+                                </Button>
                             </CardFooter>
                         </Card>
                     </div>
