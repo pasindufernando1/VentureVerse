@@ -1,7 +1,12 @@
 package com.ventureverse.server.repository;
 
-import com.ventureverse.server.model.entity.ChatDTO;
-import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ChatRepository extends JpaRepository<ChatDTO, Integer> {
+
+import com.ventureverse.server.model.entity.Chat;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ChatRepository extends JpaRepository<Chat, Long> {
+    // You can add custom query methods here if needed
 }

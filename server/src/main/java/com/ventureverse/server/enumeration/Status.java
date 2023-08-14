@@ -5,6 +5,12 @@ public enum Status {
     PENDING,
     APPROVED,
     ACTIVE,
-    DELETED
+    DELETED,
+    JOIN,
+    MESSAGE,
+    LEAVE;
+
+    private Status() {
+    }
 
 }

@@ -20,6 +20,7 @@ import StatusPopUp from "./CustomStatusPopUp";
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
 import Footer from "./CustomFooter";
+import Chat from "./Chat";
 
 export {
     Swiper,
@@ -41,4 +42,6 @@ export {
     Navbar,
     Header,
     Footer,
+    Chat
+
 }

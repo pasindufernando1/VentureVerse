@@ -56,6 +56,7 @@ import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
 import AdminViewComplaints from "./pages/admin/ViewComplaints";
 
 import {Routes, Route} from "react-router-dom";
+import Chats from "./pages/common/Chats";
 
 function App() {
     return (
@@ -74,6 +75,7 @@ function App() {
                 <Route path="/meeting/:id/:user/:time" element={<Conference />} />
                 <Route path="/comp" element={<Components />}/>
                 <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
+                <Route path="/chat" element={<Chats/>}/>
 
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>

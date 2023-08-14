@@ -45,7 +45,7 @@ const CustomFooter = () => {
                     link: "#",
                 },
                 {
-                    name: "Live Chat",
+                    name: "Live Chats",
                     link: "#",
                 },
                 {

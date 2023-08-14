@@ -2,7 +2,11 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/VentureVerse
     username: postgres
+<<<<<<< Updated upstream
     password: password
+=======
+    password: root
+>>>>>>> Stashed changes
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
