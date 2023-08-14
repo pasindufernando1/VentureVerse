@@ -29,8 +29,6 @@ public class ListingService {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
         var subscription = subscriptionRepository.findById(listingRequestDTO.getSubscriptionType()).orElseThrow();
 
-        System.out.println(entrepreneur);
-
         var list = ListingDTO.builder()
                 .title(listingRequestDTO.getTitle())
                 .description(listingRequestDTO.getDescription())

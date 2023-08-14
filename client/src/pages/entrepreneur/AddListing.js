@@ -1,18 +1,21 @@
 import {Card} from "@material-tailwind/react";
 import React, {useEffect} from "react";
 import {useState} from "react";
-import {Header, Checkbox, Radio, Textarea, Input, Button} from "../webcomponent";
+import {Navbar, Checkbox, Radio, Textarea, Input, Button, StatusPopUp} from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {Header} from "../webcomponent";
 import useAuth from "../../hooks/useAuth";
-
+// Regular expressions to validate the inputs
+// Integers only regex
 const integerRegex = /^[0-9]*$/;
 
-function AddListing() {
 
+
+function AddListing() {
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {post} = useAxiosMethods();
     const [res, setRes] = useState("")
-    const [listingres, setListingRes] = useState("")
 
     const {auth} = useAuth();
 
@@ -216,10 +219,9 @@ function AddListing() {
             }
 
             post("/entrepreneur/upload", formData, setRes, true);
-            console.log("=============");
-            console.log(res.status);
-            console.log(res.message);
-            console.log("=============");
+
+            console.log(res);
+
 
             //The listing object to be sent to the backend
             const listing = {
@@ -252,18 +254,13 @@ function AddListing() {
                 images
             }
             console.log(listing)
-            if(res.status === "Success") {
-                post("/entrepreneur/addListing", JSON.stringify(listing), setListingRes);
-                console.log(listingres.status)
-                console.log(listingres.message)
-                console.log("Listing added successfully")
-            }else{
-                console.log("Error uploading the files 1:");
-            }
+            post("/entrepreneur/addListing", JSON.stringify(listing), setRes);
+            console.log("Listing added successfully");
         } catch (error) {
             console.error("Error uploading the files : ", error);
         }
         // ---------------File uploading over------------ //
+        setShowSuccessNotification(true)
 
     }
 
@@ -280,7 +277,7 @@ function AddListing() {
             post('/entrepreneur/pay', {token, amount}, setRes);
 
             // Handle the response from the server (optional)
-            console.log(res.status);
+            console.log(res);
             onSubmitFree();
 
 
@@ -446,11 +443,11 @@ function AddListing() {
     })
 
     useEffect(() => {
-        let flag1 = true;
-        let flag2 = true;
-        let flag3 = true;
-        let flag4 = true;
-        let flag5 = true;
+        var flag1 = true;
+        var flag2 = true;
+        var flag3 = true;
+        var flag4 = true;
+        var flag5 = true;
         requiredFields[0].forEach((field) => {
             if (validateFormData[field].State === "Invalid") {
                 flag1 = false;
@@ -528,7 +525,7 @@ function AddListing() {
 
     return (
         <div>
-            <Header active="Add Listing">
+            <Header active="Listings">
                 <main className="h-auto min-h-[100vh] flex justify-center items-center w-full ">
 
                     <form
@@ -1643,13 +1640,20 @@ function AddListing() {
 
                     </form>
                 </main>
+                <div>
+                {showSuccessNotification && (
+                    <StatusPopUp
+                    successTitle="Listing added successfully"
+                    successMessage="Your listing is now visible to the matching investors"
+                    redirectUrl="/entrepreneur/dashboard"
+                    />
+                )}
+    </div>
             </Header>
 
-            {/* <CustomFooter /> */}
+            {/* <Footer /> */}
         </div>
     );
 }
 
 export default AddListing;
-
-
