@@ -2,7 +2,7 @@ import React, {useState } from 'react';
 import {Button, Textarea, Header } from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
 
-function AddComplaints() {
+function AddComplains() {
     const [formData, setFormData] = useState({
         complaintDesc: "",
         showError: false
@@ -76,4 +76,4 @@ function AddComplaints() {
     );
 }
 
-export default AddComplaints;
+export default AddComplains;

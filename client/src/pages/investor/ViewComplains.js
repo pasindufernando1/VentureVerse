@@ -9,7 +9,7 @@ import {
 import {Avatar} from "@material-tailwind/react";
 import { Textarea } from "@material-tailwind/react";
 
-function ViewComplaints() {
+function ViewComplains() {
     return (
         <div>
             <Header active="Complains">
@@ -117,4 +117,4 @@ function ViewComplaints() {
     )
 }
 
-export default ViewComplaints;
+export default ViewComplains;

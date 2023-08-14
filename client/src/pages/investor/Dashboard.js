@@ -6,38 +6,45 @@ import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
 
 
 const DashBoard = () => {
+
     const series = [{
         name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
     }, {
         name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
     },]
 
-    const interestedInvestors = [{
-        name: "Bhasa Lanka",
-        date: "10 August 2023",
-        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        counter: true
-    }, {
-        name: "Chris Perera",
-        date: "10 August 2023",
-        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        counter: false
-    }, {
-        name: "Wishwa Lanka",
-        date: "10 August 2023",
-        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        counter: true
-    }, {
-        name: "Pamith Welikala",
-        date: "10 August 2023",
-        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        counter: false
-    }, {
-        name: "Nadeesha Epa",
-        date: "10 August 2023",
-        image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        counter: false
-    }]
+    const interestedInvestors = [
+        {
+            name: "Bhasa Lanka",
+            date: "10 August 2023",
+            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            counter: true
+        },
+        {
+            name: "Chris Perera",
+            date: "10 August 2023",
+            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            counter: false
+        },
+        {
+            name: "Wishwa Lanka",
+            date: "10 August 2023",
+            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            counter: true
+        },
+        {
+            name: "Pamith Welikala",
+            date: "10 August 2023",
+            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            counter: false
+        },
+        {
+            name: "Nadeesha Epa",
+            date: "10 August 2023",
+            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            counter: false
+        }
+    ]
 
     const categories = ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
 
