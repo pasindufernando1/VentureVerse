@@ -4,6 +4,7 @@ import {useState} from "react";
 import {Header, Checkbox, Radio, Textarea, Input, Button} from "../webcomponent";
 import StripeCheckout from 'react-stripe-checkout';
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
 
 const integerRegex = /^[0-9]*$/;
 
@@ -11,6 +12,9 @@ function AddListing() {
 
     const {post} = useAxiosMethods();
     const [res, setRes] = useState("")
+    const [listingres, setListingRes] = useState("")
+
+    const {auth} = useAuth();
 
     // Section Handling
     const [currentSection, setCurrentSection] = useState(1);
@@ -213,7 +217,8 @@ function AddListing() {
 
             post("/entrepreneur/upload", formData, setRes, true);
 
-            console.log(res);
+            console.log(res.status);
+            console.log(res.message);
 
 
             //The listing object to be sent to the backend
@@ -242,13 +247,19 @@ function AddListing() {
                 subscriptionType,
                 publishedDate,
                 "status": "Active",
-                "entrepreneurId": 102,
+                "entrepreneurId": auth.id,
                 sectorId,
                 images
             }
             console.log(listing)
-            post("/entrepreneur/addListing", JSON.stringify(listing), setRes);
-            console.log("Listing added successfully");
+            if(res.status === "Success") {
+                post("/entrepreneur/addListing", JSON.stringify(listing), setListingRes);
+                console.log(listingres.status)
+                console.log(listingres.message)
+                console.log("Listing added successfully")
+            }else{
+                console.log("Error uploading the files 1:");
+            }
         } catch (error) {
             console.error("Error uploading the files : ", error);
         }
@@ -269,7 +280,7 @@ function AddListing() {
             post('/entrepreneur/pay', {token, amount}, setRes);
 
             // Handle the response from the server (optional)
-            console.log(res);
+            console.log(res.status);
             onSubmitFree();
 
 

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/VV
+    url: jdbc:postgresql://localhost:5432/VentureVerse
     username: postgres
     password: bullmastiff
     driver-class-name: org.postgresql.Driver
