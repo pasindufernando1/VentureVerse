@@ -9,16 +9,17 @@ import {
     CardBody,
     CardFooter,
     Typography,
-    Tooltip, Input, Checkbox,
+    Tooltip
 } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import {Input,Checkbox} from "../webcomponent";
 
 
-function FinalizeListing() {
+function FinalizeListingInvestor() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div>
-            <Header active="View Listing">
+            <Header active="Interests">
                 <main className="h-auto flex justify-center items-center ">
                     <form
                         className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem] mt-[-2rem] border-[1px] border-main-purple rounded-[1rem]">
@@ -34,15 +35,15 @@ function FinalizeListing() {
                                             <Card className="w-80">
                                                 <CardHeader floated={false} className="h-80">
                                                     <img
-                                                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                                                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
                                                         alt="profile-picture"/>
                                                 </CardHeader>
                                                 <CardBody className="text-center">
                                                     <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                        George Fernando
+                                                        Dinuni Fernando
                                                     </Typography>
                                                     <Typography color="blue-gray" className="font-medium" textGradient>
-                                                        CEO / Co-Founder
+                                                        Lanka Apparels
                                                     </Typography>
                                                 </CardBody>
                                                 
@@ -50,28 +51,53 @@ function FinalizeListing() {
 
                                         </div>
                                         <div>
-                                            <Card className="w-full shadow-lg p-6 border-2 border-main-purple mt-2 ml-5">
-                                            <p className="text-main-purple justify-center flex font-extrabold">
-                                                Finalized Offerings
-                                            </p>
-                                                <label htmlFor="seek"
-                                                       className="text-main-gray block mb-2 text-[14px] font-extrabold mt-5">
-                                                    Investing amount (Rs.) : <span
-                                                    className='font-black font-extrabold'>1000000</span>
+                                        <Card className="w-full shadow-lg p-6 border-2 border-main-purple  mt-2 ml-5">
+                                                <p className="text-main-purple justify-center flex font-extrabold">
+                                                        Finalize investment
+                                                </p>
+                                                <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px] mt-2 font-extrabold">
+                                                    I am offering (Rs) :
                                                 </label>
+                                                <Input
+                                                    type="text"
+                                                    id="seek"
+                                                    className="w-full"
+                                                    
+                                                    
+                                                />
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 mt-5 text-[14px] font-extrabold">
-                                                    Returns as a percentage
+                                                    And willing to take up (Should select at least one option) :
+                                                    
                                                 </label>
-                                                <div>
-                                                    <label htmlFor="seek"
-                                                           className="text-main-gray block mb-2 text-[14px] ml-4">
-                                                        Equity : <span className='font-black font-extrabold'>5 %</span>
-                                                    </label>
-                                                    <label htmlFor="seek"
-                                                           className="text-main-gray block mb-2 text-[14px] ml-4">
-                                                        Profit per unit : <span className='font-black font-extrabold'>10 %</span>
-                                                    </label>
+                                                <div className="flex items-center mb-3">
+                                                    <Input
+                                                        type="text"
+                                                        id="equityinput"
+                                                        className="w-full mr-2"
+                                                        
+                                                    />
+                                                    <Checkbox
+                                                        label="On Equity"
+                                                        name="equitybox"
+                                                        id="equity"
+                                                        
+                                                    />
+                                                </div>
+                                                <div className="flex items-center">
+                                                    <Input
+                                                        type="text"
+                                                        id="profitinput"
+                                                        className="w-full mr-2"
+                                                        
+                                                    />
+                                                    <Checkbox
+                                                        label="Profit per unit"
+                                                        name="profitunit"
+                                                        id="profitunitpercentage"
+                                                        
+
+                                                    />
                                                 </div>
                                                 <div className="row">
                                                     <div className="file-input-container mt-2">
@@ -98,13 +124,11 @@ function FinalizeListing() {
                                                         </span>
                                                     </div>
                                                 </div>
-                                                
                                                 <Checkbox
                                                     color="purple"
-                                                    label="I agree that all numbers are in order."
+                                                    label="I agree to all terms and conditions."
                                                     name="terms"
                                                     required={true}/>
-                                                
                                             </Card>
                                         </div>
                                     </div>
@@ -132,4 +156,4 @@ function FinalizeListing() {
     );
 }
 
-export default FinalizeListing;
+export default FinalizeListingInvestor;

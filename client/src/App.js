@@ -39,6 +39,7 @@ import ViewInterests from "./pages/investor/ViewInterests";
 import ViewListing from "./pages/investor/ViewListing";
 import ViewComplaints from "./pages/investor/ViewComplaints";
 import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
+import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 
 
 
@@ -55,6 +56,8 @@ import ViewEnterpreneurs from "./pages/admin/ViewEnterpreneurs";
 import IndividualInvestors from "./pages/admin/ViewIndividualInvestors";
 import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
 import AdminViewComplaints from "./pages/admin/ViewComplaints";
+import FinalizedListings from "./pages/admin/ViewListing";
+import FinalizedListingOffering from "./pages/admin/FinalizeListing";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -96,6 +99,8 @@ function App() {
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriceInvestors/>}/>
                         <Route path="/admin/view-complaints" element={<AdminViewComplaints />} /> 
+                        <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
+                        <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -107,7 +112,8 @@ function App() {
                         <Route path="/investor/schedules" element={<Schedule />} />
                         <Route path="/investor/add-complaints" element={<AddComplaints />} />  
                         <Route path="/investor/view-complaints" element={<ViewComplaints />} />   
-                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
+                        <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}

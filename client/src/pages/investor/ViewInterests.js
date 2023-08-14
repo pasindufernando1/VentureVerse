@@ -75,6 +75,9 @@ function ViewInterests() {
                                         <th scope="col" className="px-6 py-3">
                                             Actions
                                         </th>
+                                        <th scope="col" className="px-6 py-3">
+                                            Finalize
+                                        </th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -100,10 +103,18 @@ function ViewInterests() {
                                                     
                                                         <img src="/assets/images/videocall.png" alt="View"
                                                             className="cursor-pointer" onClick={handleVideoCAll}/>
-                                                    
-                                                </div>
-
+                                                </div>  
                                             </td>
+                                            <td className="px-2 py-4">
+                                                <Button
+                                                    variant="clear"
+                                                    label="Show less"
+                                                    className="mt-4"
+                                                >
+                                                    <Link to="/investor/finalize-listing">Finalize</Link>
+                                                </Button>
+                                            </td>
+
 
                                         </tr>
                                     ))}
