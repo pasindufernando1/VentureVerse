@@ -25,7 +25,8 @@ import {
     faPowerOff,
     faSquarePollVertical,
     faRankingStar,
-    faHeart
+    faHeart,
+    faChartLine
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -94,7 +95,9 @@ const CustomHeader = (props) => {
                 {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
                 {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
             ]},
+            {'icon':faChartLine, 'title': "Analytics", 'link': "/admin/analytics", 'subcategory': false},
             {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complaints", 'subcategory': false },
+
             
         );
         accountMenu.push(
@@ -133,6 +136,7 @@ const CustomHeader = (props) => {
             {'icon': faHeart, 'title': "Interests", 'link': "/investor/interests", 'subcategory': false},
             {'icon': faCalendar, 'title': "Schedules", 'link': "/investor/schedules", 'subcategory': false},
             {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/investor/view-leaderboard", 'subcategory': false},
+            {'icon':faChartLine, 'title': "Analytics", 'link': "/investor/analytics", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null , 'subcategory': [
                     {'icon': faChevronRight, 'title': "Add Complain", 'link': "/investor/add-complaints"},
                     {'icon': faChevronRight, 'title': "Past Complains", 'link': "/investor/view-complaints"},

@@ -14,8 +14,10 @@ import Popover from "./CustomPopOver";
 import BarChart from "./CustomBarChart";
 import DoughnutChart from "./CustomDoughnutChart";
 import AreaChart from "./CustomAreaChart";
+import LineChart from "./CustomLineCharts";
 import Calendar from "./CustomCalendar";
 import StatusPopUp from "./CustomStatusPopUp";
+
 
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
@@ -36,6 +38,7 @@ export {
     AreaChart,
     BarChart,
     DoughnutChart,
+    LineChart,
     Calendar,
     StatusPopUp,
     Navbar,
