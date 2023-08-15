@@ -57,7 +57,6 @@ import ViewCoAdmin from "./pages/admin/ViewCoAdmin";
 import ViewEntrepreneurs from "./pages/admin/ViewEnterpreneurs";
 import IndividualInvestors from "./pages/admin/ViewIndividualInvestors";
 import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
-import AdminViewComplaints from "./pages/admin/ViewComplaints";
 import FinalizedListings from "./pages/admin/ViewListing";
 import FinalizedListingOffering from "./pages/admin/FinalizeListing";
 import Analytics from "./pages/admin/Analytics";
@@ -107,7 +106,7 @@ function App() {
                         <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriceInvestors/>}/>
-                        <Route path="/admin/view-complaints" element={<AdminViewComplaints />} /> 
+                        <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                         <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
                         <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
                         <Route path="/admin/analytics" element={<Analytics />} />
@@ -116,7 +115,6 @@ function App() {
                         <Route path="/admin/interest/reports" element={<InterestReports/>}/>
                         <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
-                        <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -126,16 +124,14 @@ function App() {
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
-                        <Route path="/investor/add-complaints" element={<AddComplaints />} />  
-                        <Route path="/investor/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/investor/add-complains" element={<AddComplains />} />
+                        <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
                         <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} /> 
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
-                        <Route path="/investor/sector/reports" element={<SectorReport />} />             
-                        <Route path="/investor/add-complains" element={<AddComplains />} />
-                        <Route path="/investor/view-complains" element={<ViewComplains />} />
+                        <Route path="/investor/sector/reports" element={<SectorReport />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
