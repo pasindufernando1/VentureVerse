@@ -131,7 +131,7 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
                                             <span
-                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[15%] `}>{investor.counter ? "Counter" : "Interested"}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
