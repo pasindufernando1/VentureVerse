@@ -59,7 +59,7 @@ const ViewRequests = () => {
     <>
       <Header active="Registration Requests">
         <div>
-          <main className="h-auto flex justify-center items-center bg-white lg:h-screen mt-[-11rem]">
+          <main className="h-auto flex justify-center items-center bg-white lg:h-screen mt-[-3rem]">
             <form className="bg-white flex border-[1px] border-main-purple w-full h-auto lg:rounded-[1rem]">
               <div className="text-gray-700 p-[2rem] w-full">
                 <div className="row flex justify-between items-center">
