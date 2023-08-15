@@ -1,11 +1,13 @@
-import react, {useEffect, useState} from "react";
+
 import {Chat} from "../webcomponent";
+
 
 function Chats() {
     return (
-        <div>
-            <Chat />
-        </div>
+        <>
+        <Chat/>
+            </>
+
     )
 }
 export default Chats;

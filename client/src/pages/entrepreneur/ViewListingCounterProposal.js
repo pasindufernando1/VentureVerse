@@ -15,6 +15,9 @@ function ViewListingCounterProposal() {
             conferenceWindow.focus();
     }
     }
+    const handleChat=(value)=>{
+
+    }
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
 

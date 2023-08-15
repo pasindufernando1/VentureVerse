@@ -22,6 +22,7 @@ import Header from "./CustomHeader";
 import Footer from "./CustomFooter";
 import Chat from "./Chat";
 
+
 export {
     Swiper,
     Carousel,
@@ -42,6 +43,7 @@ export {
     Navbar,
     Header,
     Footer,
-    Chat
+    Chat,
+
 
 }

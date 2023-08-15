@@ -1,14 +1,21 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import SockJS from 'sockjs-client';
-import { over } from 'stompjs';
+import {over} from 'stompjs';
 
-import { Button, Avatar, IconButton, ListItem, ListItemPrefix, Textarea } from '@material-tailwind/react';
+import {Button} from "../webcomponent";
+
 import {
+    Avatar,
+    IconButton,
+    ListItem,
+    ListItemPrefix,
     Popover,
-    PopoverHandler,
     PopoverContent,
-} from '@material-tailwind/react';
+    PopoverHandler,
+    Textarea
+} from "@material-tailwind/react";
 
+var stompClient = null;
 const Chat = () => {
     const [privateChats, setPrivateChats] = useState(new Map());
     const [publicChats, setPublicChats] = useState([]);
@@ -23,8 +30,6 @@ const Chat = () => {
     useEffect(() => {
         console.log(userData);
     }, [userData]);
-
-    let stompClient = null;
 
     const connect = () => {
         let Sock = new SockJS('http://localhost:8080/api/auth/ws');
@@ -57,9 +62,8 @@ const Chat = () => {
                 }
                 break;
             case 'MESSAGE':
-                setPublicChats((prevChats) => [...prevChats, payloadData]);
-                break;
-            default:
+                publicChats.push(payloadData);
+                setPublicChats([...publicChats]);
                 break;
         }
     };
@@ -117,98 +121,69 @@ const Chat = () => {
             setUserData({ ...userData, message: '' });
         }
     };
+    const registerUser = () => {
+        connect();
+    };
 
     const handleUsername = (event) => {
         const { value } = event.target;
         setUserData({ ...userData, username: value });
     };
+    // const handleUsername = (value) => {
+    //     setUserData({ ...userData, username: value });
+    //     console.log(value)
+    //     registerUser();
+    // };
+    // const handleUsername = (username) => {
+    //     setUserData({ ...userData, username: username });
+    //     console.log(username);
+    //     registerUser();
+    // };
 
-    const registerUser = () => {
-        connect();
-    };
+
+
 
     return (
         <>
+            
             <Popover>
                 <PopoverHandler>
                     <Button>More Info</Button>
                 </PopoverHandler>
                 <PopoverContent className="z-[999] flex w-[42rem] h-auto overflow-hidden p-0">
+
                     <div className="container relative ">
-                        {userData.connected ? (
+                        {userData.connected ?
                             <div className="chat-box p-2 flex flex-row md:flex-row sm:flex-row">
                                 <div className="member-list  w-1/5 ">
                                     <ul>
-                                        <ListItem
-                                            onClick={() => {
-                                                setTab('CHATROOM');
-                                            }}
-                                            className={`member ${
-                                                tab === 'CHATROOM' && 'active p-2 cursor-pointer bg-purple-100 '
-                                            } `}
-                                        >
-                                            <ListItemPrefix>
-                                                <Avatar variant="circular" alt="candice" src="/images/avatar.svg" />
-                                            </ListItemPrefix>
-                                            Chatroom
-                                        </ListItem>
+                                        <ListItem onClick={() => { setTab("CHATROOM") }} className={`member ${tab === "CHATROOM" && "active p-2 cursor-pointer bg-purple-100 "} `}> <ListItemPrefix>
+                                            <Avatar variant="circular" alt="candice" src="/images/avatar.svg" />
+                                        </ListItemPrefix>Chatroom</ListItem>
                                         {[...privateChats.keys()].map((name, index) => (
-                                            <ListItem
-                                                onClick={() => {
-                                                    setTab(name);
-                                                }}
-                                                className={`member ${
-                                                    tab === name && 'active p-2 cursor-pointer bg-purple-100'
-                                                } `}
-                                                key={index}
-                                            >
-                                                <ListItemPrefix>
-                                                    <Avatar variant="circular" alt="candice" src="/images/avatar.svg" />
-                                                </ListItemPrefix>
-                                                {name}
-                                            </ListItem>
+                                            <ListItem onClick={() => { setTab(name) }} className={`member ${tab === name && "active p-2 cursor-pointer bg-purple-100"} `} key={index}> <ListItemPrefix>
+                                                <Avatar variant="circular" alt="candice" src="/images/avatar.svg" />
+                                            </ListItemPrefix>{name}</ListItem>
                                         ))}
                                     </ul>
                                 </div>
-                                {tab === 'CHATROOM' && (
+                                {tab === "CHATROOM" &&
                                     <div className="chat-content w-full h-4/5  md:w-4/5 ml-2 border-2 md:border-0 overflow-y-auto ">
                                         <ul className="chat-messages h-4/5 rounded-2xl flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                                             {publicChats.map((chat, index) => (
-                                                <li
-                                                    className={`message p-1 w-auto flex flex-row ${
-                                                        chat.senderName === userData.username ? 'justify-start' : 'justify-end'
-                                                    }`}
-                                                    key={index}
-                                                >
-                                                    {chat.senderName !== userData.username && (
-                                                        <div className="avatar bg-cornflowerblue p-1 rounded-lg text-blue-700"></div>
-                                                    )}
-                                                    <div
-                                                        className={`message-data p-1 ${
-                                                            chat.senderName === userData.username ? 'justify-start' : 'justify-end'
-                                                        }`}
-                                                    >
-                            <span
-                                className={`px-4 py-2 rounded-lg inline-block ${
-                                    chat.senderName === userData.username
-                                        ? 'bg-gray-300 text-gray-600'
-                                        : 'bg-gray-300 text-gray-600'
-                                }`}
-                            >
-                              <div
-                                  className={chat.senderName === userData.username ? 'text-blue-700' : 'text-blue-700'}
-                              >
-                                {chat.senderName}
-                              </div>
-                                {chat.message}
-                            </span>
+                                                <li className={`message p-1 w-auto flex flex-row ${chat.senderName === userData.username ? "justify-start" : "justify-end"}`} key={index}>
+                                                    {chat.senderName !== userData.username && <div className="avatar bg-cornflowerblue p-1 rounded-lg text-blue-700"></div>}
+                                                    <div className={`message-data p-1 ${chat.senderName === userData.username ? "justify-start" : "justify-end"}`}>
+                                      <span className={`px-4 py-2 rounded-lg inline-block ${chat.senderName === userData.username ? "bg-gray-300 text-gray-600" : "bg-gray-300 text-gray-600"}`}>
+                                       <div className={chat.senderName === userData.username ? "text-blue-700" : "text-blue-700"}>{chat.senderName}</div>
+                                          {chat.message}
+                                         </span>
                                                     </div>
-                                                    {chat.senderName === userData.username && (
-                                                        <div className="avatar self bg-greenyellow p-1 rounded-lg text-black"></div>
-                                                    )}
+                                                    {chat.senderName === userData.username && <div className="avatar self bg-greenyellow p-1 rounded-lg text-black"></div>}
                                                 </li>
                                             ))}
                                         </ul>
+
 
                                         <div className="flex w-full flex-col md:flex-row items-center gap-2 rounded-[99px] border border-light-purple bg-purple-50 p-2 mt-8 ">
                                             <div className="flex">
@@ -253,10 +228,10 @@ const Chat = () => {
                                                 onChange={handleMessage}
                                                 className="min-h-full !border-0 focus:border-transparent"
                                                 containerProps={{
-                                                    className: 'grid h-full',
+                                                    className: "grid h-full",
                                                 }}
                                                 labelProps={{
-                                                    className: 'before:content-none after:content-none',
+                                                    className: "before:content-none after:content-none",
                                                 }}
                                             />
                                             <div>
@@ -278,44 +253,22 @@ const Chat = () => {
                                                 </IconButton>
                                             </div>
                                         </div>
+
                                     </div>
-                                )}
-                                {tab !== 'CHATROOM' && (
+                                }
+                                {tab !== "CHATROOM" &&
                                     <div className="chat-content  w-full h-4/5  md:w-4/5 ml-2 border-2 md:border-0 overflow-y-auto">
                                         <ul className="chat-messages h-4/5 rounded-2xl flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch">
                                             {[...privateChats.get(tab)].map((chat, index) => (
-                                                <li
-                                                    className={`message p-1 w-auto flex flex-row ${
-                                                        chat.senderName === userData.username ? 'justify-start' : 'justify-end'
-                                                    }`}
-                                                    key={index}
-                                                >
-                                                    {chat.senderName !== userData.username && (
-                                                        <div className="avatar bg-cornflowerblue p-1 rounded-lg text-blue-700"></div>
-                                                    )}
-                                                    <div
-                                                        className={`message-data p-1 ${
-                                                            chat.senderName === userData.username ? 'justify-start' : 'justify-end'
-                                                        }`}
-                                                    >
-                            <span
-                                className={`px-4 py-2 rounded-lg inline-block ${
-                                    chat.senderName === userData.username
-                                        ? 'bg-gray-300 text-gray-600'
-                                        : 'bg-gray-300 text-gray-600'
-                                }`}
-                            >
-                              <div
-                                  className={chat.senderName === userData.username ? 'text-blue-700' : 'text-blue-700'}
-                              >
-                                {chat.senderName}
-                              </div>
-                                {chat.message}
-                            </span>
+                                                <li className={`message p-1 w-auto flex flex-row ${chat.senderName === userData.username ? "justify-start " : "justify-end"}`} key={index}>
+                                                    {chat.senderName !== userData.username && <div className="avatar bg-cornflowerblue p-1 rounded-lg text-blue-700"></div>}
+                                                    <div className={`message-data p-1 ${chat.senderName === userData.username ? "justify-start" : "justify-end"}`}>
+                                      <span className={`px-4 py-2 rounded-lg inline-block ${chat.senderName === userData.username ? "bg-gray-300 text-gray-600" : "bg-gray-300 text-gray-600"}`}>
+                                       <div className={chat.senderName === userData.username ? "text-blue-700" : "text-blue-700"}>{chat.senderName}</div>
+                                          {chat.message}
+                                         </span>
                                                     </div>
-                                                    {chat.senderName === userData.username && (
-                                                        <div className="avatar self bg-greenyellow p-1 rounded-lg text-black"></div>
-                                                    )}
+                                                    {chat.senderName === userData.username && <div className="avatar self bg-greenyellow p-1 rounded-lg text-black"></div>}
                                                 </li>
                                             ))}
                                         </ul>
@@ -362,19 +315,14 @@ const Chat = () => {
                                                 onChange={handleMessage}
                                                 className="min-h-full !border-0 focus:border-transparent "
                                                 containerProps={{
-                                                    className: 'grid h-full',
+                                                    className: "grid h-full",
                                                 }}
                                                 labelProps={{
-                                                    className: 'before:content-none after:content-none',
+                                                    className: "before:content-none after:content-none",
                                                 }}
                                             />
                                             <div>
-                                                <IconButton
-                                                    variant="text"
-                                                    className="rounded-full"
-                                                    label="Send"
-                                                    onClick={sendPrivateValue}
-                                                >
+                                                <IconButton variant="text" className="rounded-full" label="Send" onClick={sendPrivateValue}>
                                                     <svg
                                                         xmlns="http://www.w3.org/2000/svg"
                                                         fill="none"
@@ -393,9 +341,10 @@ const Chat = () => {
                                             </div>
                                         </div>
                                     </div>
-                                )}
+                                }
                             </div>
-                        ) : (
+                            :
+
                             <div className="register shadow-lg fixed p-8 flex flex-row ">
                                 <input
                                     id="user-name"
@@ -405,16 +354,17 @@ const Chat = () => {
                                     onChange={handleUsername}
                                     className="p-8 flex flex-row text-black"
                                 />
-                                <Button type="button" variant="oval" label="Send" onClick={registerUser}>
-                                    Send
-                                </Button>
+                                <Button type="button"
+                                        variant="oval"
+                                        label="Send" onClick={registerUser}>Send</Button>
                             </div>
-                        )}
+                        }
                     </div>
                 </PopoverContent>
             </Popover>
         </>
     );
+
 };
 
 export default Chat;
