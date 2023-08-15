@@ -12,13 +12,15 @@ const Dashboard = () => {
         chart1: {
             series: [
                 {
-                    name: "Views", data: [4, 2, 1, 4, 5, 6], color: "#1a56db",
+                    name: "Invested Amount", data: [250000, 120000, 280000, 190000, 50000, 300000],
+                    color: "#1a56db"
                 },
                 {
-                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c",
-                },
+                    name:"Return Amount", data: [350000, 200000, 100000, 400000, 80000, 500000],
+                    color: "#fdba8c"
+                }
             ],
-            categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
+            categories: ["Technology","App/Website","Clothing / Fashion","Food & Beverages","Music","Health & Fitness"]
         },
     }
 
@@ -47,32 +49,14 @@ const Dashboard = () => {
         <Header active="Dashboard">
             <div className="flex flex-col gap-[1rem] flex-wrap lg:flex-nowrap">
                 <div className="w-full bg-white rounded-lg border-[1px] p-4 md:p-6">
-                    <div className="flex flex-col gap-[0.2rem]">
+                    <div className="flex flex-col gap-[0.2rem] border-gray-200 border-b py-2">
                         <div>
                             <h5 className="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">
-                                Listing Name
+                                Investments
                             </h5>
                         </div>
-                        <div className="flex items-center gap-[1rem]">
-                            <div className="flex justify-between items-center">
-                                <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Views</p>
-                                <div
-                                    className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                                    12%
-                                    <FontAwesomeIcon icon={faArrowUp} className="ml-1"/>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Interests</p>
-                                <div
-                                    className="flex items-center px-2.5 py-0.5 text-base font-semibold text-red-500 dark:text-red-500 text-center">
-                                    3%
-                                    <FontAwesomeIcon icon={faArrowDown} className="ml-1"/>
-                                </div>
-                            </div>
-                        </div>
                     </div>
-                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
+                        <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
@@ -131,7 +115,7 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
                                             <span
-                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[15%] `}>{investor.counter ? "Counter" : "Interested"}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"

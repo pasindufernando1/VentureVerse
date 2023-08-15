@@ -26,7 +26,7 @@ import {
     faSquarePollVertical,
     faRankingStar,
     faHeart,
-    faChartLine
+    faChartLine, faCodePullRequest
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -83,12 +83,7 @@ const CustomHeader = (props) => {
     if (auth?.role === "ADMIN") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard", 'subcategory': false},
-            {
-                'icon': faSquarePollVertical,
-                'title': "Registration Requests",
-                'link': "/admin/view-requests",
-                'subcategory': false
-            },
+            {'icon': faCodePullRequest, 'title': "Registration Requests", 'link': "/admin/view-requests", 'subcategory': false},
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/admin/view-finalizedListings", 'subcategory': false},
             {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory':[
                 {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coAdmins"},
@@ -98,10 +93,8 @@ const CustomHeader = (props) => {
             ]},
             {'icon':faChartLine, 'title': "Analytics", 'link': "/admin/analytics", 'subcategory': false},
             {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complains", 'subcategory': false },
-            
         );
         accountMenu.push(
-            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/admin/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
@@ -115,7 +108,7 @@ const CustomHeader = (props) => {
                     {'icon': faChevronRight, 'title': "Add Listing", 'link': "/entrepreneur/add-listing"},
                 ]
             },
-            
+
             {'icon': faCalendar, 'title': "Schedules", 'link': "/entrepreneur/schedules", 'subcategory': false},
             {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/entrepreneur/view-leaderboard", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null, 'subcategory': [
@@ -124,7 +117,7 @@ const CustomHeader = (props) => {
             ]},
         );
         accountMenu.push(
-            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
+            {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/entrepreneur/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
@@ -144,7 +137,7 @@ const CustomHeader = (props) => {
 
         );
         accountMenu.push(
-            {'icon': faInbox, 'title': "Inbox", 'link': "#", "suffix": true},
+            {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/investor/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
@@ -196,7 +189,7 @@ const CustomHeader = (props) => {
                 open={toggle === key}
                 key={key}
             >
-                
+
                     <ListItem
                         onClick={() => handleOpen(key)}
                         className={`${openNav ? "!flex" : "!hidden"} lg:!flex ${active === title ? "text-white bg-main-purple/90" : ""} hover:bg-light-purple/20 hover:text-main-purple/90 focus:bg-light-purple/20 focus:text-main-purple/90 active:bg-light-purple/20 active:text-main-purple/90`}
@@ -320,7 +313,7 @@ const CustomHeader = (props) => {
                 </div>
             </Card>
             <div
-                className={`flex flex-col lg:w-[calc(100%-20rem)] lg:ml-[20rem] ${openNav ? "ml-[20rem] w-[calc(100%-20rem)]" : "ml-[5rem] w-[calc(100%-5rem)]"}`}>
+                className={`flex flex-col min-h-[100vh] lg:w-[calc(100%-20rem)] lg:ml-[20rem] ${openNav ? "ml-[20rem] w-[calc(100%-20rem)]" : "ml-[5rem] w-[calc(100%-5rem)]"}`}>
                 {/* NavBar */}
                 <Navbar
                     className={`max-w-full fixed z-[500] rounded-none px-4 py-2 w-[calc(100%-5rem)] lg:w-[calc(100%-20rem)]`}>
@@ -346,7 +339,7 @@ const CustomHeader = (props) => {
                         </div>
                     </div>
                 </Navbar>
-                <div className={`m-[1rem] mt-[5rem] lg:m-[4rem] lg:mt-[8rem] w-auto`}>
+                <div className={`m-[1rem] mt-[5rem] lg:m-[4rem] lg:mt-[8rem] h-full w-auto`}>
                     {children}
                 </div>
             </div>

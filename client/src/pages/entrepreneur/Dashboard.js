@@ -12,13 +12,12 @@ const Dashboard = () => {
         chart1: {
             series: [
                 {
-                    name: "Added", data: [10, 5, 8, 9, 5, 7], color: "#1a56db"
+                    name: "Views", data: [10, 5, 8, 9, 5, 7], color: "#1a56db"
                 },
                 {
-                    name: "Completed", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c"
+                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c"
                 }
             ],
-            colors: ["#1a56db", "#fdba8c"],
             categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
     }
@@ -85,7 +84,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
+                        <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
@@ -144,7 +143,7 @@ const Dashboard = () => {
                                                 </div>
                                             </div>
                                             <span
-                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[10%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[15%] `}>{investor.counter ? "Counter" : "Interested"}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
