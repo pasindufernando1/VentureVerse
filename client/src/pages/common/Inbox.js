@@ -1,4 +1,4 @@
-import {Header, Input} from "../webcomponent";
+import {Header} from "../webcomponent";
 import {Avatar, Typography} from "@material-tailwind/react";
 import React, {useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
