@@ -18,7 +18,6 @@ const Dashboard = () => {
                     name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c"
                 }
             ],
-            colors: ["#1a56db", "#fdba8c"],
             categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
     }
@@ -85,7 +84,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     </div>
-                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
+                        <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">

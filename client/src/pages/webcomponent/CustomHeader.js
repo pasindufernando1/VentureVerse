@@ -26,7 +26,7 @@ import {
     faSquarePollVertical,
     faRankingStar,
     faHeart,
-    faChartLine
+    faChartLine, faCodePullRequest
 } from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
 import {useNavigate} from "react-router-dom";
@@ -83,16 +83,11 @@ const CustomHeader = (props) => {
     if (auth?.role === "ADMIN") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard", 'subcategory': false},
-            {
-                'icon': faSquarePollVertical,
-                'title': "Registration Requests",
-                'link': "/admin/view-requests",
-                'subcategory': false
-            },
+            {'icon': faCodePullRequest, 'title': "Registration Requests", 'link': "/admin/view-requests", 'subcategory': false},
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/admin/view-finalizedListings", 'subcategory': false},
             {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory':[
                 {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coAdmins"},
-                {'icon': faChevronRight, 'title': "Entrepreneurs", 'link': "/admin/users/enterpreneurs"},
+                {'icon': faChevronRight, 'title': "Entrepreneurs", 'link': "/admin/users/entrepreneurs"},
                 {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
                 {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
             ]},
@@ -100,7 +95,6 @@ const CustomHeader = (props) => {
             {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complains", 'subcategory': false },
         );
         accountMenu.push(
-            {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/admin/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )

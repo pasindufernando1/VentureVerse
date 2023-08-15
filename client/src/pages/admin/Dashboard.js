@@ -14,7 +14,6 @@ const DashBoard = () => {
                     name: "Views", data: [10, 5, 8, 9, 5, 7], color: "#1a56db"
                 }
             ],
-            colors: ["#1a56db"],
             categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
         chart2: {
@@ -26,7 +25,6 @@ const DashBoard = () => {
                     name: "Completed", data: [0, 2, 0, 3, 1, 5], color: "#00e396"
                 }
             ],
-            colors: ["#fdba8c", "#00e396"],
             categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
         },
     }
@@ -96,7 +94,7 @@ const DashBoard = () => {
                             </div>
                         </div>
                     </div>
-                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories} colors={areaChart.chart1.colors}/>
+                    <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
