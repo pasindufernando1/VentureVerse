@@ -92,7 +92,7 @@ const CustomHeader = (props) => {
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/admin/view-finalizedListings", 'subcategory': false},
             {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory':[
                 {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coAdmins"},
-                {'icon': faChevronRight, 'title': "Entrepreneurs", 'link': "/admin/users/entrepreneurs"},
+                {'icon': faChevronRight, 'title': "Entrepreneurs", 'link': "/admin/users/enterpreneurs"},
                 {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
                 {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
             ]},

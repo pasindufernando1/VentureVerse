@@ -25,6 +25,7 @@ import AddListing from "./pages/entrepreneur/AddListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
 import AddComplains from "./pages/entrepreneur/AddComplains";
+import ViewComplainsEntrepreneur from "./pages/entrepreneur/ViewComplains";
 import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
 import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
@@ -38,6 +39,7 @@ import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewInterests from "./pages/investor/ViewInterests";
 import ViewListing from "./pages/investor/ViewListing";
 import ViewComplains from "./pages/investor/ViewComplains";
+import AddComplainsInvestor from "./pages/investor/AddComplains";
 import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
 import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 import AnalyticsInvestor from "./pages/investor/Analytics";
@@ -124,7 +126,7 @@ function App() {
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
-                        <Route path="/investor/add-complains" element={<AddComplains />} />
+                        <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
                         <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
@@ -144,7 +146,7 @@ function App() {
                         <Route path="/entrepreneur/add-complain" element={<AddComplains />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
                         <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
-                        <Route path="/entrepreneur/view-complains" element={<ViewComplains />} />
+                        <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
                         <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
                     </Route>
