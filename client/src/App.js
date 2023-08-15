@@ -40,7 +40,9 @@ import ViewListing from "./pages/investor/ViewListing";
 import ViewComplaints from "./pages/investor/ViewComplaints";
 import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
 import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
-
+import AnalyticsInvestor from "./pages/investor/Analytics";
+import ProfitReport from "./pages/investor/ProfitReport";
+import SectorReport from "./pages/investor/SectorReport";
 
 
 // Admin Pages
@@ -58,6 +60,11 @@ import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
 import AdminViewComplaints from "./pages/admin/ViewComplaints";
 import FinalizedListings from "./pages/admin/ViewListing";
 import FinalizedListingOffering from "./pages/admin/FinalizeListing";
+import Analytics from "./pages/admin/Analytics";
+import UserReports from "./pages/admin/UserReports";
+import GainsReports from "./pages/admin/GainsReport";
+import InterestReports from "./pages/admin/InterestReports";
+import ComplainReports from "./pages/admin/ComplainReports";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -101,6 +108,11 @@ function App() {
                         <Route path="/admin/view-complaints" element={<AdminViewComplaints />} /> 
                         <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
                         <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
+                        <Route path="/admin/analytics" element={<Analytics />} />
+                        <Route path="/admin/users/reports" element={<UserReports />} />
+                        <Route path="/admin/gains/reports" element={<GainsReports/>}/>
+                        <Route path="/admin/interest/reports" element={<InterestReports/>}/>
+                        <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -114,6 +126,10 @@ function App() {
                         <Route path="/investor/view-complaints" element={<ViewComplaints />} />   
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
                         <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} /> 
+                        <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
+                        <Route path="/investor/profit/reports" element={<ProfitReport />} />
+                        <Route path="/investor/sector/reports" element={<SectorReport />} />             
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
