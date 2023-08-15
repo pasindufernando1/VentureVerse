@@ -466,3 +466,6 @@ code {
     border-bottom: 1px solid #ccc;
 }
 
+.container::-webkit-scrollbar {
+    display: none;  /* Safari and Chrome */
+}
