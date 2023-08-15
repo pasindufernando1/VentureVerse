@@ -21,26 +21,41 @@ function ViewListingCounterProposal() {
     //Array of objects with the following fields - Investor interested, Amount offered, Equity expected, Profit per unit expected, Actions
     const registrationRequests = [
         {
-            investorInterested: "John Doe",
+            investorInterested: "Bhasa Lanka",
             amountOffered: "100000",
             equityExpected: "10",
             profitPerUnitExpected: "100",
             actions: "View"
         },
         {
-            investorInterested: "Jane Doe",
+            investorInterested: "Chris Perera",
             amountOffered: "200000",
             equityExpected: "20",
             profitPerUnitExpected: "200",
             actions: "View"
         },
         {
-            investorInterested: "John Doe",
+            investorInterested: "Wishwa Lanka",
             amountOffered: "100000",
             equityExpected: "10",
             profitPerUnitExpected: "100",
             actions: "View"
-        }]
+        },
+        {
+            investorInterested: "Pamith Welikala",
+            amountOffered: "200000",
+            equityExpected: "20",
+            profitPerUnitExpected: "200",
+            actions: "View"
+        },
+        {
+            investorInterested: "Nadeesha Epa",
+            amountOffered: "100000",
+            equityExpected: "10",
+            profitPerUnitExpected: "100",
+            actions: "View"
+        },
+        ]
 
     return (
         <div>

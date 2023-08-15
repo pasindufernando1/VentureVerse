@@ -24,7 +24,7 @@ import EntrepreneurProfile from "./pages/entrepreneur/Profile";
 import AddListing from "./pages/entrepreneur/AddListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
-import AddComplaints from "./pages/entrepreneur/AddComplaints";
+import AddComplains from "./pages/entrepreneur/AddComplains";
 import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
 import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
@@ -37,7 +37,7 @@ import InvestorProfile from "./pages/investor/Profile";
 import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewInterests from "./pages/investor/ViewInterests";
 import ViewListing from "./pages/investor/ViewListing";
-import ViewComplaints from "./pages/investor/ViewComplaints";
+import ViewComplains from "./pages/investor/ViewComplains";
 import InvestorLeaderboard from "./pages/investor/InvestorLeaderboard";
 import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 import AnalyticsInvestor from "./pages/investor/Analytics";
@@ -54,7 +54,7 @@ import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
 import ViewInvestorDetails from "./pages/admin/ViewInvestorDetails";
 import Users from "./pages/admin/Users";
 import ViewCoAdmin from "./pages/admin/ViewCoAdmin";
-import ViewEnterpreneurs from "./pages/admin/ViewEnterpreneurs";
+import ViewEntrepreneurs from "./pages/admin/ViewEnterpreneurs";
 import IndividualInvestors from "./pages/admin/ViewIndividualInvestors";
 import EnterpriceInvestors from "./pages/admin/ViewEnterpriseInvestors";
 import AdminViewComplaints from "./pages/admin/ViewComplaints";
@@ -65,6 +65,8 @@ import UserReports from "./pages/admin/UserReports";
 import GainsReports from "./pages/admin/GainsReport";
 import InterestReports from "./pages/admin/InterestReports";
 import ComplainReports from "./pages/admin/ComplainReports";
+import EnterpriseInvestors from "./pages/admin/ViewEnterpriseInvestors";
+import AdminViewComplains from "./pages/admin/ViewComplains";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -101,7 +103,7 @@ function App() {
                         <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>  
                         <Route path="/admin/users" element={<Users/>}/>  
                         <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />
-                        <Route path="/admin/users/enterpreneurs" element={<ViewEnterpreneurs/>}/>   
+                        <Route path="/admin/users/enterpreneurs" element={<ViewEntrepreneurs/>}/>
                         <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriceInvestors/>}/>
@@ -113,6 +115,8 @@ function App() {
                         <Route path="/admin/gains/reports" element={<GainsReports/>}/>
                         <Route path="/admin/interest/reports" element={<InterestReports/>}/>
                         <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
+                        <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
+                        <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
@@ -130,6 +134,9 @@ function App() {
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
                         <Route path="/investor/sector/reports" element={<SectorReport />} />             
+                        <Route path="/investor/add-complains" element={<AddComplains />} />
+                        <Route path="/investor/view-complains" element={<ViewComplains />} />
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
@@ -138,10 +145,10 @@ function App() {
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
-                        <Route path="/entrepreneur/add-complain" element={<AddComplaints />} />
+                        <Route path="/entrepreneur/add-complain" element={<AddComplains />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
-                        <Route path="/entrepreneur/add-complaints" element={<AddComplaints />} />    
-                        <Route path="/entrepreneur/view-complaints" element={<ViewComplaints />} />   
+                        <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
+                        <Route path="/entrepreneur/view-complains" element={<ViewComplains />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
                         <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
                     </Route>

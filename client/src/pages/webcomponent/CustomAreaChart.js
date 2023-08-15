@@ -3,7 +3,7 @@ import ReactApexChart from "react-apexcharts";
 
 const CustomAreaChart = (props) => {
 
-    const {series, categories} = props;
+    const {series, categories, colors} = props;
 
     const options = {
         chart: {
@@ -30,7 +30,7 @@ const CustomAreaChart = (props) => {
                 opacityFrom: 0.45,
                 opacityTo: 0,
                 shade: "#fff",
-                gradientToColors: ["#1a56db", "#fdba8c"],
+                gradientToColors: colors,
             },
         },
         dataLabels: {
@@ -50,7 +50,7 @@ const CustomAreaChart = (props) => {
         },
         markers: {
             size: 5,
-            colors: ["#1a56db", "#fdba8c"],
+            colors: colors,
             strokeColor: "#FFF",
             strokeWidth: 2
         },

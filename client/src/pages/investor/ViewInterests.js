@@ -21,21 +21,21 @@ function ViewInterests() {
     //Array of objects with the following fields - Investor interested, Amount offered, Equity expected, Profit per unit expected, Actions
     const registrationRequests = [
         {
-            investorInterested: "John Doe",
+            investorInterested: "Chris Perera",
             amountOffered: "100000",
             equityExpected: "10",
             profitPerUnitExpected: "100",
             actions: "View"
         },
         {
-            investorInterested: "Jane Doe",
+            investorInterested: "Pamith Welikala",
             amountOffered: "200000",
             equityExpected: "20",
             profitPerUnitExpected: "200",
             actions: "View"
         },
         {
-            investorInterested: "John Doe",
+            investorInterested: "Nadeesha Epa",
             amountOffered: "100000",
             equityExpected: "10",
             profitPerUnitExpected: "100",

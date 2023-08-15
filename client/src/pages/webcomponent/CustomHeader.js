@@ -91,14 +91,13 @@ const CustomHeader = (props) => {
             },
             {'icon': faSquarePollVertical, 'title': "Listings", 'link': "/admin/view-finalizedListings", 'subcategory': false},
             {'icon': faCircleUser, 'title': "Users", 'link': "/admin/users", 'subcategory':[
-                {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coadmins"},
-                {'icon': faChevronRight, 'title': "Enterpreneurs", 'link': "/admin/users/enterpreneurs"},
+                {'icon': faChevronRight, 'title': "Co-Admins", 'link': "/admin/users/coAdmins"},
+                {'icon': faChevronRight, 'title': "Entrepreneurs", 'link': "/admin/users/entrepreneurs"},
                 {'icon': faChevronRight, 'title': "Individual Investors", 'link': "/admin/users/individualInvestors"},
                 {'icon': faChevronRight, 'title': "Enterprise Investors", 'link': "/admin/users/enterpriseInvestors"},
             ]},
             {'icon':faChartLine, 'title': "Analytics", 'link': "/admin/analytics", 'subcategory': false},
-            {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complaints", 'subcategory': false },
-
+            {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complains", 'subcategory': false },
             
         );
         accountMenu.push(
@@ -121,7 +120,7 @@ const CustomHeader = (props) => {
             {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/entrepreneur/view-leaderboard", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null, 'subcategory': [
                 {'icon': faChevronRight, 'title': "Add Complain", 'link': "/entrepreneur/add-complain"},
-                {'icon': faChevronRight, 'title': "Past Complains", 'link': "/entrepreneur/view-complaints"},
+                {'icon': faChevronRight, 'title': "Past Complains", 'link': "/entrepreneur/view-complains"},
             ]},
         );
         accountMenu.push(
@@ -139,8 +138,8 @@ const CustomHeader = (props) => {
             {'icon': faRankingStar, 'title': "Leaderboard", 'link': "/investor/view-leaderboard", 'subcategory': false},
             {'icon':faChartLine, 'title': "Analytics", 'link': "/investor/analytics", 'subcategory': false},
             {'icon': faCircleExclamation,'title': "Complains",'link': null , 'subcategory': [
-                    {'icon': faChevronRight, 'title': "Add Complain", 'link': "/investor/add-complaints"},
-                    {'icon': faChevronRight, 'title': "Past Complains", 'link': "/investor/view-complaints"},
+                    {'icon': faChevronRight, 'title': "Add Complain", 'link': "/investor/add-complains"},
+                    {'icon': faChevronRight, 'title': "Past Complains", 'link': "/investor/view-complains"},
                 ]},
 
         );
