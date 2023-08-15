@@ -55,7 +55,6 @@ function Form() {
         if (value === true) {
             // Push the index of the category to the list
             sectorId.push(x)
-            console.log(x);
         }
         x++;
     }
@@ -186,7 +185,6 @@ function Form() {
 
     const handleNextClick = async () => {
         if (page === FormTitles.length - 1) {
-            console.log(requestData);
             try {
                 const formData = new FormData();
 
@@ -203,7 +201,6 @@ function Form() {
                     headers: {'Content-Type': 'multipart/form-data'},
                     withCredentials: true
                 });
-                console.log(response.data);
 
                 //update the request data with the image names
                 requestData.financialDocument = bankStatementFileName;
@@ -213,7 +210,6 @@ function Form() {
                     headers: {'Content-Type': 'application/json'},
                     withCredentials: true
                 });
-                console.log(response2.data);
                 if (response2.data.status === "Success") {
                     setShowSuccessNotification(true);
                 } else {
