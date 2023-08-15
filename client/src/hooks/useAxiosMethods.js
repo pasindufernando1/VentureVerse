@@ -16,7 +16,7 @@ const useAxiosMethods = () => {
                 });
                 // console.log(response.data);
                 isMounted && setResponse(response.data);
-                console.log(response.data);
+                // console.log(response.data);
             } catch (err) {
                 console.log(err);
             }

@@ -176,7 +176,6 @@ public class AuthenticationService {
     }
 
     public ResponseDTO registerEnterpriseInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
-        // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
         var user= EnterpriseInvestorDTO.builder()
@@ -201,7 +200,6 @@ public class AuthenticationService {
 
         //get the last inserted id
         var investor= enterpriseInvestorRepository.getLastInsertedId();
-        //get the sector id list
         var listingSectors=registerRequestDTO.getSectorId();
 
         for (Integer sectorId:listingSectors){
@@ -236,7 +234,7 @@ public class AuthenticationService {
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
-//       emailService.sendEmail(user.getEmail(), "Test", "string");
+        emailService.sendEmail(user.getEmail(), "Test", "string");
 
         return GlobalService.response("Success", "User " + id + " Approved");
     }

@@ -234,7 +234,6 @@ function Form() {
 
   const handleNextClick = async () => {
     if (page === FormTitles.length - 1) {
-      console.log(requestData);
         try {
           const formData = new FormData();
 
@@ -252,7 +251,6 @@ function Form() {
           const response = await axios.post('/auth/upload', formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
           withCredentials: true});
-          console.log(response.data); 
 
           //update the request data with the image names
           requestData.policeReport = policeReportFileName;
@@ -262,7 +260,6 @@ function Form() {
           const response2 = await axios.post('auth/register/entrepreneur', JSON.stringify(requestData), {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true});
-          console.log(response2.data); 
           if(response2.data.status === "Success"){
            setShowSuccessNotification(true);
           }

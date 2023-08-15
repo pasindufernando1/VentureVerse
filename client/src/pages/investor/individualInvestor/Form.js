@@ -56,9 +56,7 @@ function Form() {
     // For each category that is selected, add the category id to the list
     for (const [key, value] of Object.entries(categories)) {
         if (value === true) {
-            // Push the index of the category to the list
             sectorId.push(x)
-            console.log(x);
         }
         x++;
     }
