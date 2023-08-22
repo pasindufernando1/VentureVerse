@@ -1,13 +1,7 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
-import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.exception.CustomErrorException;
-import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
-import com.ventureverse.server.model.entity.UserDTO;
-import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

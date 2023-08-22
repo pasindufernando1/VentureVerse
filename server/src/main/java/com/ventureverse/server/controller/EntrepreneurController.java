@@ -7,14 +7,9 @@ import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -41,6 +36,7 @@ public class EntrepreneurController {
         }
         return ResponseEntity.ok(pendingEntrepreneur);
     }
+
     @PostMapping("/addcomplaint/{id}")
     public ResponseEntity<ResponseDTO> addComplaint(
             @PathVariable Integer id,

@@ -18,10 +18,11 @@ import Components from "./pages/webcomponent/Components";
 import TermsAndCondition from "./pages/common/TermsAndCondition";
 
 import Inbox from "./pages/common/Inbox";
+import Profile from "./pages/common/Profile";
+
 
 // Entrepreneur Pages
 import EntrepreneurDashboard from "./pages/entrepreneur/Dashboard";
-import EntrepreneurProfile from "./pages/entrepreneur/Profile";
 import AddListing from "./pages/entrepreneur/AddListing";
 import ViewListingFull from "./pages/entrepreneur/ViewListingFull";
 import ViewListingCounterProposal from "./pages/entrepreneur/ViewListingCounterProposal";
@@ -35,7 +36,6 @@ import EntrepreneurFinalizeListing from "./pages/entrepreneur/FinalizeListing";
 
 // Investor Pages
 import InvestorDashboard from "./pages/investor/Dashboard";
-import InvestorProfile from "./pages/investor/Profile";
 import ViewListingFullInvestor from "./pages/investor/ViewListingFullInvestor";
 import ViewInterests from "./pages/investor/ViewInterests";
 import ViewListing from "./pages/investor/ViewListing";
@@ -50,7 +50,6 @@ import SectorReport from "./pages/investor/SectorReport";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/Dashboard";
-import AdminProfile from "./pages/admin/Profile";
 import AddCoAdmin from "./pages/admin/AddCoAdmin";
 import ViewRequest from "./pages/admin/ViewRequests";
 import ViewEntrepreneurDetails from "./pages/admin/ViewEntrepreneurDetails";
@@ -91,15 +90,14 @@ function App() {
 
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
-                    <Route element={<RequireAuth allowedRoles={["ADMIN", "INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR", "ENTREPRENEUR"]}/>}>
+                    <Route element={<RequireAuth allowedRoles={["ADMIN", "CO ADMIN", "INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR", "ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to All Users */}
                         <Route path="/inbox" element={<Inbox />}/>
-
+                        <Route path="/profile" element={<Profile/>}/>
                     </Route>
-                    <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
+                    <Route element={<RequireAuth allowedRoles={["ADMIN", "CO ADMIN"]}/>}>
                         {/* Routes Authorized to Admins */}
                         <Route path="/admin/dashboard" element={<AdminDashboard />}/>
-                        <Route path="/admin/profile" element={<AdminProfile/>}/>
                         <Route path="/admin/add-co-admin" element={<AddCoAdmin/>}/>
                         <Route path="/admin/view-requests" element={<ViewRequest/>}/>
                         <Route path="/admin/view-entrepreneur-details/:id" element={<ViewEntrepreneurDetails/>}/>    
@@ -122,7 +120,6 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
-                        <Route path="/investor/profile" element={<InvestorProfile/>}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
@@ -140,7 +137,6 @@ function App() {
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
-                        <Route path="/entrepreneur/profile" element={<EntrepreneurProfile/>}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
                         <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />

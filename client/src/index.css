@@ -80,6 +80,7 @@ code {
     monospace;
 }
 
+/* Background Images */
 .signup {
     background: url("../public/assets/images/signup.jpg") no-repeat;
     background-size: cover;
@@ -90,45 +91,72 @@ code {
     background-size: cover;
 }
 
-.addlisting{
-    background: url("../public/assets/images/addlisting.jpg");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
-    margin-right: 3rem; 
-}
-
-.coadmin{
-    background: url("../public/assets/images/coadmin.jpg");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+.addlisting {
+    background-size: contain;
+    background: url("../public/assets/images/addlisting.jpg") no-repeat center;
     margin-right: 3rem;
 }
 
-.enterprice{
-    background: url("../public/assets/images/enterprice.jpg");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+.coadmin {
+    background-size: contain;
+    background: url("../public/assets/images/coadmin.jpg") no-repeat center;
     margin-right: 3rem;
 }
 
-.individual_investor{
-    background: url("../public/assets/images/individual_investor.jpg");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+.enterprice {
+    background-size: contain;
+    background: url("../public/assets/images/enterprice.jpg") no-repeat center;
     margin-right: 3rem;
 }
 
-.entrepreneur{
-    background: url("../public/assets/images/entrepreneur.jpg");
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
+.individual_investor {
+    background-size: contain;
+    background: url("../public/assets/images/individual_investor.jpg") no-repeat center;
     margin-right: 3rem;
 }
+
+.entrepreneur {
+    background-size: contain;
+    background: url("../public/assets/images/entrepreneur.jpg") no-repeat center;
+    margin-right: 3rem;
+}
+
+.video-container {
+    background: url("../public/assets/images/video-bg2.jpg") no-repeat;
+    background-size: cover;
+}
+
+.complaints {
+    background-size: contain;
+    background: url("../public/assets/images/complaints.jpg") no-repeat center;
+    margin-right: 3rem;
+}
+
+.investments {
+    background-size: contain;
+    background: url("../public/assets/images/Investment.jpg") no-repeat center;
+    margin-right: 3rem;
+}
+
+.play-image {
+    background: url("../public/assets/images/play-button.png") no-repeat;
+    background-size: cover;
+}
+
+.venture-logo {
+    background: url("../public/assets/images/VentureVerse-Black.png") no-repeat;
+    background-size: cover;
+}
+
+.hero {
+    background-size: contain;
+    background: url("../public/assets/images/hero.png") no-repeat center;
+    margin-right: 3rem;
+}
+
+/* End of Section */
+
+/* Swiper */
 .swiper-slide {
     background-position: center;
     background-size: cover;
@@ -145,6 +173,9 @@ code {
     background-image: none;
 }
 
+/* End of Section */
+
+/* Alerts */
 .alert {
     min-width: 250px;
     margin-left: -125px;
@@ -176,8 +207,11 @@ code {
     margin-right: 0;
 }
 
+/* End of Section */
+
+/* File Input */
 .file-input-container {
-  position: relative;
+    position: relative;
 }
 
 .file-input-button {
@@ -192,111 +226,81 @@ code {
 }
 
 .file-input-text {
-  display: inline-block;
-  margin-left: 8px;
-  color: #4a5568;
-  font-size: 13px;
+    display: inline-block;
+    margin-left: 8px;
+    color: #4a5568;
+    font-size: 13px;
 }
 
-/* Style for when a file is selected */
 .file-input-container input[type="file"]:not(.hidden):focus + .file-input-button {
-  outline: 2px solid #4c51bf;
+    outline: 2px solid #4c51bf;
 }
 
 .file-input-container input[type="file"]:not(.hidden):focus + .file-input-button,
 .file-input-container input[type="file"]:not(.hidden):hover + .file-input-button {
-  background-color: #cbd5e0;
-  color: #2d3748;
+    background-color: #cbd5e0;
+    color: #2d3748;
 }
+
+/* End of Section */
+
 .error-message {
-  color: red;
-}
-
-.video-container {
-  background: url("../public/assets/images/video-bg2.jpg") no-repeat;
-  background-size:cover;
-}
-
-.complaints{
-  background: url("../public/assets/images/complaints.jpg") no-repeat;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  margin-right: 3rem;
-}
-
-.investments{
-    background: url("../public/assets/images/Investment.jpg") no-repeat;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  margin-right: 3rem;
-}
-
-/* Image inside a container */
-.play-image{
-  /* Image link */
-  background: url("../public/assets/images/play-button.png") no-repeat;
-  background-size:cover;
-}
-
-.venture-logo{
-  /* Image link */
-  background: url("../public/assets/images/VentureVerse-Black.png") no-repeat;
-  background-size:cover;
+    color: red;
 }
 
 .parent > div {
-  width: 30%;
+    width: 30%;
 }
 
 
 /* Payment gateway */
 /* styles.css */
 .payment-element-container {
-  border: 1px solid #e1e1e1;
-  padding: 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e1e1e1;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .CardElement {
-  width: 100%;
-  padding: 10px;
-  font-family: 'Helvetica Neue', sans-serif;
+    width: 100%;
+    padding: 10px;
+    font-family: 'Helvetica Neue', sans-serif;
 }
 
 /* payment.css */
 .stripe-button-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
 }
 
 .stripe-button-container .payment-description {
-  margin-top: 1rem;
-  text-align: center;
-  font-size: 14px;
-  color: #777;
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 14px;
+    color: #777;
 }
 
 /* Style for the Stripe Checkout button */
 .stripe-checkout-button {
-  display: inline-block;
-  background-color: #6515dd;
-  color: #fff;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    display: inline-block;
+    background-color: #6515dd;
+    color: #fff;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .stripe-checkout-button:hover {
-  background-color: #5229a5;
+    background-color: #5229a5;
 }
+
+/* End of Section */
 
 /*Menu Button*/
 .menu-btn {
@@ -309,11 +313,13 @@ code {
     cursor: pointer;
     transition: all .5s ease-in-out;
 }
+
 .menu-btn--burger {
     width: 1.5rem;
     height: 0.2rem;
     transition: all .5s ease-in-out;
 }
+
 .menu-btn--burger::before,
 .menu-btn--burger::after {
     content: '';
@@ -322,9 +328,11 @@ code {
     height: 0.2rem;
     transition: all .5s ease-in-out;
 }
+
 .menu-btn--burger::before {
     transform: translateY(-0.4rem);
 }
+
 .menu-btn--burger::after {
     transform: translateY(0.4rem);
 }
@@ -335,20 +343,23 @@ code {
     background: transparent;
     box-shadow: none;
 }
+
 .menu-btn.open .menu-btn--burger::before {
     transform: rotate(45deg) translate(35px, -35px);
 }
+
 .menu-btn.open .menu-btn--burger::after {
     transform: rotate(-45deg) translate(35px, 35px);
 }
 
+/* End of Section */
 
-/* CHARTS */
+/* Charts */
 .apexcharts-xaxistooltip {
-    background: rgba(255,255,255,.96) !important;
-    border: 1px solid #e3e3e3  !important;;
-    border-radius: 5px  !important;;
-    box-shadow: 2px 2px 6px -4px #999  !important;;
+    background: rgba(255, 255, 255, .96) !important;
+    border: 1px solid #e3e3e3 !important;;
+    border-radius: 5px !important;;
+    box-shadow: 2px 2px 6px -4px #999 !important;;
 }
 
 .apexcharts-xaxistooltip:after,
@@ -368,22 +379,9 @@ code {
     width: 10rem !important;
 }
 
-.complaints{
-  background: url("../public/assets/images/complaints.jpg") no-repeat;
-  background-size:contain;
-  background-repeat:no-repeat;
-  background-position:center;
-  margin-right:3rem;
-}
-.hero{
-    background: url("../public/assets/images/hero.png") ;
-    background-size:contain;
-    background-repeat:no-repeat;
-    background-position:center;
-    margin-right: 3rem;
-}
+/* End of Section */
 
-/* For the popup */
+/* Popup */
 .popup-overlay {
     position: fixed;
     top: 0;
@@ -395,19 +393,19 @@ code {
     justify-content: center;
     align-items: center;
     z-index: 9999; /* Ensure the popup is on top of other elements */
-  }
-  
-  .popup-content {
+}
+
+.popup-content {
     position: relative;
-  }
-  
-  .popup-content img {
+}
+
+.popup-content img {
     max-width: 100%;
     max-height: 100%;
     cursor: pointer; /* Change cursor to indicate it's clickable */
-  }
-  
-  .close-btn {
+}
+
+.close-btn {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -416,27 +414,31 @@ code {
     border: none;
     cursor: pointer;
     font-size: 16px;
-  }
-  
-  /* Styling for the close button inside the image */
-  .popup-content img:hover + .close-btn {
+}
+
+/* Styling for the close button inside the image */
+.popup-content img:hover + .close-btn {
     display: block; /* Show the close button when hovering over the image */
-  }
-  
-  .download-button {
+}
+
+/* End of Section */
+
+
+.download-button {
     position: absolute;
     bottom: 10px;
     left: 10px;
     padding: 8px 16px;
     border-radius: 4px;
     cursor: pointer;
-  }
+}
 
-  .document-container {
-    position: relative; 
+.document-container {
+    position: relative;
     border-radius: 5px;
-  }
-  .custom-toast {
+}
+
+.custom-toast {
     display: flex;
     align-items: center;
     padding: 12px;
@@ -467,5 +469,5 @@ code {
 }
 
 .container::-webkit-scrollbar {
-    display: none;  /* Safari and Chrome */
+    display: none; /* Safari and Chrome */
 }

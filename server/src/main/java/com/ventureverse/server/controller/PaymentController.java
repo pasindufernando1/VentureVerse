@@ -26,7 +26,6 @@ public class PaymentController {
     @PostMapping("/pay")
     public ResponseEntity<String> handlePayment(@RequestBody PaymentRequestDTO paymentRequest) {
         Stripe.apiKey = stripeSecretKey;
-
         try {
             // Create a charge using the Stripe API
             Charge charge = Charge.create(
@@ -46,4 +45,5 @@ public class PaymentController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed!");
         }
     }
+
 }

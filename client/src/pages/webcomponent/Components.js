@@ -5,7 +5,6 @@ import CustomCheckbox from "./CustomCheckbox";
 import CustomInput from "./CustomInput";
 import CustomRadio from "./CustomRadio";
 import CustomSelect from "./CustomSelect";
-import CustomFlash from "./CustomFlash";
 import CustomMenuButton from "./CustomMenuButton";
 import {useState} from "react";
         

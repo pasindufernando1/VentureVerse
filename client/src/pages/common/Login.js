@@ -63,6 +63,8 @@ const Login = () => {
             let role;
             if (response?.data?.role === "INDIVIDUAL INVESTOR" || response?.data?.role === "ENTERPRISE INVESTOR") {
                 role = "investor";
+            } else if (response?.data?.role === "CO ADMIN") {
+                role = "admin";
             } else {
                 role = response?.data?.role.toLowerCase();
             }
@@ -76,7 +78,7 @@ const Login = () => {
             } else if (err.response?.status === 403) {
                 setErrorMsg({State: true, Type: "Error", Message: 'Invalid Username or Password'});
             } else {
-                setErrorMsg({State: true, Type: "Error", Message: 'Login Failed'});
+                setErrorMsg({State: true, Type: "Error", Message: err.response?.data?.message});
             }
         }
     }

@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Button, Checkbox, Header, Input, Select} from "../webcomponent";
+import {Button, Checkbox, Input, Select} from "../webcomponent";
 import {DisableAccount, NotificationSettings} from "../sectioncomponent";
-import TopBar from "../sectioncomponent/TopBar";
 
 const ProfileInformation = ({formData, setFormData, validateFormData}) => {
+
     const [editMode, setEditMode] = useState(false);
     const [editForm, setEditForm] = useState(true);
     const [changePassword, setchangePassword] = useState(false)
@@ -310,7 +310,7 @@ const Preferences = () =>{
     )
 }
 
-function UpdatedDocuments2() {
+const UpdatedDocuments = () => {
     return (
         <div
             className=' mb-24 flex flex-col mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>
@@ -344,15 +344,13 @@ function UpdatedDocuments2() {
 
 const Profile = () => {
     return (
-        <Header active="Profile">
-            <TopBar />
+        <>
             <ProfileInformation/>
             <Preferences/>
             <NotificationSettings/>
-            <UpdatedDocuments2/>
+            <UpdatedDocuments/>
             <DisableAccount/>
-        </Header>
-
+        </>
     )
 }
 

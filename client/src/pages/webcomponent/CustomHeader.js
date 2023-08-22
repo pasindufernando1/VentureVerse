@@ -80,7 +80,7 @@ const CustomHeader = (props) => {
     const menu = []
     const accountMenu = []
 
-    if (auth?.role === "ADMIN") {
+    if (auth?.role === "ADMIN" || auth?.role === "CO ADMIN") {
         menu.push(
             {'icon': faHouse, 'title': "Dashboard", 'link': "/admin/dashboard", 'subcategory': false},
             {'icon': faCodePullRequest, 'title': "Registration Requests", 'link': "/admin/view-requests", 'subcategory': false},
@@ -95,7 +95,7 @@ const CustomHeader = (props) => {
             {'icon': faCircleExclamation    , 'title': "Complains", 'link': "/admin/view-complains", 'subcategory': false },
         );
         accountMenu.push(
-            {'icon': faCircleUser, 'title': "Profile", 'link': "/admin/profile", "suffix": false},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
         // Entrepreneur
@@ -118,7 +118,7 @@ const CustomHeader = (props) => {
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
-            {'icon': faCircleUser, 'title': "Profile", 'link': "/entrepreneur/profile", "suffix": false},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
         /// Investor
@@ -138,7 +138,7 @@ const CustomHeader = (props) => {
         );
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
-            {'icon': faCircleUser, 'title': "Profile", 'link': "/investor/profile", "suffix": false},
+            {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
             {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
     }
@@ -147,6 +147,8 @@ const CustomHeader = (props) => {
 
     if (auth?.role === "ENTERPRISE INVESTOR") {
         name = user?.businessName
+    } else if (auth?.role === "ADMIN") {
+        name = user?.firstname
     } else {
         name = user?.firstname + " " + user?.lastname
     }

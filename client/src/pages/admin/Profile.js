@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import {Header, Input, Select, Button} from "../webcomponent";
-import TopBar from "../sectioncomponent/TopBar";
+import {Button, Input, Select} from "../webcomponent";
 
-const AdminProfileInformation = ({formData, setFormData, validateFormData}) => {
+const Profile = () => {
 
     const [editMode, setEditMode] = useState(false);
     const [editForm, setEditForm] = useState(true);
@@ -26,137 +25,130 @@ const AdminProfileInformation = ({formData, setFormData, validateFormData}) => {
         setEditMode(false);
         setEditForm(true);
     };
+
     return (
         <div
             className='flex mt-24 relative justify-center items-start w-full px-72 mb-24 rounded-2xl py-[2rem] border border-main-purple '>
-            {changePassword ? (
-                /* Display change password form */
-                <div>
-                    <h1 className="text-2xl text-main-purple mb-6">Change Password</h1>
-                    <div className="flex flex-col gap-6 items-center mb-1 ">
-                        <Input
-                            type="password"
-                            label="Enter Current Password"
-                            required
-                        />
-                        <Input
-                            type="password"
-                            label="Enter New Password"
-                            required
-                        />
-                        <Input
-                            type="password"
-                            label="Confirm New Password"
-                            required
-                        />
-                        <div className="row">
-                            <Button color="purple" size="sm" ripple={true} type='submit'
-                                    onClick={noHandleChangePasswordClick}>back</Button>
-                            <Button color="purple" size="sm" ripple={true} type='submit'>Submit</Button>
-                        </div>
-                    </div>
-                </div>
-            ) : (
-                <div className="ProfileInfo">
-                    <div className="flex justify-between">
-                        <h1 className="text-2xl text-main-purple">Profile Information</h1>
-                        {editMode ? (
-                            <Button color="purple" ripple={true} onClick={handleSubmit}>Submit</Button>
-                        ) : (
-                            <Button color="purple" ripple={true} onClick={handleEditClick}>Edit</Button>
-                        )}
-                    </div>
-                    <div className="mt-6">
-                        <div className="row">
+            {
+                changePassword ? (
+                    /* Display change password form */
+                    <div>
+                        <h1 className="text-2xl text-main-purple mb-6">Change Password</h1>
+                        <div className="flex flex-col gap-6 items-center mb-1 ">
                             <Input
-                                type="text"
-                                label="First Name"
-                                value="Chris"
-                                disabled={editForm}
+                                type="password"
+                                label="Enter Current Password"
+                                required
                             />
                             <Input
-                                type="text"
-                                label="Last name"
-                                value="Perera"
-                                disabled={editForm}
+                                type="password"
+                                label="Enter New Password"
+                                required
                             />
-
-                        </div>
-                        <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
-                            <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
-                            </legend>
+                            <Input
+                                type="password"
+                                label="Confirm New Password"
+                                required
+                            />
                             <div className="row">
-                                <Input
-                                    type="text"
-                                    label="First Line"
-                                    value="216"
-                                    disabled={editForm}
-                                />
-                                <Input
-                                    type="text"
-                                    label="Second Line"
-                                    value="st. antony'rd"
-                                    disabled={editForm}
-                                />
+                                <Button color="purple" size="sm" ripple={true} type='submit'
+                                        onClick={noHandleChangePasswordClick}>back</Button>
+                                <Button color="purple" size="sm" ripple={true} type='submit'>Submit</Button>
                             </div>
-
-
+                        </div>
+                    </div>
+                ) : (
+                    <div className="ProfileInfo">
+                        <div className="flex justify-between">
+                            <h1 className="text-2xl text-main-purple">Profile Information</h1>
+                            {editMode ? (
+                                <Button color="purple" ripple={true} onClick={handleSubmit}>Submit</Button>
+                            ) : (
+                                <Button color="purple" ripple={true} onClick={handleEditClick}>Edit</Button>
+                            )}
+                        </div>
+                        <div className="mt-6">
                             <div className="row">
                                 <Input
                                     type="text"
-                                    label="Town"
-                                    value="Karuneriya"
+                                    label="First Name"
+                                    value="Chris"
                                     disabled={editForm}
                                 />
+                                <Input
+                                    type="text"
+                                    label="Last name"
+                                    value="Perera"
+                                    disabled={editForm}
+                                />
+
+                            </div>
+                            <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
+                                <legend className="bg-white px-[1rem] text-light-purple relative left-[0.1rem]">Address
+                                </legend>
+                                <div className="row">
+                                    <Input
+                                        type="text"
+                                        label="First Line"
+                                        value="216"
+                                        disabled={editForm}
+                                    />
+                                    <Input
+                                        type="text"
+                                        label="Second Line"
+                                        value="st. antony'rd"
+                                        disabled={editForm}
+                                    />
+                                </div>
+
+
+                                <div className="row">
+                                    <Input
+                                        type="text"
+                                        label="Town"
+                                        value="Karuneriya"
+                                        disabled={editForm}
+                                    />
+                                    <Select
+                                        label="District"
+                                        options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
+                                        disabled={editForm}
+                                    />
+                                </div>
+                            </fieldset>
+                            <div className="row">
                                 <Select
-                                    label="District"
-                                    options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
+                                    label="Gender"
+                                    options={["Male", "Female"]}
+                                    disabled={editForm}
+                                />
+                                <Input
+                                    type="text"
+                                    label="mobile number"
                                     disabled={editForm}
                                 />
                             </div>
-                        </fieldset>
-                        <div className="row">
-                            <Select
-                                label="Gender"
-                                options={["Male", "Female"]}
-                                disabled={editForm}
-                            />
-                            <Input
-                                type="text"
-                                label="mobile number"
-                                disabled={editForm}
-                            />
+                            <div className="row">
+                                {/*<Select*/}
+                                {/*    type="text"*/}
+                                {/*    label="Admin Type"*/}
+                                {/*    value="Super Admin"*/}
+                                {/*    disabled*/}
+                                {/*/>*/}
+                                <Input
+                                    type="text"
+                                    label="NIC"
+                                    value="993400165v"
+                                    disabled
+                                />
+                            </div>
                         </div>
-                        <div className="row">
-                            {/*<Select*/}
-                            {/*    type="text"*/}
-                            {/*    label="Admin Type"*/}
-                            {/*    value="Super Admin"*/}
-                            {/*    disabled*/}
-                            {/*/>*/}
-                            <Input
-                                type="text"
-                                label="NIC"
-                                value="993400165v"
-                                disabled
-                            />
-                        </div>
+                        <button className="text-sm text-main-purple" onClick={handleChangePasswordClick}>Change Password
+                        </button>
                     </div>
-                    <button className="text-sm text-main-purple" onClick={handleChangePasswordClick}>Change Password
-                    </button>
-                </div>
-            )}
+                )
+            }
         </div>
-    )
-}
-
-const Profile = () => {
-    return (
-        <Header active="Profile">
-            <TopBar />
-            <AdminProfileInformation/>
-        </Header>
-
     )
 }
 

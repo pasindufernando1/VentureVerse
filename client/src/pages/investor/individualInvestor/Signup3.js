@@ -1,5 +1,5 @@
 import React from "react";
-import { Input,Checkbox,Button } from "../../webcomponent";
+import { Input, Checkbox, Button } from "../../webcomponent";
 import Modal from "react-modal";
 import { useState } from "react";
 import Terms from "../../common/Terms";
@@ -74,7 +74,6 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row2">                                  
                     <Input 
                         type="password" 
-                        color="purple" 
                         label={<span style={{ fontSize: '12px' }}>Password:</span>}
                         value={formData.password}
                         onChange={(event)=>
@@ -88,7 +87,6 @@ function Signup3({formData, setFormData,validateFormData}) {
             <div className="row2">                                  
                     <Input 
                         type="password" 
-                        color="purple" 
                         label={<span style={{ fontSize: '12px' }}>Confirm Password:</span>}
                         value={formData.confirmPassword}
                         onChange={(event)=>

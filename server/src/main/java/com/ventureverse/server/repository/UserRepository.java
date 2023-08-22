@@ -26,6 +26,13 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
     """)
     Status findApprovalById(Integer id);
 
+    @Query("""
+        SELECT u.approvalStatus
+        FROM UserDTO u
+        WHERE u.email = :email
+    """)
+    Status findApprovalByEmail(String email);
+
     Optional<UserDTO> findByEmail(String email);
 
     @Query("""

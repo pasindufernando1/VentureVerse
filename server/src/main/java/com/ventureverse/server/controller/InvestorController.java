@@ -2,9 +2,6 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
-import com.ventureverse.server.model.entity.InvestorDTO;
-import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
-import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -48,4 +45,5 @@ public class InvestorController {
         }
         return ResponseEntity.ok(interestedSectors);
     }
+
 }

@@ -11,6 +11,7 @@ const CustomRadio = (props) => {
             iconProps={
                 {className: "text-main-purple"}
             }
+            id={label}
             label={
                 <Typography color="blue-gray" className="font-medium flex">
                     {/* change the font size */}

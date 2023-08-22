@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/VentureVerse
+#    url: jdbc:postgresql://localhost:5432/VentureVerse
+    url: jdbc:postgresql://ventureverse.ctajpb1j8uyn.eu-north-1.rds.amazonaws.com:5432/ventureverse
     username: postgres
     password: password
     driver-class-name: org.postgresql.Driver
@@ -44,4 +45,3 @@ application:
         expiration: 604800000
       forgot-password-token:
         expiration: 3600000
-

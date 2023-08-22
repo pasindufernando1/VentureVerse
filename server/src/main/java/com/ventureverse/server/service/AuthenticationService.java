@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -77,12 +76,11 @@ public class AuthenticationService {
                 .secondLineAddress(registerRequestDTO.getSecondLineAddress())
                 .town(registerRequestDTO.getTown())
                 .district(registerRequestDTO.getDistrict())
-                .role(Role.ADMIN)
+                .role(Role.CO_ADMIN)
                 .firstname(registerRequestDTO.getFirstname())
                 .lastname(registerRequestDTO.getLastname())
                 .gender(registerRequestDTO.getGender())
                 .nic(registerRequestDTO.getNic())
-                .adminType(Role.CO_ADMIN)
                 .build(); // Creates AdminDTO
 
         var savedUser = adminRepository.save(user); // Save the Record
@@ -243,6 +241,10 @@ public class AuthenticationService {
 
         var salt = userRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
+        if (userRepository.findApprovalByEmail(authenticationRequest.getEmail()).equals(Status.PENDING)) {
+            throw new CustomErrorException("User Account Not Approved");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getEmail(),
@@ -262,6 +264,11 @@ public class AuthenticationService {
     }
 
     public ResponseDTO forgotPassword(HttpServletResponse response, String email) {
+
+            if (userRepository.findApprovalByEmail(email).equals(Status.PENDING)) {
+                throw new CustomErrorException("User Account Not Approved");
+            }
+
             var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
             var token = jwtService.generateForgotPasswordToken(user);
             emailService.sendEmail(email, "Reset Password", Templates.forgetPasswordTemp("http://localhost:3000/reset-password/" + token));

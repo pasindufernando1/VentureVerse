@@ -1,7 +1,6 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.model.normal.ResponseDTO;
-import com.ventureverse.server.service.FileUploadService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,7 +20,6 @@ import java.util.UUID;
 @RequestMapping("/api/entrepreneur")
 public class FileUploadController {
 
-
     @PostMapping("/upload")
     public ResponseEntity <ResponseDTO> uploadFile(
             @RequestParam("image") List<MultipartFile> images,
@@ -39,14 +37,12 @@ public class FileUploadController {
 
         try {
             //If there exists images in the request
-
             // Save images
             for (MultipartFile image : images) {
                 String fileName = image.getOriginalFilename();
                 Path filePath = Paths.get(imageUploadPath, fileName);
                 Files.write(filePath, image.getBytes());
             }
-
 
             // Save video
             String videoFileName = video.getOriginalFilename();

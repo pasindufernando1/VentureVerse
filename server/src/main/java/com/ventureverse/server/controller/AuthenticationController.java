@@ -21,7 +21,6 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-//    check whether the email already exits or not
     @GetMapping("/checkEmail/{email}")
     public ResponseEntity<ResponseDTO> checkEmail(@PathVariable String email) {
         return ResponseEntity.ok(authenticationService.checkEmail(email));
@@ -63,7 +62,6 @@ public class AuthenticationController {
     ) {
         return ResponseEntity.ok(authenticationService.registerEnterpriseInvestor(response, registerRequestDTO));
     }
-
 
     @PostMapping("/authorize/{status}/{id}")
     public ResponseEntity<ResponseDTO> register(

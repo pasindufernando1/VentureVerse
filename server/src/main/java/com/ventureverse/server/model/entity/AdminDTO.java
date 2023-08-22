@@ -20,7 +20,4 @@ public class AdminDTO extends UserDTO {
     private String nic;
     private String gender;
 
-    @Enumerated(EnumType.STRING)
-    private Role adminType;
-
 }
