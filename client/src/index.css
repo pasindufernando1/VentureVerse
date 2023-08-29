@@ -92,14 +92,14 @@ code {
 }
 
 .addlisting {
-    background-size: contain;
     background: url("../public/assets/images/addlisting.jpg") no-repeat center;
+    background-size: contain;
     margin-right: 3rem;
 }
 
 .coadmin {
-    background-size: contain;
     background: url("../public/assets/images/coadmin.jpg") no-repeat center;
+    background-size: contain;
     margin-right: 3rem;
 }
 
@@ -110,14 +110,14 @@ code {
 }
 
 .individual_investor {
-    background-size: contain;
     background: url("../public/assets/images/individual_investor.jpg") no-repeat center;
+    background-size: contain;
     margin-right: 3rem;
 }
 
 .entrepreneur {
-    background-size: contain;
     background: url("../public/assets/images/entrepreneur.jpg") no-repeat center;
+    background-size:contain;
     margin-right: 3rem;
 }
 
@@ -127,14 +127,14 @@ code {
 }
 
 .complaints {
-    background-size: contain;
     background: url("../public/assets/images/complaints.jpg") no-repeat center;
+    background-size: contain;
     margin-right: 3rem;
 }
 
 .investments {
-    background-size: contain;
     background: url("../public/assets/images/Investment.jpg") no-repeat center;
+    background-size: contain;
     margin-right: 3rem;
 }
 

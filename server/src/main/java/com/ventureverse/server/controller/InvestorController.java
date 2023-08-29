@@ -2,6 +2,7 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +21,13 @@ public class InvestorController {
     private final InvestorService investorService;
 
     @GetMapping("/pending")
-    public ResponseEntity<List<IndividualInvestorDTO>> getPendingUsers() {
+    public ResponseEntity<List<RegisterRequestDTO>> getPendingUsers() {
         List<IndividualInvestorDTO> pendingRegisterRequests = investorService.findByApprovalStatus(Status.PENDING);
         if (pendingRegisterRequests.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(pendingRegisterRequests);
+        RegisterRequestDTO registerRequestDTO = new RegisterRequestDTO();
+        return ResponseEntity.ok(registerRequestDTO.toInvesorRegisterRequestDTO(pendingRegisterRequests));
     }
 
     @GetMapping("/pending-details/{id}")

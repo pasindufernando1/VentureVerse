@@ -113,7 +113,7 @@ const ViewEntrepreneurDetails = () => {
                     <p><strong>Address:</strong></p>
                     <p>
                       {registrationRequestDetails.firstline},{" "}
-                      {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""}
+                      {registrationRequestDetails.secondline?registrationRequestDetails.secondline:""},
                       {registrationRequestDetails.town},{" "}
                       {registrationRequestDetails.district}
                     </p>
