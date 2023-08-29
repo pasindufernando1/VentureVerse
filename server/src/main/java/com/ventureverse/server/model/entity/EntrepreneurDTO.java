@@ -38,8 +38,4 @@ public class EntrepreneurDTO extends UserDTO {
     private String businessDescription;
     private String businessRegDoc;
 
-
-    @OneToMany(mappedBy = "entrepreneurId")
-    List<ListingDTO> listing;
-
 }

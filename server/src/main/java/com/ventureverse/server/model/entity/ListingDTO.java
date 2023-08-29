@@ -49,7 +49,6 @@ public class ListingDTO {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="subscriptionId", referencedColumnName = "subscriptionId")
-    @JsonIgnore
     private SubscriptionDTO subscriptionType;
 
 
@@ -59,10 +58,6 @@ public class ListingDTO {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
-    @JsonIgnore
     private EntrepreneurDTO entrepreneurId;
-
-
-
 
 }
