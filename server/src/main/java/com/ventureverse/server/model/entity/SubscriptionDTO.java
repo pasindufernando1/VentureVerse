@@ -19,6 +19,7 @@ import java.util.List;
 @Table(name = "subscription")
 @PrimaryKeyJoinColumn(name = "subscriptionId")
 public class SubscriptionDTO {
+
     @Id
     @GeneratedValue
     private Integer subscriptionId;
@@ -26,7 +27,4 @@ public class SubscriptionDTO {
     private String price;
     private Integer days;
 
-
-    @OneToMany(mappedBy = "subscriptionType")
-    List<ListingDTO> listing;
 }
