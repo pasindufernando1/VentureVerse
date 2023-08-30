@@ -92,4 +92,17 @@ public class ListingService {
         var listing = listingRepository.findById(id).orElseThrow();
         return listingSubscriptionRepository.findByListingId(listing).orElseThrow();
     }
+
+    //Function to get the latest listing of an entrepreneur
+    public ListingDTO getLatestListing(int id) {
+        //Get the entrepreneur object
+        var entrepreneur = entrepreneurRepository.findById(id).orElseThrow();
+
+        //Get the latest listing of the entrepreneur
+        var listing = listingRepository.findLatestListing(entrepreneur);
+        if (listing == null) {
+            exit(0);
+        }
+        return listing;
+    }
 }

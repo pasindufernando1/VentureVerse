@@ -1,9 +1,9 @@
 spring:
   datasource:
-#    url: jdbc:postgresql://localhost:5432/VentureVerse
-    url: jdbc:postgresql://ventureverse.ctajpb1j8uyn.eu-north-1.rds.amazonaws.com:5432/ventureverse
+    url: jdbc:postgresql://localhost:5432/VV
+#    url: jdbc:postgresql://ventureverse.ctajpb1j8uyn.eu-north-1.rds.amazonaws.com:5432/ventureverse
     username: postgres
-    password: password
+    password: bullmastiff
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

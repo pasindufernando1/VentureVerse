@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static java.lang.System.exit;
+
 @RestController
 @RequestMapping("/api/entrepreneur")
 @RequiredArgsConstructor
@@ -31,6 +33,14 @@ public class ListingController {
     public ResponseEntity<ListingDTO> getListing(@PathVariable Integer id) {
         return ResponseEntity.ok(listingService.getListing(id));
     }
+
+    //Get the latest listing of the entrepreneur
+    @GetMapping("/getLatestListing/{id}")
+    public ResponseEntity<ListingDTO> getLatestListing(@PathVariable Integer id) {
+        return ResponseEntity.ok(listingService.getLatestListing(id));
+    }
+
+
 
     //Get the subscription
     @GetMapping("/getSubscription/{id}")

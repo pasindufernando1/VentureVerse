@@ -16,12 +16,14 @@ import React from "react";
 import { Slider } from "@material-tailwind/react";
 
 
+
 function ViewListing() {
 
     // Get request to get the listing details
     const {get} = useAxiosMethods();
     const [listing, setListing] = useState({});
     const [subscriptionId, setSubscriptionId] = useState();
+
 
 
     useEffect(() => {

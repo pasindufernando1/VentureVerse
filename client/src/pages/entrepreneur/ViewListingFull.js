@@ -10,9 +10,30 @@ import {Carousel, IconButton} from "@material-tailwind/react";
 import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {useEffect, useState} from "react";
+
 
 
 function ViewListingFull() {
+
+    // Specific user
+    const {auth} = useAuth();
+
+    // Getting the listing of the user
+    const {get} = useAxiosMethods();
+    const [listing, setListing] = useState({});
+
+    useEffect(() => {
+        // Get the listing of the user based on the id
+        get(`/entrepreneur/getLatestListing/${auth.id}`,setListing)
+
+    }, [])
+
+    console.log(auth.id);
+    console.log(listing);
+
 
     return (
         <div>
@@ -28,20 +49,15 @@ function ViewListingFull() {
                             </CardHeader>
                             <CardBody>
                                 <Typography variant="h5" className="mb-2 text-main-purple">
-                                    Title of the listing
+                                    {listing.title}
                                 </Typography>
                                 <Typography>
-                                    The place is close to Barceloneta Beach and bus stop just 2 min by
-                                    walk and near to &quot;Naviglio&quot; where you can enjoy the main
-                                    night life in Barcelona.The place is close to Barceloneta Beach and bus stop just 2
-                                    min by
-                                    walk and near to &quot;Naviglio&quot; where you can enjoy the main
-                                    night life in Barcelona.
+                                    {listing.description}
                                 </Typography>
 
                                 {/* Business name */}
                                 <Typography variant="h6" color="blue-gray" className="mb-2 mt-2">
-                                    Business Name : ABC company
+                                    Business Name : {listing.businessName}
                                 </Typography>
 
                                 <Typography variant="h5" className="mb-2 text-light-purple mt-4">
