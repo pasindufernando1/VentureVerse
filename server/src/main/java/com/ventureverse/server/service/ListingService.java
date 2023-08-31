@@ -105,4 +105,11 @@ public class ListingService {
         }
         return listing;
     }
+
+    //Function to get the listing video
+    public String getVideo(int id) {
+        //Get the listing object
+        var listing = listingRepository.findById(id).orElseThrow();
+        return listing.getPitchingVideo();
+    }
 }

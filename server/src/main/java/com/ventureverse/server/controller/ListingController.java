@@ -5,8 +5,12 @@ import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.ListingService;
+import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,7 +44,22 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getLatestListing(id));
     }
 
+    //Send the video relevent to the listing to the frontend using the listing id
+    @GetMapping("/getVideo/{videoname}")
+    public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {
+        System.out.println("videoname: " + videoname);
+        // Project root directory
+        String rootDirectory = System.getProperty("user.dir");
+        // Load the video file from resources/static/uploads folder
+        Resource videoResource = new ClassPathResource(rootDirectory + "/src/main/resources/static/uploads/videos" + videoname);
 
+        // Set content type based on video file type (e.g., "video/mp4")
+        MediaType mediaType = MediaTypeFactory.getMediaType(videoResource).orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .body(videoResource);
+    }
 
     //Get the subscription
     @GetMapping("/getSubscription/{id}")

@@ -1069,17 +1069,17 @@ function AddListing() {
                                                     <div className="row">
                                                         <Radio label={<span
                                                             style={{fontSize: '12px'}}>Shopping Live</span>}
-                                                               name="stage" value="live" checked={stage === 'live'}
+                                                               name="stage" value="Shopping live" checked={stage === 'Shopping live'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                         <Radio label={<span style={{fontSize: '12px'}}>Revenue</span>}
-                                                               name="stage" value="revenue"
-                                                               checked={stage === 'revenue'}
+                                                               name="stage" value="Revenue"
+                                                               checked={stage === 'Revenue'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                         <Radio label={<span style={{fontSize: '12px'}}>Expansion</span>}
-                                                               name="stage" value="expansion"
-                                                               checked={stage === 'expansion'}
+                                                               name="stage" value="Expansion"
+                                                               checked={stage === 'Expansion'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                     </div>

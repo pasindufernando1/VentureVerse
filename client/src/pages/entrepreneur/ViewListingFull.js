@@ -13,6 +13,8 @@ import {Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {useEffect, useState} from "react";
+import axios from "axios";
+import {axiosPrivate} from "../../api/axios";
 
 
 
@@ -31,8 +33,26 @@ function ViewListingFull() {
 
     }, [])
 
+    // Getting the video relevant to the listing
+    const [videoUrl, setVideoUrl] = useState("");
+    const videoName = listing.pitchingVideo;
+    console.log(videoName);
+    // useEffect(() => {
+    //     // Fetch the video using Axios
+    //     axiosPrivate.get(`http://localhost:8080/api/auth/entrepreneur/getVideo/${videoName}`, { responseType: 'blob' })
+    //         .then(response => {
+    //             // Create a URL for the video blob
+    //             const videoBlobUrl = URL.createObjectURL(response.data);
+    //             setVideoUrl(videoBlobUrl);
+    //         });
+    // }, [videoName]);
+
     console.log(auth.id);
     console.log(listing);
+    // console.log(listing.entrepreneurId.businessName);
+    const businessStartDate = new Date(listing.businessStartDate);
+    // Take the day month and the year only
+    const businessStartDateString = businessStartDate.toDateString();
 
 
     return (
@@ -43,7 +63,7 @@ function ViewListingFull() {
                         <Card className="mt-[-3rem]">
                             <CardHeader className="relative h-300 mt-5 ">
                                 <video className="h-full w-full rounded-lg" controls autoPlay muted>
-                                    <source src="/assets/videos/video1.mp4" type="video/mp4"/>
+                                    <source src={videoUrl} type="video/mp4"/>
                                     Your browser does not support the video tag.
                                 </video>
                             </CardHeader>
@@ -57,7 +77,9 @@ function ViewListingFull() {
 
                                 {/* Business name */}
                                 <Typography variant="h6" color="blue-gray" className="mb-2 mt-2">
-                                    Business Name : {listing.businessName}
+                                    {listing && listing.entrepreneurId && (
+                                        <p>Business Name: {listing.entrepreneurId.businessName}</p>
+                                    )}
                                 </Typography>
 
                                 <Typography variant="h5" className="mb-2 text-light-purple mt-4">
@@ -79,13 +101,13 @@ function ViewListingFull() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            $100,000
+                                            Rs. {listing.expectedAmount}
                                         </Typography>
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            10%
+                                            {listing.returnEquityPercentage}%
                                         </Typography>
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            $10
+                                            {listing.returnUnitProfitPercentage}% per unit
                                         </Typography>
                                     </div>
                                 </div>
@@ -227,7 +249,7 @@ function ViewListingFull() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.intention}
                                     </Typography>
                                 </div>
 
@@ -237,13 +259,13 @@ function ViewListingFull() {
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
                                             <span>Business start date : </span><span
-                                            className="font-light">2022-01-01</span>
+                                            className="font-light">{businessStartDateString}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Business duration : </span><span className="font-light">5 years</span>
+                                            <span>Business duration : </span><span className="font-light">{listing.businessDuration} years</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -253,7 +275,7 @@ function ViewListingFull() {
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
                                             <span>Lifetime sales :      </span><span
-                                            className="font-light">Rs. 5000000</span>
+                                            className="font-light">Rs. {listing.lifetimeSales}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -261,7 +283,7 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Stage of business :      </span><span className="font-light">Online selling</span>
+                                            <span>Stage of business :      </span><span className="font-light">{listing.stage}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -275,13 +297,13 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Gross income : </span><span className="font-light">Rs. 100000</span>
+                                            <span>Gross income : </span><span className="font-light">Rs. {listing.lastYearGrossIncome}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Net income : </span><span className="font-light">Rs. 100000</span>
+                                            <span>Net income : </span><span className="font-light">Rs. {listing.lastYearNetIncome}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -295,13 +317,13 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For this year : </span><span className="font-light">Rs. 100000</span>
+                                            <span>For this year : </span><span className="font-light">Rs. {listing.salesProjectionThisYear}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For next year : </span><span className="font-light">Rs. 100000</span>
+                                            <span>For next year : </span><span className="font-light">Rs. {listing.salesProjectionNextYear}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -313,7 +335,7 @@ function ViewListingFull() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.projectionMethod}
                                     </Typography>
                                 </div>
                                 {/* Section for the previous attempts */}
@@ -323,23 +345,23 @@ function ViewListingFull() {
                                 <div className="flex justify-between items-center">
                                     <Typography variant="h6" color="blue-gray"
                                                 className="mb-2 text-main-gray font-bold">
-                                        How the projections are made
+                                        Previous funding attempts
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.outsideSourceDescription}
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <Typography variant="h6" color="blue-gray"
                                                 className="mb-2 text-main-gray font-bold">
-                                        Previous attempts to raise funds
+                                        Previous attempts to grow business
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        None
+                                        {listing.attemptsToGrow}
                                     </Typography>
                                 </div>
 
@@ -355,7 +377,7 @@ function ViewListingFull() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        No 1 business in the world
+                                        {listing.uniqueSellingProposition}
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center">
@@ -366,7 +388,7 @@ function ViewListingFull() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        None
+                                        {listing.awards}
                                     </Typography>
                                 </div>
 
