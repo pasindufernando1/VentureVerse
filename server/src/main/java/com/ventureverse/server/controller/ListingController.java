@@ -47,15 +47,14 @@ public class ListingController {
     //Send the video relevent to the listing to the frontend using the listing id
     @GetMapping("/getVideo/{videoname}")
     public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {
-        System.out.println("videoname: " + videoname);
         // Project root directory
         String rootDirectory = System.getProperty("user.dir");
         // Load the video file from resources/static/uploads folder
-        Resource videoResource = new ClassPathResource(rootDirectory + "/src/main/resources/static/uploads/videos" + videoname);
+        Resource videoResource = new ClassPathResource("/static/uploads/videos/" + videoname);
+//        ClassPathResource videoResource = new ClassPathResource("C:\\Users\\Pasindu\\Desktop\\3rd year group project\\IMPLEMENTATION\\VentureVerse\\server\\src\\main\\resources\\static\\uploads\\videos\\video1693371839383_74twk.mp4");
 
         // Set content type based on video file type (e.g., "video/mp4")
         MediaType mediaType = MediaTypeFactory.getMediaType(videoResource).orElse(MediaType.APPLICATION_OCTET_STREAM);
-
         return ResponseEntity.ok()
                 .contentType(mediaType)
                 .body(videoResource);

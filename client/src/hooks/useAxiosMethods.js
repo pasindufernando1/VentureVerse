@@ -4,7 +4,7 @@ const useAxiosMethods = () => {
 
     const axiosPrivate = useAxiosPrivate();
 
-    const get = (url, setResponse) => {
+    const get = (url, setResponse, resources = false) => {
 
         let isMounted = true;
         const controller = new AbortController();
@@ -22,7 +22,23 @@ const useAxiosMethods = () => {
             }
         }
 
-        getRecord().then();
+        const getResources = async () => {
+            try {
+                const response = await axiosPrivate.get(url, {
+                    signal: controller.signal,
+                    responseType: 'blob',
+                });
+                isMounted && setResponse(URL.createObjectURL(response.data));
+            } catch (err) {
+                console.log(err);
+            }
+        }
+
+        if (resources) {
+            getResources().then();
+        } else {
+            getRecord().then();
+        }
 
         return () => {
             isMounted = false;

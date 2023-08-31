@@ -13,8 +13,7 @@ import {Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {useEffect, useState} from "react";
-import axios from "axios";
-import {axiosPrivate} from "../../api/axios";
+
 
 
 
@@ -26,29 +25,43 @@ function ViewListingFull() {
     // Getting the listing of the user
     const {get} = useAxiosMethods();
     const [listing, setListing] = useState({});
+    const [videoUrl, setVideoUrl] = useState("");
 
     useEffect(() => {
         // Get the listing of the user based on the id
-        get(`/entrepreneur/getLatestListing/${auth.id}`,setListing)
+        get(`/entrepreneur/getLatestListing/${auth.id}`,setListing);
 
     }, [])
 
+    useEffect(() => {
+        if (listing.pitchingVideo) {
+            get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
+        }
+    }, [listing])
+
+
+    // if (listing.pitchingVideo) {
+    //     get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
+    // }
+
     // Getting the video relevant to the listing
-    const [videoUrl, setVideoUrl] = useState("");
-    const videoName = listing.pitchingVideo;
-    console.log(videoName);
+    // const videoName = listing.pitchingVideo;
+    // console.log(videoName);
     // useEffect(() => {
     //     // Fetch the video using Axios
-    //     axiosPrivate.get(`http://localhost:8080/api/auth/entrepreneur/getVideo/${videoName}`, { responseType: 'blob' })
-    //         .then(response => {
-    //             // Create a URL for the video blob
-    //             const videoBlobUrl = URL.createObjectURL(response.data);
-    //             setVideoUrl(videoBlobUrl);
-    //         });
+    //     get(`/entrepreneur/getVideo/${videoName}`, setVideoUrl, true);
+    //     // fetch(`http://localhost:8080/api/auth/entrepreneur/getVideo/${videoName}`, { responseType: 'blob' })
+    //     //     .then(response => {
+    //     //         // Create a URL for the video blob
+    //     //         const videoBlobUrl = URL.createObjectURL(response.data);
+    //     //         setVideoUrl(videoBlobUrl);
+    //     //     });
+    //     // setVideoUrl(URL.createObjectURL(videoUrl.data));
+    //     console.log(videoUrl);
     // }, [videoName]);
 
-    console.log(auth.id);
-    console.log(listing);
+    // console.log(auth.id);
+    // console.log(listing);
     // console.log(listing.entrepreneurId.businessName);
     const businessStartDate = new Date(listing.businessStartDate);
     // Take the day month and the year only
