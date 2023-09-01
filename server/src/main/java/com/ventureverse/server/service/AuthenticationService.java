@@ -39,8 +39,7 @@ public class AuthenticationService {
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
     private final IndividualInvestorRepository individualInvestorRepository;
     private final EntrepreneurRepository entrepreneurRepository;
-    private final InvestorInterestedSectorRepository sectorRepository;
-    public InvestorInterestedSectorDTO sectorDTO;
+    private final CredentialRepository credentialRepository;
 
     public ResponseDTO checkEmail(String email) {
         var user = userRepository.findByEmail(email);
@@ -60,15 +59,13 @@ public class AuthenticationService {
         }
     }
 
-    public ResponseDTO registerAdmin(HttpServletResponse response, RegisterRequestDTO registerRequestDTO) {
+    public ResponseDTO registerAdmin(RegisterRequestDTO registerRequestDTO) {
 
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
         var user = AdminDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
-                .salt(salt)
                 .approvalStatus(Status.APPROVED)
                 .profileImage("profileImage.jpg")
                 .contactNumber(registerRequestDTO.getContactNumber())
@@ -85,22 +82,29 @@ public class AuthenticationService {
 
         var savedUser = adminRepository.save(user); // Save the Record
 
-        var accessToken = jwtService.generateToken(user);
+        var credentials = CredentialDTO.builder()
+                .user(savedUser)
+                .username(savedUser.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .build(); // Creates CredentialsDTO
+
+        var savedCredentials = credentialRepository.save(credentials); // Save the Record
+
+        var accessToken = jwtService.generateToken(savedCredentials);
         saveUserToken(savedUser, accessToken);
 
         return GlobalService.response("Success", "Co-Admin Registration Successful");
 
     }
 
-    public ResponseDTO registerEntrepreneur(HttpServletResponse response,RegisterRequestDTO registerRequestDTO) {
+    public ResponseDTO registerEntrepreneur(RegisterRequestDTO registerRequestDTO) {
 
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
         var user = EntrepreneurDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
-                .salt(salt)
                 .approvalStatus(Status.PENDING)
                 .profileImage("profileImage.jpg")
                 .contactNumber(registerRequestDTO.getContactNumber())
@@ -131,18 +135,26 @@ public class AuthenticationService {
                 .businessRegDoc(registerRequestDTO.getBusinessRegDoc())
                 .build(); // Creates EntrepreneurDTO
 
-        userRepository.save(user); // Save the Record
+        var savedUser = entrepreneurRepository.save(user); // Save the Record
+
+        var credentials = CredentialDTO.builder()
+                .user(savedUser)
+                .username(savedUser.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .build(); // Creates CredentialsDTO
+
+        credentialRepository.save(credentials); // Save the Record
+
         return GlobalService.response("Success", "Registration request sent");
     }
 
-    public ResponseDTO registerIndividualInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+    public ResponseDTO registerIndividualInvestor(RegisterRequestDTO registerRequestDTO){
         // Generate a Random Salt
         var salt = GlobalService.generateSalt();
 
         var user= IndividualInvestorDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
-                .salt(salt)
                 .approvalStatus(Status.PENDING)
                 .profileImage("profileImage.jpg")
                 .contactNumber(registerRequestDTO.getContactNumber())
@@ -160,7 +172,16 @@ public class AuthenticationService {
                 .policeReport(registerRequestDTO.getPoliceReport())
                 .build(); // Creates IndividualInvestorDTO
 
-        userRepository.save(user); // Save the Record
+        var savedUser = individualInvestorRepository.save(user); // Save the Record
+
+        var credentials = CredentialDTO.builder()
+                .user(savedUser)
+                .username(savedUser.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .build(); // Creates CredentialsDTO
+
+        credentialRepository.save(credentials); // Save the Record
 
         var investor=individualInvestorRepository.getLastInsertedId();
         var listingSectors=registerRequestDTO.getSectorId();
@@ -173,13 +194,11 @@ public class AuthenticationService {
         return GlobalService.response("Success", "Registration request sent");
     }
 
-    public ResponseDTO registerEnterpriseInvestor(HttpServletResponse response,RegisterRequestDTO registerRequestDTO){
+    public ResponseDTO registerEnterpriseInvestor(RegisterRequestDTO registerRequestDTO){
         var salt = GlobalService.generateSalt();
 
         var user= EnterpriseInvestorDTO.builder()
                 .email(registerRequestDTO.getEmail())
-                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
-                .salt(salt)
                 .approvalStatus(Status.PENDING)
                 .profileImage("profileImage.jpg")
                 .contactNumber(registerRequestDTO.getContactNumber())
@@ -194,7 +213,16 @@ public class AuthenticationService {
                 .badgeId(null)
                 .build();
 
-        userRepository.save(user);
+        var savedUser = enterpriseInvestorRepository.save(user); // Save the Record
+
+        var credentials = CredentialDTO.builder()
+                .user(savedUser)
+                .username(savedUser.getEmail())
+                .password(passwordEncoder.encode(GlobalService.generateSaltedPassword(registerRequestDTO.getPassword(), salt)))
+                .salt(salt)
+                .build(); // Creates CredentialsDTO
+
+        credentialRepository.save(credentials); // Save the Record
 
         //get the last inserted id
         var investor= enterpriseInvestorRepository.getLastInsertedId();
@@ -208,7 +236,7 @@ public class AuthenticationService {
 
     }
 
-    public ResponseDTO authorize(HttpServletResponse response, String status, Integer id) {
+    public ResponseDTO authorize(String status, Integer id) {
 
         if (userRepository.findApprovalById(id).equals(Status.APPROVED)) {
             return GlobalService.response("Success", "User " + id + " Already Approved");
@@ -228,7 +256,9 @@ public class AuthenticationService {
         user.setApprovalStatus(Status.APPROVED);
         userRepository.save(user);
 
-        var accessToken = jwtService.generateToken(user);
+        var credentials = credentialRepository.findByUsername(user.getEmail()).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
+
+        var accessToken = jwtService.generateToken(credentials);
         saveUserToken(user, accessToken);
 
         // SEND EMAIL TO USER
@@ -239,7 +269,7 @@ public class AuthenticationService {
 
     public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {
 
-        var salt = userRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
+        var salt = credentialRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
         if (userRepository.findApprovalByEmail(authenticationRequest.getEmail()).equals(Status.PENDING)) {
             throw new CustomErrorException("User Account Not Approved");
@@ -251,9 +281,10 @@ public class AuthenticationService {
                         GlobalService.generateSaltedPassword(authenticationRequest.getPassword(), salt)
                 )
         );
-        var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
-        var accessToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var user = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        var credentials = credentialRepository.findByUsername(user.getEmail()).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
+        var accessToken = jwtService.generateToken(credentials);
+        var refreshToken = jwtService.generateRefreshToken(credentials);
         updateUserToken(user, accessToken);
         creatCookie(response, refreshToken, refreshExpiration / 1000);
         return GlobalService.authenticationResponse(
@@ -263,20 +294,21 @@ public class AuthenticationService {
         );
     }
 
-    public ResponseDTO forgotPassword(HttpServletResponse response, String email) {
+    public ResponseDTO forgotPassword(String email) {
 
-            if (userRepository.findApprovalByEmail(email).equals(Status.PENDING)) {
-                throw new CustomErrorException("User Account Not Approved");
-            }
+        if (userRepository.findApprovalByEmail(email).equals(Status.PENDING)) {
+            throw new CustomErrorException("User Account Not Approved");
+        }
 
-            var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
-            var token = jwtService.generateForgotPasswordToken(user);
-            emailService.sendEmail(email, "Reset Password", Templates.forgetPasswordTemp("http://localhost:3000/reset-password/" + token));
-            saveResetToken(user, token);
-            return GlobalService.response("Success", "Email Sent");
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        var credentials = credentialRepository.findByUsername(user.getEmail()).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
+        var token = jwtService.generateForgotPasswordToken(credentials);
+        emailService.sendEmail(email, "Reset Password", Templates.forgetPasswordTemp("http://localhost:3000/reset-password/" + token));
+        saveResetToken(user, token);
+        return GlobalService.response("Success", "Email Sent");
     }
 
-    public ResponseDTO resetPassword(HttpServletResponse response, String password, String token) {
+    public ResponseDTO resetPassword(String password, String token) {
 
         var reset = resetRepository.findByToken(token).orElseThrow(() -> new CustomErrorException("Token Not Found"));
 
@@ -289,10 +321,9 @@ public class AuthenticationService {
         }
 
         var email = jwtService.extractEmail(token);
-        var salt = userRepository.findSaltByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
-        user.setPassword(passwordEncoder.encode(GlobalService.generateSaltedPassword(password, salt)));
-        userRepository.save(user);
+        var credential = credentialRepository.findByUsername(email).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
+        credential.setPassword(passwordEncoder.encode(GlobalService.generateSaltedPassword(password, credential.getSalt())));
+        credentialRepository.save(credential);
 
         reset.setExpired(true);
         resetRepository.save(reset);
@@ -321,10 +352,11 @@ public class AuthenticationService {
 
         email = jwtService.extractEmail(refreshToken);
         if (email != null) {
-            var user = this.userRepository.findByEmail(email).orElseThrow();
+            var user = this.userRepository.findByEmail(email).orElseThrow(() -> new CustomErrorException("User Not Found"));
+            var credentials = credentialRepository.findByUsername(user.getEmail()).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
 
-            if (jwtService.isTokenValid(refreshToken, user)) {
-                var accessToken = jwtService.generateToken(user);
+            if (jwtService.isTokenValid(refreshToken, credentials)) {
+                var accessToken = jwtService.generateToken(credentials);
                 updateUserToken(user, accessToken);
                 var authResponse = AuthenticationResponseDTO.builder()
                         .accessToken(accessToken)
