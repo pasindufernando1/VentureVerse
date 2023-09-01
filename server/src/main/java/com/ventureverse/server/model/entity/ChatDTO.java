@@ -1,5 +1,6 @@
 package com.ventureverse.server.model.entity;
 
+import com.ventureverse.server.enumeration.Chat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,5 +31,8 @@ public class ChatDTO {
 
     private String message;
     private Timestamp timestamp;
+
+    @Enumerated(EnumType.STRING)
+    private Chat type = Chat.MESSAGE;
 
 }

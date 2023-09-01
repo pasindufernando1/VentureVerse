@@ -1,6 +1,7 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.model.normal.PayLoadDTO;
+import com.ventureverse.server.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -12,11 +13,17 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
 
     private final SimpMessagingTemplate simpMessagingTemplate;
+    private final ChatService chatService;
 
     @MessageMapping("/message")
     public PayLoadDTO sendMessage(@Payload PayLoadDTO payLoadDTO) {
-        simpMessagingTemplate.convertAndSendToUser(payLoadDTO.getReceiver(), "/private", payLoadDTO);
-        return payLoadDTO;
+
+        if (chatService.saveMessage(payLoadDTO)) {
+            simpMessagingTemplate.convertAndSendToUser(payLoadDTO.getReceiver(), "/private", payLoadDTO);
+            return payLoadDTO;
+        }
+
+        return null;
     }
 
 }
