@@ -14,9 +14,7 @@ const useAxiosMethods = () => {
                 const response = await axiosPrivate.get(url, {
                     signal: controller.signal,
                 });
-                // console.log(response.data);
                 isMounted && setResponse(response.data);
-                // console.log(response.data);
             } catch (err) {
                 console.log(err);
             }
