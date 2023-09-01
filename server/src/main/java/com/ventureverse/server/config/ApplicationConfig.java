@@ -1,5 +1,6 @@
 package com.ventureverse.server.config;
 
+import com.ventureverse.server.repository.CredentialRepository;
 import com.ventureverse.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,12 +18,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 
-    private final UserRepository userRepository;
+    private final CredentialRepository credentialRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
-                .orElseThrow(()-> new UsernameNotFoundException("User not Found"));
+        return username -> credentialRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException("User not Found"));
     }
 
     @Bean
