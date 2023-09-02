@@ -471,3 +471,7 @@ code {
 .container::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
+
+.apexcharts-menu-icon {
+    display: none;
+}

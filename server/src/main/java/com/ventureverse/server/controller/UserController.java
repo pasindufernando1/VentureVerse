@@ -40,4 +40,14 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/getuserregistration")
+    public ResponseEntity<List<Map<String, String>>> getUserRegistration() {
+        List<Map<String, String>> users = userService.getUserRegistration();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+
 }

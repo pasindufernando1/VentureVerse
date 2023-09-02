@@ -2,6 +2,7 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.repository.*;
@@ -88,6 +89,20 @@ public class UserService {
                     ));
                 }
             }
+        }
+
+        return userMap;
+    }
+
+    public List<Map<String, String>> getUserRegistration() {
+        List<UserDTO> users = userRepository.findAll();
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for (UserDTO user : users) {
+            userMap.add(Map.of(
+                    "id", user.getId().toString(),
+                    "userRole", user.getRole().toString(),
+                    "status", user.getApprovalStatus().toString()
+            ));
         }
 
         return userMap;

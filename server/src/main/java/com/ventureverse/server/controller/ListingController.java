@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/entrepreneur")
 @RequiredArgsConstructor
@@ -36,6 +39,15 @@ public class ListingController {
     @GetMapping("/getSubscription/{id}")
     public ResponseEntity<ListingSubscriptionDTO> getSubscriptionType(@PathVariable Integer id) {
         return ResponseEntity.ok(listingService.getSubscriptionType(id));
+    }
+
+    @GetMapping("/userGains")
+    public ResponseEntity<List<Map<String, String>>> getUserGains() {
+        List<Map<String, String>> users = listingService.getUserGains();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
 
 }
