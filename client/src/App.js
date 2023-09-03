@@ -127,7 +127,7 @@ function App() {
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
-                        <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
+                        <Route path="/investor/finalize-listing/:id" element={<InvestorFinalizeListing />} />               
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} /> 
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />

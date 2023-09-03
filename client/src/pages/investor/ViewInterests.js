@@ -1,10 +1,41 @@
 import { Avatar } from "@material-tailwind/react";
 import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
 
 function ViewInterests() {
+    const {get} = useAxiosMethods();
+    const[response, setResponse] = useState([]);
+    const {auth} = useAuth();
+    const id = auth.id;
 
+    useEffect(() => {
+        get(`/investors/interestListings/${id}`,setResponse);
+    }, []);
+
+    const registrationRequests = [];
+
+    response.forEach(element => {
+        let listingid1=element.id.listingId.listingId;
+        let investorInterested1 = element.id.listingId.entrepreneurId.firstname+" "+element.id.listingId.entrepreneurId.lastname;
+        let amountOffered1 = element.id.listingId.expectedAmount;
+        let equityExpected1 = element.id.listingId.returnEquityPercentage;
+        let profitPerUnitExpected1 = element.id.listingId.returnUnitProfitPercentage;
+
+        //push the results into the registrationRequests array
+        registrationRequests.push({
+            id: listingid1,
+            investorInterested: investorInterested1,
+            amountOffered: amountOffered1,
+            equityExpected: equityExpected1,
+            profitPerUnitExpected: profitPerUnitExpected1,
+            actions: "View"
+        })
+        
+    });
+        
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
             '/meeting/01/investor/' + new Date().toISOString(),
@@ -17,30 +48,6 @@ function ViewInterests() {
     }
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
-
-    //Array of objects with the following fields - Investor interested, Amount offered, Equity expected, Profit per unit expected, Actions
-    const registrationRequests = [
-        {
-            investorInterested: "Chris Perera",
-            amountOffered: "100000",
-            equityExpected: "10",
-            profitPerUnitExpected: "100",
-            actions: "View"
-        },
-        {
-            investorInterested: "Pamith Welikala",
-            amountOffered: "200000",
-            equityExpected: "20",
-            profitPerUnitExpected: "200",
-            actions: "View"
-        },
-        {
-            investorInterested: "Nadeesha Epa",
-            amountOffered: "100000",
-            equityExpected: "10",
-            profitPerUnitExpected: "100",
-            actions: "View"
-        }]
 
     return (
         <div>
@@ -64,7 +71,7 @@ function ViewInterests() {
                                             Entrepreneur
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Amount offered
+                                            Expected amount
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Equity expected
@@ -111,7 +118,7 @@ function ViewInterests() {
                                                     label="Show less"
                                                     className="mt-4"
                                                 >
-                                                    <Link to="/investor/finalize-listing">Finalize</Link>
+                                                    <Link to={`/investor/finalize-listing/${request.id}`}>Finalize</Link>
                                                 </Button>
                                             </td>
 

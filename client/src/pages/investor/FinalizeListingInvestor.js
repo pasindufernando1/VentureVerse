@@ -3,6 +3,8 @@ import {Button, Textarea, Header} from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
 import Modal from "react-modal";
 import Terms from "../common/Terms";
+import useAuth from "../../hooks/useAuth";
+import { useParams } from 'react-router-dom';
 import {
     Card,
     CardHeader,
@@ -13,9 +15,50 @@ import {
 } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import {Input,Checkbox} from "../webcomponent";
+import axios from "axios";
 
 
 function FinalizeListingInvestor() {
+    const {put,post} = useAxiosMethods();
+    const[response, setResponse] = useState([]);
+    const[response1, setResponse1] = useState([]);
+    const {auth} = useAuth();
+    const { id } = useParams();
+
+    const [formData, setFormData] = useState({
+        amountOffered: "",
+        equityExpected: "",
+        profitPerUnitExpected: "",
+        agreement: "",
+    });
+
+    const handledocumentUpload = (event) => {
+        const { name, files } = event.target;
+        setFormData({ ...formData, [name]: files[0]});
+    };
+
+    const requestData = {
+        amountFinalized: formData.amountOffered,
+        returnEquityPercentage: formData.equityExpected,
+        returnUnitProfitPercentage: formData.profitPerUnitExpected,
+        investorProofDocument: formData.agreement,
+    };
+
+    const finalizeListing = async () => {
+        const formData = new FormData();
+
+        const agreementName =  Date.now() + Math.random() + requestData.investorProofDocument.name;
+        formData.append("agreement", requestData.investorProofDocument, agreementName);
+        post("/investors/upload", formData, setResponse, true);
+              
+        requestData.investorProofDocument = agreementName;
+        console.log(requestData);
+        put(`/investors/finalizeListing/${id}`,requestData,setResponse);
+
+        console.log(response1);
+        console.log(response);
+    };
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div>
@@ -61,9 +104,12 @@ function FinalizeListingInvestor() {
                                                 <Input
                                                     type="text"
                                                     id="seek"
-                                                    className="w-full"
-                                                    
-                                                    
+                                                    className="w-full"  
+                                                    required={true}
+                                                    value={formData.amountOffered}
+                                                    onChange={(event) => {
+                                                        setFormData({...formData, amountOffered: event.target.value});
+                                                    }}  
                                                 />
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 mt-5 text-[14px] font-extrabold">
@@ -75,7 +121,10 @@ function FinalizeListingInvestor() {
                                                         type="text"
                                                         id="equityinput"
                                                         className="w-full mr-2"
-                                                        
+                                                        value={formData.equityExpected}
+                                                        onChange={(event) => {
+                                                            setFormData({...formData, equityExpected: event.target.value});
+                                                        }}                           
                                                     />
                                                     <Checkbox
                                                         label="On Equity"
@@ -89,7 +138,10 @@ function FinalizeListingInvestor() {
                                                         type="text"
                                                         id="profitinput"
                                                         className="w-full mr-2"
-                                                        
+                                                        value={formData.profitPerUnitExpected}
+                                                        onChange={(event) => {
+                                                            setFormData({...formData, profitPerUnitExpected: event.target.value});
+                                                        }}
                                                     />
                                                     <Checkbox
                                                         label="Profit per unit"
@@ -101,7 +153,7 @@ function FinalizeListingInvestor() {
                                                 </div>
                                                 <div className="row">
                                                     <div className="file-input-container mt-2">
-                                                        <label htmlFor="bankStatement"
+                                                        <label htmlFor="agreement"
                                                                className="text-main-black block mb-1 text-[14px] font-extrabold">
                                                             Please provide a copy of your contractual agreement. Use a
                                                             scanned pdf file
@@ -109,18 +161,18 @@ function FinalizeListingInvestor() {
                                                         </label>
                                                         <input
                                                             type="file"
-                                                            id="bankStatement"
-                                                            name="bankStatement"
+                                                            id="agreement"
+                                                            name="agreement"
                                                             accept=".pdf"
                                                             className="hidden"
-                                                            
+                                                            onChange={handledocumentUpload}
                                                             required={true}
                                                         />
-                                                        <label htmlFor="bankStatement" className="file-input-button">
+                                                        <label htmlFor="agreement" className="file-input-button">
                                                             Select File
                                                         </label>
                                                         <span className="file-input-text">
-                                                            No file chosen
+                                                            {formData.agreement ? formData.agreement.name : 'No file chosen'}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -137,6 +189,7 @@ function FinalizeListingInvestor() {
                             <Button
                                 type="button"
                                 className="float-right mt-2"
+                                onClick={finalizeListing}
                             >
                                 Finalize
                             </Button>
