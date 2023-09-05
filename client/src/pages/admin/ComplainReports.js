@@ -1,6 +1,5 @@
 import React,{useState,useEffect, useRef} from "react";
-import { Button, Header, DoughnutChart,Popover, BarChart} from "../webcomponent";
-import { List, ListItem} from "@material-tailwind/react";
+import { Button, Header, DoughnutChart,Popover, BarChart, Select} from "../webcomponent";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -8,6 +7,9 @@ import jsPDF from 'jspdf';
 const UserReports = () => {
     const { get } = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const [sortBy, setSortBy] = useState("All");
+    const [complains,setComplains]=useState([]);
+    const [complains2,setComplains2]=useState([]);
     const pdfContainerRef = useRef(null);
     const pdfContainer2Ref = useRef(null);
 
@@ -15,19 +17,82 @@ const UserReports = () => {
         get("/entrepreneurs/getcomplains",setResponse);
     }, []);
 
+    useEffect(() => {
+        setComplains(response);
+        setComplains2(response);
+    }, [response]);
+
+    //filter the response data according to the selected dropdown item
+    const handleSortByChange=(selectedOption)=> {
+        setSortBy(selectedOption);
+        if (selectedOption === "All") {
+            setComplains(response);
+        } else if (selectedOption === "Last 7 Days") {
+            const data= response.filter((complain) => {
+                const date = new Date(complain.date);
+                const today = new Date();
+                const diffTime = Math.abs(today - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                return diffDays<=7;
+            });              
+            setComplains(data);
+        }else if (selectedOption === "Last Month") {
+            const filteredData = response.filter((complain) => {
+                const date = new Date(complain.date);
+                const today = new Date();
+                const diffTime = Math.abs(today - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays <= 30;
+              });
+            setComplains(filteredData);
+        }
+    };
+
+    const handleSortByChange2=(selectedOption)=> {
+        setSortBy(selectedOption);
+        if (selectedOption === "All") {
+            setComplains2(response);
+        } else if (selectedOption === "Last 7 Days") {
+            const data= response.filter((complain) => {
+                const date = new Date(complain.date);
+                const today = new Date();
+                const diffTime = Math.abs(today - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                return diffDays<=7;
+            });              
+            setComplains2(data);
+        }else if (selectedOption === "Last Month") {
+            const filteredData = response.filter((complain) => {
+                const date = new Date(complain.date);
+                const today = new Date();
+                const diffTime = Math.abs(today - date);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                return diffDays <= 30;
+              });
+            setComplains2(filteredData);
+        }
+    }
+
     const investorComplains = [];
     const entrepreneurComplains = [];
 
-    response.forEach(complain => {
+    complains.forEach(complain => {
+        const userRole = complain.userRole;
+        const complainType = complain.complainType;
+
+        if (userRole === "ENTREPRENEUR") {
+            entrepreneurComplains.push(complainType);
+        }
+    });
+
+    complains2.forEach(complain=>{
         const userRole = complain.userRole;
         const complainType = complain.complainType;
 
         if (userRole === "INDIVIDUAL_INVESTOR") {
             investorComplains.push(complainType);
-        } else if (userRole === "ENTREPRENEUR") {
-            entrepreneurComplains.push(complainType);
-        }
-    });
+        } 
+    })
 
     let acceptedInvestorComplains = 0;
     let pendingInvestorComplains = 0;
@@ -72,9 +137,6 @@ const UserReports = () => {
             dataLabels: ["Accepted","Pending","Rejected"]
         }
     } 
-
-    
-    // const tablestat= `Accepted Complains: ${acceptedEntrepreneurComplains}\nPending Complains  : ${pendingEntrepreneurComplains}\nRejected Complains : ${rejectedEntrepreneurComplains}\n`;
 
     const generatePDF = async () => {
         //report for entrepreneur section
@@ -267,19 +329,13 @@ of the system.\n\nDate: ${new Date().toLocaleString()}\n`;
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="All">
-                                <List className="p-0">
-                                    <ListItem>
-                                        All
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
+                            <Select
+                                label="Sort By"
+                                options={["All", "Last 7 Days", "Last Month"]}
+                                value={sortBy}
+                                color="purple"
+                                onChange={handleSortByChange}
+                            />
                         </div>
                     </div>
                 </div>
@@ -307,19 +363,13 @@ of the system.\n\nDate: ${new Date().toLocaleString()}\n`;
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="All">
-                                <List className="p-0">
-                                    <ListItem>
-                                        All
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
+                            <Select
+                                label="Sort By"
+                                options={["All", "Last 7 Days", "Last Month"]}
+                                value={sortBy}
+                                color="purple"
+                                onChange={handleSortByChange2}
+                            />
                         </div>
                     </div>
                 </div>

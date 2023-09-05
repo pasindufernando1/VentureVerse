@@ -70,7 +70,8 @@ public class EntrepreneurService {
             }else{
                 complainMap.add(Map.of(
                         "complainType", complain.getComplainType().toString(),
-                        "userRole", user.getRole().toString()
+                        "userRole", user.getRole().toString(),
+                        "date", complain.getDate().toString()
                 ));
             }
         }

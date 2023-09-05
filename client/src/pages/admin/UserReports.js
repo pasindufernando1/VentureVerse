@@ -1,6 +1,5 @@
 import React,{useState,useEffect, useRef} from "react";
-import { Button, Header, DoughnutChart,Popover, BarChart} from "../webcomponent";
-import { List, ListItem} from "@material-tailwind/react";
+import { Button, Header, DoughnutChart,Popover, BarChart,Select} from "../webcomponent";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
@@ -13,6 +12,10 @@ const UserReports = () => {
     const [response, setResponse] = useState([]);
     const[response1,setResponse1]=useState([]);
     const[response2,setResponse2]=useState([]);
+    const [sortBy, setSortBy] = useState("All");
+    const [selectedOption, setSelectedOption] = useState("All");
+    const[user,setUser]=useState([]);
+    const[userreq,setUserreq]=useState([]);
     const barchartref = useRef(null);
     const PieChart1 = useRef(null);
     const PieChart2 = useRef(null);
@@ -34,28 +37,77 @@ const UserReports = () => {
 
     response.forEach(user => {
         const userStatus = user.approvalStatus;
-        const userRole = user.userRole;
         if(userStatus === "APPROVED"){
-            approvedUsers.push(userRole);
+            approvedUsers.push(user);
         }else if(userStatus === "PENDING"){
-            pendingUsers.push(userRole);
+            pendingUsers.push(user);
         }
     });
+
+    useEffect(() => {
+        if (selectedOption === "All") {
+          setUser(approvedUsers);
+        } else if (selectedOption === "Last 7 Days") {
+          const data = approvedUsers.filter((user) => {
+            const today = new Date();
+            const last7Days = new Date(today.setDate(today.getDate() - 7));
+            const userDate = new Date(user.registeredDate);
+            return userDate > last7Days;
+          });
+          setUser(data);
+        } else if (selectedOption === "Last Month") {
+          const data = approvedUsers.filter((user) => {
+            const today = new Date();
+            const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
+            const userDate = new Date(user.registeredDate);
+            return userDate > lastMonth;
+          });
+          setUser(data);
+        }
+    }, [selectedOption, approvedUsers]);  
+
+    useEffect(() => {
+        if (selectedOption === "All") {
+            setUserreq(response2);
+        }else if(selectedOption === "Accepted"){
+            const data = response2.filter((user) => {
+                const userStatus = user.status;
+                return userStatus === "APPROVED";
+            });
+            setUserreq(data);
+        }else if(selectedOption === "Pending"){
+            const data = response2.filter((user) => {
+                const userStatus = user.status;
+                return userStatus === "PENDING";
+            });
+            setUserreq(data);
+        }else if(selectedOption === "Rejected"){
+            const data = response2.filter((user) => {
+                const userStatus = user.status;
+                return userStatus === "DELETED";
+            });
+            setUserreq(data);
+        }
+    }, [selectedOption, response2]);
+
+    const handleSortByChange = (selectedOption) => {
+        setSelectedOption(selectedOption); 
+    };
+    const handleSortByChange2 = (selectedOption) => {
+        setSelectedOption(selectedOption); 
+    }
 
     let approvedInvestors = 0;
     let approvedEntrepreneurs = 0;
     let approvedCoAdmins = 0;
 
-    let pendingInvestors = 0;
-    let pendingEntrepreneurs = 0;
-    let pendingCoAdmins = 0;
-
-    approvedUsers.forEach(element => {
-        if (element === "INDIVIDUAL_INVESTOR"||element === "ENTERPRISE_INVESTOR") {
+    user.forEach(element => {
+        const userRole = element.userRole;
+        if (userRole === "INDIVIDUAL_INVESTOR"||userRole === "ENTERPRISE_INVESTOR") {
             approvedInvestors++;
-        } else if (element === "ENTREPRENEUR") {
+        } else if (userRole === "ENTREPRENEUR") {
             approvedEntrepreneurs++;
-        } else if (element === "CO_ADMIN") {
+        } else if (userRole === "CO_ADMIN") {
             approvedCoAdmins++;
         }
     });
@@ -64,7 +116,7 @@ const UserReports = () => {
     let pendingusers = 0;
     let rejectedusers = 0;
 
-    response2.forEach(user => {
+    userreq.forEach(user => {
         const userStatus = user.status;
         if(userStatus === "APPROVED"){
             acceptedusers++;
@@ -491,19 +543,13 @@ const UserReports = () => {
                     </div>
                     <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="All">
-                                <List className="p-0">
-                                    <ListItem>
-                                        All
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
+                            <Select
+                                label="Sort By"
+                                options={["All", "Last 7 Days", "Last Month"]}
+                                value={sortBy}
+                                color="purple"
+                                onChange={handleSortByChange}
+                            />
                         </div>
                     </div>
                 </div>
@@ -531,19 +577,13 @@ const UserReports = () => {
                     <div
                         className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
                         <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="All">
-                                <List className="p-0">
-                                    <ListItem>
-                                        All
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
+                            <Select
+                                label="Sort By"
+                                options={["All", "Accepted", "Pending", "Rejected"]}
+                                value={sortBy}
+                                color="purple"
+                                onChange={handleSortByChange2}
+                            />
                         </div>
                     </div>
                 </div>

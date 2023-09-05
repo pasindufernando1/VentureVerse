@@ -60,10 +60,17 @@ public class UserService {
         List<UserDTO> users= userRepository.findAll();
         List<Map<String, String>> complainMap = new ArrayList<>();
         for (UserDTO user : users) {
+            String registeredDate;
+            if (user.getRegisteredDate() != null) {
+                registeredDate = user.getRegisteredDate().toString();
+            } else {
+                registeredDate = "null";
+            }
             complainMap.add(Map.of(
                     "id", user.getId().toString(),
                     "userRole", user.getRole().toString(),
-                    "approvalStatus", user.getApprovalStatus().toString()
+                    "approvalStatus", user.getApprovalStatus().toString(),
+                    "registeredDate", registeredDate
             ));
         }
         return complainMap;

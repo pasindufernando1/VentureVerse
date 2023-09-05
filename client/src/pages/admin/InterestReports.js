@@ -170,23 +170,6 @@ const InterestReports = () => {
                     </div>
                     <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories} colors={areaChart.chart1.colors}/>
                     </div>
-                    <div className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                        <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="All">
-                                <List className="p-0">
-                                    <ListItem>
-                                        All
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
-                        </div>
-                    </div>
                 </div>
             </div>
         </Header>
