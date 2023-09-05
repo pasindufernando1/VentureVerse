@@ -4,6 +4,7 @@ import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
+import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.IndividualInvestorRepository;
 import com.ventureverse.server.repository.IndustrySectorRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InvestorService {
@@ -54,16 +56,22 @@ public class InvestorService {
     }
 
 
-    public ResponseDTO updateListing(Integer id, InvestorInterestedListingDTO investorInterestedListingDTO) {
-        ResponseDTO responseDTO = new ResponseDTO();
-        if (investor_interestedListingRepository.existsById(id)) {
-            investor_interestedListingRepository.save(investorInterestedListingDTO);
-            responseDTO.setMessage("Listing updated successfully");
-            responseDTO.setStatus("success");
+    public ResponseDTO updateListing(Integer Listingid, InvestorInterestedListingDTO investorInterestedListingDTO) {
+        //make the listingid a type of listingDTO
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(Listingid);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
+            oldListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
+            oldListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
+            oldListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated Successfully");
         } else {
-            responseDTO.setMessage("Listing not found");
-            responseDTO.setStatus("error");
+            return GlobalService.response("Error","Listing not found");
         }
-        return responseDTO;
     }
 }

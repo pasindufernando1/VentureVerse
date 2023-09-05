@@ -10,8 +10,6 @@ import useAuth from "../../hooks/useAuth";
 // Integers only regex
 const integerRegex = /^[0-9]*$/;
 
-
-
 function AddListing() {
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {post} = useAxiosMethods();

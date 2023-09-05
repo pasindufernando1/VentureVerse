@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, Textarea, Header} from "../webcomponent";
+import React, {useEffect, useState} from 'react';
+import {Button, Textarea, Header,StatusPopUp} from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
 import Modal from "react-modal";
 import Terms from "../common/Terms";
@@ -22,6 +22,7 @@ function FinalizeListingInvestor() {
     const {put,post} = useAxiosMethods();
     const[response, setResponse] = useState([]);
     const[response1, setResponse1] = useState([]);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {auth} = useAuth();
     const { id } = useParams();
 
@@ -53,10 +54,10 @@ function FinalizeListingInvestor() {
               
         requestData.investorProofDocument = agreementName;
         console.log(requestData);
-        put(`/investors/finalizeListing/${id}`,requestData,setResponse);
+        put(`/investors/finalizeListing/${id}`,requestData,setResponse1);
 
-        console.log(response1);
-        console.log(response);
+        setShowSuccessNotification(true);
+        
     };
 
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -204,6 +205,13 @@ function FinalizeListingInvestor() {
 
                     </form>
                 </main>
+                {showSuccessNotification && (
+                    <StatusPopUp
+                    successTitle="Listing finalized successfully"
+                    successMessage="You have successfully finalized the listing."
+                    redirectUrl="/investor/interests"
+                    />
+                )}
             </Header>
         </div>
     );
