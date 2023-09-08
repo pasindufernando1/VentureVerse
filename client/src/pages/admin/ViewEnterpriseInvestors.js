@@ -1,11 +1,19 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Header,Button} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
+    const {get} = useAxiosMethods();
+    const [response, setResponse] = useState([]);
+
+    useEffect(() => {
+        get("investors/EnterpriseInvestor/view", setResponse, true);
+    }, []);
+
+    //create dummy array for table data
     const [users, setCoAdmins] = useState([
         {
             name: "Tharuhsi Chethana",

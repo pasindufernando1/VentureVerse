@@ -47,5 +47,18 @@ public class EntrepreneurController {
         return ResponseEntity.ok(entrepreneurService.addComplain(response, complainDTO));
     }
 
+    @GetMapping("/view")
+//    public ResponseEntity<List<EntrepreneurDTO>> getAllEntrepreneurs() {
+//        List<EntrepreneurDTO> entrepreneurs = entrepreneurService.getAllEntrepreneurs();
+//        System.out.println(entrepreneurs);
+//        return ResponseEntity.ok(entrepreneurs);
+//
+//
+//    }
+    public ResponseEntity<List<EntrepreneurDTO>> getAllApprovedEntrepreneurs() {
+        List<EntrepreneurDTO> approvedEntrepreneurs = entrepreneurService.getAllApprovedEntrepreneurs();
+        System.out.println(approvedEntrepreneurs);
+        return ResponseEntity.ok(approvedEntrepreneurs);
+    }
 }
 

@@ -69,6 +69,7 @@ import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
 
 import {Routes, Route} from "react-router-dom";
+import UpdateCoAdmin from "./pages/admin/UpdateCoAdmin";
 
 function App() {
     return (
@@ -104,7 +105,7 @@ function App() {
                         <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>  
                         <Route path="/admin/users" element={<Users/>}/>  
                         <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />
-                        <Route path="/admin/users/enterpreneurs" element={<ViewEntrepreneurs/>}/>
+                        <Route path="/admin/users/entrepreneurs" element={<ViewEntrepreneurs/>}/>
                         <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
@@ -116,6 +117,7 @@ function App() {
                         <Route path="/admin/gains/reports" element={<GainsReports/>}/>
                         <Route path="/admin/interest/reports" element={<InterestReports/>}/>
                         <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
+                        <Route path="/admin/update-co-admin/:id" element={<UpdateCoAdmin/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

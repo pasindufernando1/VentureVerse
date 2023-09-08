@@ -46,4 +46,7 @@ public class EntrepreneurService {
         complainRepository.save(complain);
         return GlobalService.response("Success", "Complain added successfully");
     }
+    public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
+        return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
+    }
 }

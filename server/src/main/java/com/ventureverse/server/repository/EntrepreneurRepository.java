@@ -2,8 +2,6 @@ package com.ventureverse.server.repository;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
-import com.ventureverse.server.model.entity.UserDTO;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -18,5 +16,6 @@ public interface EntrepreneurRepository extends JpaRepository<EntrepreneurDTO, I
     Optional<EntrepreneurDTO> findById(Integer id);
 
     List<EntrepreneurDTO> findByApprovalStatus(Status ApprovalStatus);
+
 
 }

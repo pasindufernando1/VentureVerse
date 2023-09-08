@@ -1,42 +1,20 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Header} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 const ViewEntrepreneurs = () => {
-    const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
-    const [users, setCoAdmins] = useState([
-        {
-            name: "Tharuhsi Chethana",
-            status: "Online",
-            Rating: "5",
-            email: "tharushi@gmail.com"
-        },
-        {
-            name: "Harini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "harini@gmail.com"
-        },
-        {
-            name: "Shashini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "shashi@gamil.com"
-        },
-        {
-            name: "Dilan Perera",
-            status: "Offline",
-            Rating: "4",
-            email: "dilan@gmail.com",
-        },
-        {
-            name: "Malindu Bandara",
-            status: "Offline",
-            Rating: "4",
-            email: "malindu@gmail.com"
-        },
-    ]);
+    const [rated, setRated] = useState(4);
+    const [response , setResponse] = useState([]);
+
+    const { get, put } = useAxiosMethods();
+
+    useEffect(() => {
+        get("investors/IndividualInvestor/view", setResponse, true);
+    }, []);
+
+    // create dummy array for table data
+
     return(
         <div>
         <Header active="Individual Investors">
@@ -110,7 +88,7 @@ const ViewEntrepreneurs = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
+                        {response.map((user) => (
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-2">
                             <div className="flex items-center">

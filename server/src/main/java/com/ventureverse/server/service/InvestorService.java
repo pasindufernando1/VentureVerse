@@ -1,9 +1,11 @@
 package com.ventureverse.server.service;
 
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
-import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
+import com.ventureverse.server.repository.EnterpriseInvestorRepository;
 import com.ventureverse.server.repository.IndividualInvestorRepository;
 import com.ventureverse.server.repository.IndustrySectorRepository;
 import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
@@ -17,10 +19,13 @@ public class InvestorService {
     private final IndividualInvestorRepository individualInvestorRepository;
     private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
 
+    private final EnterpriseInvestorRepository EnterpriseInvestorRepository;
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository) {
+
+    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, com.ventureverse.server.repository.EnterpriseInvestorRepository enterpriseInvestorRepository) {
         this.individualInvestorRepository = individualInvestorRepository;
         this.investorInterestedSectorRepository = investorInterestedSectorRepository;
+        EnterpriseInvestorRepository = enterpriseInvestorRepository;
     }
 
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
@@ -43,4 +48,15 @@ public class InvestorService {
     public IndividualInvestorDTO getInvestorById(int i) {
         return individualInvestorRepository.findById(i).orElse(null);
     }
+
+    public List<IndividualInvestorDTO> getAllIndividualInvestors() {
+        return individualInvestorRepository.findByRole(Role.INDIVIDUAL_INVESTOR);
+    }
+
+    public List<IndividualInvestorDTO> getAllEnterpriseInvestors() {
+        return individualInvestorRepository.findByRole(Role.ENTERPRISE_INVESTOR);
+    }
+//    public IndividualInvestorDTO findAllByRole(){
+//        return individualInvestorRepository.findAllByRole(Role.INDIVIDUAL_INVESTOR);
+//    }
 }

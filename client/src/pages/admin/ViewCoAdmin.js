@@ -1,45 +1,37 @@
 import React, {useState, useEffect} from "react";
 import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
+
 import { Rating } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 
-const ViewCoAdmin = () => {
+const ViewCoAdmin = (props) => {
     const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
-    const [users, setCoAdmins] = useState([
-        {
-            name: "Tharuhsi Chethana",
-            status: "Online",
-            Rating: "5",
-            email: "tharushi@gmail.com"
-        },
-        {
-            name: "Harini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "harini@gmail.com"
-        },
-        {
-            name: "Shashini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "shashi@gamil.com"
-        },
-        {
-            name: "Dilan Perera",
-            status: "Offline",
-            Rating: "4",
-            email: "dilan@gmail.com",
-        },
-        {
-            name: "Malindu Bandara",
-            status: "Offline",
-            Rating: "4",
-            email: "malindu@gmail.com"
-        },
-    ]);
+    const {get} = useAxiosMethods();
+    const {put} = useAxiosMethods();
+    const [response, setResponse] = useState([]);
+
+
+    useEffect(() => {
+        get("/coadmin/view", setResponse, true);
+    }, []);
+
+    const handleBan=  () => {
+
+
+        put(`/coadmin/ban/${response[0].id}`, "Banned", setResponse);
+        if (response.status === 200) {
+            console.log("Banned");
+
+        } else {
+          console.log("Not Banned Something went wong" );
+
+        }
+
+    }
+
     return(
         <div>
         <Header active="Co-Admins">
@@ -127,7 +119,7 @@ const ViewCoAdmin = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
+                        {response.map((user) => (
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-2">
                             <div className="flex items-center">
@@ -141,9 +133,9 @@ const ViewCoAdmin = () => {
                             <img className="w-8 h-8 rounded-full"
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                                 alt="Jese"/>
-                            <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user.name}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+                            <div className="pl-2 flex flex-col items-start ">
+                                <div className="text-[15px] font-semibold pr-4">{user.firstname+' '+user.lastname}</div>
+                                <div className="text-[13px] text-gray-500 dark:text-gray-400 ">{user.email}</div>
                             </div>
                         </th>
                         <td className="px-12 py-3 text-sm">
@@ -173,10 +165,12 @@ const ViewCoAdmin = () => {
                                 <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
                             </svg>
+                            <Link to={`/admin/update-co-admin/${user.id} ` }>
                             Update
+                            </Link>
                         </button>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

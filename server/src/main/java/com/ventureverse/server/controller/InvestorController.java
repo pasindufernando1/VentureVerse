@@ -1,6 +1,8 @@
 package com.ventureverse.server.controller;
 
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
@@ -45,5 +47,19 @@ public class InvestorController {
         }
         return ResponseEntity.ok(interestedSectors);
     }
+    @GetMapping("/IndividualInvestor/view")
+    public ResponseEntity<List<IndividualInvestorDTO>> getAllIndividualInvestors() {
+        List<IndividualInvestorDTO> individualInvestors = investorService.getAllIndividualInvestors();
+        System.out.println(individualInvestors);
+        return ResponseEntity.ok(individualInvestors);
+
+    }
+//    @GetMapping("/EnterpriseInvestor/view")
+//    public ResponseEntity<List<EnterpriseInvestorDTO>> getAllEnterpriseInvestors() {
+//        List<EnterpriseInvestorDTO> enterpriseInvestors = investorService.getAllEnterpriseInvestors();
+//        System.out.println(enterpriseInvestors);
+//        return ResponseEntity.ok(enterpriseInvestors);
+//
+//    }
 
 }

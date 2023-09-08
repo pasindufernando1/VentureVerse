@@ -5,6 +5,8 @@ public enum Status {
     PENDING,
     APPROVED,
     ACTIVE,
+    BANNED,
+
     DELETED
 
 }
