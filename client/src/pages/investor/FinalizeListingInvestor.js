@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import {Input,Checkbox} from "../webcomponent";
-import axios from "axios";
+
 
 
 function FinalizeListingInvestor() {
@@ -53,12 +53,13 @@ function FinalizeListingInvestor() {
         post("/investors/upload", formData, setResponse, true);
               
         requestData.investorProofDocument = agreementName;
-        console.log(requestData);
         put(`/investors/finalizeListing/${id}`,requestData,setResponse1);
 
         setShowSuccessNotification(true);
         
     };
+
+    console.log(response);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
@@ -79,12 +80,12 @@ function FinalizeListingInvestor() {
                                             <Card className="w-80">
                                                 <CardHeader floated={false} className="h-80">
                                                     <img
-                                                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
+                                                        src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
                                                         alt="profile-picture"/>
                                                 </CardHeader>
                                                 <CardBody className="text-center">
                                                     <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                        Dinuni Fernando
+                                                        Ajith Epa
                                                     </Typography>
                                                     <Typography color="blue-gray" className="font-medium" textGradient>
                                                         Lanka Apparels
@@ -205,13 +206,7 @@ function FinalizeListingInvestor() {
 
                     </form>
                 </main>
-                {showSuccessNotification && (
-                    <StatusPopUp
-                    successTitle="Listing finalized successfully"
-                    successMessage="You have successfully finalized the listing."
-                    redirectUrl="/investor/interests"
-                    />
-                )}
+               c
             </Header>
         </div>
     );

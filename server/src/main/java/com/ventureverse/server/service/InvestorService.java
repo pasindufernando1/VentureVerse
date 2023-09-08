@@ -74,4 +74,8 @@ public class InvestorService {
             return GlobalService.response("Error","Listing not found");
         }
     }
+
+    public String getdoc(Integer id) {
+        return investor_interestedListingRepository.findByListingId(id).getInvestorProofDocument();
+    }
 }

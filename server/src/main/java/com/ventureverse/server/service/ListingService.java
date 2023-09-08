@@ -1,15 +1,14 @@
 package com.ventureverse.server.service;
 
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.ListingImagesDTO;
-import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
-import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 import static java.lang.System.exit;
 
@@ -24,6 +23,7 @@ public class ListingService {
     private final ListingImagesRepository listingImagesRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final ListingSubscriptionRepository listingSubscriptionRepository;
+    private final Investor_InterestedListingRepository investor_interestedListingRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
@@ -111,5 +111,24 @@ public class ListingService {
         //Get the listing object
         var listing = listingRepository.findById(id).orElseThrow();
         return listing.getPitchingVideo();
+    }
+
+    public InvestorInterestedListingDTO finalizeListing(Integer id) {
+        return investor_interestedListingRepository.findByListingId(id);
+    }
+
+    public ResponseDTO updateDate(Integer id,InvestorInterestedListingDTO i) {
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(id);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setFinalizedDate(i.getFinalizedDate());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated successfully");
+        } else {
+            return GlobalService.response("Error","Listing not found");
+        }
     }
 }

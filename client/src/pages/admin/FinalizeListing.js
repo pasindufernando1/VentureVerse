@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
-import {Button, Textarea, Header} from "../webcomponent";
+import React, {useEffect, useState} from 'react';
+import {Button, Textarea, Header,StatusPopUp} from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
-import Modal from "react-modal";
-import Terms from "../common/Terms";
 import {
     Card,
     CardHeader,
@@ -15,6 +13,41 @@ import {Link} from "react-router-dom";
 
 
 function FinalizeListingAdmin() {
+    const {get,put}=useAxiosMethods();
+    const [response, setResponse] = useState([]);
+    const [response1, setResponse1] = useState([]);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    const [pdf, setpdf] = useState([]);
+    let id=1;
+
+    useEffect(() => {
+        get(`/entrepreneur/finalizeListing/${id}`, setResponse);
+    }, []);
+
+    useEffect(() => {
+        get(`/entrepreneur/getpdf/${id}`, setpdf);
+    }, []);
+
+    const pdfs = {
+        entrepreneurDoc:pdf[0],
+        investorDoc:pdf[1],
+    }
+
+    const requestData = {
+        finalizedDate: new Date()
+    };
+
+    const handleSubmit = () => {
+        put(`/entrepreneur/updateDate/${id}`,requestData,setResponse1);
+        setShowSuccessNotification(true);
+    };
+
+    const entrepreneur_name= response?.id?.listingId?.entrepreneurId?.firstname+" "+response?.id?.listingId?.entrepreneurId?.lastname ||' ';
+    const investor_name= response?.id?.investorId?.firstname+" "+response?.id?.investorId?.lastname ||' ';
+    const invested_amount= response?.amountFinalized ||' ';
+    const equity= response?.returnEquityPercentage||' ';
+    const profit= response?.returnUnitProfitPercentage||' ';
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div>
@@ -27,7 +60,7 @@ function FinalizeListingAdmin() {
                                 <h3 className="text-3xl text-main-purple self-center">Finalized Investment</h3>
                                 <div className="mt-6">
                                     <div className="row2 flex flex-row flex-wrap gap-5 justify-center">
-                                        <div className='flex justify-center'>
+                                        <div className='flex justify-center'>    
                                             <div>
                                                 <Card className="w-80">
                                                     <CardHeader floated={false} className="h-80">
@@ -37,7 +70,7 @@ function FinalizeListingAdmin() {
                                                     </CardHeader>
                                                     <CardBody className="text-center">
                                                         <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                            George Fernando
+                                                            {entrepreneur_name}
                                                         </Typography>
                                                         <Typography color="blue-gray" className="font-medium" textGradient>
                                                             Entrepreneur
@@ -45,7 +78,6 @@ function FinalizeListingAdmin() {
                                                     </CardBody>
                                                     
                                                 </Card>
-
                                             </div>
                                             <div>
                                             <Card className="w-80 ml-10">
@@ -56,7 +88,7 @@ function FinalizeListingAdmin() {
                                                     </CardHeader>
                                                     <CardBody className="text-center">
                                                         <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                            Dinuni Fernando
+                                                            {investor_name}
                                                         </Typography>
                                                         <Typography color="blue-gray" className="font-medium" textGradient>
                                                             Investor
@@ -75,7 +107,7 @@ function FinalizeListingAdmin() {
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 text-[14px] font-extrabold mt-5 text-lg">
                                                     Investing amount (Rs.) : <span
-                                                    className='font-black font-extrabold text-base'>1000000</span>
+                                                    className='font-black font-extrabold text-base'>{invested_amount}</span>
                                                 </label>
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 mt-5 text-[14px] font-extrabold text-lg">
@@ -84,11 +116,11 @@ function FinalizeListingAdmin() {
                                                 <div>
                                                     <label htmlFor="seek"
                                                            className="text-main-gray block mb-2 text-[14px] ml-4 text-base text-base">
-                                                        Equity : <span className='font-black font-extrabold text-base'>5 %</span>
+                                                        Equity : <span className='font-black font-extrabold text-base'>{equity} %</span>
                                                     </label>
                                                     <label htmlFor="seek"
                                                            className="text-main-gray block mb-2 text-[14px] ml-4 text-base">
-                                                        Profit per unit : <span className='font-black font-extrabold text-base'>10 %</span>
+                                                        Profit per unit : <span className='font-black font-extrabold text-base'>{profit} %</span>
                                                     </label>
                                                 </div>
                                                 
@@ -97,53 +129,27 @@ function FinalizeListingAdmin() {
                                                         <p><strong>Entrepreneur side agreement</strong></p>
                                                         <p>
                                                         <iframe
-                                                            src="/assets/documents/clearance_application.pdf"
+                                                            src={`data:application/pdf;base64,${pdfs.entrepreneurDoc}`}
                                                             width="88%"
                                                             height="520px"
                                                             title="Police Report"
                                                         ></iframe>
                                                         <br></br>
-                                                        {/* <Button
-                                                            className="download-button"
-                                                            type="button"
-                                                            onClick={() =>
-                                                            handleDocumentDownload(
-                                                                pdfs.policeReport,
-                                                                registrationRequestDetails.id + "_police_report"
-                                                            )
-                                                            }
-                                                            label="Download"
-                                                        /> */}
                                                         </p>
                                                     </div>
                                                     <div className="document-container w-full ml-10 mt-10">  
                                                         <p><strong>Investor side agreement</strong></p>
                                                         <p>
                                                         <iframe
-                                                            src="/assets/documents/clearance_application.pdf"
+                                                            src={`data:application/pdf;base64,${pdfs.investorDoc}`}
                                                             width="88%"
                                                             height="520px"
                                                             title="Police Report"
                                                         ></iframe>
                                                         <br></br>
-                                                            {/* <Button
-                                                                className="download-button"
-                                                                type="button"
-                                                                onClick={() =>
-                                                                handleDocumentDownload(
-                                                                    pdfs.policeReport,
-                                                                    registrationRequestDetails.id + "_police_report"
-                                                                )
-                                                                }
-                                                                label="Download"
-                                                            /> */}
                                                         </p>
                                                     </div>
-                                                </div>
-                                                
-                                                
-                                                
-                                                
+                                                </div>                                   
                                             </Card>
                                         </div>
                                     </div>
@@ -152,13 +158,20 @@ function FinalizeListingAdmin() {
                             <Button
                                 type="button"
                                 className="float-right mt-2"
+                                onClick={handleSubmit}
                             >
                                 Mark as finished
                             </Button>
                         </div>
-
                     </form>
                 </main>
+                {showSuccessNotification && (
+                    <StatusPopUp
+                    successTitle="Listing finalized successfully"
+                    successMessage="You have successfully finalized the listing."
+                    redirectUrl="/admin/view-finalizedListings"
+                    />
+                )}
             </Header>
         </div>
     );
