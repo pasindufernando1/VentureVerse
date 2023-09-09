@@ -28,6 +28,7 @@ const useAxiosMethods = () => {
                     signal: controller.signal,
                     responseType: 'blob',
                 });
+                console.log(response.data);
                 isMounted && setResponse(URL.createObjectURL(response.data));
             } catch (err) {
                 console.log(err);

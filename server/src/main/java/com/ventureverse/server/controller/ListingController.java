@@ -64,13 +64,35 @@ public class ListingController {
         // Load the video file from resources/static/uploads folder
         Resource videoResource = new ClassPathResource("/static/uploads/videos/" + videoname);
 //        ClassPathResource videoResource = new ClassPathResource("C:\\Users\\Pasindu\\Desktop\\3rd year group project\\IMPLEMENTATION\\VentureVerse\\server\\src\\main\\resources\\static\\uploads\\videos\\video1693371839383_74twk.mp4");
-
+        System.out.println(videoResource);
         // Set content type based on video file type (e.g., "video/mp4")
         MediaType mediaType = MediaTypeFactory.getMediaType(videoResource).orElse(MediaType.APPLICATION_OCTET_STREAM);
+        System.out.println(mediaType);
         return ResponseEntity.ok()
                 .contentType(mediaType)
                 .body(videoResource);
     }
+
+    //Function to get the images
+//    @GetMapping("/getListingImages/{id}")
+//    public ResponseEntity<List<byte[]>> getListingImages(@PathVariable String id) throws IOException {
+//        List<byte[]> pdfs = new ArrayList<>();
+//        String rootDirectory = System.getProperty("user.dir");
+//        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
+//
+//        //Get the number of images in the listing
+//        int numberOfImages = listingService.getListingImagesCount(Integer.parseInt(id));
+//        System.out.println(numberOfImages);
+//
+//
+////        Path bankStatementFilePath = Paths.get(imageUploadPath, bankStatementFileName);
+////        Path policeReportFilePath = Paths.get(imageUploadPath, policeReportFileName);
+////
+////        pdfs.add(Files.readAllBytes(policeReportFilePath));
+////        pdfs.add(Files.readAllBytes(bankStatementFilePath));
+//
+//        return ResponseEntity.ok().body(pdfs);
+//    }
 
     //Get the subscription
     @GetMapping("/getSubscription/{id}")
@@ -112,4 +134,8 @@ public class ListingController {
     ) {
         return ResponseEntity.ok(listingService.updateDate(id, investorInterestedListingDTO));
     }
+
+
+
+
 }

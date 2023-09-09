@@ -43,6 +43,7 @@ function FinalizeListingInvestor() {
         returnEquityPercentage: formData.equityExpected,
         returnUnitProfitPercentage: formData.profitPerUnitExpected,
         investorProofDocument: formData.agreement,
+        status: "Investor_Finalized"
     };
 
     const finalizeListing = async () => {
@@ -206,7 +207,13 @@ function FinalizeListingInvestor() {
 
                     </form>
                 </main>
-               c
+                {showSuccessNotification && (
+                    <StatusPopUp
+                        successTitle="Listing finalized successfully"
+                        successMessage="You have successfully finalized the listing."
+                        redirectUrl="/investor/interests"
+                    />
+                )}
             </Header>
         </div>
     );

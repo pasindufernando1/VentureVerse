@@ -68,6 +68,7 @@ public class InvestorService {
             oldListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
             oldListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
             oldListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+            oldListing.setStatus(investorInterestedListingDTO.getStatus());
             investor_interestedListingRepository.save(oldListing);
             return GlobalService.response("Success","Listing updated Successfully");
         } else {

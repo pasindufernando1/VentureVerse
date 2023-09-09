@@ -32,12 +32,20 @@ function ViewListingFull() {
         get(`/entrepreneur/getLatestListing/${auth.id}`,setListing);
 
     }, [])
-
+    console.log(listing);
     useEffect(() => {
         if (listing.pitchingVideo) {
             get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
         }
     }, [listing])
+    console.log(videoUrl)
+
+    //Get the listing images
+    // const [listingImages, setListingImages] = useState([]);
+    // useEffect(() => {
+    //     get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
+    // }, [listing])
+    // console.log(listingImages);
 
 
     // if (listing.pitchingVideo) {
@@ -67,7 +75,6 @@ function ViewListingFull() {
     // Take the day month and the year only
     const businessStartDateString = businessStartDate.toDateString();
 
-
     return (
         <div>
             <Header active="Listings">
@@ -75,10 +82,16 @@ function ViewListingFull() {
                     <div>
                         <Card className="mt-[-3rem]">
                             <CardHeader className="relative h-300 mt-5 ">
-                                <video className="h-full w-full rounded-lg" controls autoPlay muted>
-                                    <source src={videoUrl} type="video/mp4"/>
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div className="relative h-0" style={{ paddingBottom: '56.25%' }}>
+                                    <iframe
+                                        className="absolute inset-0 w-full h-full"
+                                        src={videoUrl}
+                                        title="Video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+
                             </CardHeader>
                             <CardBody>
                                 <Typography variant="h5" className="mb-2 text-main-purple">
