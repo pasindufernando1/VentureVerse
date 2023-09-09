@@ -1,9 +1,6 @@
 package com.ventureverse.server.service;
 
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.ListingImagesDTO;
-import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
-import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
@@ -27,6 +24,7 @@ public class ListingService {
     private final ListingImagesRepository listingImagesRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final ListingSubscriptionRepository listingSubscriptionRepository;
+    private final Investor_InterestedListingRepository investor_interestedListingRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
@@ -112,6 +110,44 @@ public class ListingService {
                         "id", listing.getListingId().toString(),
                         "publishedDate", publishDate,
                         "subscriptionprice", listing.getSubscriptionType().getPrice().toString()
+                );
+                userMap.add(map);
+            }
+        }
+        return userMap;
+    }
+
+    public List<Map<String, String>> getAllListings() {
+        List<ListingDTO> listings = listingRepository.findAll();
+        List<InvestorInterestedListingDTO> completedListings = investor_interestedListingRepository.findCompletedListings();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -12);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        List<Integer> completedListingIds = new ArrayList<>();
+        for (InvestorInterestedListingDTO completedListing : completedListings) {
+            if(completedListing.getFinalizedDate().after(calendar.getTime())){
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String finalizedDate = dateFormat.format(completedListing.getFinalizedDate());
+                completedListingIds.add(completedListing.getId().getListingId().getListingId());
+                Map<String, String> map = Map.of(
+                        "id", completedListing.getId().getListingId().getListingId().toString(),
+                        "date", finalizedDate,
+                        "status", "Completed"
+                );
+                userMap.add(map);
+            }
+        }
+        //Listings that are in progress
+        for (ListingDTO listing : listings) {
+            if (!completedListingIds.contains(listing.getListingId()) && listing.getPublishedDate().after(calendar.getTime())) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String publishDate = dateFormat.format(listing.getPublishedDate());
+                Map<String, String> map = Map.of(
+                        "id", listing.getListingId().toString(),
+                        "date", publishDate,
+                        "status", "In Progress"
                 );
                 userMap.add(map);
             }

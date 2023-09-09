@@ -139,7 +139,7 @@ const UserReports = () => {
             Investors.push(userMonth);
         }else if(userRole === "ENTREPRENEUR"){
             Entrepreneurs.push(userMonth);
-        }else if(userRole === "CO_ADMIN"){
+        }else if(userRole === "ADMIN"){
             CoAdmins.push(userMonth);
         }
     });

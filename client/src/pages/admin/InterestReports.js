@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Header,Popover, AreaChart, DoughnutChart} from "../webcomponent";
+import { Button, Header, AreaChart} from "../webcomponent";
 import { List, ListItem} from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowUp} from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +24,6 @@ const InterestReports = () => {
         get("/investors/interestSectors",setInterests);
     }, []);
 
-    console.log(interests);
     var FoodandBevarages = 0;
     var Technology = 0;
     var AppWebsite = 0;

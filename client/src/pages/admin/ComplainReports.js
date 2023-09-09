@@ -104,7 +104,7 @@ const UserReports = () => {
 
     //foreach complain count accepted, pending, rejected
     investorComplains.forEach(element => {
-        if (element === "ACCEPTED") {
+        if (element === "SOLVED") {
             acceptedInvestorComplains++;
         } else if (element === "PENDING") {
             pendingInvestorComplains++;
@@ -114,7 +114,7 @@ const UserReports = () => {
     });
 
     entrepreneurComplains.forEach(element => {
-        if (element === "ACCEPTED") {
+        if (element === "SOLVED") {
             acceptedEntrepreneurComplains++;
         } else if (element === "PENDING") {
             pendingEntrepreneurComplains++;

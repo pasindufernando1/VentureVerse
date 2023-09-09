@@ -53,7 +53,7 @@ public class EntrepreneurService {
                 .description(complainDTO.getDescription())
                 .date(complainDTO.getDate())
                 .userId(user) // Set the loaded UserDTO entity
-                .ComplainType(Complain.PENDING)
+                .complainType(Complain.PENDING)
                 .build();
 
         complainRepository.save(complain);

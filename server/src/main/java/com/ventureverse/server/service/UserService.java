@@ -105,10 +105,17 @@ public class UserService {
         List<UserDTO> users = userRepository.findAll();
         List<Map<String, String>> userMap = new ArrayList<>();
         for (UserDTO user : users) {
+            String registeredDate;
+            if (user.getRegisteredDate() != null) {
+                registeredDate = user.getRegisteredDate().toString();
+            } else {
+                registeredDate = "null";
+            }
             userMap.add(Map.of(
                     "id", user.getId().toString(),
                     "userRole", user.getRole().toString(),
-                    "status", user.getApprovalStatus().toString()
+                    "status", user.getApprovalStatus().toString(),
+                    "registeredDate", registeredDate
             ));
         }
 

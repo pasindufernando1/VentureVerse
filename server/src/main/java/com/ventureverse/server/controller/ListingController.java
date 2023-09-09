@@ -50,4 +50,13 @@ public class ListingController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/getalllistings")
+    public ResponseEntity<List<Map<String, String>>> getAllListings() {
+        List<Map<String, String>> users = listingService.getAllListings();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
 }
