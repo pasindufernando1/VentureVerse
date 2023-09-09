@@ -2,6 +2,7 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
+import com.ventureverse.server.model.entity.ListingImagesDTO;
 import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
@@ -74,25 +75,43 @@ public class ListingController {
     }
 
     //Function to get the images
-//    @GetMapping("/getListingImages/{id}")
-//    public ResponseEntity<List<byte[]>> getListingImages(@PathVariable String id) throws IOException {
-//        List<byte[]> pdfs = new ArrayList<>();
-//        String rootDirectory = System.getProperty("user.dir");
-//        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
+    @GetMapping("/getListingImages/{id}")
+    public ResponseEntity<List<byte[]>> getListingImages(@PathVariable Integer id) throws IOException {
+        List<byte[]> images = new ArrayList<>();
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
+
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the listing names related to the listing
+        List<String> listingImages = listingService.getListingImages(listing);
+        System.out.println((long) listingImages.size());
+
+        //Add the images to send to the frontend
+        for (String listingImage : listingImages) {
+            Path imagePath = Paths.get(imageUploadPath, listingImage);
+            images.add(Files.readAllBytes(imagePath));
+        }
+        System.out.println(images);
+
+        //Get the images of the listing
+//        for (int i = 1; i <= numberOfImages; i++) {
+//            String imageName = listingImagesRepository.getListingImages(listing, i);
+//            Path imagePath = Paths.get(imageUploadPath, imageName);
+//            pdfs.add(Files.readAllBytes(imagePath));
+//        }
+
+        return ResponseEntity.ok().body(images);
+
+//        Path bankStatementFilePath = Paths.get(imageUploadPath, bankStatementFileName);
+//        Path policeReportFilePath = Paths.get(imageUploadPath, policeReportFileName);
 //
-//        //Get the number of images in the listing
-//        int numberOfImages = listingService.getListingImagesCount(Integer.parseInt(id));
-//        System.out.println(numberOfImages);
-//
-//
-////        Path bankStatementFilePath = Paths.get(imageUploadPath, bankStatementFileName);
-////        Path policeReportFilePath = Paths.get(imageUploadPath, policeReportFileName);
-////
-////        pdfs.add(Files.readAllBytes(policeReportFilePath));
-////        pdfs.add(Files.readAllBytes(bankStatementFilePath));
-//
+//        pdfs.add(Files.readAllBytes(policeReportFilePath));
+//        pdfs.add(Files.readAllBytes(bankStatementFilePath));
+
 //        return ResponseEntity.ok().body(pdfs);
-//    }
+    }
 
     //Get the subscription
     @GetMapping("/getSubscription/{id}")
@@ -126,6 +145,8 @@ public class ListingController {
 
         return ResponseEntity.ok().body(pdfs);
     }
+
+
 
     @PutMapping("/updateDate/{id}")
     public ResponseEntity<ResponseDTO> updateDate(

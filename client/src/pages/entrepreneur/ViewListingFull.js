@@ -5,16 +5,19 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import {Header,Button} from "../webcomponent";
-import {Carousel, IconButton} from "@material-tailwind/react";
+import {
+    faArrowLeft, faArrowRight
+} from "@fortawesome/free-solid-svg-icons";
+import {Header, Button} from "../webcomponent";
+import {IconButton} from "@material-tailwind/react";
+import {Carousel} from "../webcomponent";
 import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {useEffect, useState} from "react";
-
-
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 
 function ViewListingFull() {
@@ -29,7 +32,7 @@ function ViewListingFull() {
 
     useEffect(() => {
         // Get the listing of the user based on the id
-        get(`/entrepreneur/getLatestListing/${auth.id}`,setListing);
+        get(`/entrepreneur/getLatestListing/${auth.id}`, setListing);
 
     }, [])
     console.log(listing);
@@ -41,11 +44,18 @@ function ViewListingFull() {
     console.log(videoUrl)
 
     //Get the listing images
-    // const [listingImages, setListingImages] = useState([]);
-    // useEffect(() => {
-    //     get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
-    // }, [listing])
-    // console.log(listingImages);
+    const [listingImages, setListingImages] = useState([]);
+    useEffect(() => {
+        get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
+    }, [listing])
+    console.log(listingImages);
+
+    //Assign the images to an array to be used in the carousel
+    const images = [];
+    listingImages.map((image) => {
+        images.push(image);
+    }, [listingImages])
+    console.log(images);
 
 
     // if (listing.pitchingVideo) {
@@ -82,7 +92,7 @@ function ViewListingFull() {
                     <div>
                         <Card className="mt-[-3rem]">
                             <CardHeader className="relative h-300 mt-5 ">
-                                <div className="relative h-0" style={{ paddingBottom: '56.25%' }}>
+                                <div className="relative h-0" style={{paddingBottom: '56.25%'}}>
                                     <iframe
                                         className="absolute inset-0 w-full h-full"
                                         src={videoUrl}
@@ -199,67 +209,28 @@ function ViewListingFull() {
                                 {/* Section to show the images (Corousel) */}
                                 <div className="flex justify-center items-center mt-4">
                                     <Carousel
-                                        className="rounded-xl"
-                                        prevArrow={({handlePrev}) => (
-                                            <IconButton
-                                                variant="text"
-                                                color="white"
-                                                size="lg"
-                                                onClick={handlePrev}
-                                                className="!absolute top-2/4 left-4 -translate-y-2/4"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={2}
-                                                    stroke="currentColor"
-                                                    className="h-6 w-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                                                    />
-                                                </svg>
-                                            </IconButton>
+                                        navigationActive="main-purple"
+                                        navigationInactive="light-purple"
+                                        prevArrow={({ handlePrev }) => (
+                                            <FontAwesomeIcon icon={faArrowLeft} size="2xl" onClick={handlePrev} className="!absolute top-2/4 left-4 -translate-y-2/4 text-main-purple"/>
                                         )}
-                                        nextArrow={({handleNext}) => (
-                                            <IconButton
-                                                variant="text"
-                                                color="white"
-                                                size="lg"
-                                                onClick={handleNext}
-                                                className="!absolute top-2/4 !right-4 -translate-y-2/4"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={2}
-                                                    stroke="currentColor"
-                                                    className="h-6 w-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                    />
-                                                </svg>
-                                            </IconButton>
+                                        nextArrow={({ handleNext }) => (
+                                            <FontAwesomeIcon icon={faArrowRight} size="2xl" onClick={handleNext} className="!absolute top-2/4 right-4 -translate-y-2/4 text-main-purple"/>
                                         )}
                                     >
-
-                                        <img
-                                            src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
-                                            alt="2"
-                                            className="h-full w-full object-cover"
-                                        />
-                                        <img
-                                            src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
-                                            alt="3"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        {
+                                            listingImages.map((image) => (
+                                                    <img
+                                                        // Convert the image to a blob
+                                                        src={`data:application/img;base64,${image}`}
+                                                        alt="1"
+                                                        className="h-96 w-96 object-fill ml-[4rem] border-2"
+                                                        style={{maxHeight: '100%', maxWidth: '100%'}}
+                                                    />
+                                                )
+                                            )
+                                        }
+                                        {/*/>*/}
                                     </Carousel>
                                 </div>
                                 {/* Section for the business details */}
@@ -291,7 +262,8 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Business duration : </span><span className="font-light">{listing.businessDuration} years</span>
+                                            <span>Business duration : </span><span
+                                            className="font-light">{listing.businessDuration} years</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -309,7 +281,8 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Stage of business :      </span><span className="font-light">{listing.stage}</span>
+                                            <span>Stage of business :      </span><span
+                                            className="font-light">{listing.stage}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -323,13 +296,15 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Gross income : </span><span className="font-light">Rs. {listing.lastYearGrossIncome}</span>
+                                            <span>Gross income : </span><span
+                                            className="font-light">Rs. {listing.lastYearGrossIncome}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Net income : </span><span className="font-light">Rs. {listing.lastYearNetIncome}</span>
+                                            <span>Net income : </span><span
+                                            className="font-light">Rs. {listing.lastYearNetIncome}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -343,13 +318,15 @@ function ViewListingFull() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For this year : </span><span className="font-light">Rs. {listing.salesProjectionThisYear}</span>
+                                            <span>For this year : </span><span
+                                            className="font-light">Rs. {listing.salesProjectionThisYear}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For next year : </span><span className="font-light">Rs. {listing.salesProjectionNextYear}</span>
+                                            <span>For next year : </span><span
+                                            className="font-light">Rs. {listing.salesProjectionNextYear}</span>
                                         </Typography>
                                     </div>
                                 </div>

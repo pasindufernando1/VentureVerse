@@ -1,11 +1,22 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.ListingImagesDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface ListingImagesRepository extends JpaRepository<ListingImagesDTO, Integer> {
 
-    //Function to find the listing images by listing id
-//    ListingImagesDTO findByListingId(Integer id);
+    //Function to get the listing image names using the listing id
+    @Query("""
+            SELECT l.id.image 
+            FROM ListingImagesDTO l 
+            WHERE l.id.listingId = :id
+            """)
+    List<String> getListingImages(ListingDTO id);
+
+
 
 }

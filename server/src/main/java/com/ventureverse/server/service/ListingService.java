@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static java.lang.System.exit;
@@ -132,4 +133,7 @@ public class ListingService {
         }
     }
 
+    public List<String> getListingImages(ListingDTO i) {
+        return listingImagesRepository.getListingImages(i);
+    }
 }
