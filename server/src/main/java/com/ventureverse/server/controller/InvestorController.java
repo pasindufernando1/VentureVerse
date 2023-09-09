@@ -66,6 +66,15 @@ public class InvestorController {
         return ResponseEntity.ok(interestedSectors);
     }
 
+    @GetMapping("/interestSectors")
+    public ResponseEntity<List<Map<String,String>>> getInterestSectors() {
+        List<Map<String,String>> interestedSectors = investorService.getInterestSectors();
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
     @GetMapping("/InvestedAmount/{id}")
     public ResponseEntity<List<Map<String,String>>> getInvestedAmount(@PathVariable Integer id) {
         List<Map<String,String>> investedAmount = investorService.getInvestedAmount(id);

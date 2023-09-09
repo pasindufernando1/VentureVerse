@@ -21,4 +21,11 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE i.id.investorId.id = :id
             """)
       List<InvestorInterestedListingDTO> findAllByInvestorId(Integer id);
+
+    @Query("""
+            SELECT i\s
+            FROM InvestorInterestedListingDTO i\s
+            WHERE i.id.listingId.listingId = :listingId
+            """)
+    InvestorInterestedListingDTO findByListingId(Integer listingId);
 }
