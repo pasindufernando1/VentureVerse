@@ -32,24 +32,46 @@ public class DemoController {
 
     @GetMapping("/pendingComplains")
     public ResponseEntity<List<ComplainDTO>> pendingComplains() {
-        return ResponseEntity.ok(demoService.findByComplains());
+        return ResponseEntity.ok(demoService.findByComplains1());
     }
 
-    @GetMapping("/IgnoreComplain/{id}")
-    public ResponseEntity<ResponseDTO> ignoreComplain(@PathVariable Integer id) {
-        return ResponseEntity.ok(demoService.checkDetails(id));
+    @GetMapping("/pending")
+    public ResponseEntity<List<ComplainDTO>> getComplain() {
+        List<ComplainDTO> pendingComplain = demoService.findByComplain(Complain.PENDING);
+        if (pendingComplain.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pendingComplain);
     }
 
-    @GetMapping("/Actiontaken")
-    public ResponseEntity<ResponseDTO> addComplaint(
-            @PathVariable Integer id,
-            @RequestBody ComplainDTO complainDTO,
-            HttpServletResponse response
+    @PutMapping ("/IgnoreComplain/{id}")
+    public ResponseEntity<String> ignoreComplain(
+            @PathVariable Integer id
     ) {
-        var message = "ow meka sirawatama gon";
-        System.out.println(complainDTO);
-        return ResponseEntity.ok(demoService.addComplain(id,message));
+        ComplainDTO IgnoreComplain = demoService.checkComplains(id);
 
+        if(IgnoreComplain !=null){
+            return ResponseEntity.ok("Ignore complain done successfully");
+        }
+        else{
+            return ResponseEntity.ok("Invalid Id");
+        }
+    }
+
+    @PutMapping ("/ActionTaken/{id}")
+    public ResponseEntity<String> acceptComplain(
+            @RequestBody DetailsDTO complainRequest,
+            @PathVariable Integer id
+    ) {
+ //       System.out.println(complainRequest);
+     ComplainDTO IgnoreComplain = demoService.addComplain(id,complainRequest);
+//
+     if(IgnoreComplain !=null){
+            return ResponseEntity.ok("  done successfully");
+      }
+       else{
+         return ResponseEntity.ok("Invalid Id");
+       }
     }
 
 

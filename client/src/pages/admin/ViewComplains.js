@@ -11,71 +11,59 @@ import { Textarea } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 
 
-const ViewComplains = () => {
+function ViewComplains (){
 
+  const {auth}=useAuth();
 
     const [formData, setFormData] = useState({
+        
         complaintDesc: "",
         showError: false
     }); 
 
-    const { get, post } = useAxiosMethods();
+    const { get,put} = useAxiosMethods();
     const [response, setResponse] = useState([]);
-    const [response1, setResponse1] = useState([]);
+    const [response1, setResponse1] = useState();
+    const [response2, setResponse2] = useState();
 
     const [data, Data] = useState("");
 
     useEffect(() => {
-        get("auth/pendingComplains", setResponse);
+        get("auth/pending", setResponse);
     }, []);
 
+    useEffect(()=>{},[response1])
 
-function submitHandler(id){
-    // const IgnoreComplain = () => {
-    //     post(`auth/IgnoreComplain/${id}`, {}, setResponse1);
-        
-    // }
 
-    try {
-           post(`auth/IgnoreComplain/${id}`, {}, setResponse1);
-    
-
-        if (response.status === 200) {
-            console.log('updated successfully');
-
-        } else {
-            console.error('Update failed');
-
-        }
-    } catch (error) {
-        console.error('An error occurred:', error);
-
+    const submitHandler1=(id)=>{
+        put(`auth/IgnoreComplain/${id}`, {}, setResponse1);
+        window.location.reload();
     }
 
-}
-
-
-     const Actiontaken = async () => {
-       
+     const Actiontaken = async (id) => {
             if (!formData.complaintDesc) {
                 setFormData({ ...formData, showError: true }); 
             } else {
                 const data = {
-
-                // complainId,
-                description:formData.complaintDesc
+                
+                    actionDescription:formData.complaintDesc,
+                    adminId:auth.id,
+                    complainId:id
 
                  }
 
-                 console.log(data.description); 
+                 console.log(data);
+              put(`/auth/ActionTaken/${id}`, data, setResponse2);
+                 console.log(response2);
              }
             
-        post(`/auth/addcomplaint`, data, setResponse);
-        // console.log(response);
-        
+       
+        //console.log(response);
+        window.location.reload();
     }
 
 
@@ -107,8 +95,7 @@ function submitHandler(id){
                                     {request.description}
                                 </Typography>
                                 <div className="w-full mt-2">
-                                    <Textarea label="Action taken" color="purple"
-                                    value={formData.complaintDesc}
+                                    <Textarea label="Action taken" color="purple" key={request.complainId} 
                                     onChange={(event) =>
                                         setFormData({ ...formData, complaintDesc: event.target.value, showError: false })       
                                     }
@@ -118,14 +105,21 @@ function submitHandler(id){
                             </CardBody>
                             <CardFooter className="pt-0">
                                 <div className="flex justify-center">
-                                    <Button variant="outlined" color="green" onClick={Actiontaken}>
+                                    <Button variant="outlined" color="green" 
+                                        onClick={() =>Actiontaken(request.complainId)}
+                                        >
                                         Action taken
                                     </Button>
-                                    <Button variant="outlined" color="red" className="ml-2"
-                                //   onClick={submitHandler(request.complainId)}
-                                     >
+                                    <Button
+                                        variant="outlined"
+                                        color="red"
+                                        className="ml-2"
+                                        type="submit"
+                                        onClick={() => submitHandler1(request.complainId)}
+                                        >
                                         Ignore
                                     </Button>
+
                                 </div>
 
                             </CardFooter>

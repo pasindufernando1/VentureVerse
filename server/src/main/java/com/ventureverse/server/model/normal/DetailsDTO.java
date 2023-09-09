@@ -1,5 +1,6 @@
 package com.ventureverse.server.model.normal;
 
+import com.ventureverse.server.model.entity.AdminDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,6 +56,10 @@ public class DetailsDTO {
     private String businessRegDoc;
     private List<Integer> sectorId;
 
-    //Chat
+    //COMPLAIN
+    private Integer complainId;
+    private Integer adminId;
+    private String actionDescription;
+
 
 }
