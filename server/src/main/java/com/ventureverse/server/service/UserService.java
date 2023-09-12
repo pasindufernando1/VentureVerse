@@ -2,6 +2,7 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.ComplainDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
@@ -21,6 +22,7 @@ public class UserService {
     private final EnterpriseInvestorRepository  enterpriseInvestorRepository;
     private final IndividualInvestorRepository individualInvestorRepository;
     private final AdminRepository adminRepository;
+    private final ComplainRepository complainRepository;
 
     public DetailsDTO getDetails(Integer id) {
 
@@ -121,4 +123,48 @@ public class UserService {
 
         return userMap;
     }
+
+    public List<Map<String, String>> getTopcomplains() {
+        List<ComplainDTO> complains = complainRepository.findAll();
+        List<Map<String, String>> complainMap = new ArrayList<>();
+        //sort complains by date
+        for (ComplainDTO complain : complains) {
+            String complainDate;
+            if (complain.getDate() != null) {
+                complainDate = complain.getDate();
+            } else {
+                complainDate = "null";
+            }
+            if (complain.getUserId().getRole().equals(Role.ENTREPRENEUR)) {
+                var user = entrepreneurRepository.findById(complain.getUserId().getId()).orElseThrow();
+                complainMap.add(Map.of(
+                        "complainUser", user.getFirstname() + " " + user.getLastname(),
+                        "userRole","Entrepreneur",
+                        "complainDate", complainDate,
+                        "complainStatus", complain.getComplainType().toString(),
+                        "complainDescription", complain.getDescription()
+                ));
+            } else if (complain.getUserId().getRole().equals(Role.ENTERPRISE_INVESTOR)) {
+                var user = enterpriseInvestorRepository.findById(complain.getUserId().getId()).orElseThrow();
+                complainMap.add(Map.of(
+                        "complainUser", user.getBusinessName(),
+                        "userRole","Enterprise Investor",
+                        "complainDate", complainDate,
+                        "complainStatus", complain.getComplainType().toString(),
+                        "complainDescription", complain.getDescription()
+                ));
+            } else if (complain.getUserId().getRole().equals(Role.INDIVIDUAL_INVESTOR)) {
+                var user = individualInvestorRepository.findById(complain.getUserId().getId()).orElseThrow();
+                complainMap.add(Map.of(
+                        "complainUser", user.getFirstname() + " " + user.getLastname(),
+                        "userRole","Individual Investor",
+                        "complainDate", complainDate,
+                        "complainStatus", complain.getComplainType().toString(),
+                        "complainDescription", complain.getDescription()
+                ));
+            }
+        }
+        return complainMap;
+    }
+
 }

@@ -1,12 +1,36 @@
+import React,{useEffect,useState,useRef} from "react";
 import {AreaChart, Button, Calendar, Header, Popover} from "../webcomponent";
 import {faArrowDown, faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
-
-import React from "react";
 import {Link} from "react-router-dom";
 
 const Dashboard = () => {
+    const date = new Date();
+    const [year, setYear] = useState(date.getFullYear());
+    const [Currentmonth, setMonth] = useState(date.getMonth());
+    const monthName=new Date(year, Currentmonth).toLocaleString('default', { month: 'long' });
+
+    const handlePrevClick = () => {
+        if (Currentmonth === 0) {
+          setYear(year - 1);
+          setMonth(11); // Set the month to December (11) for the previous year
+        } else {
+          setMonth(Currentmonth - 1);
+        }
+    };
+    
+    // Function to handle clicking the next icon
+    const handleNextClick = () => {
+    if (Currentmonth === 11) {
+        setYear(year + 1);
+        setMonth(0); // Set the month to January (0) for the next year
+    } else {
+        setMonth(Currentmonth + 1);
+    }
+    };
+
+    const value = [];
 
     const areaChart = {
         chart1: {
@@ -178,12 +202,18 @@ const Dashboard = () => {
                             </div>
                             <div className="flex flex-col gap-[1rem]">
                                 <div className="flex justify-center items-center gap-[1rem]">
-                                    <FontAwesomeIcon icon={faChevronLeft}/>
-                                    August 2023
-                                    <FontAwesomeIcon icon={faChevronRight}/>
+                                    <FontAwesomeIcon 
+                                        icon={faChevronLeft}
+                                        onClick={handlePrevClick}
+                                    />
+                                        {monthName} {year}
+                                    <FontAwesomeIcon 
+                                        icon={faChevronRight}
+                                        onClick={handleNextClick}
+                                    />
                                 </div>
                                 <div className="flex justify-center items-center gap-[1rem]">
-                                    <Calendar/>
+                                    <Calendar month={Currentmonth} year={year} value={value}/>
                                 </div>
                             </div>
                         </div>

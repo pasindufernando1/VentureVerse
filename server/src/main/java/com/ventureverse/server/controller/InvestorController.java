@@ -93,20 +93,13 @@ public class InvestorController {
         return ResponseEntity.ok(projects);
     }
 
-    @GetMapping("/viewVideo")
-    public ResponseEntity<ByteArrayResource> getVideo() throws IOException {
-        System.out.println("Inside getVideo");
-
-        String rootDirectory = System.getProperty("user.dir");
-        String videoPath = rootDirectory + "/src/main/resources/static/uploads/videos";
-
-        String videoName = "video1692022417789_a9dc2.mp4";
-
-        Path videoPath2 = Paths.get(videoPath, videoName);
-
-        byte[] videoBytes = Files.readAllBytes(videoPath2);
-
-        return ResponseEntity.ok().body(new ByteArrayResource(videoBytes));
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<List<Map<String,String>>> getMeetings(@PathVariable Integer id){
+        List<Map<String,String>> meetings= investorService.getMeetings(id);
+        if(meetings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(meetings);
     }
 
 }

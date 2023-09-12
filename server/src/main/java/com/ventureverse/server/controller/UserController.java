@@ -49,5 +49,14 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+    @GetMapping("/getTopcomplains")
+    public ResponseEntity<List<Map<String, String>>> getTopcomplains() {
+        List<Map<String, String>> users = userService.getTopcomplains();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
 
 }

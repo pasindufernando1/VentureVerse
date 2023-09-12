@@ -1,10 +1,7 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.IndividualInvestorDTO;
-import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
-import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
-import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.repository.*;
 import org.springframework.stereotype.Service;
 
@@ -16,15 +13,16 @@ public class InvestorService {
     private final IndividualInvestorRepository individualInvestorRepository;
     private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
     private final Investor_InterestedListingRepository investorInterestedListingRepository;
-
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
+    private final ScheduleRepository scheduleRepository;
 
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository) {
+    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, ScheduleRepository scheduleRepository) {
         this.individualInvestorRepository = individualInvestorRepository;
         this.investorInterestedSectorRepository = investorInterestedSectorRepository;
         this.investorInterestedListingRepository = investorInterestedListingRepository;
         this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
+        this.scheduleRepository = scheduleRepository;
     }
 
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
@@ -142,6 +140,20 @@ public class InvestorService {
                    userMap.add(user);
                }
             }
+        }
+        return userMap;
+    }
+
+    public List<Map<String, String>> getMeetings(Integer id) {
+        List<ScheduleDTO> meetings=scheduleRepository.findMeetings(id);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for (ScheduleDTO meeting:meetings) {
+            Map<String, String> user = Map.of(
+                    "date",meeting.getDate().toString(),
+                    "time",meeting.getTime().toString()
+            );
+            userMap.add(user);
         }
         return userMap;
     }

@@ -186,10 +186,9 @@ const InterestReports = () => {
                     <div ref={lineChartRef}>
                     <div className="flex items-center gap-[1rem]">
                          <div className="flex justify-between items-center">
-                            <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Views</p>
+                            <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Projects</p>
                             <div
                                 className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                                12%
                                 <FontAwesomeIcon icon={faArrowUp} className="ml-1"/>
                             </div>
                         </div>

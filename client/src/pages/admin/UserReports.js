@@ -107,7 +107,7 @@ const UserReports = () => {
             approvedInvestors++;
         } else if (userRole === "ENTREPRENEUR") {
             approvedEntrepreneurs++;
-        } else if (userRole === "CO_ADMIN") {
+        } else if (userRole === "ADMIN") {
             approvedCoAdmins++;
         }
     });

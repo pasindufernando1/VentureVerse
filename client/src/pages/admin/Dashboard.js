@@ -1,26 +1,33 @@
 import React from 'react';
-import {AreaChart, Button, Calendar, DoughnutChart, Header, Popover, Select} from '../webcomponent';
-import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
+import {AreaChart, Button, Calendar, DoughnutChart, Header, Select} from '../webcomponent';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import { useEffect, useState, useRef } from "react";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import 'jspdf-autotable' ;
+import {
+    Card,
+    CardBody,
+    CardFooter,
+    Typography,
+    Avatar,
+    Textarea
+} from "@material-tailwind/react";
+
 // import { co } from '@fullcalendar/core/internal-common';
 
 const DashBoard = () => {
     const { get } = useAxiosMethods();
     const[interests,setInterests] = useState([]);
-    const[userreq,setUserreq]=useState([]);
+    const[usercomplains,setComplains]=useState([]);
     const[user,setUser]=useState([]);
     const[listing,setListing]=useState([]);
     const[selectedOption,setSelectedOption]=useState("All");
     const[response2,setResponse2]=useState([]);
-
-    const lineChartRef1 = useRef(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [selectedComplain, setSelectedComplain] = useState(null);
+    const value=[];
 
     useEffect(() => {
         get("/investors/interestSectors",setInterests);
@@ -33,6 +40,63 @@ const DashBoard = () => {
     useEffect(() => {
         get("/entrepreneur/getalllistings",setListing);
     }, []);
+
+    useEffect(() => {
+         get("/user/getTopcomplains",setComplains);
+    }, []);
+
+    const date = new Date();
+    const [year, setYear] = useState(date.getFullYear());
+    const [Currentmonth, setMonth] = useState(date.getMonth());
+    const monthName=new Date(year, Currentmonth).toLocaleString('default', { month: 'long' });
+
+    const handlePrevClick = () => {
+        if (Currentmonth === 0) {
+          setYear(year - 1);
+          setMonth(11); // Set the month to December (11) for the previous year
+        } else {
+          setMonth(Currentmonth - 1);
+        }
+    };
+    
+    // Function to handle clicking the next icon
+    const handleNextClick = () => {
+    if (Currentmonth === 11) {
+        setYear(year + 1);
+        setMonth(0); // Set the month to January (0) for the next year
+    } else {
+        setMonth(Currentmonth + 1);
+    }
+    };
+
+    //sort out the complains with pending status
+    let pendingComplains = [];
+    usercomplains.forEach(element => {
+        if(element.complainStatus === "PENDING"){
+            pendingComplains.push(element);
+        }
+    });
+
+    //sort the pending complains by date
+    pendingComplains.sort((a, b) => {
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB - dateA;
+    });
+
+    pendingComplains=pendingComplains.slice(0,5);
+
+    // Function to open the popup
+    const openPopup = (complain) => {
+        setSelectedComplain(complain);
+        setShowPopup(true);
+    };
+    
+    // Function to close the popup
+    const closePopup = () => {
+    setSelectedComplain(null);
+    setShowPopup(false);
+    };
 
     const today = new Date();
     const currentYear = today.getFullYear();
@@ -262,7 +326,7 @@ const DashBoard = () => {
                         </div>
                         <div className="flex items-center gap-[1rem]">
                             <div className="flex justify-between items-center">
-                                <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Views</p>
+                                <p className="text-base font-normal text-gray-500 dark:text-gray-400">Investments</p>
                                 <div
                                     className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
                                     <FontAwesomeIcon icon={faArrowUp} className="ml-1"/>
@@ -327,7 +391,7 @@ const DashBoard = () => {
                             </div>
                             <div className="flex flex-col">
                                 {
-                                    complains.map((complain, index) => (
+                                pendingComplains.map((complain, index) => (
                                         <div key={index}
                                              className="flex items-center py-[1rem] border-b-[1px] justify-between">
                                             <div className="flex items-center gap-4  w-[50%]">
@@ -336,19 +400,20 @@ const DashBoard = () => {
                                                     alt="avatar"
                                                 />
                                                 <div>
-                                                    <Typography variant="h6">{complain.name}</Typography>
+                                                    <Typography variant="h6">{complain.complainUser}</Typography>
                                                     <Typography variant="small" color="gray"
                                                                 className="font-normal hidden lg:block">
-                                                        {complain.date}
+                                                        {complain.complainDate}
                                                     </Typography>
                                                 </div>
                                             </div>
                                             <span
-                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${complain.user === "Entrepreneur" ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[20%] `}>{complain.user}</span>
+                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${complain.userRole === "Entrepreneur" ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[25%] `}>{complain.userRole}</span>
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
                                                 icon={"next"}
+                                                onClick={() => openPopup(complain)}
                                             >
                                                 View More
                                             </Button>
@@ -366,28 +431,65 @@ const DashBoard = () => {
                                         Calendar
                                     </h5>
                                 </div>
-                                <div>
-                                    <Button
-                                        variant="clear"
-                                        className="px-[0.75rem] !border-none"
-                                    >
-                                        View Schedule
-                                    </Button>
-                                </div>
                             </div>
                             <div className="flex flex-col gap-[1rem]">
                                 <div className="flex justify-center items-center gap-[1rem]">
-                                    <FontAwesomeIcon icon={faChevronLeft}/>
-                                    August 2023
-                                    <FontAwesomeIcon icon={faChevronRight}/>
+                                    <FontAwesomeIcon 
+                                        icon={faChevronLeft}
+                                        onClick={handlePrevClick}
+                                    />
+                                        {monthName} {year}
+                                    <FontAwesomeIcon 
+                                        icon={faChevronRight}
+                                        onClick={handleNextClick}
+                                    />
                                 </div>
                                 <div className="flex justify-center items-center gap-[1rem]">
-                                    <Calendar/>
+                                    <Calendar month={Currentmonth} year={year} value={value}/>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                {showPopup && selectedComplain && (
+                    <div className="popup-modal">
+                        <div className="popup-content">
+                            <Card className="mt-6 w-50">
+                                    <div className="close-icon" onClick={closePopup}>
+                                                X
+                                    </div>
+                                    <CardBody className="flex items-start">
+                                        <Avatar
+                                            variant="circular"
+                                            // alt="tania andrew"
+                                            className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
+                                            // src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+                                        />
+                                        <div className="ml-4">
+                                            <Typography variant="h5" color="blue-gray" className="mb-2">
+                                                {selectedComplain.complainUser} - {selectedComplain.complainDate}
+                                            </Typography>
+                                        </div>
+                                    </CardBody>
+                                    <CardBody className="mt-[-2rem]">
+                                        <Typography>
+                                            {selectedComplain.complainDescription}
+                                        </Typography>
+                                        <div className="w-full mt-2">
+                                            <Textarea label="Action taken" color="purple"/>
+                                        </div>
+                                    </CardBody>
+                                    <CardFooter className="pt-0">
+                                        <div className="flex justify-center">
+                                            <Button variant="outlined" color="green">Action taken</Button>
+                                            <Button variant="outlined" color="red" className="ml-2">Ignore</Button>
+                                        </div>
+
+                                    </CardFooter>
+                            </Card>
+                        </div>    
+                    </div>
+                )}
             </div>
         </Header>
     )
