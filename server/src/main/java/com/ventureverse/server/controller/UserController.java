@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
-    @GetMapping("/details/{id}")
+    @GetMapping("/details/{i}")
     public ResponseEntity<DetailsDTO> getDetails(
             @PathVariable Integer id
     ) {

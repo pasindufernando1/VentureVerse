@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {DisableAccount, NotificationSettings} from "../sectioncomponent";
 import {Button, Input, Select} from "../webcomponent";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+import {setRef} from "@fullcalendar/core/internal";
 
 const ProfileInfo = ({formData, setFormData,validateFormData}) => {
 
@@ -11,6 +14,19 @@ const ProfileInfo = ({formData, setFormData,validateFormData}) => {
         setEditMode(true);
         setEditForm(false);
     };
+
+    //get user id
+    const [ response, setResponse] = useState([]);
+    const {auth} = useAuth();
+    const id=auth.id;
+    console.log(id);
+
+    const {get} = useAxiosMethods();
+    useEffect(()=>{
+        get(`entrepreneurs/pending-details/${id}`,setResponse, true);
+    },[] )
+    console.log(response)
+
     const handleChangePasswordClick = () => {
         setchangePassword(true)
     }
@@ -69,13 +85,13 @@ const ProfileInfo = ({formData, setFormData,validateFormData}) => {
                             <Input
                                 type="text"
                                 label="First Name"
-                                value="Chris"
+                                value={response.firstname}
                                 disabled ={editForm}
                             />
                             <Input
                                 type="text"
                                 label="Last name"
-                                value="Perera"
+                                value={response.lastname}
                                 disabled ={editForm}
                             />
 
@@ -88,13 +104,13 @@ const ProfileInfo = ({formData, setFormData,validateFormData}) => {
                                 <Input
                                     type="text"
                                     label="First Line"
-                                    value="216"
+                                    value={response.firstLineAddress}
                                     disabled ={editForm}
                                 />
                                 <Input
                                     type="text"
                                     label="Second Line"
-                                    value="st. antony'rd"
+                                    value={response.secondLineAddress}
                                     disabled ={editForm}
                                 />
                             </div>
@@ -104,11 +120,12 @@ const ProfileInfo = ({formData, setFormData,validateFormData}) => {
                                 <Input
                                     type="text"
                                     label="Town"
-                                    value="Karuneriya"
+                                    value={response.town}
                                     disabled ={editForm}
                                 />
                                 <Select
                                     label="District"
+                                    value={response.district}
                                     options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
                                     disabled ={editForm}
                                 />
@@ -118,11 +135,13 @@ const ProfileInfo = ({formData, setFormData,validateFormData}) => {
                         <div className="row">
                             <Select
                                 label="Gender"
+                                value={response.gender}
                                 options={["Male","Female"]}
                                 disabled ={editForm}
                             />
                             <Input
                                 type="text"
+                                value={response.contactNumber}
                                 label="mobile number"
                                 disabled ={editForm}
                             />

@@ -2,6 +2,8 @@ import { Avatar } from "@material-tailwind/react";
 import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useState} from "react";
+import DatetimePicker from 'react-datetime-picker';
+
 
 function ViewInterests() {
 
@@ -14,6 +16,10 @@ function ViewInterests() {
             localStorage.setItem('meetngInProgress', 'true');
             conferenceWindow.focus();
     }
+    }
+
+    const scheduleVideoCALL = () => {
+
     }
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
@@ -100,10 +106,10 @@ function ViewInterests() {
                                                 <div className="flex items-center space-x-4 text-sm">
                                                     <img src="/assets/images/chat.png" alt="View"
                                                          className="cursor-pointer"/>
-                                                    
+
                                                         <img src="/assets/images/videocall.png" alt="View"
                                                             className="cursor-pointer" onClick={handleVideoCAll}/>
-                                                </div>  
+                                                </div>
                                             </td>
                                             <td className="px-2 py-4">
                                                 <Button
@@ -141,4 +147,9 @@ function ViewInterests() {
     )
 }
 
-export default ViewInterests
+
+
+
+
+export default ViewInterests;
+
