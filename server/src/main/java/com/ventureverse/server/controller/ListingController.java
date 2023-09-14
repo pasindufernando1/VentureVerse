@@ -13,6 +13,7 @@ import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
 import org.springframework.http.ResponseEntity;
@@ -57,21 +58,62 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getLatestListing(id));
     }
 
+    //Get all the listings available in the database with the status "published"
+    @GetMapping("/getAllListings")
+    public ResponseEntity<List<ListingDTO>> getAllListings() {
+        return ResponseEntity.ok(listingService.getAllListings());
+    }
+
     //Send the video relevent to the listing to the frontend using the listing id
     @GetMapping("/getVideo/{videoname}")
     public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {
+        System.out.println(videoname);
         // Project root directory
         String rootDirectory = System.getProperty("user.dir");
         // Load the video file from resources/static/uploads folder
         Resource videoResource = new ClassPathResource("/static/uploads/videos/" + videoname);
 //        ClassPathResource videoResource = new ClassPathResource("C:\\Users\\Pasindu\\Desktop\\3rd year group project\\IMPLEMENTATION\\VentureVerse\\server\\src\\main\\resources\\static\\uploads\\videos\\video1693371839383_74twk.mp4");
-        System.out.println(videoResource);
         // Set content type based on video file type (e.g., "video/mp4")
         MediaType mediaType = MediaTypeFactory.getMediaType(videoResource).orElse(MediaType.APPLICATION_OCTET_STREAM);
-        System.out.println(mediaType);
         return ResponseEntity.ok()
                 .contentType(mediaType)
                 .body(videoResource);
+    }
+
+    //Get the videos of all the videonames in the path variable
+    @GetMapping("/getVideos")
+    public ResponseEntity<List<Resource>> getVideos(@RequestParam List<String> videonames) {
+        // Initialize a list to store video resources
+        List<Resource> videoResources = new ArrayList<>();
+
+        // Project root directory
+        String rootDirectory = System.getProperty("user.dir");
+
+        // Loop through the list of video names and load each video resource
+        for (String videoname : videonames) {
+            // Construct the path to each video file
+            String videoPath = "/static/uploads/videos/" + videoname;
+
+            // Create a Resource object for the current video
+            Resource videoResource = new ClassPathResource(videoPath);
+
+            // Set content type based on video file type (e.g., "video/mp4")
+            MediaType mediaType = MediaTypeFactory.getMediaType(videoResource).orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+            // Add the video resource to the list
+            videoResources.add(videoResource);
+        }
+
+        // Set the content type for the response (you can choose to set it based on the first video's type or another logic)
+        MediaType mediaType = MediaTypeFactory.getMediaType(videoResources.get(0)).orElse(MediaType.APPLICATION_OCTET_STREAM);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(mediaType);
+
+        // Return a ResponseEntity containing the list of video resources
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(videoResources);
     }
 
     //Function to get the images

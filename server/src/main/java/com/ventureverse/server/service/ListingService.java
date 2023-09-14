@@ -136,4 +136,8 @@ public class ListingService {
     public List<String> getListingImages(ListingDTO i) {
         return listingImagesRepository.getListingImages(i);
     }
+
+    public List<ListingDTO> getAllListings() {
+        return listingRepository.findAll();
+    }
 }

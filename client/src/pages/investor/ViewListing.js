@@ -14,6 +14,7 @@ import {Avatar} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import React from "react";
 import { Slider } from "@material-tailwind/react";
+import async from "async";
 
 
 
@@ -22,18 +23,36 @@ function ViewListing() {
     // Get request to get the listing details
     const {get} = useAxiosMethods();
     const [listing, setListing] = useState({});
-    const [subscriptionId, setSubscriptionId] = useState();
-
+    const [videoURL, setVideoURL] = useState("")
 
 
     useEffect(() => {
-        get("/entrepreneur/getListing/1604", setListing);
-        // Get listing enterprenuer
-        get("/entrepreneur/getSubscription/1604", setSubscriptionId);
-        console.log(subscriptionId);
-        console.log(listing);
+        //Get all the listings
+        get("/entrepreneur/getAllListings",setListing)
 
     }, [])
+    //Create a list of pitching video names extracted from the listing
+
+    useEffect(() => {
+
+        async function getVideos(i) {
+            await  get(`/entrepreneur/getVideo/${listing[i].pitchingVideo}`,setVideoURL,true)
+            listing[i].pitchingVideo = videoURL
+        }
+
+        for(let i=0;i<listing.length;i++){
+            getVideos(i).then()
+        }
+    }, [listing]);
+
+
+    console.log(listing)
+
+
+
+    //Get the videoURLs of the listings using an API call and store them in an array
+    const [videoURLs, setVideoURLs] = useState([]);
+
 
 
     const [subView, setSubView] = useState(false);
