@@ -40,6 +40,15 @@ public class InvestorService {
         return sectorNames;
     }
 
+    public List<Integer> findInterestedSectorsId(Integer id) {
+        List<InvestorInterestedSectorDTO> interestedSectors= investorInterestedSectorRepository.findByInvestorId(id);
+        List<Integer> sectorIds = new ArrayList<>();
+        for (InvestorInterestedSectorDTO interestedSector : interestedSectors) {
+            sectorIds.add(interestedSector.getId().getSectorId().getSectorId());
+        }
+        return sectorIds;
+    }
+
     public IndividualInvestorDTO getInvestorById(int i) {
         return individualInvestorRepository.findById(i).orElse(null);
     }

@@ -1,6 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState,useEffect} from 'react';
 import {Button, Checkbox, Input, Select} from "../webcomponent";
 import {DisableAccount, NotificationSettings} from "../sectioncomponent";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+
 
 const ProfileInformation = ({formData, setFormData, validateFormData}) => {
 
@@ -22,6 +25,18 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
         setEditMode(false);
         setEditForm(true);
     };
+    //get user id
+    const [ response, setResponse] = useState([]);
+    const {auth} = useAuth();
+    const id=auth.id;
+    console.log(id);
+
+    const {get} = useAxiosMethods();
+    useEffect(()=>{
+        get(`investors/pending-details/${id}`,setResponse, true);
+    },[] )
+    console.log(response)
+
     return (
         <div
             className='flex mt-24 relative justify-center items-start w-auto rounded-2xl py-[2rem] border border-main-purple'>
@@ -67,13 +82,13 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
                             <Input
                                 type="text"
                                 label="First Name"
-                                value="Chris"
+                                value={response.firstname}
                                 disabled={editForm}
                             />
                             <Input
                                 type="text"
                                 label="Last name"
-                                value="Perera"
+                                value={response.lastname}
                                 disabled={editForm}
                             />
 
@@ -87,13 +102,13 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
                                 <Input
                                     type="text"
                                     label="First Line"
-                                    value="216"
+                                    value={response.firstLineAddress}
                                     disabled={editForm}
                                 />
                                 <Input
                                     type="text"
                                     label="Second Line"
-                                    value="st. antony'rd"
+                                    value={response.secondLineAddress}
                                     disabled={editForm}
                                 />
                             </div>
@@ -103,11 +118,12 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
                                 <Input
                                     type="text"
                                     label="Town"
-                                    value="Karuneriya"
+                                    value={response.town}
                                     disabled={editForm}
                                 />
                                 <Select
                                     label="District"
+                                    value={response.district}
                                     options={["Ampara", "Anuradhapura", "Badulla", "Batticaloa", "Colombo", "Galle", "Gampaha", "Hambantota", "Jaffna", "Kalutara", "Kandy", "Kegalle", "Kilinochchi", "Kurunegala", "Mannar", "Matale", "Matara", "Monaragala", "Mullaitivu", "Nuwara Eliya", "Polonnaruwa", "Puttalam", "Ratnapura", "Trincomalee", "Vavuniya"]}
                                     disabled={editForm}
                                 />
@@ -118,11 +134,13 @@ const ProfileInformation = ({formData, setFormData, validateFormData}) => {
                             <Select
                                 label="Gender"
                                 options={["Male", "Female"]}
+                                value={response.gender}
                                 disabled={editForm}
                             />
                             <Input
                                 type="text"
                                 label="mobile number"
+                                value={response.contactNumber}
                                 disabled={editForm}
                             />
                         </div>
@@ -154,12 +172,24 @@ const Preferences = () =>{
         {label: 'Housewares / Home Design'},
     ];
 
+    //get preferences
+    const [ response, setResponse] = useState([]);
+    const {auth} = useAuth();
+    const id=auth.id;
+    console.log(id);
+
+    const {get} = useAxiosMethods();
+    useEffect(()=>{
+        get(`investors/interested-sectors-Ids/${id}`,setResponse, true);
+    },[] )
+    console.log(response)
+
     const [categories, setCategories] = useState({
         food: false,
         technology: false,
         app: false,
         fitness: false,
-        healthcare: true,
+        healthcare: false,
         sports: false,
         beauty: false,
         clothing: false,
@@ -170,7 +200,19 @@ const Preferences = () =>{
         holiday: false,
         children: false,
         housewares: false,
-    })
+    });
+    const numCategories = Object.keys(categories).length;
+    for (let i = 0; i < numCategories; i++) {
+        const index = response[i];
+        const key = Object.keys(categories)[index - 1];
+        if (key) {
+            categories[key] = true;
+        }
+    }
+    console.log(categories)
+
+
+
     return (
         <div
             className='flex mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>

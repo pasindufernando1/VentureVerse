@@ -3,6 +3,16 @@ import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useState} from "react";
 import DatetimePicker from 'react-datetime-picker';
+import {
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Typography,
+    List,
+    ListItem,
+    ListItemPrefix,
+} from "@material-tailwind/react";
+
 
 
 function ViewInterests() {
@@ -17,10 +27,10 @@ function ViewInterests() {
             conferenceWindow.focus();
     }
     }
-
-    const scheduleVideoCALL = () => {
+    const handleGoToCalender = () => {
 
     }
+
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
 
@@ -106,9 +116,26 @@ function ViewInterests() {
                                                 <div className="flex items-center space-x-4 text-sm">
                                                     <img src="/assets/images/chat.png" alt="View"
                                                          className="cursor-pointer"/>
+                                                    <Popover placement="bottom">
+                                                        <PopoverHandler>
+                                                            <img src="/assets/images/videocall.png" alt="View"/>
+                                                        </PopoverHandler>
+                                                        <PopoverContent className="w-72">
+                                                            <List className="p-0">
+                                                                <a href="#" className="text-initial">
+                                                                    <ListItem onClick={handleVideoCAll}>
+                                                                        Start meeting now
+                                                                    </ListItem>
+                                                                </a>
+                                                                <a href="Schedule.js" className="text-initial">
+                                                                    <ListItem >
+                                                                        Schedule meeting
+                                                                    </ListItem>
+                                                                </a>
+                                                            </List>
+                                                        </PopoverContent>
+                                                    </Popover>
 
-                                                        <img src="/assets/images/videocall.png" alt="View"
-                                                            className="cursor-pointer" onClick={handleVideoCAll}/>
                                                 </div>
                                             </td>
                                             <td className="px-2 py-4">

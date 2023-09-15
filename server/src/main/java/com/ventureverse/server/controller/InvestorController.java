@@ -46,4 +46,14 @@ public class InvestorController {
         return ResponseEntity.ok(interestedSectors);
     }
 
+    @GetMapping("/interested-sectors-Ids/{id}")
+    public ResponseEntity<List<Integer>> getInterestedSectorsIds(@PathVariable Integer id) {
+        List<Integer> interestedSectors = investorService.findInterestedSectorsId(id);
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
+
 }

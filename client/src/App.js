@@ -69,6 +69,7 @@ import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
 
 import {Routes, Route} from "react-router-dom";
+import Schedules from "./pages/investor/Schedule";
 
 function App() {
     return (
@@ -87,6 +88,7 @@ function App() {
                 <Route path="/meeting/:id/:user/:time" element={<Conference />} />
                 <Route path="/comp" element={<Components />}/>
                 <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
+
 
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
@@ -123,7 +125,7 @@ function App() {
                         <Route path="/investor/view-listing" element={<ViewListing />} />
                         <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
-                        <Route path="/investor/schedules" element={<Schedule />} />
+                        <Route path="/investor/schedules" element={<Schedules />} />
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
