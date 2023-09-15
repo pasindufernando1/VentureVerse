@@ -136,24 +136,39 @@ public class ListingController {
             images.add(Files.readAllBytes(imagePath));
         }
         System.out.println(images);
+        return ResponseEntity.ok().body(images);
+    }
 
-        //Get the images of the listing
-//        for (int i = 1; i <= numberOfImages; i++) {
-//            String imageName = listingImagesRepository.getListingImages(listing, i);
-//            Path imagePath = Paths.get(imageUploadPath, imageName);
-//            pdfs.add(Files.readAllBytes(imagePath));
-//        }
+    //Function to get the thumbnail by the thumbnail name
+    @GetMapping("/getThumbnail/{thumbnailname}")
+    public ResponseEntity<List<byte[]>> getThumbnail(@PathVariable String thumbnailname) throws IOException {
+        List<byte[]> images = new ArrayList<>();
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
+
+        Path imagePath = Paths.get(imageUploadPath, thumbnailname);
+        images.add(Files.readAllBytes(imagePath));
 
         return ResponseEntity.ok().body(images);
-
-//        Path bankStatementFilePath = Paths.get(imageUploadPath, bankStatementFileName);
-//        Path policeReportFilePath = Paths.get(imageUploadPath, policeReportFileName);
-//
-//        pdfs.add(Files.readAllBytes(policeReportFilePath));
-//        pdfs.add(Files.readAllBytes(bankStatementFilePath));
-
-//        return ResponseEntity.ok().body(pdfs);
     }
+
+    //Function to return an array of thumbnails by the thumbnail names(Thumbnail names are passed as an array
+    @GetMapping("/getThumbnails/{thumbnailnames}")
+    public ResponseEntity<List<byte[]>> getThumbnails(@PathVariable List<String> thumbnailnames) throws IOException {
+        System.out.println(thumbnailnames);
+        List<byte[]> images = new ArrayList<>();
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
+
+        for (String thumbnailname : thumbnailnames) {
+            Path imagePath = Paths.get(imageUploadPath, thumbnailname);
+            images.add(Files.readAllBytes(imagePath));
+        }
+
+        return ResponseEntity.ok().body(images);
+    }
+
+
 
     //Get the subscription
     @GetMapping("/getSubscription/{id}")
