@@ -270,7 +270,7 @@ function ViewListing() {
                                         label="Show more"
                                         icon="next"
                                     >
-                                        <Link to="/investor/view-listingfull">Show more</Link>
+                                        <Link to={`/investor/view-listingfull/${card.listingid}`}>Show more</Link>
                                     </Button>
                                 </CardFooter>
                             </Card>

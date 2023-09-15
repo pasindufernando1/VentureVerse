@@ -121,7 +121,7 @@ function App() {
                         {/* Routes Authorized to Investors */}
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
-                        <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
+                        <Route path="/investor/view-listingFull/:id" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />

@@ -108,6 +108,11 @@ public class ListingService {
         return listing;
     }
 
+    //Function to get the listing from the listing id
+    public ListingDTO getListingFromListingId(int id) {
+        return listingRepository.findById(id).orElseThrow();
+    }
+
     //Function to get the listing video
     public String getVideo(int id) {
         //Get the listing object

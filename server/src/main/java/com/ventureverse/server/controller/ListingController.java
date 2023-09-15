@@ -58,6 +58,13 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getLatestListing(id));
     }
 
+    //Get the listing from the listing id
+    @GetMapping("/getListingFromListingId/{id}")
+    public ResponseEntity<ListingDTO> getListingFromListingId(@PathVariable Integer id) {
+        System.out.println(id);
+        return ResponseEntity.ok(listingService.getListingFromListingId(id));
+    }
+
     //Get all the listings available in the database with the status "published"
     @GetMapping("/getAllListings")
     public ResponseEntity<List<ListingDTO>> getAllListings() {

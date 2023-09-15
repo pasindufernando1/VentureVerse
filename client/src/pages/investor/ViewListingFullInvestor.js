@@ -5,7 +5,7 @@ import {
     CardFooter,
     Typography,
 } from "@material-tailwind/react";
-import {Header, Input, Checkbox, StatusPopUp, Button} from "../webcomponent";
+import {Header, Input, Checkbox, StatusPopUp, Button, Carousel} from "../webcomponent";
 
 import {
     Dialog,
@@ -13,12 +13,15 @@ import {
     DialogBody,
     DialogFooter,
 } from "@material-tailwind/react";
-import {Carousel, IconButton} from "@material-tailwind/react";
+
 import {Avatar} from "@material-tailwind/react";
 import {Progress} from "@material-tailwind/react";
-import {Link} from "react-router-dom";
-import React from "react";
+import {Link, useParams} from "react-router-dom";
+import React, {useEffect} from "react";
 import {useState} from "react";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 
 
 function ViewListingFullInvestor() {
@@ -31,6 +34,44 @@ function ViewListingFullInvestor() {
         setOpen(false);
     }
 
+    const {id} = useParams();
+    console.log(id);
+
+    const {get} = useAxiosMethods();
+    const [listing, setListing] = useState({});
+    const [videoUrl, setVideoUrl] = useState("");
+
+    useEffect(() => {
+        //Get the listing object related to the listingId
+        get(`/entrepreneur/getListingFromListingId/${parseInt(id)}`, setListing);
+    }, []);
+    console.log(listing);
+    useEffect(() => {
+        if (listing.pitchingVideo) {
+            get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
+        }
+    }, [listing])
+    console.log(videoUrl)
+
+    //Get the listing images
+    const [listingImages, setListingImages] = useState([]);
+    useEffect(() => {
+        get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
+    }, [listing])
+    console.log(listingImages);
+
+    //Assign the images to an array to be used in the carousel
+    const images = [];
+    listingImages.map((image) => {
+        images.push(image);
+    }, [listingImages])
+    console.log(images);
+
+    const businessStartDate = new Date(listing.businessStartDate);
+    // Take the day month and the year only
+    const businessStartDateString = businessStartDate.toDateString();
+
+
     return (
         <div>
             <Header>
@@ -38,27 +79,30 @@ function ViewListingFullInvestor() {
                     <div>
                         <Card className="mt-[-3rem]">
                             <CardHeader className="relative h-300 mt-5 ">
-                                <video className="h-full w-full rounded-lg" controls autoPlay muted>
-                                    <source src="/assets/videos/video1.mp4" type="video/mp4"/>
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div className="relative h-0" style={{paddingBottom: '56.25%'}}>
+                                    <iframe
+                                        className="absolute inset-0 w-full h-full"
+                                        src={videoUrl}
+                                        title="Video player"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+
                             </CardHeader>
                             <CardBody>
                                 <Typography variant="h5" className="mb-2 text-main-purple">
-                                    Title of the listing
+                                    {listing.title}
                                 </Typography>
                                 <Typography>
-                                    The place is close to Barceloneta Beach and bus stop just 2 min by
-                                    walk and near to &quot;Naviglio&quot; where you can enjoy the main
-                                    night life in Barcelona.The place is close to Barceloneta Beach and bus stop just 2
-                                    min by
-                                    walk and near to &quot;Naviglio&quot; where you can enjoy the main
-                                    night life in Barcelona.
+                                    {listing.description}
                                 </Typography>
 
                                 {/* Business name */}
                                 <Typography variant="h6" color="blue-gray" className="mb-2 mt-2">
-                                    Business Name : ABC company
+                                    {listing && listing.entrepreneurId && (
+                                        <p>Business Name: {listing.entrepreneurId.businessName}</p>
+                                    )}
                                 </Typography>
 
                                 <Typography variant="h5" className="mb-2 text-light-purple mt-4">
@@ -80,13 +124,13 @@ function ViewListingFullInvestor() {
                                     </div>
                                     <div className="flex flex-col">
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            $100,000
+                                            Rs. {listing.expectedAmount}
                                         </Typography>
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            10%
+                                            {listing.returnEquityPercentage}%
                                         </Typography>
                                         <Typography variant="h6" className="mb-2 text-black">
-                                            $10
+                                            {listing.returnUnitProfitPercentage}% per unit
                                         </Typography>
                                     </div>
                                 </div>
@@ -152,67 +196,28 @@ function ViewListingFullInvestor() {
                                 {/* Section to show the images (Corousel) */}
                                 <div className="flex justify-center items-center mt-4">
                                     <Carousel
-                                        className="rounded-xl"
-                                        prevArrow={({handlePrev}) => (
-                                            <IconButton
-                                                variant="text"
-                                                color="white"
-                                                size="lg"
-                                                onClick={handlePrev}
-                                                className="!absolute top-2/4 left-4 -translate-y-2/4"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={2}
-                                                    stroke="currentColor"
-                                                    className="h-6 w-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
-                                                    />
-                                                </svg>
-                                            </IconButton>
+                                        navigationActive="main-purple"
+                                        navigationInactive="light-purple"
+                                        prevArrow={({ handlePrev }) => (
+                                            <FontAwesomeIcon icon={faArrowLeft} size="2xl" onClick={handlePrev} className="!absolute top-2/4 left-4 -translate-y-2/4 text-main-purple"/>
                                         )}
-                                        nextArrow={({handleNext}) => (
-                                            <IconButton
-                                                variant="text"
-                                                color="white"
-                                                size="lg"
-                                                onClick={handleNext}
-                                                className="!absolute top-2/4 !right-4 -translate-y-2/4"
-                                            >
-                                                <svg
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    fill="none"
-                                                    viewBox="0 0 24 24"
-                                                    strokeWidth={2}
-                                                    stroke="currentColor"
-                                                    className="h-6 w-6"
-                                                >
-                                                    <path
-                                                        strokeLinecap="round"
-                                                        strokeLinejoin="round"
-                                                        d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-                                                    />
-                                                </svg>
-                                            </IconButton>
+                                        nextArrow={({ handleNext }) => (
+                                            <FontAwesomeIcon icon={faArrowRight} size="2xl" onClick={handleNext} className="!absolute top-2/4 right-4 -translate-y-2/4 text-main-purple"/>
                                         )}
                                     >
-
-                                        <img
-                                            src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80"
-                                            alt="2"
-                                            className="h-full w-full object-cover"
-                                        />
-                                        <img
-                                            src="https://images.unsplash.com/photo-1518623489648-a173ef7824f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2762&q=80"
-                                            alt="3"
-                                            className="h-full w-full object-cover"
-                                        />
+                                        {
+                                            listingImages.map((image) => (
+                                                    <img
+                                                        // Convert the image to a blob
+                                                        src={`data:application/img;base64,${image}`}
+                                                        alt="1"
+                                                        className="h-96 w-96 object-fill ml-[4rem] border-2"
+                                                        style={{maxHeight: '100%', maxWidth: '100%'}}
+                                                    />
+                                                )
+                                            )
+                                        }
+                                        {/*/>*/}
                                     </Carousel>
                                 </div>
                                 {/* Section for the business details */}
@@ -228,7 +233,7 @@ function ViewListingFullInvestor() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.intention}
                                     </Typography>
                                 </div>
 
@@ -238,13 +243,14 @@ function ViewListingFullInvestor() {
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
                                             <span>Business start date : </span><span
-                                            className="font-light">2022-01-01</span>
+                                            className="font-light">{businessStartDateString}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Business duration : </span><span className="font-light">5 years</span>
+                                            <span>Business duration : </span><span
+                                            className="font-light">{listing.businessDuration} years</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -254,7 +260,7 @@ function ViewListingFullInvestor() {
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
                                             <span>Lifetime sales :      </span><span
-                                            className="font-light">Rs. 5000000</span>
+                                            className="font-light">Rs. {listing.lifetimeSales}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -262,7 +268,8 @@ function ViewListingFullInvestor() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Stage of business :      </span><span className="font-light">Online selling</span>
+                                            <span>Stage of business :      </span><span
+                                            className="font-light">{listing.stage}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -276,13 +283,15 @@ function ViewListingFullInvestor() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Gross income : </span><span className="font-light">Rs. 100000</span>
+                                            <span>Gross income : </span><span
+                                            className="font-light">Rs. {listing.lastYearGrossIncome}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>Net income : </span><span className="font-light">Rs. 100000</span>
+                                            <span>Net income : </span><span
+                                            className="font-light">Rs. {listing.lastYearNetIncome}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -296,13 +305,15 @@ function ViewListingFullInvestor() {
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For this year : </span><span className="font-light">Rs. 100000</span>
+                                            <span>For this year : </span><span
+                                            className="font-light">Rs. {listing.salesProjectionThisYear}</span>
                                         </Typography>
                                     </div>
                                     <div>
                                         <Typography variant="h6" color="blue-gray"
                                                     className="mb-2 text-main-gray font-bold">
-                                            <span>For next year : </span><span className="font-light">Rs. 100000</span>
+                                            <span>For next year : </span><span
+                                            className="font-light">Rs. {listing.salesProjectionNextYear}</span>
                                         </Typography>
                                     </div>
                                 </div>
@@ -314,7 +325,7 @@ function ViewListingFullInvestor() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.projectionMethod}
                                     </Typography>
                                 </div>
                                 {/* Section for the previous attempts */}
@@ -324,23 +335,23 @@ function ViewListingFullInvestor() {
                                 <div className="flex justify-between items-center">
                                     <Typography variant="h6" color="blue-gray"
                                                 className="mb-2 text-main-gray font-bold">
-                                        How the projections are made
+                                        Previous funding attempts
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        Used for building a warehouse. The goal was to do somthing else. Hello Hello...
+                                        {listing.outsideSourceDescription}
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <Typography variant="h6" color="blue-gray"
                                                 className="mb-2 text-main-gray font-bold">
-                                        Previous attempts to raise funds
+                                        Previous attempts to grow business
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        None
+                                        {listing.attemptsToGrow}
                                     </Typography>
                                 </div>
 
@@ -356,7 +367,7 @@ function ViewListingFullInvestor() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        No 1 business in the world
+                                        {listing.uniqueSellingProposition}
                                     </Typography>
                                 </div>
                                 <div className="flex justify-between items-center">
@@ -367,7 +378,7 @@ function ViewListingFullInvestor() {
                                 </div>
                                 <div className="flex justify-between items-center mt-[-1vh]">
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
-                                        None
+                                        {listing.awards}
                                     </Typography>
                                 </div>
 
