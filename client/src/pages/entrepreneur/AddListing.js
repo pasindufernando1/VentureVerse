@@ -133,13 +133,31 @@ function AddListing() {
         file: null,
         preview: null,
     });
+    const [thumbnail, setThumbnail] = useState({
+        file: null,
+        preview: null,
+    });
     const [video, setVideo] = useState({
         file: null,
         preview: null,
     });
 
+    //Function to handle the thumbnail upload
+    const handleThumbnailUpload = (event) => {
+        const {name, files} = event.target;
+        const selectedFile = files[0];
+
+        if (name === 'thumbnail') {
+            setThumbnail({
+                file: selectedFile,
+                preview: URL.createObjectURL(selectedFile),
+            });
+        }
+    }
+
     // Function to handle the image upload  
     const handleImageupload = (event) => {
+        console.log("Image upload");
         const {name, files} = event.target;
         const selectedFile = files[0];
 
@@ -161,6 +179,8 @@ function AddListing() {
         }
 
     }
+
+
 
     // Function to handle the video upload
     const handleVideoUpload = (event) => {
@@ -192,6 +212,7 @@ function AddListing() {
             var image2filename = "";
             var image3filename = "";
             var videofilename = "";
+            var thumbnailfilename = "";
 
             if (image1.file) {
                 image1filename = "image1" + generateUniqueFileName(image1.file);
@@ -216,6 +237,11 @@ function AddListing() {
                 formData.append("video", video.file, videofilename);
             }
 
+            if(thumbnail.file){
+                thumbnailfilename = "thumbnail" + generateUniqueFileName(thumbnail.file);
+                formData.append("thumbnail", thumbnail.file, thumbnailfilename);
+            }
+
             post("/entrepreneur/upload", formData, setRes, true);
 
             console.log(res);
@@ -225,6 +251,7 @@ function AddListing() {
             const listing = {
                 title,
                 description,
+                "thumbnail": thumbnailfilename,
                 "pitchingVideo": videofilename,
                 intention,
                 businessStartDate,
@@ -1210,6 +1237,50 @@ function AddListing() {
                                                 </div>
                                             </div>
                                         </div>
+                                        {/*Section to upload the thumbnail of the video*/}
+                                        <div className="row">
+                                            <div className="w-full">
+                                                <label htmlFor="image1"
+                                                       className="text-main-gray block mb-2 text-[14px]">
+                                                    Please upload an attractive thumbnail for your video
+                                                    <span style={{color: 'red'}}>*</span>
+                                                </label>
+                                                {/* Three divs to hold the three images uploaded */}
+                                                <div className="flex flex-cols gap-2">
+                                                    <div className="row">
+                                                        <div
+                                                            className="w-[100px] h-[100px] border-2 border-main-purple rounded-[1rem] flex items-center justify-center overflow-hidden">
+                                                            {thumbnail.preview && (
+                                                                <img src={thumbnail.preview} alt="first"
+                                                                     className="w-full h-full object-cover rounded-[1rem]"/>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="file-input-container">
+                                                        <input
+                                                            type="file"
+                                                            id="thumbnail"
+                                                            name="thumbnail"
+                                                            accept="image/png, image/jpeg"
+                                                            className="hidden"
+                                                            onChange={handleThumbnailUpload}
+                                                        />
+                                                        <label htmlFor="thumbnail" className="file-input-button">
+                                                            Select File
+                                                        </label>
+                                                        <span className="file-input-text">
+                                                    {/* Show all the uploadded images */}
+                                                            {thumbnail.file && thumbnail.file.name}
+                                                            {!thumbnail.file && "No file uploaded"}
+                                                </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div className="row w-full flex">
                                             <div className="justify-begin">
                                                 <Button variant="clear" label="Previous" icon="previous"

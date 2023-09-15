@@ -14,7 +14,6 @@ import {Avatar} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import React from "react";
 import { Slider } from "@material-tailwind/react";
-import async from "async";
 
 
 
@@ -23,30 +22,61 @@ function ViewListing() {
     // Get request to get the listing details
     const {get} = useAxiosMethods();
     const [listing, setListing] = useState({});
-    const [videoURL, setVideoURL] = useState("")
+    const [thumbnail, setThumbnail] = useState({});
 
+    //Array to store the thumbnails of the listings
+    const [thumbnails, setThumbNails] = useState([]);
 
+    //Get the listings
     useEffect(() => {
         //Get all the listings
         get("/entrepreneur/getAllListings",setListing)
 
     }, [])
-    //Create a list of pitching video names extracted from the listing
+    console.log(listing);
 
+    //For each listing get the thumbnail
     useEffect(() => {
-
-        async function getVideos(i) {
-            await  get(`/entrepreneur/getVideo/${listing[i].pitchingVideo}`,setVideoURL,true)
-            listing[i].pitchingVideo = videoURL
+        async function getThumbnail(i) {
+            try {
+                await get(`/entrepreneur/getThumbnail/${listing[i].thumbnail}`, setThumbnail);
+            } catch (error) {
+                console.error(`Error loading thumbnail for listing ${i}:`, error);
+            }
         }
 
         for(let i=0;i<listing.length;i++){
-            getVideos(i).then()
+            getThumbnail(i).then()
         }
     }, [listing]);
+    
+    //Store the thumbnails in an array
+    useEffect(() => {
+        thumbnails.push(thumbnail);
+    }, [thumbnail]);
 
 
-    console.log(listing)
+    // useEffect(() => {
+    //
+    //     async function getVideos(i) {
+    //         try {
+    //             await get(`/entrepreneur/getVideo/${listing[i].pitchingVideo}`, setVideoURL, true);
+    //         } catch (error) {
+    //             console.error(`Error loading video for listing ${i}:`, error);
+    //         }
+    //     }
+    //
+    //     for(let i=0;i<listing.length;i++){
+    //         getVideos(i).then()
+    //     }
+    // }, [listing]);
+
+    // useEffect(() => {
+    //     blobURLS.push(videoURL);
+    // },[videoURL])
+    //
+    // console.log(videoURL)
+    // console.log(blobURLS)
 
 
 
@@ -77,15 +107,7 @@ function ViewListing() {
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
                         <Card className="w-96 mt-2">
                             <CardHeader className="relative h-56 mt-5 w-50">
-                                <video
-                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                                    controls
-                                    autoPlay = {true}
-                                    muted
-                                >
-                                    <source src="/assets/videos/video1.mp4" type="video/mp4"/>
-                                    Your browser does not support the video tag.
-                                </video>
+                                <img src={blobURLS[0]} alt="Image of the listing" className="absolute inset-0 w-full h-full object-cover"/>
                             </CardHeader>
                             <CardBody>
 
@@ -195,15 +217,17 @@ function ViewListing() {
                         </Card>
                         <Card className="w-96 mt-2">
                             <CardHeader className="relative h-56 mt-5 w-50">
-                                <video
-                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                                    controls
-                                    autoPlay
-                                    muted
-                                >
-                                    <source src="/assets/videos/video2.mp4" type="video/mp4"/>
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div className="relative h-0" style={{paddingBottom: '56.25%'}}>
+                                    <iframe
+                                        className="absolute inset-0 w-full h-full"
+                                        src={blobURLS[2]}
+                                        title="Video player"
+                                        allow="accelerometer; autoplay;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        autoPlay
+                                        muted
+                                    ></iframe>
+                                </div>
                             </CardHeader>
                             <CardBody>
 
@@ -313,19 +337,22 @@ function ViewListing() {
                         </Card>
                         <Card className="w-96 mt-2">
                             <CardHeader className="relative h-56 mt-5 w-50">
-                                <video
-                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                                    controls
-                                    autoPlay
-                                    muted
-                                >
-                                    <source src="/assets/videos/video3.mp4" type="video/mp4"/>
-                                    Your browser does not support the video tag.
+                                <video>
+                                    <source src={blobURLS[1]} type="video/mp4"/>
                                 </video>
+                                {/*<div className="relative h-0" style={{paddingBottom: '56.25%'}}>*/}
+                                {/*    <iframe*/}
+                                {/*        className="absolute inset-0 w-full h-full"*/}
+                                {/*        src={blobURLS[3]}*/}
+                                {/*        title="Video player"*/}
+                                {/*        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"*/}
+                                {/*        allowFullScreen*/}
+                                {/*        autoPlay*/}
+                                {/*        muted*/}
+                                {/*    ></iframe>*/}
+                                {/*</div>*/}
                             </CardHeader>
                             <CardBody>
-
-
                                 <Typography variant="h5" className="mb-2 text-light-purple mt-4">
                                     Expectations & Returns
                                 </Typography>
@@ -431,15 +458,17 @@ function ViewListing() {
                         </Card>
                         <Card className="w-96 mt-2">
                             <CardHeader className="relative h-56 mt-5 w-50">
-                                <video
-                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
-                                    controls
-                                    autoPlay
-                                    muted
-                                >
-                                    <source src="/assets/videos/video4.mp4" type="video/mp4"/>
-                                    Your browser does not support the video tag.
-                                </video>
+                                <div className="relative h-0" style={{paddingBottom: '56.25%'}}>
+                                    <iframe
+                                        className="absolute inset-0 w-full h-full"
+                                        src={blobURLS[3]}
+                                        title="Video player"
+                                        allow="accelerometer; autoplay;clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                        autoPlay
+                                        muted
+                                    ></iframe>
+                                </div>
                             </CardHeader>
                             <CardBody>
 

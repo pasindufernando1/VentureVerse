@@ -25,6 +25,7 @@ public class ListingDTO {
     private String title;
     @Column(columnDefinition = "text")
     private String description;
+    private String thumbnail;
     private String pitchingVideo;
     private String intention;
     private Timestamp businessStartDate;

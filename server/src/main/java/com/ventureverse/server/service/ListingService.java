@@ -33,6 +33,7 @@ public class ListingService {
         var list = ListingDTO.builder()
                 .title(listingRequestDTO.getTitle())
                 .description(listingRequestDTO.getDescription())
+                .thumbnail(listingRequestDTO.getThumbnail())
                 .pitchingVideo(listingRequestDTO.getPitchingVideo())
                 .intention(listingRequestDTO.getIntention())
                 .businessStartDate(listingRequestDTO.getBusinessStartDate())
