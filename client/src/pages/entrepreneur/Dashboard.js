@@ -1,11 +1,90 @@
 import React,{useEffect,useState,useRef} from "react";
 import {AreaChart, Button, Calendar, Header, Popover} from "../webcomponent";
-import {faArrowDown, faArrowUp, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {faArrowDown, faArrowUp,faMoneyCheckDollar, faChevronLeft, faChevronRight} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {Avatar, List, ListItem, Typography} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
+import {
+    Card,
+    CardBody,
+    Timeline,
+    TimelineItem,
+    TimelineConnector,
+    TimelineHeader,
+    TimelineIcon,
+    TimelineBody,
+} from "@material-tailwind/react";
+import {CurrencyDollarIcon,UserIcon,BuildingOfficeIcon } from "@heroicons/react/24/solid";
+
 
 const Dashboard = () => {
+    const { get } = useAxiosMethods();
+    const [response, setResponse] = useState([]);
+    const [schedules, setSchedules] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+    const [listings, setListings] = useState([]);
+    const [completedListings, setCompletedListings] = useState([]);
+    const [selectedInvestor, setSelectedInvestor] = useState(null);
+    const {auth} = useAuth();
+    const id = auth.id;
+
+    useEffect(() => {
+        get(`/entrepreneurs/listingsCounter/${id}`,setResponse);
+    }, []);
+
+    useEffect(() => {
+        get(`/entrepreneurs/listingsInterests/${id}`,setListings);
+    }, []);
+
+    useEffect(() => {
+        get(`/entrepreneurs/completedListings/${id}`,setCompletedListings);
+    }, []);
+
+    //sort the listings according to the date and time
+    response.sort((a, b) => new Date(a.date) - new Date(b.date) || a.time - b.time);
+
+    //get top 5 listings  
+    const top5Listings = response.slice(0, 5);
+
+    useEffect(() => {
+        get(`/entrepreneurs/schedules/${id}`,setSchedules);
+    }, []);
+
+    const value = {};
+    const today = new Date();
+    const currentYear = today.getFullYear();
+    const currentMonth = today.getMonth();
+    const currentDay = today.getDate();
+
+    schedules.forEach(shedule => {
+        const scheduledate = shedule.date;
+        const scheduletime = shedule.time.toString();
+        const scheduleday = new Date(scheduledate).getDate();
+        const schedulemonth = new Date(scheduledate).getMonth();
+        const scheduleyear = new Date(scheduledate).getFullYear();
+        //create a date object with date as the key and meeting times as the array of values
+        if(scheduleyear === currentYear && schedulemonth === currentMonth){
+            if (!value[scheduleday]) {
+                value[scheduleday] = [];
+            }          
+            value[scheduleday].push(scheduletime);
+        }
+    });
+
+    const openPopup = (complain) => {
+        setSelectedInvestor(complain);
+        setShowPopup(true);
+    };
+    
+    // Function to close the popup
+    const closePopup = () => {
+    setSelectedInvestor(null);
+    setShowPopup(false);
+    };
+
+
     const date = new Date();
     const [year, setYear] = useState(date.getFullYear());
     const [Currentmonth, setMonth] = useState(date.getMonth());
@@ -30,54 +109,69 @@ const Dashboard = () => {
     }
     };
 
-    const value = [];
+    const sectors= [];
+    listings.forEach(element => {
+        sectors.push(element.sector);
+    });
+    
+    const sectorAmount=[];
+
+    //group the listings according to the sector and store the total amount of listings in each sector
+    sectors.forEach(sector => {
+        listings.forEach(element => {
+            if(element.sector===sector){
+                //convert amount to number
+                const amount = Number(element.amount);
+                if (!sectorAmount[sector]) {
+                    sectorAmount[sector] = 0;
+                }
+                sectorAmount[sector]=sectorAmount[sector]+amount;
+            }
+        });
+    });
+
+    const sectortotalAmount=[];
+    sectors.forEach(sector => {
+        sectortotalAmount.push(sectorAmount[sector]);
+    });
+
+    const completedSectors= [];
+    //for each sector find the total amount of completed listings
+    sectors.forEach(sector => {
+        completedListings.forEach(element => {
+            if(element.sector===sector){
+                //convert amount to number
+                const amount = Number(element.amount);
+                if (!completedSectors[sector]) {
+                    completedSectors[sector] = 0;
+                }
+                completedSectors[sector]=completedSectors[sector]+amount;
+            }else{
+                if (!completedSectors[sector]) {
+                    completedSectors[sector] = 0;
+                }
+            }
+        });
+    });
+
+    const completedSectortotalAmount=[];
+    sectors.forEach(sector => {
+        completedSectortotalAmount.push(completedSectors[sector]);
+    });
 
     const areaChart = {
         chart1: {
             series: [
                 {
-                    name: "Views", data: [10, 5, 8, 9, 5, 7], color: "#1a56db"
+                    name: "Required Amount", data: sectortotalAmount, color: "#fdba8c"
                 },
                 {
-                    name: "Interested", data: [0, 2, 0, 3, 1, 5], color: "#fdba8c"
+                    name: "Completed Amount", data: completedSectortotalAmount, color: "#a1d2ff"
                 }
             ],
-            categories: ['01 February', '02 February', '03 February', '04 February', '05 February', '06 February', '07 February']
+            categories: sectors
         },
     }
-
-    const interestedInvestors = [
-        {
-            name: "Bhasa Lanka",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: true
-        },
-        {
-            name: "Chris Perera",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: false
-        },
-        {
-            name: "Wishwa Lanka",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: true
-        },
-        {
-            name: "Pamith Welikala",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: false
-        },
-        {
-            name: "Nadeesha Epa",
-            date: "10 August 2023",
-            image: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-            counter: false
-        }
-    ]
 
     return (
         <Header active="Dashboard">
@@ -91,42 +185,16 @@ const Dashboard = () => {
                         </div>
                         <div className="flex items-center gap-[1rem]">
                             <div className="flex justify-between items-center">
-                                <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Views</p>
+                                <p className="text-base font-normal text-gray-500 dark:text-gray-400">Amount</p>
                                 <div
                                     className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">
-                                    12%
-                                    <FontAwesomeIcon icon={faArrowUp} className="ml-1"/>
-                                </div>
-                            </div>
-                            <div className="flex justify-between items-center">
-                                <p className="text-base font-normal text-gray-500 dark:text-gray-400"># Interests</p>
-                                <div
-                                    className="flex items-center px-2.5 py-0.5 text-base font-semibold text-red-500 dark:text-red-500 text-center">
-                                    3%
-                                    <FontAwesomeIcon icon={faArrowDown} className="ml-1"/>
+                             
+                                <FontAwesomeIcon icon={faMoneyCheckDollar}/>
                                 </div>
                             </div>
                         </div>
                     </div>
                         <AreaChart series={areaChart.chart1.series} categories={areaChart.chart1.categories}/>
-                    <div
-                        className="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
-                        <div className="flex justify-between items-center pt-5 w-full lg:w-[20rem]">
-                            <Popover handler="Last 7 days">
-                                <List className="p-0">
-                                    <ListItem>
-                                        Last 7 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last 30 Days
-                                    </ListItem>
-                                    <ListItem>
-                                        Last Month
-                                    </ListItem>
-                                </List>
-                            </Popover>
-                        </div>
-                    </div>
                 </div>
                 <div className="w-full flex flex-col lg:flex-row gap-[1rem]">
                     <div className="w-full lg:w-[65%] bg-white rounded-lg border-[1px] p-4 md:p-6">
@@ -150,7 +218,7 @@ const Dashboard = () => {
                             </div>
                             <div className="flex flex-col">
                                 {
-                                    interestedInvestors.map((investor, index) => (
+                                    top5Listings.map((investor, index) => (
                                         <div key={index}
                                              className="flex items-center py-[1rem] border-b-[1px] justify-between">
                                             <div className="flex items-center gap-4  w-[50%]">
@@ -159,19 +227,27 @@ const Dashboard = () => {
                                                     alt="avatar"
                                                 />
                                                 <div>
-                                                    <Typography variant="h6">{investor.name}</Typography>
+                                                    <Typography variant="h6">{investor.Investor}</Typography>
                                                     <Typography variant="small" color="gray"
                                                                 className="font-normal hidden lg:block">
                                                         {investor.date}
                                                     </Typography>
                                                 </div>
                                             </div>
-                                            <span
-                                                className={`hidden lg:inline-flex justify-center items-center p-2 text-sm ${investor.counter ? "text-label-purple-dark bg-label-purple-light" : "text-label-green-dark bg-label-green-light"} rounded-lg w-[15%] `}>{investor.counter ? "Counter" : "Interested"}</span>
+                                            {
+                                                investor.type==="Counter" ? (
+                                                    <span
+                                                        className={`hidden lg:inline-flex justify-center items-center p-2 text-sm text-label-purple-dark bg-label-purple-light rounded-lg w-[15%] `}>Counter</span>
+                                                ) : (
+                                                    <span
+                                                        className={`hidden lg:inline-flex justify-center items-center p-2 text-sm text-label-green-dark bg-label-green-light rounded-lg w-[15%] `}>Interested</span>
+                                                )
+                                            }
                                             <Button
                                                 variant="clear"
                                                 className="px-[0.75rem] py-[0.1rem] !border-none"
                                                 icon={"next"}
+                                                onClick={() => openPopup(investor)}
                                             >
                                                 View More
                                             </Button>
@@ -220,6 +296,82 @@ const Dashboard = () => {
                     </div>
                 </div>
             </div>
+            {showPopup && selectedInvestor && (
+                <div className="popup-modal">
+                    <div className="popup-content">
+                        <Card className="mt-6 w-200">
+                                <div className="close-icon" onClick={closePopup}>
+                                            X
+                                </div>
+                                <CardBody>
+                                    <Typography variant="h5" color="blue-gray">
+                                        {selectedInvestor.type=="Counter" ? (
+                                            "You have a counter proposal for the project-"+selectedInvestor.title
+                                        ) : (
+                                            "You have a interest for the project-"+selectedInvestor.title
+                                        )}
+                                    </Typography>
+                                    <Typography color="gray" className="font-normal text-gray-600">
+                                        {selectedInvestor.date}
+                                    </Typography>
+                                </CardBody>
+                                <CardBody className="flex items-start">
+                                <div className="w-[32rem]">
+                                    <Timeline>
+                                        <TimelineItem>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <UserIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                                Investor name
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody className="pb-2">
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedInvestor.Investor}
+                                            </Typography>
+                                        </TimelineBody>
+                                        </TimelineItem>
+                                        <TimelineItem>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <BuildingOfficeIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Return equity presentage (%)
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody className="pb-2">
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedInvestor.equity}%
+                                            </Typography>
+                                        </TimelineBody>
+                                        </TimelineItem>
+                                        <TimelineItem>
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <CurrencyDollarIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Return profit presentage (%)
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody>
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedInvestor.profit}%
+                                            </Typography>
+                                        </TimelineBody>
+                                        </TimelineItem>
+                                    </Timeline>
+                                    </div>
+                                </CardBody>
+                        </Card>
+                    </div>    
+                </div>
+            )}
         </Header>
     )
 

@@ -92,7 +92,6 @@ public class InvestorController {
         }
         return ResponseEntity.ok(projects);
     }
-
     @GetMapping("/schedules/{id}")
     public ResponseEntity<List<Map<String,String>>> getMeetings(@PathVariable Integer id){
         List<Map<String,String>> meetings= investorService.getMeetings(id);
@@ -100,6 +99,15 @@ public class InvestorController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(meetings);
+    }
+
+    @GetMapping("/interestedListings/{id}")
+    public ResponseEntity<List<Map<String,String>>> getInterestedListings(@PathVariable Integer id){
+        List<Map<String,String>> interestedListings= investorService.getInterestedListings(id);
+        if(interestedListings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedListings);
     }
 
 }

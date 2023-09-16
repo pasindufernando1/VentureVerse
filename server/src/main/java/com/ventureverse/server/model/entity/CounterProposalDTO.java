@@ -25,6 +25,11 @@ public class CounterProposalDTO {
     private Integer amount;
     private Integer returnEquityPercentage;
     private Integer returnUnitProfitPercentage;
+    private Date date;
+
+    @ManyToOne
+    @JoinColumn(name = "listingId", referencedColumnName = "listingId")
+    private ListingDTO listingId;
 
     @ManyToOne
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")

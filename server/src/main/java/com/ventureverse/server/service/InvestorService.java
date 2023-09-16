@@ -16,13 +16,16 @@ public class InvestorService {
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
     private final ScheduleRepository scheduleRepository;
 
+    private final CounterProposalRepository counterProposalRepository;
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, ScheduleRepository scheduleRepository) {
+
+    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, ScheduleRepository scheduleRepository, CounterProposalRepository counterProposalRepository) {
         this.individualInvestorRepository = individualInvestorRepository;
         this.investorInterestedSectorRepository = investorInterestedSectorRepository;
         this.investorInterestedListingRepository = investorInterestedListingRepository;
         this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
         this.scheduleRepository = scheduleRepository;
+        this.counterProposalRepository = counterProposalRepository;
     }
 
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
@@ -154,6 +157,61 @@ public class InvestorService {
                     "time",meeting.getTime().toString()
             );
             userMap.add(user);
+        }
+        return userMap;
+    }
+
+    public List<Map<String, String>> getInterestedListings(Integer id) {
+        List<InvestorInterestedListingDTO> listings=investorInterestedListingRepository.findPendingListings(id);
+        List<CounterProposalDTO> proposals=counterProposalRepository.findAll();
+        List<InvestorInterestedListingDTO> completedListings=investorInterestedListingRepository.findByInvestorId(id);
+
+        //take completed listing ids to a list
+        List<Integer> completedListingIds = new ArrayList<>();
+        for(InvestorInterestedListingDTO completedListing : completedListings){
+            completedListingIds.add(completedListing.getId().getListingId().getListingId());
+        }
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for(InvestorInterestedListingDTO listing:listings) {
+            float equity=0;
+            float profit=0;
+            if(listing.getReturnEquityPercentage()!=null){
+                equity=listing.getReturnEquityPercentage();
+            }
+            if(listing.getReturnUnitProfitPercentage()!=null){
+                profit=listing.getReturnUnitProfitPercentage();
+            }
+            Map<String, String> user = Map.of(
+                    "Entrepreneur", listing.getId().getListingId().getEntrepreneurId().getFirstname()+" "+listing.getId().getListingId().getEntrepreneurId().getLastname(),
+                    "amount", listing.getId().getListingId().getExpectedAmount().toString(),
+                    "type","Interested",
+                    "equity",String.valueOf(equity),
+                    "profit",String.valueOf(profit),
+                    "date",listing.getInterestedDate().toString()
+            );
+            userMap.add(user);
+        }
+        for(CounterProposalDTO proposal:proposals) {
+            if(!completedListingIds.contains(proposal.getListingId().getListingId())){
+                float equity=0;
+                float profit=0;
+                if(proposal.getReturnEquityPercentage()!=null){
+                    equity=proposal.getReturnEquityPercentage();
+                }
+                if(proposal.getReturnUnitProfitPercentage()!=null){
+                    profit=proposal.getReturnUnitProfitPercentage();
+                }
+                Map<String, String> user = Map.of(
+                        "Entrepreneur", proposal.getEntrepreneurId().getFirstname() + " " + proposal.getEntrepreneurId().getLastname(),
+                        "amount", proposal.getAmount().toString(),
+                        "type", "Counter",
+                        "equity", String.valueOf(equity),
+                        "profit", String.valueOf(profit),
+                        "date", proposal.getDate().toString()
+                );
+                userMap.add(user);
+            }
         }
         return userMap;
     }

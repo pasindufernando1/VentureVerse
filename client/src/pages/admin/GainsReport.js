@@ -170,8 +170,9 @@ const GainsReport = () => {
                         <div className="flex justify-between items-center">
                             <p className="text-base font-normal text-gray-800 dark:text-gray-400">Income</p>
                         </div>
-                        <div>
-                            <FontAwesomeIcon icon={faMoneyCheckDollar}/>
+                        <div
+                            className="flex items-center px-2.5 py-0.5 text-base font-semibold text-green-500 dark:text-green-500 text-center">   
+                        <FontAwesomeIcon icon={faMoneyCheckDollar}/>
                         </div>
                     </div>
                     <BarChart data={barchart.chart1}/>
