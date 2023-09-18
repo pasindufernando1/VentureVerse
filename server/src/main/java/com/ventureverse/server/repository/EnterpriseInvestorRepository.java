@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseInvestorDTO, Integer> {
+public interface
+EnterpriseInvestorRepository extends JpaRepository<EnterpriseInvestorDTO, Integer> {
 //    Functtion to get the last inserted id
     @Query(value = "SELECT MAX(enterpriseinvestor_id) FROM enterprise_investor", nativeQuery = true)
     Integer getLastInsertedId();
@@ -21,4 +22,11 @@ public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseIn
             "SELECT :investor, :sectorId", nativeQuery = true)
     int saveInvestorSector(@Param("investor") Integer investor, @Param("sectorId") Integer sectorId);
 
+    @Query("""
+    SELECT e
+    FROM EnterpriseInvestorDTO e 
+    WHERE e.id = :id
+    
+""")
+    EnterpriseInvestorDTO findByenterpriseinvestorId(int id);
 }

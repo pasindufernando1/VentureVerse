@@ -3,44 +3,20 @@ import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
 import { Rating } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 
 const EnterpreneurLeaderboard = () => {
+    const { get,put} = useAxiosMethods();
     const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
-    const [users, setCoAdmins] = useState([
-        {
-            name: "Tharuhsi Chethana",
-            status: "150",
-            Rating: "1",
-            email: "tharushi@gmail.com"
-        },
-        {
-            name: "Harini Jayawardana",
-            status: "80",
-            Rating: "2",
-            email: "harini@gmail.com"
-        },
-        {
-            name: "Shashini Jayawardana",
-            status: "70",
-            Rating: "3",
-            email: "shashi@gamil.com"
-        },
-        {
-            name: "Dilan Perera",
-            status: "50",
-            Rating: "4",
-            email: "dilan@gmail.com",
-        },
-        {
-            name: "Malindu Bandara",
-            status: "40",
-            Rating: "4",
-            email: "malindu@gmail.com"
-        },
-    ]);
+    const [response, setResponse] = useState([]);
+
+    useEffect(() => {
+        get("auth/EntrepreneurLeaderboard", setResponse);
+    }, []);
+
+    console.log(response);
+   
     return(
         <div className="">
         <Header active="Leaderboard">
@@ -87,8 +63,9 @@ const EnterpreneurLeaderboard = () => {
                         
                     </tr>
                     </thead>
+                    
                     <tbody>
-                        {users.map((user) => (
+                        {response.map((user, key=user[0]) => (
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row"
@@ -97,15 +74,15 @@ const EnterpreneurLeaderboard = () => {
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                                 alt="Jese"/>
                             <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user.name}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+                                <div className="text-[15px] font-semibold">{user[3]} {user[4]}</div>
+                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user[5]}</div>
                             </div>
                         </th>
                         <td className="px-12 py-3 text-sm justify-end">
                             <div className="flex items-center justify-center">
 
                                 <span className="text-gray-700 dark:text-gray-400">
-                                    {user.status}
+                                    {user[2]}
                                 </span>
                             </div>
                         </td>

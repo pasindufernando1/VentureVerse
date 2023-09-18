@@ -2,9 +2,7 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Complain;
 import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.AdminDTO;
-import com.ventureverse.server.model.entity.ComplainDTO;
-import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.DemoService;
@@ -74,6 +72,27 @@ public class DemoController {
        }
     }
 
+    @GetMapping("/EntrepreneurLeaderboard")
+    public List<Object[]> entrepreneurLeaderboard() {
+        List<Object[]> AllEnter = demoService.entrepreneurLeaderboard();
+       System.out.println(AllEnter);
+       // return ResponseEntity.ok("  done successfully");
+        return AllEnter;
+    }
+
+
+    @GetMapping("/InvestorLeaderboard")
+    public List<Object[]> InvestorLeaderboard() {
+        List<Object[]> AllObjects = demoService.investorLeaderboard();
+        System.out.println(AllObjects);
+        // return ResponseEntity.ok("  done successfully");
+        return AllObjects;
+    }
+
+
+
+
+    }
 
 
 
@@ -81,5 +100,9 @@ public class DemoController {
 
 
 
-}
+
+
+
+
+
 
