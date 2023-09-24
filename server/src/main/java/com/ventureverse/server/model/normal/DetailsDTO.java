@@ -1,5 +1,9 @@
 package com.ventureverse.server.model.normal;
 
+import com.ventureverse.server.model.entity.EntrepreneurDTO;
+import com.ventureverse.server.model.entity.InvestorDTO;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,6 +59,11 @@ public class DetailsDTO {
     private String businessRegDoc;
     private List<Integer> sectorId;
 
-    //Chat
-
+    //Schedule
+    private Integer meetingId;
+    private String title;
+    private String date;
+    private String time;
+    private Integer entrepreneurId;
+    private Integer investorId;
 }

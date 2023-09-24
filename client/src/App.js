@@ -46,6 +46,8 @@ import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 import AnalyticsInvestor from "./pages/investor/Analytics";
 import ProfitReport from "./pages/investor/ProfitReport";
 import SectorReport from "./pages/investor/SectorReport";
+import Schedules from "./pages/investor/Schedule";
+
 
 
 // Admin Pages
@@ -69,7 +71,7 @@ import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
 
 import {Routes, Route} from "react-router-dom";
-import Schedules from "./pages/investor/Schedule";
+
 
 function App() {
     return (

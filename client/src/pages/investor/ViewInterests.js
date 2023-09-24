@@ -1,6 +1,6 @@
 import { Avatar } from "@material-tailwind/react";
 import {Header, Button} from "../webcomponent";
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 import {useState} from "react";
 import DatetimePicker from 'react-datetime-picker';
 import {
@@ -16,6 +16,8 @@ import {
 
 
 function ViewInterests() {
+
+    const id =2;
 
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
@@ -50,7 +52,7 @@ function ViewInterests() {
             profitPerUnitExpected: "200",
             actions: "View"
         },
-        {
+        {   id:5,
             investorInterested: "Nadeesha Epa",
             amountOffered: "100000",
             equityExpected: "10",
@@ -127,11 +129,11 @@ function ViewInterests() {
                                                                         Start meeting now
                                                                     </ListItem>
                                                                 </a>
-                                                                <a href="Schedule.js" className="text-initial">
+
                                                                     <ListItem >
-                                                                        Schedule meeting
+                                                                        <NavLink to={`/investor/schedules/${id}`} >Schedule meeting</NavLink>
                                                                     </ListItem>
-                                                                </a>
+
                                                             </List>
                                                         </PopoverContent>
                                                     </Popover>

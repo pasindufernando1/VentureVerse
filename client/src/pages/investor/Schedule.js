@@ -1,38 +1,59 @@
 import {Header, Button, Input , Calendar} from "../webcomponent";
-import React, { useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import  FullCalendar  from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import Modal from "react-modal";
 import axios from '../../api/axios';
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+
 
 
 function Schedules() {
     const [events, setEvents] = useState([]);
     const [eventTitle, setEventTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
+    const [Date, setDate] = useState('');
+    const [Time, setTime] = useState('');
     const [showAddEventForm, setShowAddEventForm] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
 
+    const [response, setResponse] = useState(null);
+    const {auth} = useAuth();
+    const id = auth.id;
+    const {post,get} = useAxiosMethods();
+    useEffect(()=>{
+        get(`schedule/list/${id}`,setResponse);
+    },[] )
+    console.log(response)
+
+
+
+
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        if (eventTitle && startDate && endDate) {
+        if (eventTitle && Date && Time) {
             const newEvent = {
                 title: eventTitle,
-                start: startDate,
-                end: endDate,
+                date: Date,
+                time: Time,
+                investorId:id
+
+                
             };
             setEvents([...events, newEvent]);
 
-            // Clear the form
             setEventTitle('');
-            setStartDate('');
-            setEndDate('');
+            setDate('');
+            setTime('');
+
+           console.log(newEvent);
 
             //Sent event to controller
-            axios.post("/events", newEvent)
+           post(`/schedule/add/${newEvent.investorId}`, newEvent, setResponse);
+           console.log(response);
+           console.log(newEvent);
 
             // Hide the form after submission
             setShowAddEventForm(false);
@@ -69,20 +90,20 @@ function Schedules() {
 
                     />
                     <Input
-                        type="datetime-local"
-                        placeholder="Start Date"
-                        label = "start date"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
+                        type="date"
+                        placeholder="Date"
+                        label = "date"
+                        value={Date}
+                        onChange={(e) => setDate(e.target.value)}
 
                     />
                     <Input
                         // add custom calendar here
-                        type="datetime-local"
-                        placeholder="End Date"
-                        label="End date"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
+                        type="time"
+                        placeholder="Time"
+                        label="Time"
+                        value={Time}
+                        onChange={(e) => setTime(e.target.value)}
                     />
                     </div>
                     <Button type="submit">Add Event</Button>
