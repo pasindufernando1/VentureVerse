@@ -2,6 +2,8 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.exception.CustomExceptionHandler;
+import com.ventureverse.server.model.entity.EntrepreneurDTO;
+import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.entity.ScheduleDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
@@ -34,18 +36,18 @@ public class ScheduleService {
 
     }
 
-    public ResponseDTO addSchedule(Integer id, DetailsDTO scheduleDTO) {
+    public ResponseDTO addSchedule(Integer id, ScheduleDTO scheduleDTO) {
         try {
-
-            var investor = investorRepository.findById(scheduleDTO.getInvestorId()).orElseThrow(() -> new CustomErrorException("User Not Found"));
-
+            System.out.println(scheduleDTO);
+//            var investor = investorRepository.findById(scheduleDTO.getInvestorId()).orElseThrow(() -> new CustomErrorException("User Not Found"));
+//            InvestorDTO investor= investorRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
             var schedule = ScheduleDTO.builder()
                             .title(scheduleDTO.getTitle())
                             .time(scheduleDTO.getTime())
                             .date(scheduleDTO.getDate())
-                            .investorId(investor)
+                            .investorId(scheduleDTO.getInvestorId())
+                            .entrepreneurId(scheduleDTO.getEntrepreneurId())
                             .build();
-
             scheduleRepository.save(schedule);
             return new ResponseDTO("Schedule added successfully", "true");
         } catch (Exception e) {

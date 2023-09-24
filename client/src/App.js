@@ -136,7 +136,8 @@ function App() {
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
                         <Route path="/investor/sector/reports" element={<SectorReport />} />
-                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />      
+                        <Route path="//investor/schedules/:entrepreneur" element={<Schedules />} />         
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}

@@ -1,36 +1,67 @@
-import {Header, Button, Input , Calendar} from "../webcomponent";
-import React, {useEffect, useRef, useState} from 'react';
+import {Header, Button, Input} from "../webcomponent";
+import React, {useEffect, useState} from 'react';
 import  FullCalendar  from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-import Modal from "react-modal";
-import axios from '../../api/axios';
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import useAuth from "../../hooks/useAuth";
-
-
+import {
+    Card,
+    CardBody,
+    Typography,
+    Timeline,
+    TimelineItem,
+    TimelineConnector,
+    TimelineHeader,
+    TimelineIcon,
+    TimelineBody,
+} from "@material-tailwind/react";
+import {UserIcon,CalculatorIcon } from "@heroicons/react/24/solid";
+import { useParams } from 'react-router-dom';
 
 function Schedules() {
     const [events, setEvents] = useState([]);
     const [eventTitle, setEventTitle] = useState('');
     const [Date, setDate] = useState('');
     const [Time, setTime] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
     const [showAddEventForm, setShowAddEventForm] = useState(false);
     const [selectedEvent, setSelectedEvent] = useState(null);
-
+    const [schedules,setSchedules]=useState([]);
     const [response, setResponse] = useState(null);
     const {auth} = useAuth();
-    const id = auth.id;
+    const investorid = auth.id;
     const {post,get} = useAxiosMethods();
+
+    //get the id passed from the url
+    var {entrepreneur} = useParams();
+    
+    if(entrepreneur){
+        entrepreneur=entrepreneur;
+    }else{
+        entrepreneur=null;
+    }
+
+    console.log(entrepreneur);
+
     useEffect(()=>{
-        get(`schedule/list/${id}`,setResponse);
+        get(`schedule/list/${investorid}`,setSchedules);
     },[] )
-    console.log(response)
 
-
-
-
+    //format the data to be used in the calendar
+    useEffect(()=>{
+        let temp = [];
+        schedules.forEach((schedule)=>{
+            temp.push({
+                title: schedule.title+" at "+schedule.time,
+                date: schedule.date,
+                time: schedule.time
+            })
+        })
+        setEvents(temp);
+    },[schedules])
+    
     const handleFormSubmit = (e) => {
         e.preventDefault();
         if (eventTitle && Date && Time) {
@@ -38,23 +69,19 @@ function Schedules() {
                 title: eventTitle,
                 date: Date,
                 time: Time,
-                investorId:id
-
-                
+                investorId:{
+                    id: investorid
+                },
+                entrepreneurId:{
+                    id: entrepreneur
+                }
             };
             setEvents([...events, newEvent]);
-
             setEventTitle('');
             setDate('');
             setTime('');
-
-           console.log(newEvent);
-
             //Sent event to controller
-           post(`/schedule/add/${newEvent.investorId}`, newEvent, setResponse);
-           console.log(response);
-           console.log(newEvent);
-
+            post(`/schedule/add/${newEvent.investorId.id}`, newEvent, setResponse);
             // Hide the form after submission
             setShowAddEventForm(false);
         }
@@ -66,19 +93,19 @@ function Schedules() {
     };
 
     const handleEventClick = (info) => {
-        // Handle event click here, e.g., show event details
-        alert(`Event clicked: ${info.event.title}`);
-        // When an event is clicked, set the selected event state
+        setSelectedEvent(info.event);
+        setShowPopup(true);
     };
 
+    const closePopup = () => {
+        setShowPopup(false);
+    }
 
     return (
         <div>
             <Header>
-
             {/* Add Event Form */}
             {showAddEventForm && (
-
                 <form  className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleFormSubmit}>
                     <div className="mb-4 flex flex-col gap-6">
                         <h1>Add an Event</h1>
@@ -87,7 +114,6 @@ function Schedules() {
                         label = "Event Title"
                         value={eventTitle}
                         onChange={(e) => setEventTitle(e.target.value)}
-
                     />
                     <Input
                         type="date"
@@ -95,7 +121,6 @@ function Schedules() {
                         label = "date"
                         value={Date}
                         onChange={(e) => setDate(e.target.value)}
-
                     />
                     <Input
                         // add custom calendar here
@@ -117,15 +142,74 @@ function Schedules() {
                     initialView="dayGridMonth"
                     events={events}
                     dateClick={handleDateClick}
-                    eventClick={handleEventClick}
+                    eventClick={(eventInfo) => handleEventClick(eventInfo)}
+                    eventContent={(eventInfo) => (
+                        <div style={{ whiteSpace: 'normal' }}>
+                          {eventInfo.event.title}
+                        </div>
+                    )}
                 />
             </div>
-            </Header>
+            {showPopup && selectedEvent &&(
+            <div className="popup-modal">
+                <div className="popup-content">
+                    <Card className="mt-6 w-200">
+                            <div className="close-icon" onClick={closePopup}>
+                                        X
+                            </div>
+                            <CardBody>
+                                <Typography variant="h5" color="blue-gray">
+                                    Sheduling Details
+                                </Typography>
+                                <Typography color="gray" className="font-normal text-gray-600">
+                                   {selectedEvent.startStr}
+                                </Typography>
+                            </CardBody>
+                            <CardBody className="flex items-start">
+                            <div className="w-[32rem]">
+                                <Timeline>
+                                    <TimelineItem>
+                                    <TimelineConnector />
+                                    <TimelineHeader>
+                                        <TimelineIcon className="p-2">
+                                        <UserIcon className="h-4 w-4" />
+                                        </TimelineIcon>
+                                        <Typography variant="h6" color="blue-gray">
+                                            Title
+                                        </Typography>
+                                    </TimelineHeader>
+                                    <TimelineBody className="pb-2">
+                                        <Typography color="gary" className="font-normal text-gray-600">
+                                        {selectedEvent.title}
+                                        </Typography>
+                                    </TimelineBody>
+                                    </TimelineItem>
+                                    <TimelineItem>
+                                    <TimelineHeader>
+                                        <TimelineIcon className="p-2">
+                                        <CalculatorIcon className="h-4 w-4" />
+                                        </TimelineIcon>
+                                        <Typography variant="h6" color="blue-gray">
+                                         Date
+                                        </Typography>
+                                    </TimelineHeader>
+                                    <TimelineBody>
+                                        <Typography color="gary" className="font-normal text-gray-600">
+                                         {selectedEvent.startStr}
+                                        </Typography>
+                                    </TimelineBody>
+                                    </TimelineItem>
+                                </Timeline>
+                            </div>
+                            </CardBody>
+                    </Card>
+                </div>    
+            </div>
+        )}
+        </Header>
         </div>
     );
 }
-
-
 export default Schedules;
 
 

@@ -39,6 +39,7 @@ function ViewInterests() {
     //Array of objects with the following fields - Investor interested, Amount offered, Equity expected, Profit per unit expected, Actions
     const registrationRequests = [
         {
+            id:2153,
             investorInterested: "Chris Perera",
             amountOffered: "100000",
             equityExpected: "10",
@@ -46,14 +47,15 @@ function ViewInterests() {
             actions: "View"
         },
         {
+            id:2153,
             investorInterested: "Pamith Welikala",
             amountOffered: "200000",
             equityExpected: "20",
             profitPerUnitExpected: "200",
             actions: "View"
         },
-        {   id:5,
-            investorInterested: "Nadeesha Epa",
+        {   id:2153,
+            investorInterested: "Amanda Perera",
             amountOffered: "100000",
             equityExpected: "10",
             profitPerUnitExpected: "100",
@@ -129,9 +131,8 @@ function ViewInterests() {
                                                                         Start meeting now
                                                                     </ListItem>
                                                                 </a>
-
                                                                     <ListItem >
-                                                                        <NavLink to={`/investor/schedules/${id}`} >Schedule meeting</NavLink>
+                                                                        <NavLink to={`/investor/schedules/${request.id}`} >Schedule meeting</NavLink>
                                                                     </ListItem>
 
                                                             </List>

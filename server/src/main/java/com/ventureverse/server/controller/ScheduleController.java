@@ -23,7 +23,6 @@ public class ScheduleController {
     @GetMapping("/list/{id}")
     public List<ScheduleDTO> getAllSchedules(
             @PathVariable Integer id
-//            @RequestBody DetailsDTO scheduleDTO
     ) {
         List<ScheduleDTO> schedules = scheduleService.getAllSchedules(id);
         return schedules;
@@ -33,7 +32,7 @@ public class ScheduleController {
     @PostMapping("/add/{id}")
     public ResponseEntity<ResponseDTO> addSchedule(
             @PathVariable Integer id,
-            @RequestBody DetailsDTO scheduleDTO
+            @RequestBody ScheduleDTO scheduleDTO
     ) {
         return ResponseEntity.ok(scheduleService.addSchedule(id,scheduleDTO));
     }

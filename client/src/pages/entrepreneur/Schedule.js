@@ -33,6 +33,7 @@ function Schedule() {
 
     const handleDateClick = () => {
         // Show the Add Event form when a date is clicked
+        console.log("clicked");
         setShowAddEventForm(true);
     };
 
@@ -72,13 +73,16 @@ function Schedule() {
                         plugins={[dayGridPlugin]}
                         initialView="dayGridMonth"
                         events={events}
-                        dateClick={handleDateClick}
+                        dateClick={()=>handleDateClick}
                     />
                 </div>
             </Header>
         </div>
     );
 }
+export default Schedule;
+
+
 // function Schedule() {
 //
 //     return (
@@ -105,7 +109,3 @@ function Schedule() {
 //     );
 //
 // }
-
-export default Schedule;
-
-
