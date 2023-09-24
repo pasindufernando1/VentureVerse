@@ -43,8 +43,6 @@ function Schedules() {
         entrepreneur=null;
     }
 
-    console.log(entrepreneur);
-
     useEffect(()=>{
         get(`schedule/list/${investorid}`,setSchedules);
     },[] )
@@ -143,6 +141,8 @@ function Schedules() {
                     events={events}
                     dateClick={handleDateClick}
                     eventClick={(eventInfo) => handleEventClick(eventInfo)}
+                    eventBackgroundColor="#7339a1"
+                    eventBorderColor="#7339a1"
                     eventContent={(eventInfo) => (
                         <div style={{ whiteSpace: 'normal' }}>
                           {eventInfo.event.title}

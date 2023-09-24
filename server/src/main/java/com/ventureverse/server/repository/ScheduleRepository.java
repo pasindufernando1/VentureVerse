@@ -17,5 +17,12 @@ public interface ScheduleRepository extends JpaRepository<ScheduleDTO, Integer> 
     WHERE e.investorId =:id
 """)
    List<ScheduleDTO> findByInvestorId(InvestorDTO id);
+
+    @Query("""
+    SELECT e
+    FROM ScheduleDTO e
+    WHERE e.entrepreneurId.id =:entrepreneur
+""")
+    List<ScheduleDTO> findByEntrepreneurId(Integer entrepreneur);
 }
 

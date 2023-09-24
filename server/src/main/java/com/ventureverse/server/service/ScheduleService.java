@@ -38,9 +38,6 @@ public class ScheduleService {
 
     public ResponseDTO addSchedule(Integer id, ScheduleDTO scheduleDTO) {
         try {
-            System.out.println(scheduleDTO);
-//            var investor = investorRepository.findById(scheduleDTO.getInvestorId()).orElseThrow(() -> new CustomErrorException("User Not Found"));
-//            InvestorDTO investor= investorRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
             var schedule = ScheduleDTO.builder()
                             .title(scheduleDTO.getTitle())
                             .time(scheduleDTO.getTime())
@@ -56,4 +53,15 @@ public class ScheduleService {
     }
 
 
+    public List<ScheduleDTO> getAllSchedulesEntrepreneur(Integer id) {
+        List<ScheduleDTO> name= scheduleRepository.findByEntrepreneurId(id);
+        System.out.println(name);
+        if(name !=null){
+            return name;
+        }
+        else{
+            System.out.println("null");
+            return null;
+        }
+    }
 }

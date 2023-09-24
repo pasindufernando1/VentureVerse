@@ -37,4 +37,13 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.addSchedule(id,scheduleDTO));
     }
 
+    @GetMapping("/listEntrepreneur/{id}")
+    public List<ScheduleDTO> getAllSchedulesEntrepreneur(
+            @PathVariable Integer id
+    ) {
+        System.out.println("entrepreneur id: " + id);
+        List<ScheduleDTO> schedules = scheduleService.getAllSchedulesEntrepreneur(id);
+        return schedules;
+    }
+
 }
