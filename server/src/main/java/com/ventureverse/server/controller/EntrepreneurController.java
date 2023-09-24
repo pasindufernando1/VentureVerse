@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/entrepreneurs")
@@ -64,6 +65,15 @@ public class EntrepreneurController {
             @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
     ) {
         return ResponseEntity.ok(entrepreneurService.updateListing(id, investorInterestedListingDTO));
+    }
+
+    @GetMapping("/offers/{id}")
+    public ResponseEntity<List<Map<String, String>>> getOffers(@PathVariable Integer id) {
+        List<Map<String, String>> offers = entrepreneurService.getOffers(id);
+        if (offers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(offers);
     }
 
 }
