@@ -64,8 +64,9 @@ const Dashboard = () => {
         if(scheduleyear === currentYear && schedulemonth === currentMonth){
             if (!value[scheduleday]) {
                 value[scheduleday] = [];
-            }          
-            value[scheduleday].push(scheduletime);
+            }        
+            const scheduletitle = shedule.title+" at "+scheduletime;  
+            value[scheduleday].push(scheduletitle);
         }
     });
 

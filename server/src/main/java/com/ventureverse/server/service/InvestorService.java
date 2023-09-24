@@ -154,7 +154,8 @@ public class InvestorService {
         for (ScheduleDTO meeting:meetings) {
             Map<String, String> user = Map.of(
                     "date",meeting.getDate().toString(),
-                    "time",meeting.getTime().toString()
+                    "time",meeting.getTime().toString(),
+                    "title",meeting.getTitle()
             );
             userMap.add(user);
         }
