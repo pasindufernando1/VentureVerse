@@ -195,4 +195,62 @@ public class EntrepreneurService {
         }
         return listingMap;
     }
+
+    public List<Map<String, String>> getOffers(Integer id) {
+        List<InvestorInterestedListingDTO> listing=investor_interestedListingRepository.findByPendingListingId(id);
+        List<CounterProposalDTO> proposal=counterProposalRepository.findByListingId(id);
+
+        List<Map<String, String>> listingMap = new ArrayList<>();
+        for(InvestorInterestedListingDTO list:listing){
+            float equity=0;
+            float profit=0;
+            String investorName="";
+            if(list.getReturnEquityPercentage()!=null){
+                equity=list.getReturnEquityPercentage();
+            }
+            if(list.getReturnUnitProfitPercentage()!=null){
+                profit=list.getReturnUnitProfitPercentage();
+            }
+            Role userRole = list.getId().getInvestorId().getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                investorName=individualInvestorRepository.findById(list.getId().getInvestorId().getId()).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(list.getId().getInvestorId().getId()).orElse(null).getLastname();
+            }else {
+                investorName = enterpriseInvestorRepository.findById(list.getId().getInvestorId().getId()).orElse(null).getBusinessName();
+            }
+            Map<String, String> user = Map.of(
+                    "Investor", investorName,
+                    "amount", list.getId().getListingId().getExpectedAmount().toString(),
+                    "type","Interested",
+                    "equity",String.valueOf(equity),
+                    "profit",String.valueOf(profit)
+            );
+            listingMap.add(user);
+        }
+        for(CounterProposalDTO prop:proposal){
+            float equity=0;
+            float profit=0;
+            String investorName="";
+            if(prop.getReturnEquityPercentage()!=null){
+                equity=prop.getReturnEquityPercentage();
+            }
+            if(prop.getReturnUnitProfitPercentage()!=null){
+                profit=prop.getReturnUnitProfitPercentage();
+            }
+            Role userRole = prop.getInvestorId().getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                investorName=individualInvestorRepository.findById(prop.getInvestorId().getId()).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(prop.getInvestorId().getId()).orElse(null).getLastname();
+            }else {
+                investorName = enterpriseInvestorRepository.findById(prop.getInvestorId().getId()).orElse(null).getBusinessName();
+            }
+            Map<String, String> user = Map.of(
+                    "Investor", investorName,
+                    "amount", prop.getAmount().toString(),
+                    "type","Counter",
+                    "equity",String.valueOf(equity),
+                    "profit",String.valueOf(profit)
+            );
+            listingMap.add(user);
+        }
+        return listingMap;
+    }
 }

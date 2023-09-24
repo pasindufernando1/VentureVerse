@@ -13,4 +13,11 @@ public interface CounterProposalRepository extends JpaRepository<CounterProposal
             WHERE c.entrepreneurId.id = :id
             """)
     List<CounterProposalDTO> findByEntrepreneurId(Integer id);
+
+    @Query("""
+            SELECT c
+            FROM CounterProposalDTO c
+            WHERE c.listingId.listingId = :id
+            """)
+    List<CounterProposalDTO> findByListingId(Integer id);
 }

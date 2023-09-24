@@ -100,6 +100,15 @@ public class EntrepreneurController {
         return ResponseEntity.ok(completedListings);
     }
 
+    @GetMapping("/offers/{id}")
+    public ResponseEntity<List<Map<String, String>>> getOffers(@PathVariable Integer id) {
+        List<Map<String, String>> offers = entrepreneurService.getOffers(id);
+        if (offers.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(offers);
+    }
+
 
 }
 
