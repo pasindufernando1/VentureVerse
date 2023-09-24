@@ -17,7 +17,7 @@ import {
     TimelineIcon,
     TimelineBody,
 } from "@material-tailwind/react";
-import {UserIcon,CalculatorIcon } from "@heroicons/react/24/solid";
+import {UserIcon,ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
 import { useParams } from 'react-router-dom';
 
 function Schedules() {
@@ -38,7 +38,8 @@ function Schedules() {
     var {entrepreneur} = useParams();
     
     if(entrepreneur){
-        entrepreneur=entrepreneur;
+        //convert the string to a number
+        entrepreneur=parseInt(entrepreneur);
     }else{
         entrepreneur=null;
     }
@@ -79,6 +80,7 @@ function Schedules() {
             setDate('');
             setTime('');
             //Sent event to controller
+            console.log(newEvent);
             post(`/schedule/add/${newEvent.investorId.id}`, newEvent, setResponse);
             // Hide the form after submission
             setShowAddEventForm(false);
@@ -91,7 +93,8 @@ function Schedules() {
     };
 
     const handleEventClick = (info) => {
-        setSelectedEvent(info.event);
+        const event = schedules.filter((schedule) => schedule.date === info.event.startStr);
+        setSelectedEvent(event[0]);
         setShowPopup(true);
     };
 
@@ -159,45 +162,58 @@ function Schedules() {
                             </div>
                             <CardBody>
                                 <Typography variant="h5" color="blue-gray">
-                                    Sheduling Details
-                                </Typography>
-                                <Typography color="gray" className="font-normal text-gray-600">
-                                   {selectedEvent.startStr}
+                                    Sheduling Details-{selectedEvent.title}
                                 </Typography>
                             </CardBody>
                             <CardBody className="flex items-start">
                             <div className="w-[32rem]">
                                 <Timeline>
                                     <TimelineItem>
-                                    <TimelineConnector />
-                                    <TimelineHeader>
-                                        <TimelineIcon className="p-2">
-                                        <UserIcon className="h-4 w-4" />
-                                        </TimelineIcon>
-                                        <Typography variant="h6" color="blue-gray">
-                                            Title
-                                        </Typography>
-                                    </TimelineHeader>
-                                    <TimelineBody className="pb-2">
-                                        <Typography color="gary" className="font-normal text-gray-600">
-                                        {selectedEvent.title}
-                                        </Typography>
-                                    </TimelineBody>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <UserIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                                Entrepreneur Name
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody className="pb-2">
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.entrepreneurName}
+                                            </Typography>
+                                        </TimelineBody>
+                                    </TimelineItem>
+                                        <TimelineItem>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <CalendarIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Date
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody>
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.date}
+                                            </Typography>
+                                        </TimelineBody>
                                     </TimelineItem>
                                     <TimelineItem>
-                                    <TimelineHeader>
-                                        <TimelineIcon className="p-2">
-                                        <CalculatorIcon className="h-4 w-4" />
-                                        </TimelineIcon>
-                                        <Typography variant="h6" color="blue-gray">
-                                         Date
-                                        </Typography>
-                                    </TimelineHeader>
-                                    <TimelineBody>
-                                        <Typography color="gary" className="font-normal text-gray-600">
-                                         {selectedEvent.startStr}
-                                        </Typography>
-                                    </TimelineBody>
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <ClockIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Time
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody>
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.time}
+                                            </Typography>
+                                        </TimelineBody>
                                     </TimelineItem>
                                 </Timeline>
                             </div>
@@ -205,7 +221,7 @@ function Schedules() {
                     </Card>
                 </div>    
             </div>
-        )}
+            )}
         </Header>
         </div>
     );

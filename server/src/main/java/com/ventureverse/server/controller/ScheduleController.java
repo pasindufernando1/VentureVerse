@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -21,11 +22,14 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @GetMapping("/list/{id}")
-    public List<ScheduleDTO> getAllSchedules(
+    public ResponseEntity<List<Map<String, String>>> getAllSchedules(
             @PathVariable Integer id
     ) {
-        List<ScheduleDTO> schedules = scheduleService.getAllSchedules(id);
-        return schedules;
+        List<Map<String, String>> schedules = scheduleService.getAllSchedules(id);
+        if (schedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(schedules);
     }
 
 
@@ -38,12 +42,14 @@ public class ScheduleController {
     }
 
     @GetMapping("/listEntrepreneur/{id}")
-    public List<ScheduleDTO> getAllSchedulesEntrepreneur(
+    public ResponseEntity<List<Map<String, String>>> getAllSchedulesEntrepreneur(
             @PathVariable Integer id
     ) {
-        System.out.println("entrepreneur id: " + id);
-        List<ScheduleDTO> schedules = scheduleService.getAllSchedulesEntrepreneur(id);
-        return schedules;
-    }
+        List<Map<String, String>> schedules = scheduleService.getAllSchedulesEntrepreneur(id);
+        if (schedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
 
+        return ResponseEntity.ok(schedules);
+    }
 }
