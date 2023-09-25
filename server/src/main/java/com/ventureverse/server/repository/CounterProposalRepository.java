@@ -20,4 +20,6 @@ public interface CounterProposalRepository extends JpaRepository<CounterProposal
             WHERE c.listingId.listingId = :id
             """)
     List<CounterProposalDTO> findByListingId(Integer id);
+
+
 }

@@ -220,7 +220,14 @@ public class ListingController {
         return ResponseEntity.ok(listingService.updateDate(id, investorInterestedListingDTO));
     }
 
-
+    //Function to add counter offering
+    @PutMapping("/addCounterOffer/{id}")
+    public ResponseEntity<ResponseDTO> addCounterOffer(
+            @PathVariable("id") Integer id,
+            @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
+    ) {
+        return ResponseEntity.ok(listingService.addCounterOffer(id, investorInterestedListingDTO));
+    }
 
 
 }
