@@ -4,7 +4,7 @@ import { Button, Navbar, Footer } from "../webcomponent";
 function Jumbotron() {
     // do something to the image
     return (
-        <div className={'w-full bg-main-purple py-16 px-14'}>
+        <div className={'w-full bg-gradient-to-r from-main-purple to-white py-32 px-14'}>
             <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
                 <div className='flex flex-col justify-center'>
                     <div className="text-white">
@@ -12,7 +12,7 @@ function Jumbotron() {
                         <h4 className="mb-6 md:text-2xl sm:text-xl text-4xl font-semibold ">Unlocking Opportunities by Connecting dreams </h4>
                     </div>
                 </div>
-                <img className='w-[600px] mx-auto my-4' src="/assets/images/hero.png" alt='/' />
+                {/*<img className='w-[600px] mx-auto my-4' src="/assets/images/hero.png" alt='/' />*/}
             </div>
         </div>
     );
@@ -73,7 +73,7 @@ const OurTeam = () => {
             <div className='w-full py-[1rem] px-4 bg-white flex justify-center items-center  '>
                 <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8 justify-center items-center' >
                     {teamMembers.map((member, index) => (
-                        <div key={index} className="flex justify-center items-center flex-col w-48 h-auto rounded-xl bg-main-gray hover:scale-105 duration-300">
+                        <div key={index} className="flex justify-center items-center flex-col w-48 h-auto rounded-xl bg-main-purple hover:scale-105 duration-300">
                             <div className="relative overflow-hidden bg-cover bg-no-repeat">
                                 <img className="w-48 h-auto rounded-t-xl" src={"/assets/images/team/" + member.image} alt="/" />
                             </div>
