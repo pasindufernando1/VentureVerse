@@ -24,4 +24,11 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
             DESC LIMIT 1
             """)
     ListingDTO findLatestListing(EntrepreneurDTO id);
+
+    @Query("""
+            SELECT l.entrepreneurId
+            FROM ListingDTO l 
+            WHERE l.listingId = :id
+            """)
+    EntrepreneurDTO getEntrepreneur(Integer id);
 }

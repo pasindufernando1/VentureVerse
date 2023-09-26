@@ -22,11 +22,20 @@ import {useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
+import useAuth from "../../hooks/useAuth";
 
 
 function ViewListingFullInvestor() {
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
     const [open, setOpen] = React.useState(false);
+    const [response, setResponse] = useState(null);
+    const [response11, setResponse11] = useState(null);
+    const {id} = useParams();
+    const {get,post} = useAxiosMethods();
+    const [listing, setListing] = useState({});
+    const [videoUrl, setVideoUrl] = useState("");
+    const [disabled, setDisabled] = useState(true);
+    const {auth} = useAuth();
 
     const handleInterested = () => setOpen(!open);
     const submit =() =>{
@@ -34,43 +43,80 @@ function ViewListingFullInvestor() {
         setOpen(false);
     }
 
-    const {id} = useParams();
-    console.log(id);
-
-    const {get} = useAxiosMethods();
-    const [listing, setListing] = useState({});
-    const [videoUrl, setVideoUrl] = useState("");
-
     useEffect(() => {
         //Get the listing object related to the listingId
         get(`/entrepreneur/getListingFromListingId/${parseInt(id)}`, setListing);
     }, []);
-    console.log(listing);
+
     useEffect(() => {
         if (listing.pitchingVideo) {
             get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
         }
     }, [listing])
-    console.log(videoUrl)
 
     //Get the listing images
     const [listingImages, setListingImages] = useState([]);
     useEffect(() => {
         get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
     }, [listing])
-    console.log(listingImages);
 
     //Assign the images to an array to be used in the carousel
     const images = [];
     listingImages.map((image) => {
         images.push(image);
     }, [listingImages])
-    console.log(images);
 
     const businessStartDate = new Date(listing.businessStartDate);
     // Take the day month and the year only
     const businessStartDateString = businessStartDate.toDateString();
 
+    var listingId=parseInt(id);
+    var investorId=auth.id;
+
+    const [formData, setFormData] = useState({
+        amount: "",
+        returnEquityPercentage: "",
+        returnUnitProfitPercentage: "",
+        listingId:{
+            listingId:listingId
+        },
+        investorId:{
+            id:investorId
+        }
+    });
+
+    const formData2 = [];
+    formData2[0] = listingId;
+    formData2[1] = investorId;
+    formData2[2]=listing.returnEquityPercentage;
+    formData2[3]=listing.returnUnitProfitPercentage;
+
+    const handleWithCounterOffering = () => {
+        post(`/entrepreneur/counterProposal`, formData, setResponse11);
+        submit();
+    }
+
+    const handleWithoutCounterOffering = () => {
+        post(`/entrepreneur/addInterestedListing`, formData2, setResponse);
+        submit();
+    }
+
+    const[validateFormData,setValidateFormData]=useState({
+        amount: {"State": "", "Message": ""},
+        returnEquityPercentage: {"State": "", "Message": ""},
+        returnUnitProfitPercentage: {"State": "", "Message": ""},
+    });
+
+    useEffect(() => {
+            if(formData.amount){
+                if(formData.returnEquityPercentage || formData.returnUnitProfitPercentage){
+                    setDisabled(false);
+                }
+            }else{
+                setDisabled(true);
+            }
+        }
+        ,[formData]);
 
     return (
         <div>
@@ -413,37 +459,40 @@ function ViewListingFullInvestor() {
                 >
                     <DialogHeader className="text-main-purple justify-center">Add a counter-offering
                         <img src="/assets/images/handshake.png" alt="counter-offer" className="ml-2" />
-                        </DialogHeader>
+                    </DialogHeader>
                     <DialogBody className="justify-center">
                         <Card className="w-500 shadow-lg p-6 border-2 border-main-purple">
                             <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px]">
                                 I'll offer (Rs) :
-                                
                             </label>
                             <Input
                                 type="text"
                                 id="seek"
                                 className="w-full"
-                                
-                                
-                                
+                                required={true}
+                                value={formData.amount}
+                                onChange={(event) =>
+                                    setFormData({...formData, amount: event.target.value})
+                                }
                             />
                             <label htmlFor="seek" className="text-main-gray block mb-2 mt-5 text-[14px]">
                                 And willing to take up (Should select at least one option) :
-                                
+
                             </label>
                             <div className="flex items-center mb-3">
                                 <Input
                                     type="text"
                                     id="equityinput"
                                     className="w-full mr-2"
-                                    
+                                    value={formData.returnEquityPercentage}
+                                    onChange={(event) =>
+                                        setFormData({...formData, returnEquityPercentage: event.target.value})
+                                    }
                                 />
                                 <Checkbox
                                     label="On Equity"
                                     name="equitybox"
                                     id="equity"
-                                    
                                 />
                             </div>
                             <div className="flex items-center">
@@ -451,14 +500,15 @@ function ViewListingFullInvestor() {
                                     type="text"
                                     id="profitinput"
                                     className="w-full mr-2"
-                                    
+                                    value={formData.returnUnitProfitPercentage}
+                                    onChange={(event) =>
+                                        setFormData({...formData, returnUnitProfitPercentage: event.target.value})
+                                    }
                                 />
                                 <Checkbox
                                     label="Profit per unit"
                                     name="profitunit"
                                     id="profitunitpercentage"
-                                    
-
                                 />
                             </div>
                         </Card>
@@ -467,29 +517,34 @@ function ViewListingFullInvestor() {
                         <Button
                             variant="clear"
                             color="red"
-                            onClick={handleInterested}
+                            onClick={handleWithoutCounterOffering}
                             className="mr-1"
                         >
                             <span>Continue without counter-offering</span>
                         </Button>
-                        <Button variant="primary" color="green" onClick={submit}>
+                        <Button
+                            variant="primary"
+                            color="green"
+                            onClick={handleWithCounterOffering}
+                            disabled={disabled}
+                        >
                             <span>Continue</span>
                         </Button>
-                        
+
                     </DialogFooter>
                 </Dialog>
             </Header>
             <div>
-            {showsuccessNotification && (
-                <StatusPopUp
-                successTitle="Counter proposal added successfully!"
-                successMessage="You can contact the entrepreneur directly to discuss further."
-                redirectUrl="/investor/view-listing"
-                />
-            )}
+                {showsuccessNotification && (
+                    <StatusPopUp
+                        successTitle="Counter proposal added successfully!"
+                        successMessage="You can contact the entrepreneur directly to discuss further."
+                        redirectUrl="/investor/view-listing"
+                    />
+                )}
             </div>
         </div>
-        
+
 
 
     );

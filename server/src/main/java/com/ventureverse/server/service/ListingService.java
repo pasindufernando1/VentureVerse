@@ -6,8 +6,10 @@ import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ public class ListingService {
     private final SubscriptionRepository subscriptionRepository;
     private final ListingSubscriptionRepository listingSubscriptionRepository;
     private final Investor_InterestedListingRepository investor_interestedListingRepository;
+    private final CounterProposalRepository counterProposalRepository;
 
     public ResponseDTO addListing(HttpServletResponse response, ListingRequestDTO listingRequestDTO) {
         var entrepreneur = entrepreneurRepository.findById(listingRequestDTO.getEntrepreneurId()).orElseThrow();
@@ -146,4 +149,54 @@ public class ListingService {
     public List<ListingDTO> getAllListings() {
         return listingRepository.findAll();
     }
+
+    public ResponseDTO addInterestedListing(List<Integer> listingIds) {
+        var listingid= listingIds.get(0);
+        var investorid= listingIds.get(1);
+        var returnEquityPercentage= listingIds.get(2);
+        var returnUnitProfitPercentage= listingIds.get(3);
+
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(listingid);
+
+        InvestorDTO investorDTO = new InvestorDTO();
+        investorDTO.setId(investorid);
+
+        Date date = new Date();
+
+        InvestorInterestedListingDTO investorInterestedListingDTO = new InvestorInterestedListingDTO();
+        investorInterestedListingDTO.setId(new InvestorInterestedListingDTO.CompositeKey(investorDTO, listingDTO));
+        investorInterestedListingDTO.setInterestedDate(date);
+        investorInterestedListingDTO.setStatus("PENDING");
+        investorInterestedListingDTO.setReturnEquityPercentage(returnEquityPercentage);
+        investorInterestedListingDTO.setReturnUnitProfitPercentage(returnUnitProfitPercentage);
+
+        investor_interestedListingRepository.save(investorInterestedListingDTO);
+
+        if(investor_interestedListingRepository.findByListingId(listingid)!=null){
+            return GlobalService.response("Success","Interested listing added successfully");
+        }
+        else {
+            return GlobalService.response("Error", "Interested listing not added");
+        }
+    }
+
+    public ResponseDTO counterProposal(CounterProposalDTO counterProposalDTO) {
+        ListingDTO listingDTO = counterProposalDTO.getListingId();
+        EntrepreneurDTO EntrepreneurDTO = listingRepository.getEntrepreneur(listingDTO.getListingId());
+        Date date = new Date();
+
+        CounterProposalDTO counterProposalDTO1 = new CounterProposalDTO();
+        counterProposalDTO1.setListingId(listingDTO);
+        counterProposalDTO1.setEntrepreneurId(EntrepreneurDTO);
+        counterProposalDTO1.setInvestorId(counterProposalDTO.getInvestorId());
+        counterProposalDTO1.setDate(date);
+        counterProposalDTO1.setReturnEquityPercentage(counterProposalDTO.getReturnEquityPercentage());
+        counterProposalDTO1.setReturnUnitProfitPercentage(counterProposalDTO.getReturnUnitProfitPercentage());
+        counterProposalDTO1.setAmount(counterProposalDTO.getAmount());
+
+        counterProposalRepository.save(counterProposalDTO1);
+
+        return GlobalService.response("Success","Counter proposal added successfully");
+}
 }

@@ -1,9 +1,6 @@
 package com.ventureverse.server.controller;
 
-import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.ListingImagesDTO;
-import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ListingRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
@@ -219,6 +216,17 @@ public class ListingController {
     ) {
         return ResponseEntity.ok(listingService.updateDate(id, investorInterestedListingDTO));
     }
+
+    @PostMapping("/addInterestedListing")
+    public ResponseEntity<ResponseDTO> addInterestedListing(@RequestBody List<Integer> listingIds) {
+        System.out.println(listingIds);
+        return ResponseEntity.ok(listingService.addInterestedListing(listingIds));
+    }
+
+    @PostMapping("/counterProposal")
+    public ResponseEntity<ResponseDTO> counterProposal(@RequestBody CounterProposalDTO counterProposalDTO) {
+        return ResponseEntity.ok(listingService.counterProposal(counterProposalDTO));
+}
 
 
 
