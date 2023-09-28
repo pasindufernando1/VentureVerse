@@ -47,10 +47,15 @@ public class EntrepreneurController {
         return ResponseEntity.ok(entrepreneurService.addComplain(response, complainDTO));
     }
 
-//    @GetMapping("/getcount")
-//    public long getEntrepreneurCount (
-//
-//    ) {long entrepreneurCount = entrepreneurService.countEntrepreneurs(); return entrepreneurCount;}
+    //put mapping for updating entrepreneur profile
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateEntrepreneur(@RequestBody EntrepreneurDTO updatedEntrepreneur, @PathVariable Integer id) {
+        EntrepreneurDTO updatedEntrepreneurDTO = entrepreneurService.updateEntrepreneur(updatedEntrepreneur,id);
+        if (updatedEntrepreneurDTO != null) {
+            return ResponseEntity.ok("Updated");
+        }
+        return ResponseEntity.notFound().build();
+    }
 
 
 

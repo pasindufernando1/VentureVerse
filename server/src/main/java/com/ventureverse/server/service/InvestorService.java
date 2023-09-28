@@ -46,7 +46,8 @@ public class InvestorService {
             //save to backend
             return individualInvestorRepository.save(existingIndividualInvestor);
         }else{
-            return null;
+            //return the existing individual investor
+            return individualInvestorRepository.save(updatedInvestor);
         }
     }
 
