@@ -38,4 +38,5 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getSubscriptionType(id));
     }
 
+
 }

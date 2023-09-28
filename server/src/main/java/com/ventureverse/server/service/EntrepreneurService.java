@@ -46,4 +46,9 @@ public class EntrepreneurService {
         complainRepository.save(complain);
         return GlobalService.response("Success", "Complain added successfully");
     }
+
+    public long countEntrepreneurs() {
+        return entrepreneurRepository.count();
+    }
+
 }

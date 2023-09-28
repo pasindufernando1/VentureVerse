@@ -2,13 +2,12 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.InvestorDTO;
+import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,5 +54,13 @@ public class InvestorController {
         return ResponseEntity.ok(interestedSectors);
     }
 
-
+    @PutMapping("/update/{id}")
+    public ResponseEntity<String> updateIndividualInvestor(@RequestBody IndividualInvestorDTO updatedInvestor, @PathVariable Integer id) {
+        IndividualInvestorDTO updatedIndividualInvestor = investorService.updateIndividualInvestor(updatedInvestor,id);
+        if (updatedIndividualInvestor != null) {
+            return ResponseEntity.ok("Individual Investor Updated Successfully");
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }

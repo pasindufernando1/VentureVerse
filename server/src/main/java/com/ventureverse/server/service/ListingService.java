@@ -92,4 +92,8 @@ public class ListingService {
         var listing = listingRepository.findById(id).orElseThrow();
         return listingSubscriptionRepository.findByListingId(listing).orElseThrow();
     }
+
+    public long countListings() {
+        return listingRepository.count();
+    }
 }

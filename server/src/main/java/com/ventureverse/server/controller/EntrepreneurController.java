@@ -47,5 +47,12 @@ public class EntrepreneurController {
         return ResponseEntity.ok(entrepreneurService.addComplain(response, complainDTO));
     }
 
+//    @GetMapping("/getcount")
+//    public long getEntrepreneurCount (
+//
+//    ) {long entrepreneurCount = entrepreneurService.countEntrepreneurs(); return entrepreneurCount;}
+
+
+
 }
 

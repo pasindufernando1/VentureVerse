@@ -19,4 +19,7 @@ public interface EntrepreneurRepository extends JpaRepository<EntrepreneurDTO, I
 
     List<EntrepreneurDTO> findByApprovalStatus(Status ApprovalStatus);
 
+
+
 }
+
