@@ -125,19 +125,24 @@ public class DemoController {
     }
 
 
-    @PutMapping("/GivingStarRating/{id}")
-    public ResponseEntity<String>  GivingStarRating(
-            @RequestBody DetailsDTO starRating,
-            @PathVariable Integer id
-    ){
-        EntreprenenrStarRatingDTO Star = demoService.GivingStarRating(id,starRating);
-        if(Star !=null){
-            return ResponseEntity.ok("  done successfully");
-        }
-        else{
-            return ResponseEntity.ok("Invalid Id");
-        }
-    }
+//    @PutMapping("/GivingStarRating")
+//    public ResponseEntity<String>  GivingStarRating(
+//            @RequestBody EntreprenenrStarRatingDTO starRating
+//       //     @PathVariable Integer id
+//    ){
+//        EntreprenenrStarRatingDTO Star = demoService.GivingStarRating(starRating);
+//
+//        if(Star !=null){
+//            return ResponseEntity.ok("  done successfully");
+//        }
+//        else{
+//            return ResponseEntity.ok("Invalid Id");
+//        }
+//    }
+
+
+
+
 
 
 

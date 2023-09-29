@@ -27,7 +27,7 @@ public class DemoService {
     private final ListingRepository listingRepository;
     private final Investor_InterestedListingRepository  investorInterestedListingRepository;
     private final InvestorRepository investorRepository;
-    private final EntrepreneurStarRating entrepreneurStarRating;
+   // private final EntrepreneurStarRating entrepreneurStarRating;
 
     public List<AdminDTO> details(){
 
@@ -205,29 +205,27 @@ public class DemoService {
 
     }
 
-    public EntreprenenrStarRatingDTO GivingStarRating(Integer id, DetailsDTO starRating) {
-
-        var star = entrepreneurStarRating.findAllById()
-
-        AdminDTO getAdminOptional = adminRepository.findByAdminId(complainRequest.getAdminId());
-
-        if (complain.isPresent()) {
-
-            ComplainDTO existingComplain = complain.get();
-
-            existingComplain.setActionDescription(complainRequest.getActionDescription());
-            existingComplain.setAdminId(getAdminOptional);
-            existingComplain.setComplainType(Complain.SOLVED);
-
-            return complainRepository.save(existingComplain);
-        }
-        else
-        {
-            return null;
-        }
-
-
-    }
+//    public EntreprenenrStarRatingDTO GivingStarRating(EntreprenenrStarRatingDTO starRating) {
+//        EntrepreneurDTO entId= starRating.getId().getEntrepreneurId();
+//        UserDTO userID = starRating.getId().getId();
+//
+//
+//        EntreprenenrStarRatingDTO star = entrepreneurStarRating.findById(entId,userID);
+//
+////        AdminDTO getAdminOptional = adminRepository.findByAdminId(complainRequest.getAdminId());
+//
+//        if (star.isPresent()) {
+//            star.setStarRating(starRating.starRating());
+//            return entrepreneurStarRating.save(star);
+//        }
+//        else
+//        {
+//            return entrepreneurStarRating.save(starRating);
+//
+//        }
+//
+//
+//    }
 
 //    public Integer getStarCount(Integer id) {
 //        EntrepreneurDTO  entrepreneur=

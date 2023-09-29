@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+
 @Data
 @Builder
 @NoArgsConstructor
@@ -19,6 +20,7 @@ public class EntreprenenrStarRatingDTO  implements Serializable  {
     @EmbeddedId
     private CompositeKey id;
     private Integer starRating;
+
 
     @Data
     @NoArgsConstructor

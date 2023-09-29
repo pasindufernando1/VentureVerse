@@ -9,13 +9,42 @@ import useAxiosMethods from "../../hooks/useAxiosMethods";
 const EnterpreneurLeaderboard = () => {
     const { get,put} = useAxiosMethods();
     const [rated, setRated] = React.useState(4);
-    const [response, setResponse] = useState([]);
+
+    const [response, setResponse] = useState(['']);
+    const [filteredList, setFilteredList] =useState([]);
 
     useEffect(() => {
         get("auth/EntrepreneurLeaderboard", setResponse);
+        get("auth/EntrepreneurLeaderboard", setFilteredList);
     }, []);
 
+
+
     console.log(response);
+
+    const filterBySearch = (event) => {
+        const query = event.target.value; // Convert query to lowercase
+        console.log(query);
+        if(query === ''){
+            setFilteredList(response);
+        }
+
+        else{
+        var updatedList = [...response];
+
+        updatedList = response.filter((user) => {
+            const firstName = `${user[3]}${user[4]}`.toLowerCase();
+            const queryLowerCase = query.toLowerCase();
+
+          return firstName.includes(queryLowerCase);
+
+        }); 
+        // Trigger render with updated values
+        setFilteredList(updatedList);
+        }
+      };
+
+
    
     return(
         <div className="">
@@ -39,9 +68,10 @@ const EnterpreneurLeaderboard = () => {
                             </div>
                             <input
                                 type="text"
-                                id="table-search-users"
                                 className="block p-2 pl-10 text-[15px]text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Search by name"
+                                id="search-box" 
+                                onChange={filterBySearch}
                             />
                         </div>
                     </div>
@@ -65,7 +95,7 @@ const EnterpreneurLeaderboard = () => {
                     </thead>
                     
                     <tbody>
-                        {response.map((user, key=user[0]) => (
+                        {filteredList.map((user, key=user[0]) => (
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         
                         <th scope="row"
