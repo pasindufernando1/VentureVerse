@@ -27,6 +27,7 @@ public class DemoService {
     private final ListingRepository listingRepository;
     private final Investor_InterestedListingRepository  investorInterestedListingRepository;
     private final InvestorRepository investorRepository;
+    private final EntrepreneurStarRating entrepreneurStarRating;
 
     public List<AdminDTO> details(){
 
@@ -170,4 +171,65 @@ public class DemoService {
 
         return investorsContainers;
     }
+
+    public List<ComplainDTO> InverstorViewComplains(UserDTO id) {
+        List<ComplainDTO> Complains = complainRepository.findByUserId(id);
+        List<ComplainDTO> filteredComplains = new ArrayList<>();
+
+        for (ComplainDTO complain : Complains) {
+            if (!(Complain.MARKED).equals(complain.getComplainType())) {
+                filteredComplains.add(complain);
+            }
+        }
+
+        return filteredComplains;
+    }
+
+    public ComplainDTO MarkedComplains(Integer id)  {
+
+        var complain=complainRepository.findById(id);
+
+        if (complain.isPresent()) {
+
+            ComplainDTO existingComplain = complain.get();
+
+            existingComplain.setComplainType(Complain.MARKED);
+           return complainRepository.save(existingComplain);
+        }
+        else{
+            return null;
+        }
+
+
+
+
+    }
+
+    public EntreprenenrStarRatingDTO GivingStarRating(Integer id, DetailsDTO starRating) {
+
+        var star = entrepreneurStarRating.findAllById()
+
+        AdminDTO getAdminOptional = adminRepository.findByAdminId(complainRequest.getAdminId());
+
+        if (complain.isPresent()) {
+
+            ComplainDTO existingComplain = complain.get();
+
+            existingComplain.setActionDescription(complainRequest.getActionDescription());
+            existingComplain.setAdminId(getAdminOptional);
+            existingComplain.setComplainType(Complain.SOLVED);
+
+            return complainRepository.save(existingComplain);
+        }
+        else
+        {
+            return null;
+        }
+
+
+    }
+
+//    public Integer getStarCount(Integer id) {
+//        EntrepreneurDTO  entrepreneur=
+//     }
 }

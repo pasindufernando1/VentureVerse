@@ -89,6 +89,62 @@ public class DemoController {
         return AllObjects;
     }
 
+//    @GetMapping("/EntrepreneurStarRating/{id}")
+//    public Integer EntrepreneurStarRating(
+//            @PathVariable Integer id
+//    ){
+//        Integer StarRatingCount = demoService.getStarCount(id);
+//        return StarRatingCount;
+//    }
+
+    @GetMapping("/PastComplains/{id}")
+    public List<ComplainDTO> InverstorViewComplains(
+            @PathVariable UserDTO id
+    ){
+        List<ComplainDTO> Complains = demoService.InverstorViewComplains(id);
+
+        return Complains;
+    }
+
+
+    @PutMapping("/MarkedComplains/{id}")
+    public ResponseEntity<String> MarkedComplains(
+            @PathVariable Integer id
+    ){
+        System.out.println("hi");
+        ComplainDTO MarkedComplains = demoService.MarkedComplains(id);
+
+        if(MarkedComplains !=null){
+            return ResponseEntity.ok("  done successfully");
+        }
+        else{
+            return ResponseEntity.ok("Invalid Id");
+        }
+
+
+    }
+
+
+    @PutMapping("/GivingStarRating/{id}")
+    public ResponseEntity<String>  GivingStarRating(
+            @RequestBody DetailsDTO starRating,
+            @PathVariable Integer id
+    ){
+        EntreprenenrStarRatingDTO Star = demoService.GivingStarRating(id,starRating);
+        if(Star !=null){
+            return ResponseEntity.ok("  done successfully");
+        }
+        else{
+            return ResponseEntity.ok("Invalid Id");
+        }
+    }
+
+
+
+
+
+
+
 
 
 
