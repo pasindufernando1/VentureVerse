@@ -2,16 +2,28 @@ import React, {useEffect, useState} from "react";
 import {Header} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {json, Link } from "react-router-dom";
 
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = React.useState(4);
     // create dummy array for table data 
-   const { get } = useAxiosMethods();
+   const { get,put } = useAxiosMethods();
     const [response, setResponse] = useState([]);
     useEffect(() => {
         get("/entrepreneurs/view", setResponse, true);
+        console.log(response);
 
     }, []);
+    const handleBan = () => {
+        put(`/entrepreneurs/ban/${response[0].id}`,"" , true);
+        if(response.status == 200){
+            alert("ok");
+        }
+        else{
+            alert("not ok");
+        }
+
+    }
 
     console.log(response);
 
@@ -133,11 +145,14 @@ const ViewEntrepreneurs = () => {
                                     d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
                                 <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+
                             </svg>
+                            <Link to={`/admin/update-enterpreneur/${user.id} ` }>
                             Update
+                            </Link>
                         </button>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

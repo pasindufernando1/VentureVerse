@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class EntrepreneurService {
@@ -48,5 +49,50 @@ public class EntrepreneurService {
     }
     public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
         return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
+    }
+
+
+
+    public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
+        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
+
+        if (existingEntrepreneurOptional.isPresent()) {
+            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
+
+            // Update the fields of the existing entrepreneur with data from updatedEntrepreneur
+            existingEntrepreneur.setFirstname(updatedEntrepreneur.getFirstname());
+            existingEntrepreneur.setLastname(updatedEntrepreneur.getLastname());
+            existingEntrepreneur.setEmail(updatedEntrepreneur.getEmail());
+            existingEntrepreneur.setNic(updatedEntrepreneur.getNic());
+            existingEntrepreneur.setContactNumber(updatedEntrepreneur.getContactNumber());
+            existingEntrepreneur.setBusinessName(updatedEntrepreneur.getBusinessName());
+            existingEntrepreneur.setBusinessEmail(updatedEntrepreneur.getBusinessEmail());
+
+            // Save the updated existing entrepreneur to the repository
+            entrepreneurRepository.save(existingEntrepreneur);
+
+            // Return the updated entrepreneur
+            return existingEntrepreneur;
+        } else {
+            return null; // Or you can throw an exception indicating that the entrepreneur with the given ID was not found
+        }
+    }
+
+
+    public EntrepreneurDTO banEntrepreneur(Integer id) {
+        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
+
+        if (existingEntrepreneurOptional.isPresent()) {
+            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
+
+            existingEntrepreneur.setApprovalStatus(Status.PENDING);
+
+            // You can update other fields here if needed...
+
+            // Save the updated entrepreneur entity back to the database
+            return entrepreneurRepository.save(existingEntrepreneur);
+        } else {
+            return null; // You can also throw an exception indicating that the entrepreneur with the given ID was not found
+        }
     }
 }

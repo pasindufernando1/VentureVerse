@@ -7,10 +7,7 @@ import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ import java.util.List;
 public class InvestorController {
 
     private final InvestorService investorService;
+
 
     @GetMapping("/pending")
     public ResponseEntity<List<IndividualInvestorDTO>> getPendingUsers() {
@@ -54,12 +52,42 @@ public class InvestorController {
         return ResponseEntity.ok(individualInvestors);
 
     }
-//    @GetMapping("/EnterpriseInvestor/view")
-//    public ResponseEntity<List<EnterpriseInvestorDTO>> getAllEnterpriseInvestors() {
-//        List<EnterpriseInvestorDTO> enterpriseInvestors = investorService.getAllEnterpriseInvestors();
-//        System.out.println(enterpriseInvestors);
-//        return ResponseEntity.ok(enterpriseInvestors);
-//
-//    }
+    @GetMapping("/EnterpriseInvestor/view")
+    public ResponseEntity<List<EnterpriseInvestorDTO>> getAllEnterpriseInvestors() {
+        List<EnterpriseInvestorDTO> enterpriseInvestors = investorService.getAllEnterpriseInvestors();
+        System.out.println(enterpriseInvestors);
+        return ResponseEntity.ok(enterpriseInvestors);
+
+    }
+    @GetMapping("/IndividualInvestor/view/{id}")
+    public ResponseEntity<IndividualInvestorDTO> getIndividualInvestorById(@PathVariable Integer id) {
+        IndividualInvestorDTO individualInvestor = investorService.getIndividualInvestorById(id);
+        System.out.println(individualInvestor);
+        return ResponseEntity.ok(individualInvestor);
+
+    }
+
+    @PutMapping("/IndividualInvestor/update/{id}")
+    public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestor(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
+        IndividualInvestorDTO individualInvestor = investorService.updateIndividualInvestor(updatedIndividualInvestor, id);
+        System.out.println(individualInvestor);
+        return ResponseEntity.ok(individualInvestor);
+
+    }
+    @GetMapping("EnterpriseInvestor/view/{id}")
+        public ResponseEntity<EnterpriseInvestorDTO> getEnterpriseInvestorById(@PathVariable Integer id) {
+            EnterpriseInvestorDTO enterpriseInvestor = investorService.getEnterpriseInvestorById(id);
+            System.out.println(enterpriseInvestor);
+            return ResponseEntity.ok(enterpriseInvestor);
+
+        }
+@PutMapping("/EnterpriseInvestor/update/{id}")
+    public ResponseEntity<EnterpriseInvestorDTO> updateEnterpriseInvestor(@RequestBody EnterpriseInvestorDTO updatedEnterpriseInvestor, @PathVariable Integer id) {
+        EnterpriseInvestorDTO enterpriseInvestor = investorService.updateEnterpriseInvestor(updatedEnterpriseInvestor, id);
+        System.out.println(enterpriseInvestor);
+        return ResponseEntity.ok(enterpriseInvestor);
+
+    }
+
 
 }

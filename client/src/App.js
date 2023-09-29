@@ -70,6 +70,9 @@ import AdminViewComplains from "./pages/admin/ViewComplains";
 
 import {Routes, Route} from "react-router-dom";
 import UpdateCoAdmin from "./pages/admin/UpdateCoAdmin";
+import UpdateEnterpreneur from "./pages/admin/UpdateEnterpreneur";
+import UpdateIndividualInvestor from "./pages/admin/UpdateIndividualInvestor";
+import UpdateEnterpriseInvestor from "./pages/admin/UpdateEnterpriseInvestor";
 
 function App() {
     return (
@@ -118,6 +121,9 @@ function App() {
                         <Route path="/admin/interest/reports" element={<InterestReports/>}/>
                         <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
                         <Route path="/admin/update-co-admin/:id" element={<UpdateCoAdmin/>}/>
+                        <Route path="/admin/update-enterpreneur/:id" element={<UpdateEnterpreneur/>}/>
+                        <Route path="/admin/update-IndividualInvestor/:id" element={<UpdateIndividualInvestor/>}/>
+                        <Route path="/admin/update-enterpriseInvestor/:id" element={<UpdateEnterpriseInvestor/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}

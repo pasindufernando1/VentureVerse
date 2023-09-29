@@ -15,20 +15,20 @@ const passwordRegex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).{8,}$/;
 
 
 
-const UpdateCoAdmin = () => {
+const UpdateEnterpriseInvestor = () => {
     const { get } = useAxiosMethods();
     const{ put } = useAxiosMethods();
     const [response, setResponse] = useState([
 
     ]);
     const [response2 , setResponse2] = useState([
-        ]);
+    ]);
     const {id} = useParams();
 
 
     useEffect(() => {
 
-            get(`/coadmin/update/view/${id}`,setResponse, true);
+        get(`/investors/EnterpriseInvestor/view/${id}`,setResponse, true);
 
 
 
@@ -51,6 +51,7 @@ const UpdateCoAdmin = () => {
         mobile: "",
         password: "",
         confirmPassword: "",
+        businessName: "",
     });
 
     useEffect(() => {
@@ -68,6 +69,7 @@ const UpdateCoAdmin = () => {
             mobile: response.contactNumber,
             password: response.password,
             confirmPassword: response.password,
+            businessName: response.businessName,
         })
 
     }, [response]);
@@ -84,7 +86,8 @@ const UpdateCoAdmin = () => {
         gender: {"State":"", "Message":""},
         mobile: {"State":"", "Message":""},
         password: {"State":"", "Message":""},
-        confirmPassword: {"State":"", "Message":""}
+        confirmPassword: {"State":"", "Message":""},
+        businessName: {"State":"", "Message":""}
     });
 
     const[disabled, setDisabled] = useState(true);
@@ -153,6 +156,7 @@ const UpdateCoAdmin = () => {
         gender:formData.gender,
         contactNumber: formData.mobile,
         password: formData.password,
+        businessName: formData.businessName,
     }
     //
     // const handleNextClick = async () => {
@@ -172,12 +176,17 @@ const UpdateCoAdmin = () => {
         try {
             const response =  put(`/coadmin/update/${id}`, JSON.stringify(requestData), setResponse
             );
-            
+
+
+            if (response.status === 200) {
                 console.log('Co-admin updated successfully');
                 setShowSuccessNotification(true);
 
+            } else {
+                console.error('Update failed');
+                setShowSuccessNotification(false);
 
-
+            }
         } catch (error) {
             console.error('An error occurred: error', error);
             setShowSuccessNotification(false);
@@ -197,7 +206,8 @@ const UpdateCoAdmin = () => {
         "nic",
         "mobile",
         "password",
-        "confirmPassword"
+        "confirmPassword",
+        "businessName"
     ]);
 
     useEffect(() => {
@@ -215,29 +225,20 @@ const UpdateCoAdmin = () => {
                     <form className=" bg-white flex border-[1px] border-main-purple mt-[-0.5rem] h-auto lg:rounded-[1rem] lg:w-full">
                         <div className="text-gray-700 p-10 w-full">
                             <div className="Signup1">
-                                <h3 className="text-3xl text-main-purple self-center">Update Co-Admin</h3>
+                                <h3 className="text-3xl text-main-purple self-center">Update Enterprise Investor</h3>
                                 <div className="mt-6">
                                     <div className="row">
                                         <Input
                                             type="text"
-                                            label="First Name"
-                                            value={formData.firstname}
+                                            label="Business Name"
+                                            value={formData.businessName}
                                             onChange={(event)=>
-                                                setFormData({...formData, firstname: event.target.value})
+                                                setFormData({...formData, businessName: event.target.value})
                                             }
-                                            state={validateFormData.firstname}
+                                            state={validateFormData.businessName}
                                             required={true}
                                         />
-                                        <Input
-                                            type="text"
-                                            label="Last name"
-                                            value={formData.lastname}
-                                            onChange={(event)=>
-                                                setFormData({...formData, lastname: event.target.value})
-                                            }
-                                            state={validateFormData.lastname}
-                                            required={true}
-                                        />
+
                                     </div>
 
                                     <fieldset className='p-2 border-[1px] mb-[1rem] rounded-2xl border-light-purple'>
@@ -300,16 +301,7 @@ const UpdateCoAdmin = () => {
                                             state={validateFormData.email}
                                             required={true}
                                         />
-                                        <Input
-                                            type="text"
-                                            label="NIC"
-                                            value={formData.nic}
-                                            onChange={(event)=>
-                                                setFormData({...formData, nic: event.target.value})
-                                            }
-                                            state={validateFormData.nic}
-                                            required={true}
-                                        />
+
                                     </div>
 
                                     <div className="row">
@@ -381,4 +373,4 @@ const UpdateCoAdmin = () => {
 
 }
 
-export default UpdateCoAdmin;
+export default UpdateEnterpriseInvestor;

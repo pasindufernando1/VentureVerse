@@ -12,40 +12,11 @@ const ViewEntrepreneurs = () => {
     useEffect(() => {
         get("investors/EnterpriseInvestor/view", setResponse, true);
     }, []);
+    console.log(response);
+
 
     //create dummy array for table data
-    const [users, setCoAdmins] = useState([
-        {
-            name: "Tharuhsi Chethana",
-            status: "Online",
-            Rating: "5",
-            email: "tharushi@gmail.com"
-        },
-        {
-            name: "Harini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "harini@gmail.com"
-        },
-        {
-            name: "Shashini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "shashi@gamil.com"
-        },
-        {
-            name: "Dilan Perera",
-            status: "Offline",
-            Rating: "4",
-            email: "dilan@gmail.com",
-        },
-        {
-            name: "Malindu Bandara",
-            status: "Offline",
-            Rating: "4",
-            email: "malindu@gmail.com"
-        },
-    ]);
+
     return(
         <div>
         <Header active="Enterprise Investors">
@@ -124,7 +95,7 @@ const ViewEntrepreneurs = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
+                        {response.map((user) => (
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                         <td className="w-4 p-2">
                             <div className="flex items-center">
@@ -161,6 +132,7 @@ const ViewEntrepreneurs = () => {
                             </div>
                         </td>
                         <td className="px-4 py-2 text-right">
+                            <Link to={`/admin/update-enterpriseInvestor/${user.id}`}>
                         <button
                             className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
@@ -172,6 +144,7 @@ const ViewEntrepreneurs = () => {
                             </svg>
                             Update
                         </button>
+                            </Link>
                         <button
                             className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"

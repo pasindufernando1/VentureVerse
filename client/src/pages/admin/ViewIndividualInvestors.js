@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Header} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {Link} from "react-router-dom";
 
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = useState(4);
@@ -125,6 +126,7 @@ const ViewEntrepreneurs = () => {
                             </div>
                         </td>
                         <td className="px-4 py-2 text-right">
+                            <Link to={`/admin/update-IndividualInvestor/${user.id} ` }>
                         <button
                             className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
@@ -134,8 +136,10 @@ const ViewEntrepreneurs = () => {
                                 <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
                             </svg>
+
                             Update
                         </button>
+                        </Link>
                         <button
                             className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"

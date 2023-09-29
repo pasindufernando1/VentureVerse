@@ -3,7 +3,7 @@ import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
 
 import { Rating } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import {json, Link} from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 
@@ -19,9 +19,9 @@ const ViewCoAdmin = (props) => {
     }, []);
 
     const handleBan=  () => {
+        const status = JSON.stringify({ approval_status: "BANNED" });
 
-
-        put(`/coadmin/ban/${response[0].id}`, "Banned", setResponse);
+        put(`/coadmin/ban/${response[0].id}`, status, setResponse);
         if (response.status === 200) {
             console.log("Banned");
 

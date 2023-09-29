@@ -1,5 +1,6 @@
 package com.ventureverse.server.controller;
 import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.service.CoAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +51,7 @@ public class CoAdminController {
 
     @PutMapping("/ban/{id}")
     public ResponseEntity<String> banCoAdmin(@PathVariable Integer id) {
-        AdminDTO updatedCoAdmin = coAdminService.banCoAdmin(id);
+        UserDTO updatedCoAdmin = coAdminService.banCoAdmin(id);
         System.out.println(updatedCoAdmin);
 
         if (updatedCoAdmin != null) {

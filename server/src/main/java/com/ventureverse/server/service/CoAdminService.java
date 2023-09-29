@@ -2,7 +2,9 @@ package com.ventureverse.server.service;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.repository.AdminRepository;
+import com.ventureverse.server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,8 @@ import java.util.Optional;
     public class CoAdminService {
 
         private final AdminRepository adminRepository;
+        private final UserRepository userRepository;
+
 
 //        public List<AdminDTO> getAllCoAdmins() {
 //
@@ -40,6 +44,7 @@ import java.util.Optional;
                 existingCoAdmin.setEmail(updatedAdmin.getEmail());
                 existingCoAdmin.setNic(updatedAdmin.getNic());
                 existingCoAdmin.setContactNumber(updatedAdmin.getContactNumber());
+                existingCoAdmin.setTown(updatedAdmin.getTown());
                 
 
 
@@ -52,17 +57,18 @@ import java.util.Optional;
                 return null;
             }
         }
-        public AdminDTO banCoAdmin (Integer id) {
-            Optional<AdminDTO> existingCoAdminOptional = adminRepository.findById(id);
+        public UserDTO banCoAdmin (Integer id) {
+            Optional<UserDTO> existingUserOptional = userRepository.findById(id);
 
-            if (existingCoAdminOptional.isPresent()) {
-                AdminDTO existingCoAdmin = existingCoAdminOptional.get();
-                // Update the existing co-admin's fields with the values from updatedAdmin
-                existingCoAdmin.setApprovalStatus(Status.valueOf("Banned"));
+            if (existingUserOptional.isPresent()) {
+                UserDTO existingUser = existingUserOptional.get();
+
+                existingUser.setApprovalStatus(Status.BANNED);
+
                 // Update other fields as needed...
 
                 // Save the updated co-admin entity back to the database
-                return adminRepository.save(existingCoAdmin);
+                return userRepository.save(existingUser);
             } else {
                 return null;
             }
