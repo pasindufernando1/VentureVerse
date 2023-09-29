@@ -10,12 +10,14 @@ import {over} from "stompjs";
 import {Avatar, Typography} from "@material-tailwind/react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEllipsis, faImage, faPaperclip, faPaperPlane} from "@fortawesome/free-solid-svg-icons";
+import useData from "../../hooks/useData";
 
 let stompClient = null;
 
 const Inbox = () => {
 
     const {auth} = useAuth();
+    const {data, setData} = useData();
     const {get} = useAxiosMethods();
 
     const sender = auth.id;
@@ -28,8 +30,7 @@ const Inbox = () => {
 
     useEffect(() => {
 
-        console.log("Initial Use Effect");
-        console.log(chats);
+        console.log("1");
 
         let socket = new SockJS('http://localhost:8080/api/auth/ws');
         stompClient = over(socket);
@@ -37,11 +38,16 @@ const Inbox = () => {
 
         get(`/user/chat/${auth?.id}`, setRawData);
 
+
     }, []);
 
     useEffect(() => {
 
-        let rooms = []
+        if (rawData.length === 0) return;
+
+        console.log("2");
+
+        let room = []
         let roomOwner = null;
         let name = "";
 
@@ -59,17 +65,14 @@ const Inbox = () => {
                     name = roomOwner?.firstname + " " + roomOwner?.lastname;
                 }
 
-                rooms = [
-                    ...rooms,
-                    {
-                        id: roomOwner?.id,
-                        name: name,
-                        image: roomOwner?.profileImage,
-                        lastSeen: "Last Seen 12.20 A.M.",
-                        lastMessageDate: "Today",
-                        lastMessage: "Hello"
-                    }
-                ];
+                room = {
+                    id: roomOwner?.id,
+                    name: name,
+                    image: roomOwner?.profileImage,
+                    lastSeen: "Last Seen 12.20 A.M.",
+                    lastMessageDate: "Today",
+                    lastMessage: "Hello"
+                };
             }
 
             let dataPacket = {
@@ -82,9 +85,9 @@ const Inbox = () => {
 
             updateChats(roomOwner?.id, dataPacket);
 
-        }
+            setRooms((prev => [...prev, room]))
 
-        setRooms(rooms);
+        }
 
         return () => {
             console.log("Disconnecting");
@@ -93,6 +96,36 @@ const Inbox = () => {
     }, [rawData]);
 
     useEffect(() => {}, [chats]);
+
+    useEffect(() => {
+        if (data === null || rooms.length === 0) return;
+
+        console.log("4");
+
+        if (data?.id) {
+            console.log("Not Null", rooms);
+            if (isExist(rooms, data?.id)) {
+                console.log("Exist");
+                setCurrentRoom([data?.id, rooms.findIndex(room => room.id === data?.id)]);
+            } else {
+                let room = {
+                    id: data?.id,
+                    name: data?.name,
+                    image: data?.profileImage,
+                    lastSeen: "Last Seen 12.20 A.M.",
+                    lastMessageDate: "Today",
+                    lastMessage: "Hello"
+                }
+
+                setRooms([...rooms, room]);
+
+                updateChats( data?.id, {});
+
+                setData(null);
+            }
+
+        }
+    }, [rooms]);
 
     const onConnected = () => {
         stompClient.subscribe('/user/' + sender + '/private', onMessageReceived);
@@ -230,7 +263,8 @@ const Inbox = () => {
                                     <div className="w-full absolute">
                                         <div className="flex flex-col gap-[0.5rem] p-4">
                                             {
-                                                [...chats.get(currentRoom[0])].map((message, index) => (
+                                                //Skip if message from map is empty
+                                                [...chats.get(currentRoom[0])].filter((message) => Object.keys(message).length !== 0).map((message, index) => (
                                                     <div
                                                         className={`flex flex-row gap-4 items-center ${message.sender === sender ? "justify-end" : ""}`}
                                                         key={index}>

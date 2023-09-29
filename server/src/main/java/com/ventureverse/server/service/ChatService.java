@@ -34,6 +34,7 @@ public class ChatService {
                 .message(payLoadDTO.getMessage())
                 .timestamp(timestamp)
                 .type(Chat.MESSAGE)
+                .status(Chat.SENT)
                 .build();
 
         chatRepository.save(message);

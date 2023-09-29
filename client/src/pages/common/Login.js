@@ -9,7 +9,7 @@ import { Navbar, Footer, Carousel, Alert, Input, Button } from "../webcomponent"
 
 const Login = () => {
 
-    const {auth,setAuth} = useAuth();
+    const {setAuth} = useAuth();
 
     const navigate = useNavigate();
     const location = useLocation();

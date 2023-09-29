@@ -17,7 +17,6 @@ public class EmailService {
     private final static Logger LOGGER = LoggerFactory.getLogger(EmailService.class);
     private final JavaMailSender mailSender;
 
-//    @Override
     @Async
     public void sendEmail(String to, String subject, String text) {
 

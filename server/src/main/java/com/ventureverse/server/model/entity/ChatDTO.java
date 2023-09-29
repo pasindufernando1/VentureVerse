@@ -21,11 +21,11 @@ public class ChatDTO {
     @GeneratedValue
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "sender", referencedColumnName = "id")
     private UserDTO sender;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     @JoinColumn(name = "receiver", referencedColumnName = "id")
     private UserDTO receiver;
 
@@ -33,6 +33,9 @@ public class ChatDTO {
     private Timestamp timestamp;
 
     @Enumerated(EnumType.STRING)
-    private Chat type = Chat.MESSAGE;
+    private Chat type;
+
+    @Enumerated(EnumType.STRING)
+    private Chat status;
 
 }
