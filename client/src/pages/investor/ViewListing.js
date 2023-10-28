@@ -71,7 +71,7 @@ function ViewListing() {
         setListingSet(Object.values(listings));
     }, [listings]);
 
-    console.log(listingSet);
+    // console.log(listingSet);
 
     useEffect(() => {
         const listingPrint = listingSet.map((listing) => ({
@@ -82,7 +82,7 @@ function ViewListing() {
             profitPerUnitReturn: listing.returnUnitProfitPercentage,
             pitchVideo: listing.pitchingVideo,
             listingsectors: listing.sectors,
-            status: listing.stage,
+            stage: listing.stage,
         }));
         setPrintingcards(listingPrint);
         setFilteredPrintingcards(listingPrint);
@@ -142,7 +142,7 @@ function ViewListing() {
     }
 
     let counter= 0;
-    console.log(printingcards);
+    // console.log(printingcards);
 
     //Handle the category filters
     const handleCategoryFilter = (category) => {
@@ -152,7 +152,7 @@ function ViewListing() {
             setCategoryFilters([...categoryFilters, category]);
         }
     }
-    console.log("Category filters : "+categoryFilters);
+    // console.log("Category filters : "+categoryFilters);
 
     //Handle the status filters
     const handleStatusFilter = (status) => {
@@ -162,7 +162,7 @@ function ViewListing() {
             setStatusFilters([...statusFilters, status]);
         }
     }
-    console.log("Status filters : "+statusFilters);
+    // console.log("Status filters : "+statusFilters);
 
     //Handle the investment limit
     const handleLowerLimit = (lowerlimit) => {
@@ -173,7 +173,7 @@ function ViewListing() {
             setLowerLimit(lowerlimit);
         }
     }
-    console.log("Lower limit : "+lowerLimit);
+    // console.log("Lower limit : "+lowerLimit);
     const handleUpperLimit = (upperlimit) => {
         if(upperlimit === ""){
             setUpperLimit(Infinity);
@@ -183,26 +183,28 @@ function ViewListing() {
         }
 
     }
-    console.log("Upper limit : "+upperLimit);
+    // console.log("Upper limit : "+upperLimit);
 
     // Handle the filtering
     const handleFilter = () => {
         // Filter the listings
         const filteredListings = printingcards
             .filter((card) => {
+                console.log('Listing Sectors:', card.listingsectors);
+                console.log('Category Filters:', categoryFilters);
                 // Apply your category and status filters here
                 return (
                     (!categoryFilters.length || card.listingsectors.some(sector => categoryFilters.includes(sector))) &&
-                    (!statusFilters.length || card.status.some(status => statusFilters.includes(status)))
+                    (!statusFilters.length || statusFilters.includes(card.stage))
                 );
             })
             .filter((card) => {
                 // Apply your price filter here
-                return card.expectedAmount <= upperLimit && card.expectedAmount >= lowerLimit;
+                return (card.expectedAmount <= upperLimit && card.expectedAmount >= lowerLimit);
             });
 
         // Update state with the filtered listings
-        setPrintingcards(filteredListings);
+        setFilteredPrintingcards(filteredListings);
     }
 
     return (
@@ -210,7 +212,7 @@ function ViewListing() {
             <Header active="Listing">
                 <div className="flex flex-row">
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
-                        {printingcards.map((card) => (
+                        {filteredPrintingcards.map((card) => (
 
                             <Card className="w-96 mt-2">
                                 <CardHeader className="relative h-56 mt-5 w-50">
@@ -358,9 +360,9 @@ function ViewListing() {
                                 </Typography>
                                 <div className="flex flex-col space-y-[-1rem]">
                                     <Checkbox
-                                        label="Food & Bevarages"
-                                        name="Food & Bevarages"
-                                        onChange={() => handleCategoryFilter("Food & Bevarages")}
+                                        label="Food and Bevarages"
+                                        name="Food and Bevarages"
+                                        onChange={() => handleCategoryFilter("Food and Bevarages")}
                                     />
                                     <Checkbox
                                         label="Technology"
@@ -368,9 +370,9 @@ function ViewListing() {
                                         onChange={() => handleCategoryFilter("Technology")}
                                     />
                                     <Checkbox
-                                        label="App / Website"
-                                        name="App / Website"
-                                        onChange={() => handleCategoryFilter("App / Website")}
+                                        label="App/Website"
+                                        name="App/Website"
+                                        onChange={() => handleCategoryFilter("App/Website")}
                                     />
                                     <Checkbox
                                         label="Fitness"
@@ -380,7 +382,7 @@ function ViewListing() {
                                     <Checkbox
                                         label="Health / Wellness / Nutrition"
                                         name="Health / Wellness / Nutrition"
-                                        onChange={() => handleCategoryFilter("Health / Wellness / Nutrition")}
+                                        onChange={() => handleCategoryFilter("Health/Wellness/Nutrition")}
                                     />
                                     <Checkbox
                                         label="Sports"
@@ -395,17 +397,17 @@ function ViewListing() {
                                     <Checkbox
                                         label="Clothing / Fashion"
                                         name="Clothing / Fashion"
-                                        onChange={() => handleCategoryFilter("Clothing / Fashion")}
+                                        onChange={() => handleCategoryFilter("Clothing/Fashion")}
                                     />
                                     <Checkbox
                                         label="Toys / Games"
                                         name="Toys / Games"
-                                        onChange={() => handleCategoryFilter("Toys / Games")}
+                                        onChange={() => handleCategoryFilter("Toys/Games")}
                                     />
                                     <Checkbox
                                         label="Entertainment / Experiential"
                                         name="Entertainment / Experiential"
-                                        onChange={() => handleCategoryFilter("Entertainment / Experiential")}
+                                        onChange={() => handleCategoryFilter("Entertainment/Experiential")}
                                     />
                                     <Checkbox
                                         label="Pets"
@@ -430,7 +432,7 @@ function ViewListing() {
                                     <Checkbox
                                         label="Housewares / Home Design"
                                         name="Housewares / Home Design"
-                                        onChange={() => handleCategoryFilter("Housewares / Home Design")}
+                                        onChange={() => handleCategoryFilter("Housewares/Home Design")}
                                     />
                                 </div>
                             </div>
