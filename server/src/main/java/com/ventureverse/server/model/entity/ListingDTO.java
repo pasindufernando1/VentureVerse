@@ -61,4 +61,5 @@ public class ListingDTO {
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurId;
 
+
 }

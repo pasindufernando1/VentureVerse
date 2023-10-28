@@ -181,12 +181,12 @@ public class ListingController {
     }
 
     @GetMapping("/finalizeListing/{id}")
-    public ResponseEntity<InvestorInterestedListingDTO> finalizeListing(@PathVariable Integer id) {
-        InvestorInterestedListingDTO finalizedListing = listingService.finalizeListing(id);
-        if (finalizedListing == null) {
+    public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
+        if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(finalizedListing);
+        return ResponseEntity.ok(finalizedListings);
     }
 
     @GetMapping("/getpdf/{id}")
@@ -207,7 +207,23 @@ public class ListingController {
         return ResponseEntity.ok().body(pdfs);
     }
 
+    @GetMapping("/admingetPdf/{listingId}/{investorId}")
+    public ResponseEntity<List<byte[]>> admingetpdf(@PathVariable Integer listingId,@PathVariable Integer investorId) throws IOException {
+        List<byte[]> pdfs = new ArrayList<>();
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
 
+        String entrepreneurdoc=entrepreneurService.getadmindoc(listingId,investorId);
+        String investorDoc=investorService.getadmindoc(investorId,listingId);
+
+        Path entrepreneurPath = Paths.get(imageUploadPath,entrepreneurdoc);
+        Path investorPath = Paths.get(imageUploadPath,investorDoc);
+
+        pdfs.add(Files.readAllBytes(entrepreneurPath));
+        pdfs.add(Files.readAllBytes(investorPath));
+
+        return ResponseEntity.ok().body(pdfs);
+    }
 
     @PutMapping("/updateDate/{id}")
     public ResponseEntity<ResponseDTO> updateDate(
@@ -226,11 +242,6 @@ public class ListingController {
     @PostMapping("/counterProposal")
     public ResponseEntity<ResponseDTO> counterProposal(@RequestBody CounterProposalDTO counterProposalDTO) {
         return ResponseEntity.ok(listingService.counterProposal(counterProposalDTO));
-}
-
-
-
-
-
+    }
 
 }

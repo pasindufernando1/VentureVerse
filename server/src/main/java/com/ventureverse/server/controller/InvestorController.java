@@ -5,6 +5,7 @@ import com.ventureverse.server.model.entity.CounterProposalDTO;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.service.EntrepreneurService;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,6 +26,7 @@ import java.util.List;
 public class InvestorController {
 
     private final InvestorService investorService;
+    private final EntrepreneurService entrepreneurService;
 
     @GetMapping("/pending")
     public ResponseEntity<List<IndividualInvestorDTO>> getPendingUsers() {
@@ -100,4 +103,20 @@ public class InvestorController {
         return ResponseEntity.ok(investorService.updateListing(id, investorInterestedListingDTO));
     }
 
+    @GetMapping("/getInvestorPic/{id}")
+    public ResponseEntity<List<byte[]>> getInvestorPic(@PathVariable Integer id) throws IOException {
+        List<byte[]> img = new ArrayList<>();
+        String InvestorPic = entrepreneurService.getEntrepreneurPic(id);
+
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+        Path InvestorPath = Paths.get(imageUploadPath,InvestorPic);
+        img.add(Files.readAllBytes(InvestorPath));
+
+        if (InvestorPic.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(img);
+    }
 }

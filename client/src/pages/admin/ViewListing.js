@@ -522,6 +522,7 @@ function ViewListingInvestor() {
                                     label="Show more"
                                     icon="next"
                                 >
+                                
                                     <Link to="/admin/view-finalizedOffering">View Finalization</Link>
                                 </Button>
                             </CardFooter>

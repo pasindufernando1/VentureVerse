@@ -123,10 +123,6 @@ public class ListingService {
         return listing.getPitchingVideo();
     }
 
-    public InvestorInterestedListingDTO finalizeListing(Integer id) {
-        return investor_interestedListingRepository.findByListingId(id);
-    }
-
     public ResponseDTO updateDate(Integer id,InvestorInterestedListingDTO i) {
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(id);
@@ -199,4 +195,8 @@ public class ListingService {
 
         return GlobalService.response("Success","Counter proposal added successfully");
 }
+
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.finalizeListings(id);
+    }
 }

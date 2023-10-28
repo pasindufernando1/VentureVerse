@@ -79,4 +79,31 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             AND i.id.listingId.listingId = :id
             """)
     List<InvestorInterestedListingDTO> findByEntreprenuerListingId(Integer id);
+
+    @Query("""
+            SELECT i\s
+            FROM InvestorInterestedListingDTO i\s
+            WHERE i.id.listingId.listingId = :id
+            AND i.entrepreneurProofDocument IS NOT NULL
+            AND i.investorProofDocument IS NOT NULL
+            """)
+    List<InvestorInterestedListingDTO> finalizeListings(Integer id);
+
+    @Query("""
+            SELECT i.entrepreneurProofDocument
+            FROM InvestorInterestedListingDTO i\s
+            WHERE i.id.listingId.listingId = :listingId
+            AND i.id.investorId.id = :investorId
+            AND i.entrepreneurProofDocument IS NOT NULL
+            """)
+    String findByEntrepreneurFinalizeDoc(@Param("listingId") Integer listingId, @Param("investorId") Integer investorId);
+
+    @Query("""
+            SELECT i.investorProofDocument
+            FROM InvestorInterestedListingDTO i\s
+            WHERE i.id.listingId.listingId = :listingId
+            AND i.id.investorId.id = :investorId
+            AND i.investorProofDocument IS NOT NULL
+            """)
+    String findByListingInvestorId(@Param("listingId") Integer listingId, @Param("investorId") Integer investorId);
 }

@@ -26,8 +26,9 @@ public class EntrepreneurService {
     private final ScheduleRepository scheduleRepository;
     private final ListingRepository listingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
+    private final UserRepository userRepository;
 
-    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository) {
+    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, UserRepository userRepository) {
         this.entrepreneurRepository = entrepreneurRepository;
         this.complainRepository = complainRepository;
         this.investor_interestedListingRepository = investorInterestedListingRepository;
@@ -37,6 +38,7 @@ public class EntrepreneurService {
         this.scheduleRepository = scheduleRepository;
         this.listingRepository = listingRepository;
         this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
+        this.userRepository = userRepository;
     }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
@@ -143,4 +145,13 @@ public class EntrepreneurService {
         }
         return listingMap;
 }
+
+    public String getadmindoc(Integer listingId,Integer investorId) {
+       return investor_interestedListingRepository.findByEntrepreneurFinalizeDoc(listingId,investorId);
+    }
+
+
+    public String getEntrepreneurPic(Integer id) {
+        return userRepository.getimage(id);
+    }
 }

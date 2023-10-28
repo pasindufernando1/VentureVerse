@@ -11,6 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +80,21 @@ public class EntrepreneurController {
         return ResponseEntity.ok(offers);
     }
 
+    @GetMapping("/getEntrepreneurPic/{id}")
+    public ResponseEntity<List<byte[]>> getEntrepreneurPic(@PathVariable Integer id) throws IOException {
+        List<byte[]> img = new ArrayList<>();
+        String entrepreneurPic = entrepreneurService.getEntrepreneurPic(id);
+
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+        Path entrepreneurPath = Paths.get(imageUploadPath,entrepreneurPic);
+        img.add(Files.readAllBytes(entrepreneurPath));
+
+        if (entrepreneurPic.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(img);
+    }
 }
 
