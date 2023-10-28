@@ -14,6 +14,7 @@ import {Avatar} from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import React from "react";
 import { Slider } from "@material-tailwind/react";
+import {axiosPrivate} from "../../api/axios";
 
 
 
@@ -22,31 +23,70 @@ function ViewListing() {
     // Get request to get the listing details
     const {get} = useAxiosMethods();
     const [listings, setListing] = useState({});
+    const [listingsectors, setListingsectors] = useState({});
     const [printingcards, setPrintingcards] = useState([]);
+    const [filteredPrintingcards, setFilteredPrintingcards] = useState([]);
     const [thumbnail, setThumbnail] = useState({});
+
+    // Filter handling
+    const [categoryFilters, setCategoryFilters] = useState([]);
+    const [statusFilters, setStatusFilters] = useState([]);
+    const [lowerLimit, setLowerLimit] = useState(0);
+    // Set upper limit to infinity
+    const [upperLimit, setUpperLimit] = useState(Infinity);
+
 
     // Get the listings
     useEffect(() => {
         // Get all the listings
-        get("/entrepreneur/getAllListings", setListing);
-    }, []);
-    console.log(listings);
+        get("/entrepreneur/getAllListings", (listingsData) => {
+            // Create an array of promises for getting sectors for each listing
+            const sectorPromises = listingsData.map((listing) => {
+                return axiosPrivate.get(`/entrepreneur/getListingSectors/${listing.listingId}`)
+                    .then((response) => {
+                        listing.sectors = response.data;
+                        return listing;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching sectors for listing", listing.listingId, error);
+                        return listing; // Return the listing even if an error occurs
+                    });
+            });
 
+            // Wait for all sector requests to complete
+            Promise.all(sectorPromises)
+                .then((listingsWithSectors) => {
+                    // Now you have an array of listings with sectors
+                    setListing(listingsWithSectors);
+                })
+                .catch((error) => {
+                    console.error("Error fetching sectors for listings:", error);
+                });
+        });
+    }, []);
+    // console.log(listings);
     //Convert the listing object to an array
-    const listingSet = Object.values(listings);
+    const [listingSet, setListingSet] = useState([]);
+    useEffect(() => {
+        setListingSet(Object.values(listings));
+    }, [listings]);
+
+    console.log(listingSet);
 
     useEffect(() => {
         const listingPrint = listingSet.map((listing) => ({
-            id: listing.id,
             listingid: listing.listingId,
             businessName: listing.entrepreneurId.businessName,
             expectedAmount: listing.expectedAmount,
             equityReturn: listing.returnEquityPercentage,
             profitPerUnitReturn: listing.returnUnitProfitPercentage,
             pitchVideo: listing.pitchingVideo,
+            listingsectors: listing.sectors,
+            status: listing.stage,
         }));
         setPrintingcards(listingPrint);
-    }, [listings]);
+        setFilteredPrintingcards(listingPrint);
+    }, [listingSet]);
 
 
 
@@ -68,17 +108,8 @@ function ViewListing() {
         }
     }, [thumbnails]);
 
-
-
-
-
-
-
     //Get the videoURLs of the listings using an API call and store them in an array
     const [videoURLs, setVideoURLs] = useState([]);
-
-
-
     const [subView, setSubView] = useState(false);
     const [fullView, setFullView] = useState(true);
 
@@ -110,8 +141,70 @@ function ViewListing() {
         setVideoAvailable(false);
     }
 
-
     let counter= 0;
+    console.log(printingcards);
+
+    //Handle the category filters
+    const handleCategoryFilter = (category) => {
+        if (categoryFilters.includes(category)) {
+            setCategoryFilters(categoryFilters.filter((cat) => cat !== category));
+        } else {
+            setCategoryFilters([...categoryFilters, category]);
+        }
+    }
+    console.log("Category filters : "+categoryFilters);
+
+    //Handle the status filters
+    const handleStatusFilter = (status) => {
+        if (statusFilters.includes(status)) {
+            setStatusFilters(statusFilters.filter((stat) => stat !== status));
+        } else {
+            setStatusFilters([...statusFilters, status]);
+        }
+    }
+    console.log("Status filters : "+statusFilters);
+
+    //Handle the investment limit
+    const handleLowerLimit = (lowerlimit) => {
+        if (lowerlimit === "") {
+            setLowerLimit(0);
+        }
+        else {
+            setLowerLimit(lowerlimit);
+        }
+    }
+    console.log("Lower limit : "+lowerLimit);
+    const handleUpperLimit = (upperlimit) => {
+        if(upperlimit === ""){
+            setUpperLimit(Infinity);
+        }
+        else {
+            setUpperLimit(upperlimit);
+        }
+
+    }
+    console.log("Upper limit : "+upperLimit);
+
+    // Handle the filtering
+    const handleFilter = () => {
+        // Filter the listings
+        const filteredListings = printingcards
+            .filter((card) => {
+                // Apply your category and status filters here
+                return (
+                    (!categoryFilters.length || card.listingsectors.some(sector => categoryFilters.includes(sector))) &&
+                    (!statusFilters.length || card.status.some(status => statusFilters.includes(status)))
+                );
+            })
+            .filter((card) => {
+                // Apply your price filter here
+                return card.expectedAmount <= upperLimit && card.expectedAmount >= lowerLimit;
+            });
+
+        // Update state with the filtered listings
+        setPrintingcards(filteredListings);
+    }
+
     return (
 
             <Header active="Listing">
@@ -265,64 +358,79 @@ function ViewListing() {
                                 </Typography>
                                 <div className="flex flex-col space-y-[-1rem]">
                                     <Checkbox
-                                        label="Food & Beverage"
-                                        name="Food & Beverage"
+                                        label="Food & Bevarages"
+                                        name="Food & Bevarages"
+                                        onChange={() => handleCategoryFilter("Food & Bevarages")}
                                     />
                                     <Checkbox
                                         label="Technology"
                                         name="Technology"
+                                        onChange={() => handleCategoryFilter("Technology")}
                                     />
                                     <Checkbox
                                         label="App / Website"
                                         name="App / Website"
+                                        onChange={() => handleCategoryFilter("App / Website")}
                                     />
                                     <Checkbox
                                         label="Fitness"
                                         name="Fitness"
+                                        onChange={() => handleCategoryFilter("Fitness")}
                                     />
                                     <Checkbox
                                         label="Health / Wellness / Nutrition"
                                         name="Health / Wellness / Nutrition"
+                                        onChange={() => handleCategoryFilter("Health / Wellness / Nutrition")}
                                     />
                                     <Checkbox
                                         label="Sports"
                                         name="Sports"
+                                        onChange={() => handleCategoryFilter("Sports")}
                                     />
                                     <Checkbox
                                         label="Beauty"
                                         name="Beauty"
+                                        onChange={() => handleCategoryFilter("Beauty")}
                                     />
                                     <Checkbox
                                         label="Clothing / Fashion"
                                         name="Clothing / Fashion"
+                                        onChange={() => handleCategoryFilter("Clothing / Fashion")}
                                     />
                                     <Checkbox
                                         label="Toys / Games"
                                         name="Toys / Games"
+                                        onChange={() => handleCategoryFilter("Toys / Games")}
                                     />
                                     <Checkbox
                                         label="Entertainment / Experiential"
                                         name="Entertainment / Experiential"
+                                        onChange={() => handleCategoryFilter("Entertainment / Experiential")}
                                     />
                                     <Checkbox
                                         label="Pets"
                                         name="Pets"
+                                        onChange={() => handleCategoryFilter("Pets")}
                                     />
                                     <Checkbox
                                         label="Music"
                                         name="Music"
+                                        onChange={() => handleCategoryFilter("Music")}
                                     />
                                     <Checkbox
                                         label="Holiday"
                                         name="Holiday"
+                                        onChange={() => handleCategoryFilter("Holiday")}
                                     />
                                     <Checkbox
                                         label="Children"
                                         name="Children"
+                                        onChange={() => handleCategoryFilter("Children")}
                                     />
                                     <Checkbox
                                         label="Housewares / Home Design"
                                         name="Housewares / Home Design"
+                                        onChange={() => handleCategoryFilter("Housewares / Home Design")}
                                     />
                                 </div>
                             </div>
@@ -334,33 +442,46 @@ function ViewListing() {
                                     <Checkbox
                                         label="Shopping Live"
                                         name="Shopping Live"
+                                        onChange={() => handleStatusFilter("Shopping Live")}
                                     />
                                     <Checkbox
                                         label="Revenue"
                                         name="Revenue"
+                                        onChange={() => handleStatusFilter("Revenue")}
                                     />
                                     <Checkbox
                                         label="Expansion"
                                         name="Expansion"
+                                        onChange={() => handleStatusFilter("Expansion")}
                                     />
-                                    
+
                                 </div>
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full`}>
                                 <Typography variant="h7" className="mb-2 text-black font-extrabold	">
                                     Filter By Pricing
                                 </Typography>
-                                <Slider color="purple" defaultValue={50} />
-                                <div className="flex flex-row">
-                                    <div className="justify-left">Rs.0</div>
-                                    <div className="justify-center">-</div>
-                                    <div className="justify-end">Rs.1000</div>
-                                </div>
-                                
+                                <label htmlFor="last-name" className="text-main-gray block mb-2 text-[14px] ">
+                                    Minimum investment amount
+                                </label>
+                                <Input
+                                    type="number"
+                                    name="lowerlimit"
+                                    onChange={(e) => handleLowerLimit(e.target.value)}
+                                />
+                                <label htmlFor="last-name" className="text-main-gray block mb-2 text-[14px] ">
+                                    Maximum investment amount
+                                </label>
+                                <Input
+                                    type="number"
+                                    name="upperlimit"
+                                    onChange={(e) => handleUpperLimit(e.target.value)}
+                                />
+
+
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full mt-2`}>
-                            <Button variant="primary" label="Filter"/>
-
+                            <Button variant="primary" label="Filter" onClick={handleFilter}/>
                             </div>
                         </Card>
                     </div>

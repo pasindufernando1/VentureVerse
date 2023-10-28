@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.LogManager;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -147,7 +148,25 @@ public class ListingService {
     }
 
     public List<ListingDTO> getAllListings() {
-        return listingRepository.findAll();
+        var basicDetails = listingRepository.findAll();
+        //Print the list of listingDTO objects nicely
+//        for (ListingDTO listing : basicDetails) {
+//            System.out.println(listing);
+//        }
+//        //Get the industry sectors of each listing and append to the listingDTO object
+//        for (ListingDTO listing : basicDetails) {
+//            //Get the listing DTO object related to the listing id
+//            var listingSectors = listingIndustrySectorsRepository.findByListingId(listing);
+//            //Get the list of sector names
+//            var sectorNames = new ArrayList<String>();
+//            for (ListingIndustrySectorsDTO listingSector : listingSectors) {
+//                sectorNames.add(listingSector.getId().getSectorId().getName());
+//            }
+//            //Append the sector names to the listingDTO object as a list
+//            listing.setSectorNames(sectorNames);
+//        }
+
+        return basicDetails;
     }
 
     public ResponseDTO addInterestedListing(List<Integer> listingIds) {
@@ -198,5 +217,10 @@ public class ListingService {
         counterProposalRepository.save(counterProposalDTO1);
 
         return GlobalService.response("Success","Counter proposal added successfully");
-}
+    }
+
+
+    public List<String> getListingSectors(ListingDTO listing) {
+        return listingIndustrySectorsRepository.getListingSectors(listing);
+    }
 }

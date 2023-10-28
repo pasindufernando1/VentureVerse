@@ -68,6 +68,20 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getAllListings());
     }
 
+    //Get the listing sectors of the listing using the listing id
+    @GetMapping("/getListingSectors/{id}")
+    public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the listing sectors related to the listing
+        List<String> listingSectors = listingService.getListingSectors(listing);
+
+
+        System.out.println(listingSectors);
+        return ResponseEntity.ok(listingSectors);
+    }
+
     //Send the video relevent to the listing to the frontend using the listing id
     @GetMapping("/getVideo/{videoname}")
     public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {
