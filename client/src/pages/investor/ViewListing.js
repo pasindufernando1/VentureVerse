@@ -68,28 +68,7 @@ function ViewListing() {
         }
     }, [thumbnails]);
 
-    // // For each listing get the thumbnail. The thumbnails should be stored in an array and the calls should be made without using useEffect
-    // useEffect(() => {
-    //     async function getThumbnail(i) {
-    //         try {
-    //             await get(`/entrepreneur/getThumbnail/${listing[i].thumbnail}`, setThumbnail);
-    //         } catch (error) {
-    //             console.error(`Error loading thumbnail for listing ${i}:`, error);
-    //         }
-    //     }
-    //
-    //     // Create an array of promises for all thumbnail requests
-    //     const thumbnailPromises = listing.map((_, i) => getThumbnail(i));
-    //
-    //     // Wait for all thumbnail requests to complete
-    //     Promise.all(thumbnailPromises)
-    //         .then(() => {
-    //             thumbnails.push(thumbnail);
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error loading thumbnails:", error);
-    //         });
-    // }, [listing]);
+    
 
 
 
