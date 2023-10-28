@@ -50,6 +50,7 @@ public class InvestorService {
     }
 
     public List<Map<String, String>> getUserInterest() {
+        System.out.println("Inside getUserInterest");
         List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAll();
         List<Map<String, String>> userMap = new ArrayList<>();
 
@@ -67,6 +68,7 @@ public class InvestorService {
                 userMap.add(user);
             }
         }
+        System.out.println("userMap: " + userMap);
         return userMap;
     }
 
@@ -119,30 +121,51 @@ public class InvestorService {
 
     public List<Map<String, String>> getInterestSectors() {
         List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAll();
-        //create an array to store listing ids
-        List<Integer> listingIds = new ArrayList<>();
-        for(InvestorInterestedListingDTO interest : interests) {
-           if(interest.getFinalizedDate() != null){
-               listingIds.add(interest.getId().getListingId().getListingId());
-           }
-        }
-        //for each listing id get the sector name and the amount
-        List<Map<String, String>> userMap = new ArrayList<>();
-        for(Integer listingId : listingIds){
-            InvestorInterestedListingDTO interest = investorInterestedListingRepository.findByListingId(listingId);
-            int amount = interest.getAmountFinalized();
 
-            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
-            for(ListingIndustrySectorsDTO sector : sectors){
-               if(sector.getId().getListingId().getListingId() == listingId){
-                   Map<String, String> user = Map.of(
-                           "listingId", String.valueOf(listingId),
-                           "sectorName", sector.getId().getSectorId().getName(),
-                           "amount", String.valueOf(amount)
-                   );
-                   userMap.add(user);
-               }
+        Map<Integer, List<Integer>> listingInvestorMap = new HashMap<>();
+        for(InvestorInterestedListingDTO interest : interests){
+            int listingId = interest.getId().getListingId().getListingId();
+            int investorId = interest.getId().getInvestorId().getId();
+            if(listingInvestorMap.containsKey(listingId)){
+                List<Integer> investors = listingInvestorMap.get(listingId);
+                investors.add(investorId);
+                listingInvestorMap.put(listingId, investors);
+            }else{
+                List<Integer> investors = new ArrayList<>();
+                investors.add(investorId);
+                listingInvestorMap.put(listingId, investors);
             }
+        }
+
+        System.out.println("listingInvestorMap: " + listingInvestorMap);
+        List<Map<String, String>> userMap = new ArrayList<>();
+
+        for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
+            int listingId = entry.getKey();
+            List<Integer> investors = entry.getValue();
+
+            //for each investor get the sector
+            for(Integer investorId : investors){
+                //check whether that is completed or not
+                InvestorInterestedListingDTO interest = investorInterestedListingRepository.findByInvestorIdAndListingId(investorId, listingId);
+                if(interest.getFinalizedDate() == null){
+                    continue;
+                }
+                int amount = interest.getAmountFinalized();
+
+                List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
+                for(ListingIndustrySectorsDTO sector : sectors){
+                    if(sector.getId().getListingId().getListingId() == listingId){
+                        Map<String, String> user = Map.of(
+                                "listingId", String.valueOf(listingId),
+                                "sectorName", sector.getId().getSectorId().getName(),
+                                "amount", String.valueOf(amount)
+                        );
+                        userMap.add(user);
+                    }
+                }
+            }
+
         }
         return userMap;
     }
