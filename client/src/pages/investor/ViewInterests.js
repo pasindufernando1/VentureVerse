@@ -8,11 +8,16 @@ import useAuth from "../../hooks/useAuth";
 function ViewInterests() {
     const {get} = useAxiosMethods();
     const[response, setResponse] = useState([]);
+    const[counteroffers, setCounter] = useState([]);
     const {auth} = useAuth();
     const id = auth.id;
 
     useEffect(() => {
         get(`/investors/interestListings/${id}`,setResponse);
+    }, []);
+
+    useEffect(() => {
+        get(`/investors/getcounters/${id}`,setCounter);
     }, []);
 
     const registrationRequests = [];
@@ -31,11 +36,32 @@ function ViewInterests() {
             amountOffered: amountOffered1,
             equityExpected: equityExpected1,
             profitPerUnitExpected: profitPerUnitExpected1,
+            type:"Interested",
             actions: "View"
         })
-        
+
     });
-        
+
+    counteroffers.forEach(element => {
+        let listingid1=element.listingId.listingId;
+        let investorInterested1 = element.entrepreneurId.firstname+" "+element.entrepreneurId.lastname;
+        let amountOffered1 = element.amount;
+        let equityExpected1 = element.returnEquityPercentage;
+        let profitPerUnitExpected1 = element.returnUnitProfitPercentage;
+
+        //push the results into the registrationRequests array
+        registrationRequests.push({
+            id: listingid1,
+            investorInterested: investorInterested1,
+            amountOffered: amountOffered1,
+            equityExpected: equityExpected1,
+            profitPerUnitExpected: profitPerUnitExpected1,
+            type:"Counter Offer",
+            actions: "View"
+        })
+    });
+
+
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
             '/meeting/01/investor/' + new Date().toISOString(),
@@ -44,7 +70,7 @@ function ViewInterests() {
         if (conferenceWindow) {
             localStorage.setItem('meetngInProgress', 'true');
             conferenceWindow.focus();
-    }
+        }
     }
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
@@ -53,7 +79,7 @@ function ViewInterests() {
         <div>
             <Header active="Interests">
                 <main className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
-                      >
+                >
                     <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">
                         <div className="text-gray-700 p-[2rem] w-full">
                             <div className="row flex justify-between items-center">
@@ -80,6 +106,9 @@ function ViewInterests() {
                                             Profit per unit expected
                                         </th>
                                         <th scope="col" className="px-6 py-3">
+                                            Type
+                                        </th>
+                                        <th scope="col" className="px-6 py-3">
                                             Actions
                                         </th>
                                         <th scope="col" className="px-6 py-3">
@@ -92,25 +121,26 @@ function ViewInterests() {
                                         <tr className="font-medium text-gray-700 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                             key={request.id}>
                                             <td>
-                                                    <Avatar
-                                                        variant="circular"
-                                                        alt="tania andrew"
-                                                        className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
-                                                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"/>
-                                                    <span className="ml-2">{request.investorInterested}</span>
+                                                <Avatar
+                                                    variant="circular"
+                                                    alt="tania andrew"
+                                                    className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
+                                                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"/>
+                                                <span className="ml-2">{request.investorInterested}</span>
                                             </td>
                                             <td className="px-6 py-4">Rs. {request.amountOffered}</td>
                                             <td className="px-6 py-4">{request.equityExpected} %</td>
                                             <td className="px-6 py-4">{request.profitPerUnitExpected} %</td>
+                                            <td className="px-6 py-4">{request.type}</td>
                                             {/* Two icons to start messaging and start video call */}
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center space-x-4 text-sm">
                                                     <img src="/assets/images/chat.png" alt="View"
                                                          className="cursor-pointer"/>
-                                                    
-                                                        <img src="/assets/images/videocall.png" alt="View"
-                                                            className="cursor-pointer" onClick={handleVideoCAll}/>
-                                                </div>  
+
+                                                    <img src="/assets/images/videocall.png" alt="View"
+                                                         className="cursor-pointer" onClick={handleVideoCAll}/>
+                                                </div>
                                             </td>
                                             <td className="px-2 py-4">
                                                 <Button

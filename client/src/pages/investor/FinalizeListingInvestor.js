@@ -37,6 +37,12 @@ function FinalizeListingInvestor() {
         const { name, files } = event.target;
         setFormData({ ...formData, [name]: files[0]});
     };
+    const investor = auth.id;
+    const listing=parseInt(id);
+
+    const listing_data=[];
+    listing_data[0]=listing;
+    listing_data[1]=investor;
 
     const requestData = {
         amountFinalized: formData.amountOffered,
@@ -46,18 +52,20 @@ function FinalizeListingInvestor() {
         status: "Investor_Finalized"
     };
 
+    console.log(requestData);
+
     const finalizeListing = async () => {
         const formData = new FormData();
 
         const agreementName =  Date.now() + Math.random() + requestData.investorProofDocument.name;
         formData.append("agreement", requestData.investorProofDocument, agreementName);
         post("/investors/upload", formData, setResponse, true);
-              
+
         requestData.investorProofDocument = agreementName;
-        put(`/investors/finalizeListing/${id}`,requestData,setResponse1);
+        put(`/investors/finalizeListing/${listing_data}`,requestData,setResponse1);
 
         setShowSuccessNotification(true);
-        
+
     };
 
     console.log(response);
@@ -92,14 +100,14 @@ function FinalizeListingInvestor() {
                                                         Lanka Apparels
                                                     </Typography>
                                                 </CardBody>
-                                                
+
                                             </Card>
 
                                         </div>
                                         <div>
-                                        <Card className="w-full shadow-lg p-6 border-2 border-main-purple  mt-2 ml-5">
+                                            <Card className="w-full shadow-lg p-6 border-2 border-main-purple  mt-2 ml-5">
                                                 <p className="text-main-purple justify-center flex font-extrabold">
-                                                        Finalize investment
+                                                    Finalize investment
                                                 </p>
                                                 <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px] mt-2 font-extrabold">
                                                     I am offering (Rs) :
@@ -107,17 +115,17 @@ function FinalizeListingInvestor() {
                                                 <Input
                                                     type="text"
                                                     id="seek"
-                                                    className="w-full"  
+                                                    className="w-full"
                                                     required={true}
                                                     value={formData.amountOffered}
                                                     onChange={(event) => {
                                                         setFormData({...formData, amountOffered: event.target.value});
-                                                    }}  
+                                                    }}
                                                 />
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 mt-5 text-[14px] font-extrabold">
                                                     And willing to take up (Should select at least one option) :
-                                                    
+
                                                 </label>
                                                 <div className="flex items-center mb-3">
                                                     <Input
@@ -127,13 +135,13 @@ function FinalizeListingInvestor() {
                                                         value={formData.equityExpected}
                                                         onChange={(event) => {
                                                             setFormData({...formData, equityExpected: event.target.value});
-                                                        }}                           
+                                                        }}
                                                     />
                                                     <Checkbox
                                                         label="On Equity"
                                                         name="equitybox"
                                                         id="equity"
-                                                        
+
                                                     />
                                                 </div>
                                                 <div className="flex items-center">
@@ -150,7 +158,7 @@ function FinalizeListingInvestor() {
                                                         label="Profit per unit"
                                                         name="profitunit"
                                                         id="profitunitpercentage"
-                                                        
+
 
                                                     />
                                                 </div>

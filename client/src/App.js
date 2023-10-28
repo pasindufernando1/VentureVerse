@@ -139,13 +139,13 @@ function App() {
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
-                        <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
+                        <Route path="/entrepreneur/view-listingCounterProposal/:id" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplains />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
                         <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
                         <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
-                        <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
+                        <Route path="/entrepreneur/finalize-listing/:id" element={<EntrepreneurFinalizeListing />} />
                     </Route>
                 </Route>
                 {/*404*/}

@@ -1,6 +1,7 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.model.entity.CounterProposalDTO;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
@@ -51,13 +52,22 @@ public class InvestorController {
         return ResponseEntity.ok(interestedSectors);
     }
 
-    @GetMapping("interestListings/{id}")
+    @GetMapping("/interestListings/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> getInvestorById(@PathVariable Integer id) {
         List<InvestorInterestedListingDTO> interestedListings = investorService.getListings(id);
         if (interestedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(interestedListings);
+    }
+
+    @GetMapping("/getcounters/{id}")
+    public ResponseEntity<List<CounterProposalDTO>> getCounters(@PathVariable Integer id) {
+        List<CounterProposalDTO> counters = investorService.getCounters(id);
+        if (counters.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(counters);
     }
 
     @PostMapping("/upload")
@@ -84,7 +94,7 @@ public class InvestorController {
 
     @PutMapping("/finalizeListing/{id}")
     public ResponseEntity<ResponseDTO> updateListings(
-            @PathVariable("id") Integer id,
+            @PathVariable List<Integer> id,
             @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
     ) {
         return ResponseEntity.ok(investorService.updateListing(id, investorInterestedListingDTO));

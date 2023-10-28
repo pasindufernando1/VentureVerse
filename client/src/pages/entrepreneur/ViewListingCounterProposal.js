@@ -3,12 +3,14 @@ import {Header, Button} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {useParams} from "react-router-dom";
 
 function ViewListingCounterProposal() {
     const { get } = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const {id} = useParams();
 
-    const listingId=154;
+    const listingId = id;
 
     useEffect(() => {
         get(`entrepreneurs/offers/${listingId}`, setResponse);

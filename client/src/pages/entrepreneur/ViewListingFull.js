@@ -411,7 +411,7 @@ function ViewListingFull() {
                                     className="ml-2"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/view-listingCounterProposal">View offerings</Link>
+                                    <Link to={`/entrepreneur/view-listingCounterProposal/${listing.listingId}`}>View offerings</Link>
                                 </Button>
                                 <Button
                                     variant="primary"
@@ -419,7 +419,7 @@ function ViewListingFull() {
                                     className="ml-2"
                                     icon="next"
                                 >
-                                    <Link to="/entrepreneur/finalize-listing">Finalize Investment</Link>
+                                    <Link to={`/entrepreneur/finalize-listing/${listing.listingId}`}>Finalize Investment</Link>
                                 </Button>
                             </CardFooter>
                         </Card>

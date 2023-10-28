@@ -63,8 +63,8 @@ public class EntrepreneurService {
         return GlobalService.response("Success", "Complain added successfully");
     }
 
-    public InvestorInterestedListingDTO finalizeListings(Integer id) {
-        return investor_interestedListingRepository.findByListingId(id);
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.findByEntreprenuerListingId(id);
     }
 
     public ResponseDTO updateListing(Integer Listingid, InvestorInterestedListingDTO investorInterestedListingDTO) {

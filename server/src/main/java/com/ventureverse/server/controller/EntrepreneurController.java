@@ -50,9 +50,8 @@ public class EntrepreneurController {
     }
 
     @GetMapping("/finalizeListings/{id}")
-    public ResponseEntity<InvestorInterestedListingDTO> finalizeListings(@PathVariable Integer id) {
-        System.out.println("id = " + id);
-        InvestorInterestedListingDTO finalizedListings = entrepreneurService.finalizeListings(id);
+    public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        List<InvestorInterestedListingDTO> finalizedListings = entrepreneurService.finalizeListings(id);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
