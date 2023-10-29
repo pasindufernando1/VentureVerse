@@ -207,8 +207,12 @@ function ViewListing() {
         setFilteredPrintingcards(filteredListings);
     }
 
-    return (
+    //Function to revert the filters
+    const revertFilter = () => {
+        setFilteredPrintingcards(printingcards);
+    }
 
+    return (
             <Header active="Listing">
                 <div className="flex flex-row">
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
@@ -484,6 +488,7 @@ function ViewListing() {
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full mt-2`}>
                             <Button variant="primary" label="Filter" onClick={handleFilter}/>
+                            <Button variant="clear" label="Clear filters" className="mt-3" onClick={revertFilter}/>
                             </div>
                         </Card>
                     </div>
