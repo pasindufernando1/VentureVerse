@@ -79,4 +79,13 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             AND i.id.listingId.listingId = :id
             """)
     List<InvestorInterestedListingDTO> findByEntreprenuerListingId(Integer id);
+
+
+    //Function to get the amount of investment completed for a listing.It is the sum of all the finalized amounts of the investors related to the listing
+    @Query("""
+            SELECT SUM(i.amountFinalized)
+            FROM InvestorInterestedListingDTO i
+            WHERE i.id.listingId = :listing AND i.status='Finalized'
+            """)
+    Integer getCompletedInvestment(ListingDTO listing);
 }

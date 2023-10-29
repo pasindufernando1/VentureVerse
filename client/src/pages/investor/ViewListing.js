@@ -62,6 +62,29 @@ function ViewListing() {
                 .catch((error) => {
                     console.error("Error fetching sectors for listings:", error);
                 });
+
+            const completedInvestmentPromises = listingsData.map((listing) => {
+                return axiosPrivate.get(`/entrepreneur/getCompletedInvestment/${listing.listingId}`)
+                    .then((response) => {
+                        listing.completedInvestment = response.data;
+                        return listing;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching completed investment for listing", listing.listingId, error);
+                        return listing; // Return the listing even if an error occurs
+                    });
+            });
+
+            // Wait for all completed investment requests to complete
+            Promise.all(completedInvestmentPromises)
+                .then((listingsWithCompletedInvestment) => {
+                    // Now you have an array of listings with completed investments
+                    setListing(listingsWithCompletedInvestment);
+                })
+                .catch((error) => {
+                    console.error("Error fetching completed investments for listings:", error);
+                });
+
         });
     }, []);
     // console.log(listings);
@@ -71,7 +94,7 @@ function ViewListing() {
         setListingSet(Object.values(listings));
     }, [listings]);
 
-    // console.log(listingSet);
+    console.log(listingSet);
 
     useEffect(() => {
         const listingPrint = listingSet.map((listing) => ({
@@ -83,6 +106,8 @@ function ViewListing() {
             pitchVideo: listing.pitchingVideo,
             listingsectors: listing.sectors,
             stage: listing.stage,
+            completedInvestment: Math.floor((listing.completedInvestment/listing.expectedAmount)*100),
+
         }));
         setPrintingcards(listingPrint);
         setFilteredPrintingcards(listingPrint);
@@ -286,10 +311,10 @@ function ViewListing() {
                                                 Completed
                                             </Typography>
                                             <Typography color="blue" variant="h6" className="text-main-purple">
-                                                50%
+                                                {card.completedInvestment}%
                                             </Typography>
                                         </div>
-                                        <Progress value={50} color="purple"/>
+                                        <Progress value={card.completedInvestment} color="purple"/>
                                     </div>
                                     <Typography variant="h6" className="mb-2 text-main-gray mt-4">
                                         Interested

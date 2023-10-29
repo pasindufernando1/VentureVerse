@@ -82,6 +82,26 @@ public class ListingController {
         return ResponseEntity.ok(listingSectors);
     }
 
+    //Function to get the finalized offered amounts of the listing
+    @GetMapping("/getCompletedInvestment/{id}")
+    public ResponseEntity<Integer> getCompletedInvestment(@PathVariable Integer id) {
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the completed investment related to the listing
+        Integer completedInvestment = listingService.getCompletedInvestment(listing);
+
+        if(completedInvestment == null){
+            System.out.println("null");
+            return ResponseEntity.ok(0);
+        }else{
+            System.out.println(completedInvestment);
+            return ResponseEntity.ok(completedInvestment);
+        }
+
+
+    }
+
     //Send the video relevent to the listing to the frontend using the listing id
     @GetMapping("/getVideo/{videoname}")
     public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {

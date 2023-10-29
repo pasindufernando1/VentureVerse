@@ -223,4 +223,9 @@ public class ListingService {
     public List<String> getListingSectors(ListingDTO listing) {
         return listingIndustrySectorsRepository.getListingSectors(listing);
     }
+
+    //Function to get the finalized investment amount of a listing
+    public Integer getCompletedInvestment(ListingDTO listing) {
+        return investor_interestedListingRepository.getCompletedInvestment(listing);
+    }
 }
