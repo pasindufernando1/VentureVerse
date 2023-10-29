@@ -68,6 +68,12 @@ public class ListingController {
         return ResponseEntity.ok(listingService.getAllListings());
     }
 
+    //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
+    @GetMapping("/getAllFinalizedListings")
+    public ResponseEntity<List<ListingDTO>> getAllFinalizedListings() {
+        return ResponseEntity.ok(listingService.getAllFinalizedListings());
+    }
+
     //Get the listing sectors of the listing using the listing id
     @GetMapping("/getListingSectors/{id}")
     public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
@@ -205,6 +211,12 @@ public class ListingController {
 
         return ResponseEntity.ok().body(images);
     }
+
+    //Function to get the name and the image of the interested investors for a listing
+//    @GetMapping("/getInterestedParties/{id}")
+//    public ResponseEntity<> getInterestedParties(@PathVariable Integer id) {
+//        return ResponseEntity.ok(listingService.getInterestedParties(id));
+//    }
 
 
 

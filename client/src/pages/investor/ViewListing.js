@@ -133,6 +133,20 @@ function ViewListing() {
         }
     }, [thumbnails]);
 
+    //Create an 2D array including the interested parties of the listings.One array for each listing
+    // const interestedParties = [];
+    //
+    // useEffect(() => {
+    //     //For each listing, get the interested parties and push them to the interestedParties array with the listing id
+    //     for(let i = 0; i < listings.length; i++) {
+    //         get(`/entrepreneur/getInterestedParties/${listings[i].listingId}`, (interestedPartiesData) => {
+    //             interestedParties.push(interestedPartiesData);
+    //         });
+    //     }
+    //
+    // }, [listings]);
+
+
     //Get the videoURLs of the listings using an API call and store them in an array
     const [videoURLs, setVideoURLs] = useState([]);
     const [subView, setSubView] = useState(false);
