@@ -44,7 +44,10 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
                 WHERE i.id.listingId.listingId = l.listingId 
                 AND i.entrepreneurProofDocument IS NOT NULL 
                 AND i.investorProofDocument IS NOT NULL
+                AND i.finalizedDate IS NULL
             )
             """)
     List<ListingDTO> getAllFinalizedListings();
+
+
 }

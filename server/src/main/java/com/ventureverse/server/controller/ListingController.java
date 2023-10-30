@@ -213,10 +213,33 @@ public class ListingController {
     }
 
     //Function to get the name and the image of the interested investors for a listing
-//    @GetMapping("/getInterestedParties/{id}")
-//    public ResponseEntity<> getInterestedParties(@PathVariable Integer id) {
-//        return ResponseEntity.ok(listingService.getInterestedParties(id));
-//    }
+    //For each listing there can be multiple interested investors. The profile image of each interested investor sent to the frontend
+    @GetMapping("/getInterestedParties/{id}")
+    public ResponseEntity<List<byte[]>> getInterestedParties(@PathVariable Integer id) throws IOException {
+        List<byte[]> images = new ArrayList<>();
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the interested investors related to the listing
+        List<InvestorInterestedListingDTO> interestedInvestors = listingService.getInterestedInvestors(listing);
+
+//        System.out.println(interestedInvestors);
+//        System.out.println(interestedInvestors.size());
+
+        //Get the interested investors profile images from the user table
+        for (InvestorInterestedListingDTO interestedInvestor : interestedInvestors) {
+            InvestorDTO investor = interestedInvestor.getId().getInvestorId();
+            String profileImage = investor.getProfileImage();
+            System.out.println("Investor profile image: " + profileImage);
+            Path imagePath = Paths.get(imageUploadPath, profileImage);
+            images.add(Files.readAllBytes(imagePath));
+        }
+
+        return ResponseEntity.ok().body(images);
+    }
 
 
 

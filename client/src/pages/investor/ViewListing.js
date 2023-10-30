@@ -27,6 +27,7 @@ function ViewListing() {
     const [printingcards, setPrintingcards] = useState([]);
     const [filteredPrintingcards, setFilteredPrintingcards] = useState([]);
     const [thumbnail, setThumbnail] = useState({});
+    const [interestedparty, setInterestedparty] = useState({});
 
     // Filter handling
     const [categoryFilters, setCategoryFilters] = useState([]);
@@ -85,6 +86,29 @@ function ViewListing() {
                     console.error("Error fetching completed investments for listings:", error);
                 });
 
+            const interestedPartiesPromises = listingsData.map((listing) => {
+                return axiosPrivate.get(`/entrepreneur/getInterestedParties/${listing.listingId}`)
+                    .then((response) => {
+                        listing.interestedParties = response.data;
+                        return listing;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching interested parties for listing", listing.listingId, error);
+                        return listing; // Return the listing even if an error occurs
+                    });
+            });
+
+            // Wait for all interested parties requests to complete
+            Promise.all(interestedPartiesPromises)
+                .then((listingsWithInterestedParties) => {
+                    // Now you have an array of listings with interested parties
+                    setListing(listingsWithInterestedParties);
+                }
+                )
+                .catch((error) => {
+                    console.error("Error fetching interested parties for listings:", error);
+                });
+
         });
     }, []);
     // console.log(listings);
@@ -93,8 +117,6 @@ function ViewListing() {
     useEffect(() => {
         setListingSet(Object.values(listings));
     }, [listings]);
-
-    console.log(listingSet);
 
     useEffect(() => {
         const listingPrint = listingSet.map((listing) => ({
@@ -107,12 +129,14 @@ function ViewListing() {
             listingsectors: listing.sectors,
             stage: listing.stage,
             completedInvestment: Math.floor((listing.completedInvestment/listing.expectedAmount)*100),
+            interestedParties: listing.interestedParties,
 
         }));
         setPrintingcards(listingPrint);
         setFilteredPrintingcards(listingPrint);
     }, [listingSet]);
 
+    console.log(filteredPrintingcards);
 
 
     // Create an array including the thumbnails of the listings
@@ -134,17 +158,21 @@ function ViewListing() {
     }, [thumbnails]);
 
     //Create an 2D array including the interested parties of the listings.One array for each listing
-    // const interestedParties = [];
-    //
+    // const interestedParties = {};
+    // //
     // useEffect(() => {
     //     //For each listing, get the interested parties and push them to the interestedParties array with the listing id
     //     for(let i = 0; i < listings.length; i++) {
     //         get(`/entrepreneur/getInterestedParties/${listings[i].listingId}`, (interestedPartiesData) => {
-    //             interestedParties.push(interestedPartiesData);
+    //             //Push the data with a listing id to identify the listing
+    //             console.log(interestedPartiesData);
+    //             interestedParties[listings[i].listingId] = interestedPartiesData;
     //         });
     //     }
     //
     // }, [listings]);
+    //
+    // console.log(interestedParties);
 
 
     //Get the videoURLs of the listings using an API call and store them in an array
@@ -335,41 +363,56 @@ function ViewListing() {
                                     </Typography>
                                     {/* Div to show the images of interested parties images*/}
                                     <div className="flex items-center -space-x-4 mt-2">
-                                        <Avatar
-                                            variant="circular"
-                                            alt="user 1"
-                                            className="border-2 border-white hover:z-10 focus:z-10"
-                                            src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                                            title="Mr. Nimal Fernando"
-                                        />
-                                        <Avatar
-                                            variant="circular"
-                                            alt="user 2"
-                                            className="border-2 border-white hover:z-10 focus:z-10"
-                                            src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-                                            title="Mr. Nimal Fernando"
-                                        />
-                                        <Avatar
-                                            variant="circular"
-                                            alt="user 3"
-                                            className="border-2 border-white hover:z-10 focus:z-10"
-                                            src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
-                                            title="Mr. Nimal Fernando"
-                                        />
-                                        <Avatar
-                                            variant="circular"
-                                            alt="user 4"
-                                            className="border-2 border-white hover:z-10 focus:z-10"
-                                            title="Mr. Nimal Fernando"
-                                            src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
-                                        />
-                                        <Avatar
-                                            variant="circular"
-                                            alt="user 5"
-                                            className="border-2 border-white hover:z-10 focus:z-10"
-                                            src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"
-                                            title="Mr. Nimal Fernando"
-                                        />
+                                        {card.interestedParties && card.interestedParties.map((interestedParty) => (
+                                            <Avatar
+                                                variant="circular"
+                                                alt="user 1"
+                                                className="border-2 border-white hover:z-10 focus:z-10"
+                                                src={`data:application/img;base64,${interestedParty}`}
+                                                title="Mr. Nimal Fernando"
+                                            />
+                                        ))}
+                                        {(card.interestedParties.length)===0 && (
+                                            <Typography variant="h7" color="blue-gray" className="mb-2 mt-2 text-center ">
+                                                No interested parties yet
+                                            </Typography>
+                                        )}
+
+                                        {/*<Avatar*/}
+                                        {/*    variant="circular"*/}
+                                        {/*    alt="user 1"*/}
+                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                        {/*    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"*/}
+                                        {/*    title="Mr. Nimal Fernando"*/}
+                                        {/*/>*/}
+                                        {/*<Avatar*/}
+                                        {/*    variant="circular"*/}
+                                        {/*    alt="user 2"*/}
+                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                        {/*    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"*/}
+                                        {/*    title="Mr. Nimal Fernando"*/}
+                                        {/*/>*/}
+                                        {/*<Avatar*/}
+                                        {/*    variant="circular"*/}
+                                        {/*    alt="user 3"*/}
+                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                        {/*    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"*/}
+                                        {/*    title="Mr. Nimal Fernando"*/}
+                                        {/*/>*/}
+                                        {/*<Avatar*/}
+                                        {/*    variant="circular"*/}
+                                        {/*    alt="user 4"*/}
+                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                        {/*    title="Mr. Nimal Fernando"*/}
+                                        {/*    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"*/}
+                                        {/*/>*/}
+                                        {/*<Avatar*/}
+                                        {/*    variant="circular"*/}
+                                        {/*    alt="user 5"*/}
+                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                        {/*    src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"*/}
+                                        {/*    title="Mr. Nimal Fernando"*/}
+                                        {/*/>*/}
                                     </div>
                                     {/* Business name */}
                                     <Typography variant="h6" color="blue-gray" className="mb-2 mt-2 text-center ">

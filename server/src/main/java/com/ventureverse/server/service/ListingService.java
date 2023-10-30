@@ -232,4 +232,8 @@ public class ListingService {
     public List<ListingDTO> getAllFinalizedListings() {
         return listingRepository.getAllFinalizedListings();
     }
+
+    public List<InvestorInterestedListingDTO> getInterestedInvestors(ListingDTO listing) {
+        return investor_interestedListingRepository.getInterestedInvestors(listing);
+    }
 }

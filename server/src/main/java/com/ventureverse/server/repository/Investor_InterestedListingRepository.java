@@ -88,4 +88,12 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE i.id.listingId = :listing AND i.status='Finalized'
             """)
     Integer getCompletedInvestment(ListingDTO listing);
+
+    //Get the interested investors of a listing
+    @Query("""
+            SELECT i
+            FROM InvestorInterestedListingDTO i
+            WHERE i.id.listingId = :listing
+            """)
+    List<InvestorInterestedListingDTO> getInterestedInvestors(ListingDTO listing);
 }

@@ -9,7 +9,7 @@ import {
     Typography,
     Tooltip, Input, Checkbox,
 } from "@material-tailwind/react";
-import {Link} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 
 function FinalizeListingAdmin() {
@@ -18,14 +18,14 @@ function FinalizeListingAdmin() {
     const [response1, setResponse1] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const [pdf, setpdf] = useState([]);
-    let id=154;
+    const {id} = useParams();
 
     useEffect(() => {
-        get(`/entrepreneur/finalizeListing/${id}`, setResponse);
+        get(`/entrepreneur/finalizeListing/${parseInt(id)}`, setResponse);
     }, []);
 
     useEffect(() => {
-        get(`/entrepreneur/getpdf/${id}`, setpdf);
+        get(`/entrepreneur/getpdf/${parseInt(id)}`, setpdf);
     }, []);
 
     const pdfs = {
@@ -38,7 +38,7 @@ function FinalizeListingAdmin() {
     };
 
     const handleSubmit = () => {
-        put(`/entrepreneur/updateDate/${id}`,requestData,setResponse1);
+        put(`/entrepreneur/updateDate/${parseInt(id)}`,requestData,setResponse1);
         setShowSuccessNotification(true);
     };
 
