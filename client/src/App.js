@@ -110,7 +110,7 @@ function App() {
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
                         <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                         <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
-                        <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
+                        <Route path="/admin/view-finalizedOffering/:id" element={<FinalizedListingOffering />} />
                         <Route path="/admin/analytics" element={<Analytics />} />
                         <Route path="/admin/users/reports" element={<UserReports />} />
                         <Route path="/admin/gains/reports" element={<GainsReports/>}/>
