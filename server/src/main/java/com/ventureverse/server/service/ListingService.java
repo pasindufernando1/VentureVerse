@@ -7,6 +7,7 @@ import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.misc.LogManager;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -84,7 +85,7 @@ public class ListingService {
                     .id(new ListingImagesDTO.CompositeKey(listingId, image))
                     .build());
         }
-        return GlobalService.response("Success","Listing added successfully");
+        return GlobalService.response("Success", "Listing added successfully");
     }
 
     //Function to get the listing details by id
@@ -128,18 +129,18 @@ public class ListingService {
         return investor_interestedListingRepository.findByListingId(id);
     }
 
-    public ResponseDTO updateDate(Integer id,InvestorInterestedListingDTO i) {
+    public ResponseDTO updateDate(Integer id, InvestorInterestedListingDTO i) {
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(id);
 
-        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
+        Optional<InvestorInterestedListingDTO> listing = investor_interestedListingRepository.findByListing(listingDTO);
         if (listing.isPresent()) {
             InvestorInterestedListingDTO oldListing = listing.get();
             oldListing.setFinalizedDate(i.getFinalizedDate());
             investor_interestedListingRepository.save(oldListing);
-            return GlobalService.response("Success","Listing updated successfully");
+            return GlobalService.response("Success", "Listing updated successfully");
         } else {
-            return GlobalService.response("Error","Listing not found");
+            return GlobalService.response("Error", "Listing not found");
         }
     }
 
@@ -170,10 +171,10 @@ public class ListingService {
     }
 
     public ResponseDTO addInterestedListing(List<Integer> listingIds) {
-        var listingid= listingIds.get(0);
-        var investorid= listingIds.get(1);
-        var returnEquityPercentage= listingIds.get(2);
-        var returnUnitProfitPercentage= listingIds.get(3);
+        var listingid = listingIds.get(0);
+        var investorid = listingIds.get(1);
+        var returnEquityPercentage = listingIds.get(2);
+        var returnUnitProfitPercentage = listingIds.get(3);
 
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(listingid);
@@ -192,10 +193,9 @@ public class ListingService {
 
         investor_interestedListingRepository.save(investorInterestedListingDTO);
 
-        if(investor_interestedListingRepository.findByListingId(listingid)!=null){
-            return GlobalService.response("Success","Interested listing added successfully");
-        }
-        else {
+        if (investor_interestedListingRepository.findByListingId(listingid) != null) {
+            return GlobalService.response("Success", "Interested listing added successfully");
+        } else {
             return GlobalService.response("Error", "Interested listing not added");
         }
     }
@@ -216,7 +216,7 @@ public class ListingService {
 
         counterProposalRepository.save(counterProposalDTO1);
 
-        return GlobalService.response("Success","Counter proposal added successfully");
+        return GlobalService.response("Success", "Counter proposal added successfully");
     }
 
 
@@ -235,5 +235,31 @@ public class ListingService {
 
     public List<InvestorInterestedListingDTO> getInterestedInvestors(ListingDTO listing) {
         return investor_interestedListingRepository.getInterestedInvestors(listing);
+    }
+
+    //Function to delete a listing from the listingid. The Status of the listing will be changed to "DELETED"
+    public ResponseDTO deleteListing(int id) {
+        //Get the listing object
+        var listing = listingRepository.findById(id).orElseThrow();
+        listing.setStatus("DELETED");
+        listingRepository.save(listing);
+        return GlobalService.response("Success", "Listing deleted successfully");
+    }
+
+    public ResponseDTO checkActiveListing(Integer id) {
+        //Get the entrepreneur object related to the entrepreneur id
+        var entrepreneur = entrepreneurRepository.findById(id).orElseThrow();
+
+        //Find the latest listing object relevant to the user id
+        String status = listingRepository.findLatestListingStatus(entrepreneur);
+
+        System.out.println(status);
+
+        if (status.equals("Active")) {
+            return GlobalService.response("Success", "Active listing found");
+        } else {
+            return GlobalService.response("Error", "Active listing not found");
+        }
+
     }
 }

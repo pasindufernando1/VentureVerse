@@ -34,6 +34,13 @@ public class ListingController {
     private final EntrepreneurService entrepreneurService;
     private final InvestorService investorService;
 
+    //Function to check whether the user has any active listings(Lastest listingId should be deleted)
+    @GetMapping("/checkActiveListing/{id}")
+    public ResponseEntity<ResponseDTO> checkActiveListing(@PathVariable Integer id) {
+        return ResponseEntity.ok(listingService.checkActiveListing(id));
+    }
+
+
     @PostMapping("/addListing")
     public ResponseEntity<ResponseDTO> addListing(
             HttpServletResponse response,
@@ -196,6 +203,12 @@ public class ListingController {
         images.add(Files.readAllBytes(imagePath));
 
         return ResponseEntity.ok().body(images);
+    }
+
+    //Function to delete a listing
+    @PostMapping("/deleteListing/{id}")
+    public ResponseEntity<ResponseDTO> deleteListing(@PathVariable Integer id) {
+        return ResponseEntity.ok(listingService.deleteListing(id));
     }
 
     //Function to return an array of thumbnails by the thumbnail names(Thumbnail names are passed as an array

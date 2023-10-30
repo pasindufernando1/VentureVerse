@@ -1,4 +1,4 @@
-import {Card} from "@material-tailwind/react";
+import {Card, Dialog, DialogBody, DialogFooter, DialogHeader, Typography} from "@material-tailwind/react";
 import React, {useEffect} from "react";
 import {useState} from "react";
 import {Navbar, Checkbox, Radio, Textarea, Input, Button, StatusPopUp} from "../webcomponent";
@@ -11,11 +11,36 @@ import useAuth from "../../hooks/useAuth";
 const integerRegex = /^[0-9]*$/;
 
 function AddListing() {
+
+    //Check whether the user has any active listings
+    const [activeListings, setActiveListings] = useState(null);
+    const {get} = useAxiosMethods();
+
+    const {auth} = useAuth();
+
+    useEffect(() => {
+        get(`/entrepreneur/checkActiveListing/${auth.id}`, (response) => setActiveListings(response.status));
+    }, []);
+    console.log(activeListings);
+
+    //Handle the addition block if the user has active listings
+    const [showAddBlock, setShowAddBlock] = useState(false);
+    useEffect(() => {
+        if(activeListings === "Success"){
+            setShowAddBlock(true);
+        }
+    },[activeListings])
+    const handleAddBlock = () => {
+        setShowAddBlock(false);
+        //Redirect to the dashboard
+        window.location.href = "/entrepreneur/dashboard";
+    }
+
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {post} = useAxiosMethods();
     const [res, setRes] = useState("")
 
-    const {auth} = useAuth();
+
 
     // Section Handling
     const [currentSection, setCurrentSection] = useState(1);
@@ -1720,7 +1745,24 @@ function AddListing() {
     </div>
             </Header>
 
-            {/* <Footer /> */}
+            <Dialog open={showAddBlock} handler={handleAddBlock}>
+                <DialogHeader>
+                    <Typography variant="h5" color="red" className="flex justify-center">
+                        This feature is not allowed at the moment!
+                    </Typography>
+                </DialogHeader>
+                <DialogBody divider className="grid place-items-center gap-4">
+                    <Typography className="text-center font-normal">
+                        You can only add one listing at a time.<br/>
+                        Please delete the current listing to add a new one.
+                    </Typography>
+                </DialogBody>
+                <DialogFooter className="space-x-2">
+                    <Button variant="primary" color="blue-gray" onClick={handleAddBlock} className={"border-none"}>
+                        Okay I understand
+                    </Button>
+                </DialogFooter>
+            </Dialog>
         </div>
     );
 }

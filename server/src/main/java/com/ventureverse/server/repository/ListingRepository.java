@@ -36,7 +36,7 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
 
     //Get the listings where it has an entry in the investor_interested_listing table and entrepreneur_proof_document and investor_proof_document is not null
     @Query("""
-            SELECT l 
+            SELECT l
             FROM ListingDTO l 
             WHERE l.listingId IN (
                 SELECT i.id.listingId.listingId 
@@ -49,5 +49,16 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
             """)
     List<ListingDTO> getAllFinalizedListings();
 
-
+    @Query("""
+            SELECT l.status
+            FROM ListingDTO l
+            WHERE l.entrepreneurId = :id
+            AND l.listingId = (
+                SELECT MAX(l.listingId)
+                FROM ListingDTO l
+                WHERE l.entrepreneurId = :id
+            )
+            """)
+    //Function to find the latest listing status
+    String findLatestListingStatus(EntrepreneurDTO id);
 }

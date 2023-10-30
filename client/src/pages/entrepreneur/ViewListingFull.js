@@ -4,6 +4,10 @@ import {
     CardBody,
     CardFooter,
     Typography,
+    Dialog,
+    DialogHeader,
+    DialogBody,
+    DialogFooter
 } from "@material-tailwind/react";
 import {
     faArrowLeft, faArrowRight
@@ -112,6 +116,25 @@ function ViewListingFull() {
     // Take the day month and the year only
     const businessStartDateString = businessStartDate.toDateString();
 
+
+    //Handle listing deletion
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(!open);
+
+    const handleDelete = () => {
+        setOpen(false);
+        axiosPrivate.post(`/entrepreneur/deleteListing/${listing.listingId}`)
+            .then((response) => {
+                console.log(response);
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.error("Error deleting listing", listing.listingId, error);
+                window.location.reload();
+            });
+    }
+
+    console.log(listing);
     return (
         <div>
             <Header active="Listings">
@@ -132,7 +155,9 @@ function ViewListingFull() {
                             </CardHeader>
                             <CardBody>
                                 <Typography variant="h5" className="mb-2 text-main-purple">
-                                    {listing.title}
+                                    {listing.title}  {listing.status === "DELETED" &&(
+                                        <span className="text-red-300 ">This listing is no longer visible</span>
+                                )}
                                 </Typography>
                                 <Typography>
                                     {listing.description}
@@ -429,11 +454,38 @@ function ViewListingFull() {
                                 >
                                     <Link to={`/entrepreneur/finalize-listing/${listing.listingId}`}>Finalize Investment</Link>
                                 </Button>
+                                <Button
+                                    variant="clear"
+                                    label="Delete"
+                                    className="ml-2"
+                                    onClick={handleOpen}
+                                />
+
                             </CardFooter>
                         </Card>
                     </div>
 
                 </div>
+                <Dialog open={open} handler={handleOpen}>
+                    <DialogHeader>
+                        <Typography variant="h5" color="red" className="flex justify-center">
+                            Your attention is needed!
+                        </Typography>
+                    </DialogHeader>
+                    <DialogBody divider className="grid place-items-center gap-4">
+                        <Typography className="text-center font-normal">
+                            Are you sure that you no longer needs this listing to be published?
+                        </Typography>
+                    </DialogBody>
+                    <DialogFooter className="space-x-2">
+                        <Button variant="primary" color="blue-gray" onClick={handleDelete}>
+                            Yes I'm sure
+                        </Button>
+                        <Button variant="clear" onClick={handleOpen}>
+                            Cancel
+                        </Button>
+                    </DialogFooter>
+                </Dialog>
             </Header>
         </div>
 
