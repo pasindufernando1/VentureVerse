@@ -15,7 +15,7 @@ import {Link} from "react-router-dom";
 import React from "react";
 import { Slider } from "@material-tailwind/react";
 import {axiosPrivate} from "../../api/axios";
-
+import axios from "../../api/axios";
 
 
 function ViewListing() {
@@ -41,6 +41,31 @@ function ViewListing() {
     useEffect(() => {
         // Get all the listings
         get("/entrepreneur/getAllListings", (listingsData) => {
+
+            //Create an array of promises for getting thumbnails for each listing
+            const thumbnailPromises = listingsData.map((listing) => {
+                return axiosPrivate.get(`/entrepreneur/getThumbnail/${listing.thumbnail}`)
+                    .then((response) => {
+                        listing.thumbnail = response.data;
+                        return listing;
+                    })
+                    .catch((error) => {
+                        console.error("Error fetching thumbnail for listing", listing.listingId, error);
+                        return listing; // Return the listing even if an error occurs
+                    });
+            });
+
+            // Wait for all thumbnail requests to complete
+            Promise.all(thumbnailPromises)
+                .then((listingsWithThumbnails) => {
+                    // Now you have an array of listings with thumbnails
+                    setListing(listingsWithThumbnails);
+                })
+                .catch((error) => {
+                    console.error("Error fetching thumbnails for listings:", error);
+                });
+
+
             // Create an array of promises for getting sectors for each listing
             const sectorPromises = listingsData.map((listing) => {
                 return axiosPrivate.get(`/entrepreneur/getListingSectors/${listing.listingId}`)
@@ -111,7 +136,6 @@ function ViewListing() {
 
         });
     }, []);
-    // console.log(listings);
     //Convert the listing object to an array
     const [listingSet, setListingSet] = useState([]);
     useEffect(() => {
@@ -126,6 +150,7 @@ function ViewListing() {
             equityReturn: listing.returnEquityPercentage,
             profitPerUnitReturn: listing.returnUnitProfitPercentage,
             pitchVideo: listing.pitchingVideo,
+            thumbnail: listing.thumbnail,
             listingsectors: listing.sectors,
             stage: listing.stage,
             completedInvestment: Math.floor((listing.completedInvestment/listing.expectedAmount)*100),
@@ -136,44 +161,25 @@ function ViewListing() {
         setFilteredPrintingcards(listingPrint);
     }, [listingSet]);
 
-    console.log(filteredPrintingcards);
 
 
     // Create an array including the thumbnails of the listings
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const thumbnails = [];
-
-    useEffect(() => {
-        for(let i = 0; i < listings.length; i++) {
-            thumbnails.push(listings[i].thumbnail);
-        }
-    }, [listings]);
-
-
-    //Make a get request to get the thumbnail of the listings passing thumbnails list as a request parameter
-    useEffect(() => {
-        if(thumbnails.length === listings.length){
-            get(`/entrepreneur/getThumbnails/${thumbnails}`, setThumbnail);
-        }
-    }, [thumbnails]);
-
-    //Create an 2D array including the interested parties of the listings.One array for each listing
-    // const interestedParties = {};
-    // //
-    // useEffect(() => {
-    //     //For each listing, get the interested parties and push them to the interestedParties array with the listing id
-    //     for(let i = 0; i < listings.length; i++) {
-    //         get(`/entrepreneur/getInterestedParties/${listings[i].listingId}`, (interestedPartiesData) => {
-    //             //Push the data with a listing id to identify the listing
-    //             console.log(interestedPartiesData);
-    //             interestedParties[listings[i].listingId] = interestedPartiesData;
-    //         });
-    //     }
+    // const thumbnails = [];
     //
+    // useEffect(() => {
+    //     for(let i = 0; i < listings.length; i++) {
+    //         thumbnails.push(listings[i].thumbnail);
+    //     }
     // }, [listings]);
     //
-    // console.log(interestedParties);
-
+    //
+    // //Make a get request to get the thumbnail of the listings passing thumbnails list as a request parameter
+    // useEffect(() => {
+    //     if(thumbnails.length === listings.length){
+    //         get(`/entrepreneur/getThumbnails/${thumbnails}`, setThumbnail);
+    //     }
+    // }, [thumbnails]);
 
     //Get the videoURLs of the listings using an API call and store them in an array
     const [videoURLs, setVideoURLs] = useState([]);
@@ -191,25 +197,45 @@ function ViewListing() {
         setFullView(true);
     }
 
-    //Pitching videoURL
-    const [pitchVideoURL, setPitchVideoURL] = useState("");
-    const [videoAvailable, setVideoAvailable] = useState(false);
-    const handleMouseEnter = (pitchvideo) => {
-        console.log("Mouse in"+pitchvideo);
-        if(pitchvideo){
-            get(`/entrepreneur/getVideo/${pitchvideo}`, setPitchVideoURL)
+
+    //Handling hover playing of videos
+
+    const [listingVideoUrl, setListingVideoUrl] = useState({
+        video: null,
+        index: null
+    });
+    const handleMouseEnter = (index,video) => {
+
+        const getVideo = async (video) => {
+
+            try {
+                let response = await axios.get(`/auth/home/${video}`,
+                    {
+                        headers: {'Content-Type': 'application/json'},
+                        withCredentials: true,
+                        responseType: 'blob',
+                    }
+                );
+                setListingVideoUrl({
+                    video: URL.createObjectURL(response.data),
+                    index: index
+                })
+
+            } catch (error) {
+                console.log(error);
+            }
+
         }
-        console.log(pitchVideoURL);
-        setVideoAvailable(true);
+
+        getVideo(video).then();
     }
     const handleMouseLeave = () => {
-        console.log("Mouse out");
-        setPitchVideoURL("");
-        setVideoAvailable(false);
+        setListingVideoUrl({
+            video: null,
+            index: null
+        })
     }
 
-    let counter= 0;
-    // console.log(printingcards);
 
     //Handle the category filters
     const handleCategoryFilter = (category) => {
@@ -219,7 +245,6 @@ function ViewListing() {
             setCategoryFilters([...categoryFilters, category]);
         }
     }
-    // console.log("Category filters : "+categoryFilters);
 
     //Handle the status filters
     const handleStatusFilter = (status) => {
@@ -229,7 +254,6 @@ function ViewListing() {
             setStatusFilters([...statusFilters, status]);
         }
     }
-    // console.log("Status filters : "+statusFilters);
 
     //Handle the investment limit
     const handleLowerLimit = (lowerlimit) => {
@@ -240,7 +264,6 @@ function ViewListing() {
             setLowerLimit(lowerlimit);
         }
     }
-    // console.log("Lower limit : "+lowerLimit);
     const handleUpperLimit = (upperlimit) => {
         if(upperlimit === ""){
             setUpperLimit(Infinity);
@@ -250,15 +273,12 @@ function ViewListing() {
         }
 
     }
-    // console.log("Upper limit : "+upperLimit);
 
     // Handle the filtering
     const handleFilter = () => {
         // Filter the listings
         const filteredListings = printingcards
             .filter((card) => {
-                console.log('Listing Sectors:', card.listingsectors);
-                console.log('Category Filters:', categoryFilters);
                 // Apply your category and status filters here
                 return (
                     (!categoryFilters.length || card.listingsectors.some(sector => categoryFilters.includes(sector))) &&
@@ -283,34 +303,35 @@ function ViewListing() {
             <Header active="Listing">
                 <div className="flex flex-row">
                     <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
-                        {filteredPrintingcards.map((card) => (
+                        {filteredPrintingcards.map((card,index) => (
 
-                            <Card className="w-96 mt-2">
+                            <Card className="w-96 mt-2" key={index}>
                                 <CardHeader className="relative h-56 mt-5 w-50">
-                                    {/*<div className="relative h-full"*/}
-                                    {/*      onMouseEnter={() => handleMouseEnter(card.pitchVideo)}*/}
-                                    {/*      onMouseLeave={handleMouseLeave}>*/}
                                         <div className="relative h-full"
-                                             >
-                                        {/*{videoAvailable ? (*/}
+                                             onMouseEnter={() => handleMouseEnter(index, card.pitchVideo)}
+                                             onMouseLeave={handleMouseLeave}
+                                        >
+                                            {listingVideoUrl.index===index ? (
 
-                                        {/*        <iframe*/}
-                                        {/*            className="absolute inset-0 w-full h-full"*/}
-                                        {/*            src={pitchVideoURL}*/}
-                                        {/*            title="Video player"*/}
-                                        {/*            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"*/}
-                                        {/*            allowFullScreen*/}
-                                        {/*        ></iframe>*/}
+                                                <iframe
+                                                    className="absolute inset-0 w-full h-full"
+                                                    src={listingVideoUrl.video}
+                                                    title="Video player"
+                                                    autoplay={true}
+                                                    muted
+                                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                    allowFullScreen
+                                                ></iframe>
 
-                                        {/*) : (*/}
+                                            ) : (
 
-                                        <img
-                                            src={`data:application/img;base64,${thumbnail[counter++]}`}
-                                            alt="thumbnail"
-                                            className="h-full w-full object-cover"
-                                            style={{maxHeight: '100%', maxWidth: '100%'}}
-                                        />
-                                        {/*)}*/}
+                                                <img
+                                                    src={`data:application/img;base64,${card.thumbnail}`}
+                                                    alt="thumbnail"
+                                                    className="h-full w-full object-cover"
+                                                    style={{maxHeight: '100%', maxWidth: '100%'}}
+                                                />
+                                            )}
                                     </div>
                                 </CardHeader>
                                 <CardBody>
@@ -372,47 +393,11 @@ function ViewListing() {
                                                 title="Mr. Nimal Fernando"
                                             />
                                         ))}
-                                        {(card.interestedParties.length)===0 && (
+                                        { card.interestedParties && card.interestedParties.length === 0 &&(
                                             <Typography variant="h7" color="blue-gray" className="mb-2 mt-2 text-center ">
                                                 No interested parties yet
                                             </Typography>
                                         )}
-
-                                        {/*<Avatar*/}
-                                        {/*    variant="circular"*/}
-                                        {/*    alt="user 1"*/}
-                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
-                                        {/*    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"*/}
-                                        {/*    title="Mr. Nimal Fernando"*/}
-                                        {/*/>*/}
-                                        {/*<Avatar*/}
-                                        {/*    variant="circular"*/}
-                                        {/*    alt="user 2"*/}
-                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
-                                        {/*    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"*/}
-                                        {/*    title="Mr. Nimal Fernando"*/}
-                                        {/*/>*/}
-                                        {/*<Avatar*/}
-                                        {/*    variant="circular"*/}
-                                        {/*    alt="user 3"*/}
-                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
-                                        {/*    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"*/}
-                                        {/*    title="Mr. Nimal Fernando"*/}
-                                        {/*/>*/}
-                                        {/*<Avatar*/}
-                                        {/*    variant="circular"*/}
-                                        {/*    alt="user 4"*/}
-                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
-                                        {/*    title="Mr. Nimal Fernando"*/}
-                                        {/*    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"*/}
-                                        {/*/>*/}
-                                        {/*<Avatar*/}
-                                        {/*    variant="circular"*/}
-                                        {/*    alt="user 5"*/}
-                                        {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
-                                        {/*    src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"*/}
-                                        {/*    title="Mr. Nimal Fernando"*/}
-                                        {/*/>*/}
                                     </div>
                                     {/* Business name */}
                                     <Typography variant="h6" color="blue-gray" className="mb-2 mt-2 text-center ">
