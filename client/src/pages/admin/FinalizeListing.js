@@ -10,6 +10,7 @@ import {
     Tooltip, Input, Checkbox,
 } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
+import { all } from 'axios';
 
 
 function FinalizeListingAdmin() {
@@ -17,10 +18,21 @@ function FinalizeListingAdmin() {
     const [response, setResponse] = useState([]);
     const [response1, setResponse1] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-    const [pdf, setpdf] = useState([]);
+    const [pdf, setpdfEntrepreneur] = useState([]);
+    const [pdf1, setpdfInvestor] = useState([]);
     const [entrepreneurpic, setentrepreneurpic] = useState([]);
     const [investorpic, setinvestorpic] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const allinvestorid = [];
+    const allentrepreneurid = [];
+    const allinvestorproofdoc = [];
+    const allentrepreneurproofdoc = [];
+    var investorfirstname = "";
+    var investorlastname = "";
+    var count=0;
+    var counter1 = 0;
+    var counter2 = 0;
+    var counter3 = 0;
     let id=3;
 
     useEffect(() => {
@@ -38,29 +50,46 @@ function FinalizeListingAdmin() {
             setShowSuccessNotification(true);
         };
 
-        const fetchPdfsForResponse = (listingId, investorId) => {  
-            get(`/entrepreneur/admingetPdf/${listingId}/${investorId}`, setpdf);
-        }
+        //useeffect to store data into image array
+        response && response.map((item) => (
+            allinvestorid.push(item.id.investorId.id),
+            allentrepreneurid.push(item.id.listingId.entrepreneurId.id),
+            allinvestorproofdoc.push(item.investorProofDocument),
+            allentrepreneurproofdoc.push(item.entrepreneurProofDocument)
+        )) 
 
-        const pdfs = {
-            entrepreneurDoc:pdf[0],
-            investorDoc:pdf[1],
-        }
+        useEffect(() => {
+            get(`/entrepreneurs/getEntrepreneurPic/${allentrepreneurid}`, setentrepreneurpic);
+        }, [response]);
 
-        const getentrepreneurpic = (entrepreneurId) => {
-            get(`/entrepreneurs/getEntrepreneurPic/${entrepreneurId}`, setentrepreneurpic);
-        }
+        useEffect(() => {
+            get(`/entrepreneurs/getEntrepreneurPic/${allinvestorid}`, setinvestorpic);
+        }, [response]);
 
-        const getinvestorpic = (investorId) => {
-            get(`/investors/getInvestorPic/${investorId}`, setinvestorpic);
+        useEffect(() => {
+            get(`/entrepreneur/admingetPdf/${allentrepreneurproofdoc}`, setpdfEntrepreneur);
+        }, [response]);
+
+        useEffect(() => {
+            get(`/entrepreneur/admingetPdf/${allinvestorproofdoc}`, setpdfInvestor);
+        }, [response]);
+
+
+        const getinvestorname = (item) => {
+            if(item.id.investorId.firstname == null){
+                investorfirstname = item.id.investorId.businessName;
+                investorlastname = "";
+            }else{
+                investorfirstname = item.id.investorId.firstname;
+                investorlastname = item.id.investorId.lastname;
+            }
         }
 
         return (
             response.length > 0 ?(
                 response && response.map((item) => (
-                fetchPdfsForResponse(item.id.listingId.listingId, item.id.investorId.id),
-                getentrepreneurpic(item.id.listingId.entrepreneurId.id),
-                getinvestorpic(item.id.investorId.id),
+                // fetchPdfsForResponse(item.id.listingId.listingId, item.id.investorId.id,counter1),
+                getinvestorname(item),
                 <div>
                     <Header active="View Listing">
                         <main className="h-auto flex justify-center items-center ">
@@ -74,9 +103,9 @@ function FinalizeListingAdmin() {
                                                 <div className='flex justify-center'>    
                                                     <div>
                                                         <Card className="w-80">
-                                                            <CardHeader floated={false} className="h-60">    
+                                                            <CardHeader floated={false} className="h-70">    
                                                                 <img
-                                                                    src={`data:application/pdf;base64,${entrepreneurpic}`}
+                                                                    src={`data:application/pdf;base64,${entrepreneurpic[counter2++]}`}
                                                                     width="100%"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
@@ -95,13 +124,14 @@ function FinalizeListingAdmin() {
                                                     <Card className="w-80 ml-10">
                                                             <CardHeader floated={false} className="h-60">
                                                                 <img
-                                                                    src={`data:application/pdf;base64,${investorpic}`}
+                                                                    src={`data:application/pdf;base64,${investorpic[counter3++]}`}
                                                                     width="100%"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
                                                             <CardBody className="text-center">
                                                                 <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                                    {item.id.investorId.firstname} {item.id.investorId.lastname}
+                                                                    
+                                                                    {investorfirstname} {investorlastname}
                                                                 </Typography>
                                                                 <Typography color="blue-gray" className="font-medium" textGradient>
                                                                     Investor
@@ -142,9 +172,9 @@ function FinalizeListingAdmin() {
                                                                 <p><strong>Entrepreneur side agreement</strong></p>
                                                                 <p>
                                                                 <iframe
-                                                                    src={`data:application/pdf;base64,${pdfs.entrepreneurDoc}`}
+                                                                    src={`data:application/pdf;base64,${pdf[counter1++]}`}
                                                                     width="88%"
-                                                                    height="520px"
+                                                                    height="320px"
                                                                     title="Police Report"
                                                                 ></iframe>
                                                                 <br></br>
@@ -154,9 +184,9 @@ function FinalizeListingAdmin() {
                                                                 <p><strong>Investor side agreement</strong></p>
                                                                 <p>
                                                                 <iframe
-                                                                    src={`data:application/pdf;base64,${pdfs.investorDoc}`}
+                                                                    src={`data:application/pdf;base64,${pdf1[count++]}`}
                                                                     width="88%"
-                                                                    height="520px"
+                                                                    height="320px"
                                                                     title="Police Report"
                                                                 ></iframe>
                                                                 <br></br>
