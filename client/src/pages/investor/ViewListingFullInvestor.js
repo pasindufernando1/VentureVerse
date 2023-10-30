@@ -23,6 +23,7 @@ import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faArrowLeft, faArrowRight} from "@fortawesome/free-solid-svg-icons";
 import useAuth from "../../hooks/useAuth";
+import {axiosPrivate} from "../../api/axios";
 
 
 function ViewListingFullInvestor() {
@@ -59,6 +60,37 @@ function ViewListingFullInvestor() {
     useEffect(() => {
         get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
     }, [listing])
+
+    useEffect(() => {
+        axiosPrivate.get(`/entrepreneur/getCompletedInvestment/${listing.listingId}`)
+            .then((response) => {
+                listing.completedInvestment = response.data;
+                return listing;
+            })
+            .catch((error) => {
+                console.error("Error fetching completed investment for listing", listing.listingId, error);
+                return listing; // Return the listing even if an error occurs
+            });
+
+
+    }, [listing]);
+
+    useEffect(() => {
+        axiosPrivate.get(`/entrepreneur/getInterestedParties/${listing.listingId}`)
+            .then((response) => {
+                listing.interestedParties = response.data;
+                return listing;
+            })
+            .catch((error) => {
+                console.error("Error fetching interested parties for listing", listing.listingId, error);
+                return listing; // Return the listing even if an error occurs
+            });
+    }, [listing]);
+
+
+    console.log(listing);
+    // console.log(listing.interestedParties.length);
+
 
     //Assign the images to an array to be used in the carousel
     const images = [];
@@ -117,6 +149,9 @@ function ViewListingFullInvestor() {
             }
         }
         ,[formData]);
+
+    // Convert the listing object to an array
+    const listingArray = Object.values(listing);
 
     return (
         <div>
@@ -189,51 +224,67 @@ function ViewListingFullInvestor() {
                                             Completed
                                         </Typography>
                                         <Typography color="blue" variant="h6" className="text-main-purple">
-                                            50%
+                                            {Math.floor(listing.completedInvestment*100/listing.expectedAmount)}%
                                         </Typography>
                                     </div>
-                                    <Progress value={50} color="purple"/>
+                                    <Progress value={Math.floor(listing.completedInvestment*100/listing.expectedAmount)} color="purple"/>
                                 </div>
                                 <Typography variant="h6" className="mb-2 text-main-gray mt-4">
                                     Interested
                                 </Typography>
                                 {/* Div to show the images of interested parties images*/}
                                 <div className="flex items-center -space-x-4 mt-2">
-                                    <Avatar
-                                        variant="circular"
-                                        alt="user 1"
-                                        className="border-2 border-white hover:z-10 focus:z-10"
-                                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                                        title="Mr. Nimal Fernando"
-                                    />
-                                    <Avatar
-                                        variant="circular"
-                                        alt="user 2"
-                                        className="border-2 border-white hover:z-10 focus:z-10"
-                                        src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"
-                                        title="Mr. Nimal Fernando"
-                                    />
-                                    <Avatar
-                                        variant="circular"
-                                        alt="user 3"
-                                        className="border-2 border-white hover:z-10 focus:z-10"
-                                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
-                                        title="Mr. Nimal Fernando"
-                                    />
-                                    <Avatar
-                                        variant="circular"
-                                        alt="user 4"
-                                        className="border-2 border-white hover:z-10 focus:z-10"
-                                        title="Mr. Nimal Fernando"
-                                        src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
-                                    />
-                                    <Avatar
-                                        variant="circular"
-                                        alt="user 5"
-                                        className="border-2 border-white hover:z-10 focus:z-10"
-                                        src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"
-                                        title="Mr. Nimal Fernando"
-                                    />
+                                    {listing.interestedParties && listing.interestedParties.map((interestedParty) => (
+                                        <Avatar
+                                            variant="circular"
+                                            alt="user 1"
+                                            className="border-2 border-white hover:z-10 focus:z-10"
+                                            src={`data:application/img;base64,${interestedParty}`}
+                                            title="Mr. Nimal Fernando"
+                                        />
+                                    ))}
+                                    {
+                                        listing.interestedParties && listing.interestedParties.length === 0 && (
+                                            <Typography variant="h7" className="mb-2 text-main-gray mt-4">
+                                                No interested parties yet
+                                            </Typography>
+                                        )
+                                    }
+                                    {/*<Avatar*/}
+                                    {/*    variant="circular"*/}
+                                    {/*    alt="user 1"*/}
+                                    {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                    {/*    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"*/}
+                                    {/*    title="Mr. Nimal Fernando"*/}
+                                    {/*/>*/}
+                                    {/*<Avatar*/}
+                                    {/*    variant="circular"*/}
+                                    {/*    alt="user 2"*/}
+                                    {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                    {/*    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1061&q=80"*/}
+                                    {/*    title="Mr. Nimal Fernando"*/}
+                                    {/*/>*/}
+                                    {/*<Avatar*/}
+                                    {/*    variant="circular"*/}
+                                    {/*    alt="user 3"*/}
+                                    {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                    {/*    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"*/}
+                                    {/*    title="Mr. Nimal Fernando"*/}
+                                    {/*/>*/}
+                                    {/*<Avatar*/}
+                                    {/*    variant="circular"*/}
+                                    {/*    alt="user 4"*/}
+                                    {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                    {/*    title="Mr. Nimal Fernando"*/}
+                                    {/*    src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"*/}
+                                    {/*/>*/}
+                                    {/*<Avatar*/}
+                                    {/*    variant="circular"*/}
+                                    {/*    alt="user 5"*/}
+                                    {/*    className="border-2 border-white hover:z-10 focus:z-10"*/}
+                                    {/*    src="https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1760&q=80"*/}
+                                    {/*    title="Mr. Nimal Fernando"*/}
+                                    {/*/>*/}
                                 </div>
                                 <Typography variant="h5" className="mb-2 text-light-purple mt-4">
                                     Business / Product images
