@@ -4,11 +4,15 @@ import { Rating } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {json, Link } from "react-router-dom";
 
+
+
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = React.useState(4);
     // create dummy array for table data 
    const { get,put } = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const [search, setSearch] = useState("");
+    console.log(search);
     useEffect(() => {
         get("/entrepreneurs/view", setResponse, true);
         console.log(response);
@@ -52,6 +56,7 @@ const ViewEntrepreneurs = () => {
                                 id="table-search-users"
                                 className="block p-2 pl-10 text-[15px]text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Search For users"
+                                onChange={(event) => setSearch(event.target.value)}
                             />
                         </div>
                         <div className="ml-4 mt-2">
@@ -75,16 +80,18 @@ const ViewEntrepreneurs = () => {
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-[15px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" className="p-4">
-                            <div className="flex items-center">
-                                <input 
-                                    id="checkbox-all-search" 
-                                    type="checkbox"
-                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                />
-                                <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
-                            </div>
-                        </th>
+                        {/*<th scope="col" className="p-4">*/}
+                        {/*    <div className="flex items-center">*/}
+                        {/*        <input*/}
+                        {/*            id="checkbox-all-search"*/}
+                        {/*            type="checkbox"*/}
+                        {/*            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"*/}
+                        {/*        />*/}
+                        {/*        <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>*/}
+                        {/*    </div>*/}
+                        {/*</th>*/}
+
+
                         <th scope="col" className="w-1/5">
                             Name
                         </th>
@@ -100,27 +107,31 @@ const ViewEntrepreneurs = () => {
                     </tr>
                     </thead>
                     <tbody>
-                        {response.map((user) => (
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-2">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-1" type="checkbox"
-                                        className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
+                        {response.filter((user) => {
+                            return search.toLowerCase() === ''
+                                ? user
+                                : user.email.toLowerCase().includes(search)})
+                            .map((user) => (
+
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
+                        {/*<td className="w-4 p-2">*/}
+                        {/*    <div className="flex items-center">*/}
+                        {/*        <input id="checkbox-table-search-1" type="checkbox"*/}
+                        {/*                className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"/>*/}
+                        {/*        <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>*/}
+                        {/*    </div>*/}
+                        {/*</td>*/}
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
-                            <img className="w-8 h-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                                alt="Jese"/>
+
                             <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user.name}</div>
+                                <div className="text-[15px] font-semibold">{user.firstname}</div>
                                 <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+
                             </div>
                         </th>
-                        <td className="px-12 py-3 text-sm">
-                            <div className="flex items-center">
+                        <td className="px-12 py-3  text-sm">
+                            <div className="flex justify-center">
                                 {user.status === 'Online' ? (
                                     <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
                                 ) : (
@@ -132,7 +143,7 @@ const ViewEntrepreneurs = () => {
                             </div>
                         </td>
                         <td>
-                            <div className="px-12 py-3">
+                            <div className="px-12 py-3 flex justify-center">
                                 <Rating value={1} onChange={(value) => setRated(value)}/>
                             </div>
                         </td>

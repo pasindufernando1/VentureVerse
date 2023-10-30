@@ -177,7 +177,7 @@ const UpdateEnterpreneur = () => {
                     <form className=" bg-white flex border-[1px] border-main-purple mt-[-0.5rem] h-auto lg:rounded-[1rem] lg:w-full">
                         <div className="text-gray-700 p-10 w-full">
                             <div className="Signup1">
-                                <h3 className="text-3xl text-main-purple self-center">Update Co-Admin</h3>
+                                <h3 className="text-3xl text-main-purple self-center">Update Enterpreneur</h3>
                                 <div className="mt-6">
                                     <div className="row">
                                         <Input

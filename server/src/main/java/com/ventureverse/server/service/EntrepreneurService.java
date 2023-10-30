@@ -85,7 +85,7 @@ public class EntrepreneurService {
         if (existingEntrepreneurOptional.isPresent()) {
             EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
 
-            existingEntrepreneur.setApprovalStatus(Status.PENDING);
+            existingEntrepreneur.setApprovalStatus(Status.BANNED);
 
             // You can update other fields here if needed...
 
