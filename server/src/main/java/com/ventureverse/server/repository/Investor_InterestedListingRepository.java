@@ -123,4 +123,45 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             AND i.investorProofDocument IS NOT NULL
             """)
     String findByListingInvestorId(@Param("listingId") Integer listingId, @Param("investorId") Integer investorId);
+
+    @Query("""
+            SELECT COUNT(e)
+            FROM InvestorInterestedSectorDTO e
+            WHERE e.id.investorId = :id
+                                      
+    """)
+    int getCountByID(ListingDTO id);
+    //Long getCountByID(ListingDTO listingDTO);
+
+
+    @Query("""
+            SELECT COUNT(e)
+            FROM InvestorInterestedListingDTO e
+            WHERE e.id.investorId = :id
+    """)
+
+    Long getCountByInvestorId(InvestorDTO id);
+
+    @Query("""
+            SELECT e
+            FROM InvestorInterestedListingDTO e
+            WHERE e.id.investorId = :id
+    """)
+    List<InvestorInterestedListingDTO> findAllByInvestorId(InvestorDTO id);
+
+
+
+    @Query("""
+            SELECT MIN(e.finalizedDate)
+            FROM InvestorInterestedListingDTO e
+            WHERE e.id.investorId = :individualInvestor
+    """)
+    Date getLastDate(IndividualInvestorDTO individualInvestor);
+
+    @Query("""
+            SELECT MIN(e.finalizedDate)
+            FROM InvestorInterestedListingDTO e
+            WHERE e.id.investorId = :enterpriseInvestor
+    """)
+    Date getLastDate1(EnterpriseInvestorDTO enterpriseInvestor);
 }

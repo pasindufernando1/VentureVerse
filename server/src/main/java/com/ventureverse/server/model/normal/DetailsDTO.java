@@ -72,5 +72,11 @@ public class DetailsDTO {
     private String investorName;
     private String investorQuote;
     private String investorType;
+    
+    //COMPLAIN
+    private Integer complainId;
+    private Integer adminId;
+    private String actionDescription;
+
 
 }

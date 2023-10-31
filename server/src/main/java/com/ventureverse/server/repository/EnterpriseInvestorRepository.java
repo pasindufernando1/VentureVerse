@@ -25,4 +25,11 @@ public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseIn
     int saveInvestorSector(@Param("investor") Integer investor, @Param("sectorId") Integer sectorId);
 
     List<EnterpriseInvestorDTO> findByRole(Role role);
+    @Query("""
+    SELECT e
+    FROM EnterpriseInvestorDTO e 
+    WHERE e.id = :id
+    
+""")
+    EnterpriseInvestorDTO findByenterpriseinvestorId(int id);
 }
