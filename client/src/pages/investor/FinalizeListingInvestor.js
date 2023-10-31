@@ -19,9 +19,11 @@ import {Input,Checkbox} from "../webcomponent";
 
 
 function FinalizeListingInvestor() {
-    const {put,post} = useAxiosMethods();
+    const {put,post,get} = useAxiosMethods();
     const[response, setResponse] = useState([]);
     const[response1, setResponse1] = useState([]);
+    const[investorpic, setinvestorpic] = useState([]);
+    const[listings, setListings] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {auth} = useAuth();
     const { id } = useParams();
@@ -52,8 +54,6 @@ function FinalizeListingInvestor() {
         status: "Investor_Finalized"
     };
 
-    console.log(requestData);
-
     const finalizeListing = async () => {
         const formData = new FormData();
 
@@ -68,7 +68,22 @@ function FinalizeListingInvestor() {
 
     };
 
-    console.log(response);
+    useEffect(() => {
+        get(`/entrepreneurs/getListingDetails/${listing}`, setListings);
+    }, [response]);
+
+    console.log(listings);
+
+    var entrepreneurid=[];
+    if(listings && listings.entrepreneurId){
+        entrepreneurid[0]=listings.entrepreneurId.id;
+    }
+
+    useEffect(() => {
+        get(`/entrepreneurs/getEntrepreneurPic/${entrepreneurid[0]}`, setinvestorpic);
+    }, [listings]);
+
+
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
@@ -87,17 +102,18 @@ function FinalizeListingInvestor() {
                                     <div className="row2 flex flex-row flex-wrap">
                                         <div>
                                             <Card className="w-80">
-                                                <CardHeader floated={false} className="h-80">
+                                                <CardHeader floated={false} className="h-70">
                                                     <img
-                                                        src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1287&q=80"
+                                                        src={`data:application/pdf;base64,${investorpic[0]}`}
+                                                        width="100%"
                                                         alt="profile-picture"/>
                                                 </CardHeader>
                                                 <CardBody className="text-center">
                                                     <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                        Ajith Epa
+                                                        {listings && listings.entrepreneurId && listings.entrepreneurId.firstname} {listings && listings.entrepreneurId && listings.entrepreneurId.lastname}
                                                     </Typography>
                                                     <Typography color="blue-gray" className="font-medium" textGradient>
-                                                        Lanka Apparels
+                                                        {listings && listings.entrepreneurId && listings.title}
                                                     </Typography>
                                                 </CardBody>
 

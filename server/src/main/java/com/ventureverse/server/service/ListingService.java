@@ -280,5 +280,14 @@ public class ListingService {
         }else{
             return GlobalService.response("Error", "Listing not found");
         }
+        return GlobalService.response("Success","Counter proposal added successfully");
+}
+
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.finalizeListings(id);
+    }
+
+    public void updateListing(ListingDTO listingDTO) {
+        listingRepository.save(listingDTO);
     }
 }

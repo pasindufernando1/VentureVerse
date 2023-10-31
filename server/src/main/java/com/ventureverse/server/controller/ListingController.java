@@ -21,6 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static java.lang.System.exit;
@@ -72,7 +73,46 @@ public class ListingController {
     //Get all the listings available in the database with the status "published"
     @GetMapping("/getAllListings")
     public ResponseEntity<List<ListingDTO>> getAllListings() {
-        return ResponseEntity.ok(listingService.getAllListings());
+        List<ListingDTO> listings=listingService.getAllListings();
+        List<ListingDTO> activeListings=new ArrayList<>();
+
+        //Remove listing where status!=Active
+        for (int i = 0; i < listings.size(); i++) {
+            if(listings.get(i).getStatus().equals("Active")) {
+                activeListings.add(listings.get(i));
+            }
+        }
+
+        for(int i=0;i<activeListings.size();i++){
+            int days=activeListings.get(i).getSubscriptionType().getDays();
+            Date startDate=activeListings.get(i).getPublishedDate();
+
+            //Get the current date
+            Date currentDate=new Date();
+
+            //get the number of days passed since the listing was published
+            long diff = currentDate.getTime() - startDate.getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            //If the number of days passed is greater than the number of days in the subscription type, change the status to "Expired"
+            if(diffDays>days) {
+                activeListings.get(i).setStatus("Expired");
+                listingService.updateListing(activeListings.get(i));
+            }else{
+                activeListings.get(i).setStatus("Active");
+                listingService.updateListing(activeListings.get(i));
+            }
+        }
+        List<ListingDTO> newlistings=listingService.getAllListings();
+        List<ListingDTO> newactiveListings=new ArrayList<>();
+
+        //Remove listing where status!=Active
+        for (int i = 0; i < listings.size(); i++) {
+            if(newlistings.get(i).getStatus().equals("Active")) {
+                newactiveListings.add(listings.get(i));
+            }
+        }
+        return ResponseEntity.ok(newactiveListings);
     }
 
     //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
@@ -265,12 +305,12 @@ public class ListingController {
     }
 
     @GetMapping("/finalizeListing/{id}")
-    public ResponseEntity<InvestorInterestedListingDTO> finalizeListing(@PathVariable Integer id) {
-        InvestorInterestedListingDTO finalizedListing = listingService.finalizeListing(id);
-        if (finalizedListing == null) {
+    public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
+        if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(finalizedListing);
+        return ResponseEntity.ok(finalizedListings);
     }
 
     @GetMapping("/getpdf/{id}")
@@ -291,7 +331,19 @@ public class ListingController {
         return ResponseEntity.ok().body(pdfs);
     }
 
+    @GetMapping("/admingetPdf/{doc}")
+    public ResponseEntity<List<byte[]>> admingetpdf(@PathVariable List<String> doc) throws IOException {
+        List<byte[]> pdfs = new ArrayList<>();
+        for ( String name: doc){
+            String rootDirectory = System.getProperty("user.dir");
+            String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
 
+            Path entrepreneurPath = Paths.get(imageUploadPath,name);
+            pdfs.add(Files.readAllBytes(entrepreneurPath));
+        }
+        System.out.println("kkkkk");
+        return ResponseEntity.ok().body(pdfs);
+    }
 
     @PutMapping("/updateDate/{id}")
     public ResponseEntity<ResponseDTO> updateDate(

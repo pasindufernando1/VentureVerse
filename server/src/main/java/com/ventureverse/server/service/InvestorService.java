@@ -25,13 +25,16 @@ public class InvestorService {
     private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
     private final Investor_InterestedListingRepository investor_interestedListingRepository;
     private final CounterProposalRepository counterProposalRepository;
+    private final UserRepository userRepository;
 
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository) {
+    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, CounterProposalRepository counterProposalRepository, UserRepository userRepository) {
         this.individualInvestorRepository = individualInvestorRepository;
         this.investorInterestedSectorRepository = investorInterestedSectorRepository;
-        this.enterpriseInvestorRepository = enterpriseInvestorRepository;
+        this.investor_interestedListingRepository = investorInterestedListingRepository;
+        this.counterProposalRepository = counterProposalRepository;
+        this.userRepository = userRepository;
     }
 
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
@@ -164,5 +167,9 @@ public class InvestorService {
         else{
             return null;
         }
+    }
+
+    public String getadmindoc(Integer investorId, Integer listingId) {
+        return investor_interestedListingRepository.findByListingInvestorId(listingId,investorId);
     }
 }

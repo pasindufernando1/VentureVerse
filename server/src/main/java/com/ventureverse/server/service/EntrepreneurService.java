@@ -26,8 +26,9 @@ public class EntrepreneurService {
     private final ScheduleRepository scheduleRepository;
     private final ListingRepository listingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
+    private final UserRepository userRepository;
 
-    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository) {
+    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, UserRepository userRepository) {
         this.entrepreneurRepository = entrepreneurRepository;
         this.complainRepository = complainRepository;
         this.investor_interestedListingRepository = investorInterestedListingRepository;
@@ -37,6 +38,7 @@ public class EntrepreneurService {
         this.scheduleRepository = scheduleRepository;
         this.listingRepository = listingRepository;
         this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
+        this.userRepository = userRepository;
     }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
@@ -194,5 +196,31 @@ public class EntrepreneurService {
         } else {
             return null; // You can also throw an exception indicating that the entrepreneur with the given ID was not found
         }
+    }
+
+    public String getadmindoc(Integer listingId,Integer investorId) {
+       return investor_interestedListingRepository.findByEntrepreneurFinalizeDoc(listingId,investorId);
+    }
+
+
+    public String getEntrepreneurPic(Integer id) {
+        return userRepository.getimage(id);
+    }
+
+    public ListingDTO getListingDetails(Integer id) {
+        return listingRepository.findById(id).orElse(null);
+    }
+
+    public List<String> getInvestorName(List<Integer> id) {
+        List<String> name=new ArrayList<>();
+        for(Integer i:id){
+            Role userRole = userRepository.findById(i).orElse(null).getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                name.add(individualInvestorRepository.findById(i).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(i).orElse(null).getLastname());
+            }else {
+                name.add(enterpriseInvestorRepository.findById(i).orElse(null).getBusinessName());
+            }
+        }
+        return name;
     }
 }
