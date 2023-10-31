@@ -16,7 +16,9 @@ const Profile = () => {
                     <div className='absolute h-48 w-full py-0 px-12 flex flex-row left-0 ' >
                             <img
                                 className="relative h-48 w-48 border-4 border-white rounded-lg object-cover object-center"
-                                src={response.profileImage}
+                                src={
+                                response.profileImage
+                                }
                                 alt="profile image"
                             />
                         <div className=' m-4 mt-28 flex flex-col px-1 h-auto ' >

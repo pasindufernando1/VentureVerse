@@ -1254,129 +1254,129 @@ const Preferences = () =>{
     )
 }
 
-// const UpdatedDocuments = () => {
-//     const { get } = useAxiosMethods();
-//     const [response, setResponse] = useState([]);
-//     const[sectors,setSectors]=useState([]);
-//     const [pdf, setPdf] = useState([]);
-//     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-//     const [showErrorNotification, setShowErrorNotification] = useState(false);
-//
-//     const { id } = useParams();
-//
-//     const registrationRequestDetails = {
-//         policeReport:"/assets/images/20000499.pdf",
-//         incomeStatement:"/assets/images/20000499.pdf"
-//     };
-//
-//
-//     useEffect(() => {
-//         get(`/auth/get-investor-pdf/${id}`, setPdf);
-//     }, []);
-//     const pdfs = {
-//         policeReport:pdf[0],
-//         incomeStatement:pdf[1],
-//     }
-//
-//     const handleDocumentDownload = (documentData, documentName) => {
-//         const linkSource = `data:application/pdf;base64,${documentData}`;
-//         const downloadLink = document.createElement("a");
-//         const fileName = `${documentName}.pdf`;
-//
-//         downloadLink.href = linkSource;
-//         downloadLink.download = fileName;
-//         downloadLink.click();
-//
-//     };
-//
-//     return (
-//         <div
-//             className=' mb-24 flex flex-col mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>
-//             <div>
-//                 <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>
-//                 <div className="grid grid-cols-2 gap-5 ml-10">
-//                     <div className="document-container">
-//                         <p><strong>Police Report:</strong></p>
-//                         <p>
-//                             <iframe
-//                                 src={`data:application/pdf;base64,${pdfs.policeReport}`}
-//                                 width="88%"
-//                                 height="510px"
-//                                 title="Police Report"
-//                             ></iframe>
-//                             <br></br>
-//                             <Button
-//                                 className="download-button"
-//                                 type="button"
-//                                 onClick={() =>
-//                                     handleDocumentDownload(
-//                                         pdfs.policeReport,
-//                                         registrationRequestDetails.id + "_police_report"
-//                                     )
-//                                 }
-//                                 label="Download"
-//                             />
-//                         </p>
-//                     </div>
-//                     <div className="document-container">
-//                         <p><strong>Income Statement:</strong></p>
-//                         <p>
-//                             <iframe
-//                                 src={`data:application/pdf;base64,${pdfs.incomeStatement}`}
-//                                 width="88%"
-//                                 height="510px"
-//                                 title="Income Statement"
-//                             ></iframe>
-//                             <br></br>
-//                             <Button
-//                                 className="download-button"
-//                                 type="button"
-//                                 onClick={() =>
-//                                     handleDocumentDownload(
-//                                         pdfs.incomeStatement,
-//                                         registrationRequestDetails.id + "_income_statement"
-//                                     )
-//                                 }
-//                                 label="Download"
-//                             />
-//                         </p>
-//                     </div>
-//                 </div>
-//             </div>
-//             <h1 className="text-2xl text-main-purple self-center ">Documents Uploaded</h1>
-//             <div className="flex flex-row items-center w-full text-center mt-6">
-//                 <div className="applicationNotifications w-1/2">
-//                     <h4 className="text-main-purple self-center">Bank Statement</h4>
-//                     <div className='w-full mt-4 py-[2rem] px-4 bg-white flex flex-col space-y-4 mr-4'>
-//                         <embed
-//                             className="h-[600px] w-full"
-//                             src="/assets/documents/Bank%20Account%20Statement.pdf"
-//                             type="application/pdf"
-//                         />
-//                     </div>
-//                 </div>
-//
-//                 <div className="applicationNotificationsSettings w-1/2">
-//                     <h4 className=" text-main-purple self-center">Police Report</h4>
-//                     <div className='w-full mt-4 py-[2rem] px-4 bg-white flex flex-col space-y-4 mr-4'>
-//                         <embed
-//                             className="h-[600px] w-full"
-//                             src="/assets/documents/clearance_application.pdf"
-//                             type="application/pdf"
-//                         />
-//                     </div>
-//                 </div>
-//             </div>
-//         </div>
-//     )
-// }
+const UpdatedDocuments = () => {
+    const { get } = useAxiosMethods();
+    const [response, setResponse] = useState([]);
+    const[sectors,setSectors]=useState([]);
+    const [pdf, setPdf] = useState([]);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    const [showErrorNotification, setShowErrorNotification] = useState(false);
+
+    const { id } = useParams();
+
+    const registrationRequestDetails = {
+        policeReport:"/assets/images/20000499.pdf",
+        incomeStatement:"/assets/images/20000499.pdf"
+    };
+
+
+    useEffect(() => {
+        get(`/auth/get-investor-pdf/${id}`, setPdf);
+    }, []);
+    const pdfs = {
+        policeReport:pdf[0],
+        incomeStatement:pdf[1],
+    }
+
+    const handleDocumentDownload = (documentData, documentName) => {
+        const linkSource = `data:application/pdf;base64,${documentData}`;
+        const downloadLink = document.createElement("a");
+        const fileName = `${documentName}.pdf`;
+
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+
+    };
+
+    return (
+        <div
+            className=' mb-24 flex flex-col mt-24 relative justify-center items-start w-auto rounded-2xl px-[1rem] lg:px-[5rem] py-[2rem] border border-main-purple'>
+            {/*<div>*/}
+            {/*    <h3 className="font-medium text-purple-400 text-lg font-semibold mb-2">Documents</h3>*/}
+            {/*    <div className="grid grid-cols-2 gap-5 ml-10">*/}
+            {/*        <div className="document-container">*/}
+            {/*            <p><strong>Police Report:</strong></p>*/}
+            {/*            <p>*/}
+            {/*                <iframe*/}
+            {/*                    src={`data:application/pdf;base64,${pdfs.policeReport}`}*/}
+            {/*                    width="88%"*/}
+            {/*                    height="510px"*/}
+            {/*                    title="Police Report"*/}
+            {/*                ></iframe>*/}
+            {/*                <br></br>*/}
+            {/*                <Button*/}
+            {/*                    className="download-button"*/}
+            {/*                    type="button"*/}
+            {/*                    onClick={() =>*/}
+            {/*                        handleDocumentDownload(*/}
+            {/*                            pdfs.policeReport,*/}
+            {/*                            registrationRequestDetails.id + "_police_report"*/}
+            {/*                        )*/}
+            {/*                    }*/}
+            {/*                    label="Download"*/}
+            {/*                />*/}
+            {/*            </p>*/}
+            {/*        </div>*/}
+            {/*        <div className="document-container">*/}
+            {/*            <p><strong>Income Statement:</strong></p>*/}
+            {/*            <p>*/}
+            {/*                <iframe*/}
+            {/*                    src={`data:application/pdf;base64,${pdfs.incomeStatement}`}*/}
+            {/*                    width="88%"*/}
+            {/*                    height="510px"*/}
+            {/*                    title="Income Statement"*/}
+            {/*                ></iframe>*/}
+            {/*                <br></br>*/}
+            {/*                <Button*/}
+            {/*                    className="download-button"*/}
+            {/*                    type="button"*/}
+            {/*                    onClick={() =>*/}
+            {/*                        handleDocumentDownload(*/}
+            {/*                            pdfs.incomeStatement,*/}
+            {/*                            registrationRequestDetails.id + "_income_statement"*/}
+            {/*                        )*/}
+            {/*                    }*/}
+            {/*                    label="Download"*/}
+            {/*                />*/}
+            {/*            </p>*/}
+            {/*        </div>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            <h1 className="text-2xl text-main-purple self-center ">Documents Uploaded</h1>
+            <div className="flex flex-row items-center w-full text-center mt-6">
+                <div className="applicationNotifications w-1/2">
+                    <h4 className="text-main-purple self-center">Bank Statement</h4>
+                    <div className='w-full mt-4 py-[2rem] px-4 bg-white flex flex-col space-y-4 mr-4'>
+                        <embed
+                            className="h-[600px] w-full"
+                            src="/assets/documents/Bank%20Account%20Statement.pdf"
+                            type="application/pdf"
+                        />
+                    </div>
+                </div>
+
+                <div className="applicationNotificationsSettings w-1/2">
+                    <h4 className=" text-main-purple self-center">Police Report</h4>
+                    <div className='w-full mt-4 py-[2rem] px-4 bg-white flex flex-col space-y-4 mr-4'>
+                        <embed
+                            className="h-[600px] w-full"
+                            src="/assets/documents/clearance_application.pdf"
+                            type="application/pdf"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
 
 const Profile = () => {
     return (
         <>
             <ProfileInformation/>
             <Preferences/>
-            {/*<UpdatedDocuments/>*/}
+            <UpdatedDocuments/>
             <DisableAccount/>
         </>
     )
