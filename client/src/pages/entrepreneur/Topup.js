@@ -41,7 +41,9 @@ function TopUp() {
     const today = new Date();
     const requestData = {
         listingId: id,
-        subscriptionType: subscriptionType,
+        subscriptionType: {
+            subscriptionId: subscriptionType
+        },
         publishedDate: today,
     }
     const sendPaymentToServer = async (token, amount) => {

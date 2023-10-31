@@ -267,11 +267,14 @@ public class ListingService {
         ListingDTO listingDTOfinal = new ListingDTO();
         listingDTOfinal.setListingId(id);
 
+        //Get the subscription object related to the subscription id
+        var subscription = subscriptionRepository.findById(listingDTO.getSubscriptionType().getSubscriptionId()).orElseThrow();
+
         Optional<ListingDTO> listing = listingRepository.findById(id);
         if(listing.isPresent()) {
             ListingDTO oldListing = listing.get();
             oldListing.setPublishedDate(listingDTO.getPublishedDate());
-            oldListing.setSubscriptionType(listingDTO.getSubscriptionType());
+            oldListing.setSubscriptionType(subscription);
             listingRepository.save(oldListing);
             return GlobalService.response("Success", "Listing updated successfully");
         }else{
