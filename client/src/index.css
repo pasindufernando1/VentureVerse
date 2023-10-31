@@ -472,10 +472,7 @@ code {
     display: none; /* Safari and Chrome */
 }
 
-.flex.flex-row {
-    display: flex;
-    justify-content: space-between; /* Separate cards and filter sections */
-}
+
 
 /* Style for the cards section */
 .cards-section {
