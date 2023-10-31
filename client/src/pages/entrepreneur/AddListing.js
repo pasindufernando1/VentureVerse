@@ -321,10 +321,11 @@ function AddListing() {
         sendPaymentToServer(token.id, price * 100);
     };
 
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
     const sendPaymentToServer = async (token, amount) => {
         try {
             // Make a POST request to your Spring Boot server
-            post('/entrepreneur/pay', {token, amount}, setRes);
+            post('/entrepreneur/pay', {token, amount}, setPaymentSuccess());
 
             // Handle the response from the server (optional)
             console.log(res);
