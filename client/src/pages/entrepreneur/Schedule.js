@@ -1,82 +1,155 @@
 import {Header} from "../webcomponent";
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import React, {useState} from "react";
+import React, {useEffect, useState} from 'react';
+import  FullCalendar  from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+import {
+    Card,
+    CardBody,
+    Typography,
+    Timeline,
+    TimelineItem,
+    TimelineConnector,
+    TimelineHeader,
+    TimelineIcon,
+    TimelineBody,
+} from "@material-tailwind/react";
+import {UserIcon,ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
 
 
 function Schedule() {
     const [events, setEvents] = useState([]);
-    const [eventTitle, setEventTitle] = useState('');
-    const [startDate, setStartDate] = useState('');
-    const [endDate, setEndDate] = useState('');
-    const [showAddEventForm, setShowAddEventForm] = useState(false);
+    const [showPopup, setShowPopup] = useState(false);
+    const [schedules,setSchedules]=useState([]);
+    const {auth} = useAuth();
+    const [selectedEvent, setSelectedEvent] = useState(null);
+    const {get} = useAxiosMethods();
 
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        if (eventTitle && startDate && endDate) {
-            const newEvent = {
-                title: eventTitle,
-                start: startDate,
-                end: endDate,
-            };
-            setEvents([...events, newEvent]);
+    const enterpreneur=auth.id;
 
-            // Clear the form
-            setEventTitle('');
-            setStartDate('');
-            setEndDate('');
-
-            // Hide the form after submission
-            setShowAddEventForm(false);
-        }
+    const handleEventClick = (info) => {
+        //select the event from schedule array
+        const event = schedules.filter((schedule) => schedule.date === info.event.startStr);
+        setSelectedEvent(event[0]);
+        setShowPopup(true);
     };
 
-    const handleDateClick = () => {
-        // Show the Add Event form when a date is clicked
-        console.log("clicked");
-        setShowAddEventForm(true);
-    };
+    const closePopup = () => {
+        setShowPopup(false);
+    }
+
+    useEffect(()=>{
+        get(`schedule/listEntrepreneur/${enterpreneur}`,setSchedules);
+    },[] )
+
+    //format the data to be used in the calendar
+    useEffect(()=>{
+        let temp = [];
+        schedules.forEach((schedule)=>{
+            temp.push({
+                title: schedule.title,
+                start: schedule.date,
+                investor: schedule.investor               
+            })
+        })
+        setEvents(temp);
+    },[schedules] )
 
     return (
         <div>
-            <Header active="Schedules">
-                <h1>My Calendar</h1>
-
-                {/* Add Event Form */}
-                {showAddEventForm && (
-                    <form onSubmit={handleFormSubmit}>
-                        <input
-                            type="text"
-                            placeholder="Event Title"
-                            value={eventTitle}
-                            onChange={(e) => setEventTitle(e.target.value)}
-                        />
-                        <input
-                            type="datetime-local"
-                            placeholder="Start Date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                        />
-                        <input
-                            type="datetime-local"
-                            placeholder="End Date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                        />
-                        <button type="submit">Add Event</button>
-                    </form>
-                )}
-
-                {/* FullCalendar */}
-                <div>
-                    <FullCalendar
-                        plugins={[dayGridPlugin]}
-                        initialView="dayGridMonth"
-                        events={events}
-                        dateClick={handleDateClick}
-                    />
-                </div>
-            </Header>
+            <Header>
+            {/* FullCalendar */}
+            <div>
+                <FullCalendar
+                    plugins={[dayGridPlugin, timeGridPlugin,interactionPlugin  ]}
+                    initialView="dayGridMonth"
+                    events={events}
+                    eventClick={(eventInfo) => handleEventClick(eventInfo)}
+                    eventBackgroundColor="#7339a1"
+                    eventBorderColor="#7339a1"
+                    eventContent={(eventInfo) => (
+                        <div style={{ whiteSpace: 'normal' }}>
+                          {eventInfo.event.title}
+                        </div>
+                    )}
+                />
+            </div>
+            {showPopup && selectedEvent &&(
+            <div className="popup-modal">
+                <div className="popup-content">
+                    <Card className="mt-6 w-200">
+                            <div className="close-icon" onClick={closePopup}>
+                                        X
+                            </div>
+                            <CardBody>
+                                <Typography variant="h5" color="blue-gray">
+                                    Sheduling Details-{selectedEvent.title}
+                                </Typography>
+                                <Typography color="gray" className="font-normal text-gray-600">
+                                   {selectedEvent.date}
+                                </Typography>
+                            </CardBody>
+                            <CardBody className="flex items-start">
+                            <div className="w-[32rem]">
+                                <Timeline>
+                                    <TimelineItem>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <UserIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                                Investor Name
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody className="pb-2">
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.investorName}
+                                            </Typography>
+                                        </TimelineBody>
+                                    </TimelineItem>
+                                        <TimelineItem>
+                                        <TimelineConnector />
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <CalendarIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Date
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody>
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.date}
+                                            </Typography>
+                                        </TimelineBody>
+                                    </TimelineItem>
+                                    <TimelineItem>
+                                        <TimelineHeader>
+                                            <TimelineIcon className="p-2">
+                                            <ClockIcon className="h-4 w-4" />
+                                            </TimelineIcon>
+                                            <Typography variant="h6" color="blue-gray">
+                                            Time
+                                            </Typography>
+                                        </TimelineHeader>
+                                        <TimelineBody>
+                                            <Typography color="gary" className="font-normal text-gray-600">
+                                            {selectedEvent.time}
+                                            </Typography>
+                                        </TimelineBody>
+                                    </TimelineItem>
+                                </Timeline>
+                            </div>
+                            </CardBody>
+                    </Card>
+                </div>    
+            </div>
+            )}
+        </Header>
         </div>
     );
 }

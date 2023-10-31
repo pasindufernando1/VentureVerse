@@ -79,4 +79,10 @@ public class DetailsDTO {
     private String actionDescription;
 
 
+    //Schedule
+    private Integer meetingId;
+    private String date;
+    private String time;
+    private Integer entrepreneurId;
+    private Integer investorId;
 }

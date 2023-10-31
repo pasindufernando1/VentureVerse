@@ -223,4 +223,31 @@ public class EntrepreneurService {
         }
         return name;
     }
+    public long countEntrepreneurs() {
+        return entrepreneurRepository.count();
+    }
+
+
+    // public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
+    //     Integer entrepreneurId = updatedEntrepreneur.getId();
+    //     Optional<EntrepreneurDTO> existingEntrepreneuroptional = entrepreneurRepository.findById(id);
+
+    //     if(existingEntrepreneuroptional.isPresent()){
+    //         EntrepreneurDTO existingEntrepreneur = existingEntrepreneuroptional.get();
+    //         // Update the existing entrepreneur fields with the values from updatedAdmin
+    //         existingEntrepreneur.setFirstname(updatedEntrepreneur.getFirstname());
+    //         existingEntrepreneur.setLastname(updatedEntrepreneur.getLastname());
+    //         existingEntrepreneur.setFirstLineAddress(updatedEntrepreneur.getFirstLineAddress());
+    //         existingEntrepreneur.setSecondLineAddress(updatedEntrepreneur.getSecondLineAddress());
+    //         existingEntrepreneur.setTown(updatedEntrepreneur.getTown());
+    //         existingEntrepreneur.setDistrict(updatedEntrepreneur.getDistrict());
+    //         existingEntrepreneur.setContactNumber(updatedEntrepreneur.getContactNumber());
+    //         //save to backend
+    //         return entrepreneurRepository.save(existingEntrepreneur);
+    //     }else{
+    //         //keep the existing entrepreneur
+    //         return entrepreneurRepository.save(updatedEntrepreneur);
+    //     }
+    // }
+
 }

@@ -17,7 +17,7 @@ import java.util.Optional;
 public class UserController {
 
     private final UserService userService;
-    @GetMapping("/details/{id}")
+    @GetMapping("/details/{i}")
     public ResponseEntity<DetailsDTO> getDetails(
             @PathVariable Integer id
     ) {

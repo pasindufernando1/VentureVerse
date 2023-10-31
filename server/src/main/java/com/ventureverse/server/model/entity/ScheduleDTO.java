@@ -7,8 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -22,14 +23,15 @@ public class ScheduleDTO {
     @Id
     @GeneratedValue
     private Integer meetingId;
-    private Date date;
-    private Time time;
+    private String title;
+    private String date;
+    private String time;
 
     @ManyToOne
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurId;
 
     @ManyToOne
-    @JoinColumn(name="investorId",referencedColumnName = "id")
+    @JoinColumn(name = "investorId", referencedColumnName = "id")
     private InvestorDTO investorId;
 }
