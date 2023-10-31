@@ -1,5 +1,5 @@
-import { Avatar } from "@material-tailwind/react";
-import {Header, Button} from "../webcomponent";
+import {Avatar} from "@material-tailwind/react";
+import {Button, Header} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
@@ -18,7 +18,9 @@ function ViewListingCounterProposal() {
 
     console.log(response);
 
-    const handleVideoCAll = () =>{
+    const {setData} = useData();
+
+    const handleVideoCAll = () => {
         const conferenceWindow = window.open(
             '/meeting/01/entrepreneur/' + new Date().toISOString(),
             '_blank'
@@ -70,7 +72,7 @@ function ViewListingCounterProposal() {
                                     <tbody>
                                     {response.map((request) => (
                                         <tr className="font-medium text-gray-700 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                                            key={request.id}>
+                                            key={key}>
                                             <td>
                                                 <Avatar
                                                     variant="circular"

@@ -33,6 +33,9 @@ import {useNavigate} from "react-router-dom";
 import axios from "../../api/axios";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {MenuButton} from "./index";
+import SockJS from "sockjs-client";
+import {over} from "stompjs";
+let stompClient = null;
 
 const CustomHeader = (props) => {
 
@@ -45,11 +48,30 @@ const CustomHeader = (props) => {
 
     const [toggle, setToggle] = useState(0);
 
+    const [notification, setNotification] = useState(0);
+
     const {get} = useAxiosMethods();
 
     useEffect(() => {
+
+        let socket = new SockJS('http://localhost:8080/api/auth/ws');
+        stompClient = over(socket);
+        stompClient.connect({}, onConnected, onError);
+
         get(`/user/details/${auth?.id}`, setUser);
     }, []);
+
+    const onConnected = () => {
+        stompClient.subscribe('/user/' + auth.id + '/private', onMessageReceived);
+    }
+
+    const onError = () => {
+        console.log("Error Connecting to Websocket");
+    }
+
+    const onMessageReceived = (payload) => {
+        setNotification(notification + 1)
+    }
 
     const logout = async () => {
 
@@ -279,9 +301,9 @@ const CustomHeader = (props) => {
                                         </ListItemPrefix>
                                         {title}
                                         {
-                                            suffix
+                                            (suffix && notification !== 0)
                                                 ? <ListItemSuffix>
-                                                    <Chip value="0" size="sm" variant="ghost" color="blue-gray"
+                                                    <Chip value={notification} size="sm" variant="ghost" color="blue-gray"
                                                           className="rounded-full bg-red-500/90 text-white"/>
                                                 </ListItemSuffix>
                                                 : ""

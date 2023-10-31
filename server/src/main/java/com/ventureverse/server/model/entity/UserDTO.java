@@ -1,5 +1,6 @@
 package com.ventureverse.server.model.entity;
 
+import com.ventureverse.server.enumeration.Chat;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import jakarta.persistence.*;
@@ -7,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.sql.Timestamp;
 
 @Data
 @SuperBuilder
@@ -28,11 +31,16 @@ public class UserDTO {
     private String town;
     private String district;
     private Date registeredDate;
+    private Timestamp lastLogin;
+    private Integer notificationCount = 0;
 
     @Enumerated(EnumType.STRING)
     private Status approvalStatus = Status.PENDING;
 
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
+    private Chat status = Chat.OFFLINE;
 
 }
