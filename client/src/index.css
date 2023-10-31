@@ -471,3 +471,22 @@ code {
 .container::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
 }
+
+.flex.flex-row {
+    display: flex;
+    justify-content: space-between; /* Separate cards and filter sections */
+}
+
+/* Style for the cards section */
+.cards-section {
+    flex: 1; /* Allow it to grow and fill available space */
+}
+
+/* Style for the filter section */
+.filter-section {
+    width: 18rem; /* Set a fixed width for the filter section */
+    position: sticky;
+    top: 0;
+    max-height: 150vh;
+    overflow-y: auto; /* Enable vertical scrolling if needed */
+}

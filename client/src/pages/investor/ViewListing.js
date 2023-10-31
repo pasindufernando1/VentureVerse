@@ -282,14 +282,10 @@ function ViewListing() {
                 // Apply your category and status filters here
                 return (
                     (!categoryFilters.length || card.listingsectors.some(sector => categoryFilters.includes(sector))) &&
-                    (!statusFilters.length || statusFilters.includes(card.stage))
+                    (!statusFilters.length || statusFilters.includes(card.stage)) &&
+                    (card.expectedAmount <= upperLimit && card.expectedAmount >= lowerLimit)
                 );
-            })
-            .filter((card) => {
-                // Apply your price filter here
-                return (card.expectedAmount <= upperLimit && card.expectedAmount >= lowerLimit);
             });
-
         // Update state with the filtered listings
         setFilteredPrintingcards(filteredListings);
     }
@@ -302,9 +298,9 @@ function ViewListing() {
     return (
             <Header active="Listing">
                 <div className="flex flex-row">
-                    <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem]">
+                    {/*Section for the cards*/}
+                    <div className="h-auto min-h-[100vh] flex flex-wrap gap-8 mt-[-2rem] cards-section">
                         {filteredPrintingcards.map((card,index) => (
-
                             <Card className="w-96 mt-2" key={index}>
                                 <CardHeader className="relative h-56 mt-5 w-50">
                                         <div className="relative h-full"
@@ -317,7 +313,7 @@ function ViewListing() {
                                                     className="absolute inset-0 w-full h-full"
                                                     src={listingVideoUrl.video}
                                                     title="Video player"
-                                                    autoplay={true}
+                                                    autoPlay={true}
                                                     muted
                                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                                     allowFullScreen
@@ -394,7 +390,7 @@ function ViewListing() {
                                             />
                                         ))}
                                         { card.interestedParties && card.interestedParties.length === 0 &&(
-                                            <Typography variant="h7" color="blue-gray" className="mb-2 mt-2 text-center ">
+                                            <Typography variant="h6" color="blue-gray" className="mb-2 mt-2 text-center ">
                                                 No interested parties yet
                                             </Typography>
                                         )}
@@ -421,12 +417,12 @@ function ViewListing() {
                     </div>
 
                     {/* Section for the filtering */}
-                    <div className="mr-[-3rem]">
+                    <div className="mr-[-3rem] filter-section scroll-auto">
                         <Card
                             className={`transition-all duration-500  w-full flex items-center max-h-full p-4 shadow-xl shadow-blue-gray-900/5 rounded-none border-[1px] mt-[-3vh]`}>
 
                             <div className={`flex flex-col justify-between w-[15rem] h-full`}>
-                                <Typography variant="h7" className="mb-2 text-black font-extrabold	">
+                                <Typography variant="h6" className="mb-2 text-black font-extrabold	">
                                     Filter By Category
                                 </Typography>
                                 <div className="flex flex-col space-y-[-1rem]">
@@ -508,7 +504,7 @@ function ViewListing() {
                                 </div>
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full`}>
-                                <Typography variant="h7" className="mb-2 text-black font-extrabold	">
+                                <Typography variant="h6" className="mb-2 text-black font-extrabold	">
                                     Filter By Business/Product Status
                                 </Typography>
                                 <div className="flex flex-col space-y-[-1rem]">
@@ -531,7 +527,7 @@ function ViewListing() {
                                 </div>
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full`}>
-                                <Typography variant="h7" className="mb-2 text-black font-extrabold	">
+                                <Typography variant="h6" className="mb-2 text-black font-extrabold	">
                                     Filter By Pricing
                                 </Typography>
                                 <label htmlFor="last-name" className="text-main-gray block mb-2 text-[14px] ">
@@ -555,7 +551,7 @@ function ViewListing() {
                             </div>
                             <div className={`flex flex-col justify-between w-[15rem] h-full mt-2`}>
                             <Button variant="primary" label="Filter" onClick={handleFilter}/>
-                            <Button variant="clear" label="Clear filters" className="mt-3" onClick={revertFilter}/>
+                            <Button variant="clear" label="Clear filters" className="mt-3 mb-4" onClick={revertFilter}/>
                             </div>
                         </Card>
                     </div>
