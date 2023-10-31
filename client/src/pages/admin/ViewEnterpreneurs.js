@@ -124,7 +124,7 @@ const ViewEntrepreneurs = () => {
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
 
-                            <div className="pl-2">
+                            <div className="pl-2 w-1/5">
                                 <div className="text-[15px] font-semibold">{user.firstname}</div>
                                 <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
 

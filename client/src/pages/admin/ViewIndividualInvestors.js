@@ -91,12 +91,10 @@ const ViewEntrepreneurs = () => {
 
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
-                            <img className="w-8 h-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                                alt="Jese"/>
-                            <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user.name}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+
+                            <div className="pl-2 ">
+                                <div className="text-[15px] font-semibold w-1/5 ">{user.firstname}</div>
+                                <div className="text-[13px] text-gray-500 dark:text-gray-400 w-1/5">{user.email}</div>
                             </div>
                         </th>
                         <td className="px-12 py-3 text-sm">
