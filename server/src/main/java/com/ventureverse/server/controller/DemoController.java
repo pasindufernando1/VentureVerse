@@ -89,13 +89,6 @@ public class DemoController {
         return AllObjects;
     }
 
-//    @GetMapping("/EntrepreneurStarRating/{id}")
-//    public Integer EntrepreneurStarRating(
-//            @PathVariable Integer id
-//    ){
-//        Integer StarRatingCount = demoService.getStarCount(id);
-//        return StarRatingCount;
-//    }
 
     @GetMapping("/PastComplains/{id}")
     public List<ComplainDTO> InverstorViewComplains(
@@ -142,15 +135,22 @@ public class DemoController {
 
 
     @GetMapping("/GivingStarRatingBoth/{id}")
-    public List<UserDTO> LeaderBordBoth(
+    public List LeaderBordBoth(
             @PathVariable Integer id
     )
     {
-        List<UserDTO> Both = demoService.LeaderboardBothService(id);
+        List Both = demoService.LeaderboardBothService(id);
+
         // return ResponseEntity.ok("  done successfully");
         return Both;
 
     }
+
+
+
+
+
+
 
 
 

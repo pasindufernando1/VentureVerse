@@ -227,9 +227,12 @@ public class DemoService {
 
         List<Integer> array1 = new ArrayList<>();
         List<UserDTO> array2 = new ArrayList<>();
+        List ALL = new ArrayList<>();
+
 
        // System.out.println(user.getRole());
        if(user.getRole().equals(Role.ENTREPRENEUR)){
+           Integer array_count=0;
                 System.out.println("ENTREPRENEUR");
 
 
@@ -248,9 +251,7 @@ public class DemoService {
 //
 //
 
-//
-//           If (Successful Business Building Attempts > R) then
-//           Score += 3
+
 //
 //           If (Pitch Motivation > S) then
 //           Score += 1
@@ -266,9 +267,7 @@ public class DemoService {
 //
 //           If (Organization or Club Affiliation == True) then
 //           Score += 1
-//
-//           If (Received Awards or Accolades == True) then
-//           Score += 2
+
 
 
 
@@ -284,10 +283,11 @@ public class DemoService {
                Double  Net_Income_Last_Year= 0.0;
                Double Gross_Income_Last_Year =0.0;
                Double Total_Lifetime_Sales =0.0;
-               Double Score=0.0;
+               Integer Score=0;
                Double Total_Funding_Raised=0.0;
                Double Project_Success_Rate=0.0;
                Double FUll_Total_NEED_AMOUNT =0.0;
+               Double Successful_Business_Building_Attempts =0.0;
 
 
                Integer flag=0;
@@ -297,21 +297,18 @@ public class DemoService {
 
 
                for(ListingDTO ListOneDTO : EnterLists){
- //If (Sale Projections for This Year > P) then
-// Score += 3
+
                    Total_Sale_Projections_This_Year = Total_Sale_Projections_This_Year + ListOneDTO.getSalesProjectionThisYear();
-//If (Sale Projections for Next Year > Q) then
-//           Score += 3
+
                    Total_Sale_Projections_Next_Year = Total_Sale_Projections_Next_Year + ListOneDTO.getSalesProjectionNextYear();
-//           If (Net Income Last Year > N) then
-//           Score += 2
+
                    Net_Income_Last_Year = Net_Income_Last_Year + ListOneDTO.getLastYearNetIncome();
-//           If (Gross Income Last Year > M) then
-//           Score += 2
+
                    Gross_Income_Last_Year = Gross_Income_Last_Year + ListOneDTO.getLastYearGrossIncome();
-//           If (Total Lifetime Sales > W) then
-//           Score += 4
+
                    Total_Lifetime_Sales=  Total_Lifetime_Sales + ListOneDTO.getLifetimeSales();
+
+                   Successful_Business_Building_Attempts = Successful_Business_Building_Attempts + Integer.parseInt(ListOneDTO.getAttemptsToGrow());
 //           If (Raised Money from Outside Sources == Yes) then
 //           Score += 2
                   if(ListOneDTO.getOutsideSources()=="Yes"){
@@ -325,7 +322,7 @@ public class DemoService {
 //                   If (Received Awards or Accolades == True) then
 //                   Score += 2
                    if (Integer.parseInt(ListOneDTO.getAwards()) > 0) {
-                       Score = Score + 2;
+                       Score = Score + 4;
                    }
 
                    //Scores equals to
@@ -361,26 +358,43 @@ public class DemoService {
                        Score += 3;
                    }
 
-
-
-
-
-
-
-
-
-
-
                }
 
+//If (Sale Projections for This Year > P) then
+// Score += 3
+if(Total_Sale_Projections_This_Year > 0){
+    Score +=3;
+}
+//If (Sale Projections for Next Year > Q) then
+//           Score += 3
+if(Total_Sale_Projections_Next_Year > 0){
+                   Score +=3;
+}
+//           If (Net Income Last Year > N) then
+//           Score += 2
+if(Net_Income_Last_Year > 0){
+                   Score +=3;
+}
+//           If (Gross Income Last Year > M) then
+//           Score += 2
+if(Gross_Income_Last_Year > 0){
+                   Score +=3;
+}
+//           If (Total Lifetime Sales > W) then
+//           Score += 4
+ if(Total_Lifetime_Sales > 0){
+                   Score +=3;
+}
+//
+//           If (Successful Business Building Attempts > R) then
+//           Score += 3
+if(Successful_Business_Building_Attempts >0){
+    Score += 3;
+}
 
-
-
-
-
-
-
-
+               array1.add(Score);
+               array2.add(EntrepreneurOneDTO);
+               array_count =array_count +1;
 
 
 
@@ -388,7 +402,40 @@ public class DemoService {
 
            }
 
+           Integer n = array1.size();
+           boolean swapped;
+           for (int i = 0; i < n - 1; i++) {
+               swapped = false;
+               for (int j = 0; j < n - i - 1; j++) {
+                   if (array1.get(j + 1) > array1.get(j)) {
+                       // Swap arr[j] and arr[j+1]
+                       int temp = array1.get(j);
+                       array1.set(j,array1.get(j + 1)) ;
+                       array1.set(j+1,temp);
 
+
+                       UserDTO temp1 =array2.get(j);
+                       array2.set(j,array2.get(j + 1)) ;
+                       array2.set(j+1,temp1);
+
+                       swapped = true;
+                   }
+               }
+               // If no two elements were swapped in the inner loop, the array is already sorted
+               if (!swapped) {
+                   break;
+               }
+           }
+
+           System.out.println(array1);
+           System.out.println("\n");
+           System.out.println(array2);
+
+
+
+           ALL.add(array2);
+           ALL.add(array1);
+           return ALL;
 
 
 
@@ -637,7 +684,11 @@ public class DemoService {
            System.out.println("\n");
            System.out.println(array2);
 
-            return array2;
+
+
+           ALL.add(array2);
+           ALL.add(array1);
+            return ALL;
 
        }
         return null;
@@ -669,3 +720,8 @@ public class DemoService {
 //        EntrepreneurDTO  entrepreneur=
 //     }
 }
+
+
+
+
+
