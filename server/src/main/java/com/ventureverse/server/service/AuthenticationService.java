@@ -3,6 +3,7 @@ package com.ventureverse.server.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ventureverse.server.assets.Templates;
 import com.ventureverse.server.config.JwtService;
+import com.ventureverse.server.enumeration.Chat;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
@@ -21,6 +22,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 
 @Service
 @RequiredArgsConstructor
@@ -287,6 +289,11 @@ public class AuthenticationService {
         var refreshToken = jwtService.generateRefreshToken(credentials);
         updateUserToken(user, accessToken);
         creatCookie(response, refreshToken, refreshExpiration / 1000);
+
+        user.setStatus(Chat.ONLINE);
+        user.setLastLogin(null);
+        userRepository.save(user);
+
         return GlobalService.authenticationResponse(
                 accessToken,
                 user.getId(),
@@ -383,6 +390,10 @@ public class AuthenticationService {
         var user = this.userRepository.findByEmail(email).orElseThrow();
         revokeAllUserTokens(user);
         creatCookie(response, "", 0);
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        user.setLastLogin(timestamp);
+        userRepository.save(user);
 
         return GlobalService.response("Success", "");
 

@@ -1,10 +1,14 @@
 package com.ventureverse.server.model.normal;
 
+import com.ventureverse.server.enumeration.Chat;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data

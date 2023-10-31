@@ -30,8 +30,6 @@ const Inbox = () => {
 
     useEffect(() => {
 
-        console.log("1");
-
         let socket = new SockJS('http://localhost:8080/api/auth/ws');
         stompClient = over(socket);
         stompClient.connect({}, onConnected, onError);
@@ -45,11 +43,12 @@ const Inbox = () => {
 
         if (rawData.length === 0) return;
 
-        console.log("2");
-
+        let temp = [];
         let room = []
         let roomOwner = null;
         let name = "";
+        let lastSeen = "";
+        let lastMessageDate = "";
 
         rawData?.map(deserializing);
 
@@ -57,7 +56,7 @@ const Inbox = () => {
 
             data?.sender.id === auth?.id ? roomOwner = data?.receiver : roomOwner = data?.sender;
 
-            if (!isExist(rooms, roomOwner?.id)) {
+            if (!isExist(temp, roomOwner?.id)) {
 
                 if (roomOwner?.role === "ENTERPRISE_INVESTOR") {
                     name = roomOwner?.businessName;
@@ -65,14 +64,31 @@ const Inbox = () => {
                     name = roomOwner?.firstname + " " + roomOwner?.lastname;
                 }
 
+                roomOwner?.status === "ONLINE" ? lastSeen = "Online" : lastSeen = "Last Seen " + deserializeTimestamp(roomOwner?.lastLogin);
+
+               let date = new Date(data?.timestamp);
+               let today = new Date();
+               if (date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear()) {
+                   lastMessageDate = deserializeTimestamp(data?.timestamp);
+               } else {
+                   lastMessageDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+               }
+
                 room = {
                     id: roomOwner?.id,
                     name: name,
                     image: roomOwner?.profileImage,
-                    lastSeen: "Last Seen 12.20 A.M.",
-                    lastMessageDate: "Today",
-                    lastMessage: "Hello"
+                    lastSeen: lastSeen,
+                    lastMessageDate: lastMessageDate,
+                    lastMessage: data?.message
                 };
+
+                temp.push(room);
+            }
+
+            if (isExist(temp, roomOwner?.id)) {
+                let index = temp.findIndex(room => room.id === roomOwner?.id);
+                temp[index].lastMessage = data?.message;
             }
 
             let dataPacket = {
@@ -85,8 +101,12 @@ const Inbox = () => {
 
             updateChats(roomOwner?.id, dataPacket);
 
-            setRooms((prev => [...prev, room]))
+        }
 
+        temp.map(createRooms)
+
+        function createRooms(room) {
+            setRooms((prev => [...prev, room]))
         }
 
         return () => {
@@ -98,30 +118,26 @@ const Inbox = () => {
     useEffect(() => {}, [chats]);
 
     useEffect(() => {
-        if (data === null || rooms.length === 0) return;
 
-        console.log("4");
+        if (rooms.length === 0) return;
 
         if (data?.id) {
-            console.log("Not Null", rooms);
             if (isExist(rooms, data?.id)) {
-                console.log("Exist");
                 setCurrentRoom([data?.id, rooms.findIndex(room => room.id === data?.id)]);
+                setData(null);
             } else {
                 let room = {
                     id: data?.id,
                     name: data?.name,
                     image: data?.profileImage,
                     lastSeen: "Last Seen 12.20 A.M.",
-                    lastMessageDate: "Today",
-                    lastMessage: "Hello"
+                    lastMessageDate: "",
+                    lastMessage: ""
                 }
 
                 setRooms([...rooms, room]);
 
                 updateChats( data?.id, {});
-
-                setData(null);
             }
 
         }
@@ -137,6 +153,7 @@ const Inbox = () => {
 
     const onMessageReceived = (payload) => {
         let dataPacket = JSON.parse(payload.body);
+        console.log(rooms)
         updateChats(Number(dataPacket.sender), dataPacket);
     }
 
@@ -149,6 +166,15 @@ const Inbox = () => {
 
         let dataPacket = {sender: sender, receiver: currentRoom[0], message: message, time: timestamp, type: 'MESSAGE'};
 
+        if (isExist(rooms, currentRoom[0])) {
+            let index = rooms.findIndex(room => room.id === currentRoom[0]);
+
+            rooms[index].lastMessageDate = deserializeTimestamp(timestamp);
+            rooms[index].lastMessage = message;
+        }
+
+        setRooms(rooms)
+
         updateChats(currentRoom[0], dataPacket);
 
         if (stompClient && message !== '') {
@@ -159,6 +185,7 @@ const Inbox = () => {
     }
 
     const updateChats = (id, dataPacket) => {
+
         if (chats.get(id)) {
             chats.get(id,).push(dataPacket);
         } else {
@@ -172,7 +199,7 @@ const Inbox = () => {
 
     const deserializeTimestamp = (timestamp) => {
         let date = new Date(timestamp);
-        return date.getHours() + ":" + date.getMinutes() + " " + (date.getHours() >= 12 ? "PM" : "AM");
+        return date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes() + " " + (date.getHours() >= 12 ? "PM" : "AM");
     }
 
     const isExist = (rooms, id) => {
@@ -291,8 +318,9 @@ const Inbox = () => {
                                                 className="border-none w-full focus:outline-none text-sm h-10 flex items-center p-4"
                                                 value={message}
                                                 onInput={(event) => {
-                                                    setMessage(event.target.value.trim());
+                                                    setMessage(event.target.value);
                                                 }}
+                                                onKeyPress={(event) => {if (event.key === 'Enter') onSendMessage(event)}}
                                             />
                                         </div>
                                         <div className="flex flex-row">
