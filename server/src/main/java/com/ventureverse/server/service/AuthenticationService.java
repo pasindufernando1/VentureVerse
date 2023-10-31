@@ -51,6 +51,19 @@ public class AuthenticationService {
             return GlobalService.response("Success", "Email Available");
         }
     }
+    public ResponseDTO checkEmailforId(String email, int Id){
+        var user = userRepository.findByEmail(email);
+        if (user.isPresent()) {
+            if(user.get().getId()==Id){
+                return GlobalService.response("Success", "Email Existing");
+            }
+            else{
+                return GlobalService.response("Error", "Email Already Exists");
+            }
+        } else {
+            return GlobalService.response("Success", "Email Available");
+        }
+    }
 
     public ResponseDTO checkBusinessEmail(String email) {
         var user = entrepreneurRepository.findByBusinessEmail(email);
@@ -441,4 +454,6 @@ public class AuthenticationService {
         });
         tokenRepository.saveAll(validUserTokens);
     }
+
+    
 }

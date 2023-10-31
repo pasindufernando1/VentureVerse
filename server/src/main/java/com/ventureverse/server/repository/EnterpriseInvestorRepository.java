@@ -1,12 +1,15 @@
 package com.ventureverse.server.repository;
 
 import com.fasterxml.jackson.annotation.JacksonInject;
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseInvestorDTO, Integer> {
 //    Functtion to get the last inserted id
@@ -21,4 +24,5 @@ public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseIn
             "SELECT :investor, :sectorId", nativeQuery = true)
     int saveInvestorSector(@Param("investor") Integer investor, @Param("sectorId") Integer sectorId);
 
+    List<EnterpriseInvestorDTO> findByRole(Role role);
 }
