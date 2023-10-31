@@ -1,4 +1,4 @@
-import {Card} from "@material-tailwind/react";
+import {Card, Dialog, DialogBody, DialogFooter, DialogHeader, Typography} from "@material-tailwind/react";
 import React, {useEffect} from "react";
 import {useState} from "react";
 import {Navbar, Checkbox, Radio, Textarea, Input, Button, StatusPopUp} from "../webcomponent";
@@ -10,14 +10,37 @@ import useAuth from "../../hooks/useAuth";
 // Integers only regex
 const integerRegex = /^[0-9]*$/;
 
-
-
 function AddListing() {
+
+    //Check whether the user has any active listings
+    const [activeListings, setActiveListings] = useState(null);
+    const {get} = useAxiosMethods();
+
+    const {auth} = useAuth();
+
+    useEffect(() => {
+        get(`/entrepreneur/checkActiveListing/${auth.id}`, (response) => setActiveListings(response.status));
+    }, []);
+    console.log(activeListings);
+
+    //Handle the addition block if the user has active listings
+    const [showAddBlock, setShowAddBlock] = useState(false);
+    useEffect(() => {
+        if(activeListings === "Success"){
+            setShowAddBlock(true);
+        }
+    },[activeListings])
+    const handleAddBlock = () => {
+        setShowAddBlock(false);
+        //Redirect to the dashboard
+        window.location.href = "/entrepreneur/dashboard";
+    }
+
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
     const {post} = useAxiosMethods();
     const [res, setRes] = useState("")
 
-    const {auth} = useAuth();
+
 
     // Section Handling
     const [currentSection, setCurrentSection] = useState(1);
@@ -135,13 +158,31 @@ function AddListing() {
         file: null,
         preview: null,
     });
+    const [thumbnail, setThumbnail] = useState({
+        file: null,
+        preview: null,
+    });
     const [video, setVideo] = useState({
         file: null,
         preview: null,
     });
 
+    //Function to handle the thumbnail upload
+    const handleThumbnailUpload = (event) => {
+        const {name, files} = event.target;
+        const selectedFile = files[0];
+
+        if (name === 'thumbnail') {
+            setThumbnail({
+                file: selectedFile,
+                preview: URL.createObjectURL(selectedFile),
+            });
+        }
+    }
+
     // Function to handle the image upload  
     const handleImageupload = (event) => {
+        console.log("Image upload");
         const {name, files} = event.target;
         const selectedFile = files[0];
 
@@ -163,6 +204,8 @@ function AddListing() {
         }
 
     }
+
+
 
     // Function to handle the video upload
     const handleVideoUpload = (event) => {
@@ -194,6 +237,7 @@ function AddListing() {
             var image2filename = "";
             var image3filename = "";
             var videofilename = "";
+            var thumbnailfilename = "";
 
             if (image1.file) {
                 image1filename = "image1" + generateUniqueFileName(image1.file);
@@ -218,8 +262,12 @@ function AddListing() {
                 formData.append("video", video.file, videofilename);
             }
 
-            post("/entrepreneur/upload", formData, setRes, true);
+            if(thumbnail.file){
+                thumbnailfilename = "thumbnail" + generateUniqueFileName(thumbnail.file);
+                formData.append("thumbnail", thumbnail.file, thumbnailfilename);
+            }
 
+            post("/entrepreneur/upload", formData, setRes, true);
             console.log(res);
 
 
@@ -227,6 +275,7 @@ function AddListing() {
             const listing = {
                 title,
                 description,
+                "thumbnail": thumbnailfilename,
                 "pitchingVideo": videofilename,
                 intention,
                 businessStartDate,
@@ -271,10 +320,11 @@ function AddListing() {
         sendPaymentToServer(token.id, price * 100);
     };
 
+    const [paymentSuccess, setPaymentSuccess] = useState(false);
     const sendPaymentToServer = async (token, amount) => {
         try {
             // Make a POST request to your Spring Boot server
-            post('/entrepreneur/pay', {token, amount}, setRes);
+            post('/entrepreneur/pay', {token, amount}, setPaymentSuccess);
 
             // Handle the response from the server (optional)
             console.log(res);
@@ -1069,17 +1119,17 @@ function AddListing() {
                                                     <div className="row">
                                                         <Radio label={<span
                                                             style={{fontSize: '12px'}}>Shopping Live</span>}
-                                                               name="stage" value="live" checked={stage === 'live'}
+                                                               name="stage" value="Shopping live" checked={stage === 'Shopping live'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                         <Radio label={<span style={{fontSize: '12px'}}>Revenue</span>}
-                                                               name="stage" value="revenue"
-                                                               checked={stage === 'revenue'}
+                                                               name="stage" value="Revenue"
+                                                               checked={stage === 'Revenue'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                         <Radio label={<span style={{fontSize: '12px'}}>Expansion</span>}
-                                                               name="stage" value="expansion"
-                                                               checked={stage === 'expansion'}
+                                                               name="stage" value="Expansion"
+                                                               checked={stage === 'Expansion'}
                                                                onChange={handleStageChange} required={true}
                                                                state={validateFormData.stage}/>
                                                     </div>
@@ -1212,6 +1262,50 @@ function AddListing() {
                                                 </div>
                                             </div>
                                         </div>
+                                        {/*Section to upload the thumbnail of the video*/}
+                                        <div className="row">
+                                            <div className="w-full">
+                                                <label htmlFor="image1"
+                                                       className="text-main-gray block mb-2 text-[14px]">
+                                                    Please upload an attractive thumbnail for your video
+                                                    <span style={{color: 'red'}}>*</span>
+                                                </label>
+                                                {/* Three divs to hold the three images uploaded */}
+                                                <div className="flex flex-cols gap-2">
+                                                    <div className="row">
+                                                        <div
+                                                            className="w-[100px] h-[100px] border-2 border-main-purple rounded-[1rem] flex items-center justify-center overflow-hidden">
+                                                            {thumbnail.preview && (
+                                                                <img src={thumbnail.preview} alt="first"
+                                                                     className="w-full h-full object-cover rounded-[1rem]"/>
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="file-input-container">
+                                                        <input
+                                                            type="file"
+                                                            id="thumbnail"
+                                                            name="thumbnail"
+                                                            accept="image/png, image/jpeg"
+                                                            className="hidden"
+                                                            onChange={handleThumbnailUpload}
+                                                        />
+                                                        <label htmlFor="thumbnail" className="file-input-button">
+                                                            Select File
+                                                        </label>
+                                                        <span className="file-input-text">
+                                                    {/* Show all the uploadded images */}
+                                                            {thumbnail.file && thumbnail.file.name}
+                                                            {!thumbnail.file && "No file uploaded"}
+                                                </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div className="row w-full flex">
                                             <div className="justify-begin">
                                                 <Button variant="clear" label="Previous" icon="previous"
@@ -1651,7 +1745,24 @@ function AddListing() {
     </div>
             </Header>
 
-            {/* <Footer /> */}
+            <Dialog open={showAddBlock} handler={handleAddBlock}>
+                <DialogHeader>
+                    <Typography variant="h5" color="red" className="flex justify-center">
+                        This feature is not allowed at the moment!
+                    </Typography>
+                </DialogHeader>
+                <DialogBody divider className="grid place-items-center gap-4">
+                    <Typography className="text-center font-normal">
+                        You can only add one listing at a time.<br/>
+                        Please delete the current listing to add a new one.
+                    </Typography>
+                </DialogBody>
+                <DialogFooter className="space-x-2">
+                    <Button variant="primary" color="blue-gray" onClick={handleAddBlock} className={"border-none"}>
+                        Okay I understand
+                    </Button>
+                </DialogFooter>
+            </Dialog>
         </div>
     );
 }

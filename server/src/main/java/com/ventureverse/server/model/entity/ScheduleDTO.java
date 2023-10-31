@@ -22,9 +22,8 @@ public class ScheduleDTO {
     @Id
     @GeneratedValue
     private Integer meetingId;
-    private String date;
-    private String time;
-    private String title;
+    private Date date;
+    private Time time;
 
     @ManyToOne
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
