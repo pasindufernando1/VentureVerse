@@ -262,4 +262,20 @@ public class ListingService {
         }
 
     }
+
+    public ResponseDTO updateListing(Integer id, ListingDTO listingDTO) {
+        ListingDTO listingDTOfinal = new ListingDTO();
+        listingDTOfinal.setListingId(id);
+
+        Optional<ListingDTO> listing = listingRepository.findById(id);
+        if(listing.isPresent()) {
+            ListingDTO oldListing = listing.get();
+            oldListing.setPublishedDate(listingDTO.getPublishedDate());
+            oldListing.setSubscriptionType(listingDTO.getSubscriptionType());
+            listingRepository.save(oldListing);
+            return GlobalService.response("Success", "Listing updated successfully");
+        }else{
+            return GlobalService.response("Error", "Listing not found");
+        }
+    }
 }

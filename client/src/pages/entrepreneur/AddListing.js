@@ -268,7 +268,6 @@ function AddListing() {
             }
 
             post("/entrepreneur/upload", formData, setRes, true);
-
             console.log(res);
 
 
@@ -325,7 +324,7 @@ function AddListing() {
     const sendPaymentToServer = async (token, amount) => {
         try {
             // Make a POST request to your Spring Boot server
-            post('/entrepreneur/pay', {token, amount}, setPaymentSuccess());
+            post('/entrepreneur/pay', {token, amount}, setPaymentSuccess);
 
             // Handle the response from the server (optional)
             console.log(res);

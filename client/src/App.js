@@ -67,6 +67,7 @@ import GainsReports from "./pages/admin/GainsReport";
 import InterestReports from "./pages/admin/InterestReports";
 import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
+import Topup from "./pages/entrepreneur/Topup";
 
 import {Routes, Route} from "react-router-dom";
 
@@ -146,6 +147,7 @@ function App() {
                         <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
                         <Route path="/entrepreneur/finalize-listing/:id" element={<EntrepreneurFinalizeListing />} />
+                        <Route path="/entrepreneur/topup/:id" element={<Topup />} />
                     </Route>
                 </Route>
                 {/*404*/}

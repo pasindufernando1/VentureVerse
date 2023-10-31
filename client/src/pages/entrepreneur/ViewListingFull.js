@@ -12,7 +12,7 @@ import {
 import {
     faArrowLeft, faArrowRight
 } from "@fortawesome/free-solid-svg-icons";
-import {Header, Button} from "../webcomponent";
+import {Header, Button, Input, Checkbox} from "../webcomponent";
 import {IconButton} from "@material-tailwind/react";
 import {Carousel} from "../webcomponent";
 import {Avatar} from "@material-tailwind/react";
@@ -23,6 +23,7 @@ import useAxiosMethods from "../../hooks/useAxiosMethods";
 import React, {useEffect, useState} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {axiosPrivate} from "../../api/axios";
+import StripeCheckout from "react-stripe-checkout";
 
 
 function ViewListingFull() {
@@ -34,33 +35,69 @@ function ViewListingFull() {
     const {get} = useAxiosMethods();
     const [listing, setListing] = useState({});
     const [videoUrl, setVideoUrl] = useState("");
+    const [subscriptionStatus, setSubscriptionStatus] = useState({
+        remainingDays: null,
+        subscriptiontype: null
+    });
 
     useEffect(() => {
         // Get the listing of the user based on the id
         get(`/entrepreneur/getLatestListing/${auth.id}`, setListing);
 
     }, [])
-    console.log(listing);
+    // console.log(listing);
+    useEffect(() => {
+        if(listing.subscriptionType){
+            //Get the date from the published date given in 2023-09-15T05:03:42.766+00:00 format
+            const publishedDate = new Date(listing.publishedDate);
+            console.log("Published date: ", publishedDate);
+            //Get the current date
+            const currentDate = new Date();
+            console.log("Current date: ", currentDate);
+            //Get the difference between the two dates. Should consider the date and the month
+            // Calculate the time difference in milliseconds
+            const timeDifference = currentDate - publishedDate;
+
+            // Calculate the number of milliseconds in a day
+            const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+            // Calculate the number of days between the two dates
+            const daysDifference = Math.floor(timeDifference / millisecondsPerDay);
+            console.log("Difference: ", daysDifference);
+            //Get the days given for the subscription
+            const daysGiven = listing.subscriptionType.days;
+            console.log("Days given: ", daysGiven);
+            //Get the remaining days
+            const remainingDays = Math.ceil(daysGiven - daysDifference);
+            console.log("Remaining days: ", remainingDays);
+            setSubscriptionStatus({
+                remainingDays: remainingDays,
+                subscriptiontype: listing.subscriptionType.subscriptionName
+            })
+        }
+        console.log(subscriptionStatus);
+    }, [listing]);
+
     useEffect(() => {
         if (listing.pitchingVideo) {
             get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
         }
     }, [listing])
-    console.log(videoUrl)
+    // console.log(videoUrl)
 
     //Get the listing images
     const [listingImages, setListingImages] = useState([]);
     useEffect(() => {
         get(`/entrepreneur/getListingImages/${listing.listingId}`, setListingImages);
     }, [listing])
-    console.log(listingImages);
+    // console.log(listingImages);
 
     //Assign the images to an array to be used in the carousel
     const images = [];
     listingImages.map((image) => {
         images.push(image);
     }, [listingImages])
-    console.log(images);
+    // console.log(images);
 
     useEffect(() => {
         axiosPrivate.get(`/entrepreneur/getCompletedInvestment/${listing.listingId}`)
@@ -88,30 +125,6 @@ function ViewListingFull() {
             });
     }, [listing]);
 
-
-    // if (listing.pitchingVideo) {
-    //     get(`/entrepreneur/getVideo/${listing.pitchingVideo}`, setVideoUrl, true)
-    // }
-
-    // Getting the video relevant to the listing
-    // const videoName = listing.pitchingVideo;
-    // console.log(videoName);
-    // useEffect(() => {
-    //     // Fetch the video using Axios
-    //     get(`/entrepreneur/getVideo/${videoName}`, setVideoUrl, true);
-    //     // fetch(`http://localhost:8080/api/auth/entrepreneur/getVideo/${videoName}`, { responseType: 'blob' })
-    //     //     .then(response => {
-    //     //         // Create a URL for the video blob
-    //     //         const videoBlobUrl = URL.createObjectURL(response.data);
-    //     //         setVideoUrl(videoBlobUrl);
-    //     //     });
-    //     // setVideoUrl(URL.createObjectURL(videoUrl.data));
-    //     console.log(videoUrl);
-    // }, [videoName]);
-
-    // console.log(auth.id);
-    // console.log(listing);
-    // console.log(listing.entrepreneurId.businessName);
     const businessStartDate = new Date(listing.businessStartDate);
     // Take the day month and the year only
     const businessStartDateString = businessStartDate.toDateString();
@@ -135,6 +148,8 @@ function ViewListingFull() {
     }
 
     console.log(listing);
+    console.log(subscriptionStatus);
+
     return (
         <div>
             <Header active="Listings">
@@ -156,7 +171,7 @@ function ViewListingFull() {
                             <CardBody>
                                 <Typography variant="h5" className="mb-2 text-main-purple">
                                     {listing.title}  {listing.status === "DELETED" &&(
-                                        <span className="text-red-300 ">This listing is no longer visible</span>
+                                        <span className="text-red-300 "> (This listing is no longer visible)</span>
                                 )}
                                 </Typography>
                                 <Typography>
@@ -426,6 +441,51 @@ function ViewListingFull() {
                                     <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
                                         {listing.awards}
                                     </Typography>
+                                </div>
+
+                                {/* Section for the subscription details */}
+                                <Typography variant="h5" className="mb-2 text-light-purple mt-5">
+                                    Subscription Details
+                                </Typography>
+                                <div className="flex justify-between items-center">
+                                    <Typography variant="h6" color="blue-gray"
+                                                className="mb-2 text-main-gray font-bold">
+                                        Subscription type
+                                    </Typography>
+                                </div>
+                                <div className="flex justify-between items-center mt-[-1vh]">
+                                    <Typography variant="h6" color="blue-gray" className=" text-main-gray font-light">
+                                        {subscriptionStatus.subscriptiontype}
+                                    </Typography>
+                                </div>
+                                <div className="flex justify-between items-center">
+                                    <Typography variant="h6" color="blue-gray"
+                                                className="mb-2 text-main-gray font-bold">
+                                        Remaining days
+                                    </Typography>
+                                </div>
+                                <div className="flex justify-between items-center mt-[-1vh]">
+                                    {subscriptionStatus.remainingDays > 0 && (
+                                        <Typography variant="h6" color="light-green" className="font-light">
+                                            {subscriptionStatus.remainingDays} days
+                                        </Typography>
+                                    )}
+                                    {subscriptionStatus.remainingDays<0 && (
+                                        <div className="flex flex-row">
+                                            <Typography variant="h6" color="red" className="font-light">
+                                                Expired by {Math.abs(subscriptionStatus.remainingDays)} days
+                                            </Typography>
+                                            {/*//Button to renew the subscription*/}
+                                            <Button
+                                                variant="clear"
+                                                label="Top-Up"
+                                                className="ml-2 mt-[-1rem]"
+
+                                            >
+                                                <Link to={`/entrepreneur/topup/${listing.listingId}`}>Top-Up</Link>
+                                            </Button>
+                                        </div>
+                                    )}
                                 </div>
 
 

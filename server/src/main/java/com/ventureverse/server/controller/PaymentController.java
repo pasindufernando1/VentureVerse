@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -36,8 +33,27 @@ public class PaymentController {
                         put("description", "Payment for VentureVerse");
                     }}
             );
+            return ResponseEntity.ok("Payment successful!");
+        } catch (StripeException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Payment failed!");
+        }
+    }
 
-            // Do any additional processing here (e.g., record the transaction in your database)
+    //Function for the topup payments. The listing id is passed as a parameter
+    @PostMapping("/topup/{id}")
+    public ResponseEntity<String> handleTopup(@RequestBody PaymentRequestDTO paymentRequest, @PathVariable Integer id) {
+        Stripe.apiKey = stripeSecretKey;
+        try {
+            // Create a charge using the Stripe API
+            Charge charge = Charge.create(
+                    new HashMap<String, Object>() {{
+                        put("amount", paymentRequest.getAmount());
+                        put("currency", "LKR");
+                        put("source", paymentRequest.getToken());
+                        put("description", "Payment for VentureVerse");
+                    }}
+            );
 
             return ResponseEntity.ok("Payment successful!");
         } catch (StripeException e) {

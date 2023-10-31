@@ -310,7 +310,17 @@ public class ListingController {
     @PostMapping("/counterProposal")
     public ResponseEntity<ResponseDTO> counterProposal(@RequestBody CounterProposalDTO counterProposalDTO) {
         return ResponseEntity.ok(listingService.counterProposal(counterProposalDTO));
-}
+    }
+
+    //Function to update the listing when topup is done
+    @PutMapping("/updateListing/{id}")
+    public ResponseEntity<ResponseDTO> updateListing(
+            @PathVariable("id") Integer id,
+            @RequestBody ListingDTO listingDTO
+    ) {
+        System.out.println("Awaaaaa : " + listingDTO);
+        return ResponseEntity.ok(listingService.updateListing(id, listingDTO));
+    }
 
 
 
