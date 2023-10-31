@@ -141,6 +141,16 @@ public class DemoController {
 //    }
 
 
+    @GetMapping("/GivingStarRatingBoth/{id}")
+    public List<UserDTO> LeaderBordBoth(
+            @PathVariable Integer id
+    )
+    {
+        List<UserDTO> Both = demoService.LeaderboardBothService(id);
+        // return ResponseEntity.ok("  done successfully");
+        return Both;
+
+    }
 
 
 

@@ -1,6 +1,7 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Complain;
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.DetailsDTO;
@@ -10,10 +11,17 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.springframework.core.convert.converter.Converter;
+import java.util.Date;
 import java.lang.reflect.Array;
 import java.util.*;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +35,8 @@ public class DemoService {
     private final ListingRepository listingRepository;
     private final Investor_InterestedListingRepository  investorInterestedListingRepository;
     private final InvestorRepository investorRepository;
+    private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
+
    // private final EntrepreneurStarRating entrepreneurStarRating;
 
     public List<AdminDTO> details(){
@@ -189,6 +199,7 @@ public class DemoService {
 
         var complain=complainRepository.findById(id);
 
+
         if (complain.isPresent()) {
 
             ComplainDTO existingComplain = complain.get();
@@ -203,6 +214,433 @@ public class DemoService {
 
 
 
+    }
+
+
+
+
+
+
+
+    public List<UserDTO> LeaderboardBothService(Integer id) {
+        UserDTO user =  userRepository.getById(id);
+
+        List<Integer> array1 = new ArrayList<>();
+        List<UserDTO> array2 = new ArrayList<>();
+
+       // System.out.println(user.getRole());
+       if(user.getRole().equals(Role.ENTREPRENEUR)){
+                System.out.println("ENTREPRENEUR");
+
+
+
+//
+//           If (Sales Performance > Z) then
+//           Score += 6
+//
+//           If (Average Customer Review > 4.0) then
+//           Score += 5
+//
+
+
+//
+//
+//
+//
+
+//
+//           If (Successful Business Building Attempts > R) then
+//           Score += 3
+//
+//           If (Pitch Motivation > S) then
+//           Score += 1
+//
+//           If (Unique Selling Proposition == Notable) then
+//           Score += 3
+//
+//           If (Circumstances of Business Conception > T) then
+//           Score += 2
+//
+//           If (Overcame Major Hurdles == Yes) then
+//           Score += 2
+//
+//           If (Organization or Club Affiliation == True) then
+//           Score += 1
+//
+//           If (Received Awards or Accolades == True) then
+//           Score += 2
+
+
+
+
+           List<EntrepreneurDTO> allEntrepreneur = entrepreneurRepository.findAll();
+
+           for(EntrepreneurDTO EntrepreneurOneDTO : allEntrepreneur){
+               List<ListingDTO>  EnterLists =  listingRepository.findAllByEntrepreneurId(EntrepreneurOneDTO);
+               Long ListCount  =  listingRepository.getCountById(EntrepreneurOneDTO);
+
+               Double Total_Sale_Projections_This_Year = 0.0;
+               Double Total_Sale_Projections_Next_Year = 0.0;
+               Double  Net_Income_Last_Year= 0.0;
+               Double Gross_Income_Last_Year =0.0;
+               Double Total_Lifetime_Sales =0.0;
+               Double Score=0.0;
+               Double Total_Funding_Raised=0.0;
+               Double Project_Success_Rate=0.0;
+               Double FUll_Total_NEED_AMOUNT =0.0;
+
+
+               Integer flag=0;
+
+
+
+
+
+               for(ListingDTO ListOneDTO : EnterLists){
+ //If (Sale Projections for This Year > P) then
+// Score += 3
+                   Total_Sale_Projections_This_Year = Total_Sale_Projections_This_Year + ListOneDTO.getSalesProjectionThisYear();
+//If (Sale Projections for Next Year > Q) then
+//           Score += 3
+                   Total_Sale_Projections_Next_Year = Total_Sale_Projections_Next_Year + ListOneDTO.getSalesProjectionNextYear();
+//           If (Net Income Last Year > N) then
+//           Score += 2
+                   Net_Income_Last_Year = Net_Income_Last_Year + ListOneDTO.getLastYearNetIncome();
+//           If (Gross Income Last Year > M) then
+//           Score += 2
+                   Gross_Income_Last_Year = Gross_Income_Last_Year + ListOneDTO.getLastYearGrossIncome();
+//           If (Total Lifetime Sales > W) then
+//           Score += 4
+                   Total_Lifetime_Sales=  Total_Lifetime_Sales + ListOneDTO.getLifetimeSales();
+//           If (Raised Money from Outside Sources == Yes) then
+//           Score += 2
+                  if(ListOneDTO.getOutsideSources()=="Yes"){
+                        if(flag==0){
+                            Score=Score+2;
+                            flag=1;
+                        }
+
+                  }
+
+//                   If (Received Awards or Accolades == True) then
+//                   Score += 2
+                   if (Integer.parseInt(ListOneDTO.getAwards()) > 0) {
+                       Score = Score + 2;
+                   }
+
+                   //Scores equals to
+//           If (Total Funding Raised > X) then
+//           Score += 10
+
+
+
+                   FUll_Total_NEED_AMOUNT=FUll_Total_NEED_AMOUNT+ ListOneDTO.getExpectedAmount();
+
+                   List<InvestorInterestedListingDTO> InterestedListing = listingRepository.findAllByListingId(ListOneDTO);
+                   for(InvestorInterestedListingDTO ListInterestedDTO : InterestedListing) {
+
+                       Total_Funding_Raised = Total_Funding_Raised + ListInterestedDTO.getAmountFinalized();
+                   }
+
+ //           If (Project Success Rate > Y%) then
+//           Score += 8
+
+                   if(Total_Funding_Raised/FUll_Total_NEED_AMOUNT*100>50){
+                       Score=Score+8;
+                   }
+
+//
+//           If (Sales Performance > Z) then
+//           Score += 6
+
+//           If (Business Longevity > A years) then
+//           Score += 3
+//
+
+                   if(ListOneDTO.getBusinessDuration()>3){
+                       Score += 3;
+                   }
+
+
+
+
+
+
+
+
+
+
+
+               }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           }
+
+
+
+
+
+       }
+
+
+
+
+
+
+
+//
+//        If (Average Project Review > 4.0) then
+//        Score += 4
+
+
+
+       else if (user.getRole().equals(Role.INDIVIDUAL_INVESTOR) || user.getRole().equals(Role.ENTERPRISE_INVESTOR) ){
+
+           Integer array_count=0;
+
+
+           if(user.getRole().equals(Role.INDIVIDUAL_INVESTOR)) {
+
+               System.out.println("INDIVIDUAL_INVESTOR");
+
+               List<IndividualInvestorDTO> allINDIVIDUAL_INVESTOR = individualInvestorRepository.findAll();
+
+               for(IndividualInvestorDTO individualInvestor : allINDIVIDUAL_INVESTOR){
+
+                   Double Total_Investments = 0.0;
+                   Integer Score =0;
+                   Long Count = 0l;
+                   Integer Investment_Success_Rate = 0;
+
+                   List<InvestorInterestedListingDTO> InterstedList = investorInterestedListingRepository.findAllByInvestorId(individualInvestor);
+                   Long ListCount  =  listingRepository.count();
+
+                   for(InvestorInterestedListingDTO Lists : InterstedList){
+                       Count=Count+1;
+                       Total_Investments= Total_Investments + Lists.getAmountFinalized() ;
+
+                       if(Lists.getStatus()=="APPROVED"){
+                           Investment_Success_Rate  = Investment_Success_Rate  + 1;
+
+                       }
+
+
+                   }
+
+
+//        If (Total Investments > B) then
+//        Score += 10
+
+                   if(Total_Investments <= 1000000){
+                       Score = Score + 10;
+                   }
+
+//
+//        If (Investment Success Rate > C%) then
+//        Score += 8
+                   if(Count>0) {
+                       if (Investment_Success_Rate / Count * 100 > 40) {
+                           Score = Score + 8;
+                       }
+                   }
+//
+//        If (Portfolio Diversification > D) then
+//        Score += 6
+                   Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId(individualInvestor);
+                   Score = Score + TypeCount;
+//
+//        If (Long-Term Commitment > E years) then
+//        Score += 3
+//                   Date lastUpdateDate1 = investorInterestedListingRepository.getLastDate(individualInvestor);
+//                   if (lastUpdateDate1 != null) {
+//                       // Calculate the difference in years between lastUpdateDate and the current date
+//                       Calendar lastUpdateCalendar = Calendar.getInstance();
+//                       lastUpdateCalendar.setTime(lastUpdateDate1);
+//                       Calendar currentCalendar = Calendar.getInstance();
+//
+//                       // Calculate the difference in years
+//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
+//
+//                       // Check if the experience is less than 4 years (greater than 3 years)
+//                       if (yearsDifference > 3) {
+//                           Score = Score + 3;
+//                       }
+//                   }
+
+
+
+//        If (Active Participation == True) then
+//        Score += 5
+                   if(Count>1) {
+                       if (Count / ListCount * 100 > 40) {
+                           Score += 5;
+                       }
+                   }
+
+
+
+
+                   array1.add(Score);
+                   array2.add(individualInvestor);
+                   array_count =array_count +1;
+
+
+
+
+               }
+
+
+
+           }
+
+
+
+           if(user.getRole().equals(Role.ENTERPRISE_INVESTOR)){
+               System.out.println("ENTERPRISE_INVESTOR");
+
+
+               List<EnterpriseInvestorDTO> EnterpriseInvestor = enterpriseInvestorRepository.findAll();
+
+               for(EnterpriseInvestorDTO enterpriseInvestor : EnterpriseInvestor){
+
+                   Double  Total_Investments = 0.0;
+                   Integer Score =0;
+                   Long Count = 0l;
+                   Integer Investment_Success_Rate = 0;
+
+                   List<InvestorInterestedListingDTO> InterstedList = investorInterestedListingRepository.findAllByInvestorId(enterpriseInvestor);
+                   Long ListCount  =  listingRepository.count();
+
+                   for(InvestorInterestedListingDTO Lists : InterstedList){
+                       Count=Count+1;
+                       Total_Investments= Total_Investments + Lists.getAmountFinalized() ;
+
+                       if(Lists.getStatus()=="APPROVED"){
+                           Investment_Success_Rate  = Investment_Success_Rate  + 1;
+
+                       }
+
+
+                   }
+
+
+//        If (Total Investments > B) then
+//        Score += 10
+
+                   if(Total_Investments <= 1000000){
+                       Score = Score + 10;
+                   }
+
+//
+//        If (Investment Success Rate > C%) then
+//        Score += 8
+                   if(Count>0) {
+                       if (Investment_Success_Rate / Count * 100 > 40) {
+                           Score = Score + 8;
+                       }
+                   }
+//
+//        If (Portfolio Diversification > D) then
+//        Score += 6
+                   Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId1(enterpriseInvestor);
+                   Score = Score + TypeCount;
+//
+//        If (Long-Term Commitment > E years) then
+//        Score += 3
+
+                 // Date lastUpdateDate = userRepository.getRegisteredDate(enterpriseInvestor);
+//                   if (lastUpdateDate != null) {
+//                       // Calculate the difference in years between lastUpdateDate and the current date
+//                       Calendar lastUpdateCalendar = Calendar.getInstance();
+//                       lastUpdateCalendar.setTime(lastUpdateDate);
+//                       Calendar currentCalendar = Calendar.getInstance();
+//
+//                       // Calculate the difference in years
+//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
+//
+//                       // Check if the experience is less than 4 years (greater than 3 years)
+//                       if (yearsDifference > 3) {
+//                           Score = Score + 3;
+//                       }
+//                   }
+
+
+
+//        If (Active Participation == True) then
+//        Score += 5
+                   if(Count>1) {
+                       if (Count / ListCount * 100 > 40) {
+                           Score += 5;
+                       }
+                   }
+
+
+
+                   array1.add(Score);
+                   array2.add(enterpriseInvestor);
+                   array_count =array_count +1;
+
+
+
+
+
+
+
+
+               }
+
+
+
+
+           }
+
+           //setting the sorting Algo
+
+           Integer n = array1.size();
+           boolean swapped;
+           for (int i = 0; i < n - 1; i++) {
+               swapped = false;
+               for (int j = 0; j < n - i - 1; j++) {
+                   if (array1.get(j + 1) > array1.get(j)) {
+                       // Swap arr[j] and arr[j+1]
+                       int temp = array1.get(j);
+                       array1.set(j,array1.get(j + 1)) ;
+                       array1.set(j+1,temp);
+
+
+                       UserDTO temp1 =array2.get(j);
+                       array2.set(j,array2.get(j + 1)) ;
+                       array2.set(j+1,temp1);
+
+                       swapped = true;
+                   }
+               }
+               // If no two elements were swapped in the inner loop, the array is already sorted
+               if (!swapped) {
+                   break;
+               }
+           }
+
+            System.out.println(array1);
+           System.out.println("\n");
+           System.out.println(array2);
+
+            return array2;
+
+       }
+        return null;
     }
 
 //    public EntreprenenrStarRatingDTO GivingStarRating(EntreprenenrStarRatingDTO starRating) {
