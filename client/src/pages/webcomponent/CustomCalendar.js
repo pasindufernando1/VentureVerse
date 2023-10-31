@@ -1,10 +1,29 @@
 import React, {useState} from "react";
 
-const CustomCalendar = () => {
-
+const CustomCalendar = ({ month, year, value }) => {
+    //get the current date in Sri Lanka
+    const date = new Date(year, month, 1); 
+    const firstDay= new Date(year, month, 1).getDay();
+    const lastDate = new Date(year, month + 1, 0).getDate();
     const week = [0, 1, 2, 3, 4];
     const days = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"];
-    const dates = [null, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, null, null, null];
+    
+    //check the first day of the month and add null values to the array
+    const dates = [];
+    for (let i = 1; i < firstDay; i++) {
+        dates.push(null);
+    }
+
+    //add the dates of the month to the array
+    for (let i = 1; i <= lastDate; i++) {
+        dates.push(i);
+    }
+
+    //check the last day of the month and add null values to the array
+    for (let i = 1; i < 6 - new Date(year, month, lastDate).getDay(); i++) {
+        dates.push(null);
+    }
+
 
     const [toggle, setToggle] = useState({state: false, id: Infinity});
 
@@ -28,14 +47,10 @@ const CustomCalendar = () => {
         }
     }
 
-    const value = {
-        1: ["Meeting at 10:00", "11:00", "12:00"],
-        2: ["10:00", "11:00", "12:00"],
-        3: ["10:00", "11:00", "12:00"],
-        4: ["10:00", "11:00", "12:00"],
-        6: ["Meeting at 10:00", "11:00", "12:00"],
-        7: ["Meeting at 10:00", "11:00", "12:00"],
-    }
+    const currentDate = new Date();
+    const isCurrentMonth =
+      date.getMonth() === currentDate.getMonth() &&
+      date.getFullYear() === currentDate.getFullYear();
 
     return (
         <div>
@@ -57,15 +72,21 @@ const CustomCalendar = () => {
                         <tr key={index}>
                             {
                                 dates.slice(week * 7, (week + 1) * 7).map((date, index) => (
-                                    <td key={index}
-                                        className="text-center w-[4rem] h-[4rem] cursor-pointer relative">
+                                    <td
+                                        key={index}
+                                        className={`text-center w-[3rem] h-[3rem] cursor-pointer relative ${
+                                            isCurrentMonth && date === currentDate.getDate()
+                                            ? 'bg-yellow-200 rounded-[100%]'
+                                            : ''
+                                        }`}
+                                    >
                                         <div
                                             className={`inline-flex items-center justify-center w-[3rem] h-[3rem] ${date ? "hover:bg-main-purple hover:text-white hover:rounded-[100%]" : ""}`}
-                                            onMouseEnter={() => setToggle({state: true, id: (week * 7) + index})}
-                                            onMouseLeave={() => setToggle({state: false, id: (week * 7) + index})}>
+                                            onMouseEnter={() => setToggle({ state: true, id: date })} 
+                                            onMouseLeave={() => setToggle({ state: false, id: date })}> 
                                             {date}
                                         </div>
-                                        <Schedule id={(week * 7) + index}>{value[(week * 7) + index]}</Schedule>
+                                        <Schedule id={date}>{value[date]}</Schedule> {/* Use date as the id */}
                                     </td>
                                 ))
                             }

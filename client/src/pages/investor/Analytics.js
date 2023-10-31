@@ -9,7 +9,6 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 
-
 const Analytics = () => {
     return(
         <div>
@@ -24,7 +23,7 @@ const Analytics = () => {
                 </CardHeader>
                 <CardBody>
                     <Typography variant="h5" color="blue-gray" className="mb-2">
-                     Profit & Loss
+                     Projects
                     </Typography>
                 </CardBody>
                 <CardFooter className="pt-0">
@@ -43,7 +42,7 @@ const Analytics = () => {
                 </CardHeader>
                 <CardBody>
                     <Typography variant="h5" color="blue-gray" className="mb-2">
-                    Investment sectors
+                    Investments
                     </Typography>
                 </CardBody>
                 <CardFooter className="pt-0">

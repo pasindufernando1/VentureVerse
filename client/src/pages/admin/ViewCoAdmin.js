@@ -3,10 +3,11 @@ import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
 import { Rating } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
-
+import useAuth from "../../hooks/useAuth";
 
 const ViewCoAdmin = () => {
     const [rated, setRated] = React.useState(4);
+    const {auth} = useAuth();
     // create dummy array for table data 
     const [users, setCoAdmins] = useState([
         {
@@ -40,18 +41,10 @@ const ViewCoAdmin = () => {
             email: "malindu@gmail.com"
         },
     ]);
+    const userrole=auth.role;
     return(
         <div>
         <Header active="Co-Admins">
-            {/* <div className="flex justify-between ml-10">
-                <Button>
-                    <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                </Button>
-                <br></br>
-                <Button className="mr-10">
-                    <Link to="/admin/add-enterprise-investor">Add New enterprise Investor</Link>
-                </Button>
-            </div>   */}
             <br></br>        
             <main className="h-auto flex justify-center items-center g:h-screen">
             <div className="relative border-[2px] border-main-purple sm:rounded-lg p-2 w-full">
@@ -94,9 +87,12 @@ const ViewCoAdmin = () => {
                         </div>
                     </div>
                     <div>
-                        <Button>
-                            <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                        </Button>
+                        {/* display button only if userrole is admin */}
+                        {userrole === 'ADMIN' && (
+                            <Button>
+                                <Link to="/admin/add-co-admin">Add New Co Admin</Link>
+                            </Button>
+                        )}
                     </div>
                 </div>
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">

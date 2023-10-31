@@ -22,7 +22,7 @@ public class ComplainDTO {
     private String date;
 
     @Enumerated(EnumType.STRING)
-    private Complain ComplainType = Complain.PENDING;
+    private Complain complainType = Complain.PENDING;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "userId", referencedColumnName = "id")

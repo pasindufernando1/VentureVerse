@@ -46,6 +46,7 @@ import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 import AnalyticsInvestor from "./pages/investor/Analytics";
 import ProfitReport from "./pages/investor/ProfitReport";
 import SectorReport from "./pages/investor/SectorReport";
+import ViewVideo from "./pages/investor/ViewVideo";
 
 
 // Admin Pages
@@ -132,7 +133,8 @@ function App() {
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
                         <Route path="/investor/sector/reports" element={<SectorReport />} />
-                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />      
+                        <Route path="/investor/view-video" element={<ViewVideo />} />             
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}

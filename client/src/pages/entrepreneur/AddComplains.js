@@ -1,6 +1,7 @@
 import React, {useState } from 'react';
-import {Button, Textarea, Header } from "../webcomponent";
+import {Button, Textarea, Header, StatusPopUp } from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
+import useAuth from "../../hooks/useAuth";
 
 function AddComplains() {
     const [formData, setFormData] = useState({
@@ -8,9 +9,11 @@ function AddComplains() {
         showError: false
     }); 
 
-    const [response, setResponse] = useState(null);
+    // const [response, setResponse] = useState(null);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
 
     const {post} = useAxiosMethods();
+    const {auth} = useAuth();
 
     const handleSubmit = async () => {
         if (!formData.complaintDesc) {
@@ -19,14 +22,19 @@ function AddComplains() {
             const data = {
                 description: formData.complaintDesc,
                 date: new Date().toLocaleString('en-US', { timeZone: 'Asia/Colombo' }),
-                userId:"1702"
+                userId:{
+                    id: auth.id
+                }
             }
-            post(`/entrepreneurs/addcomplaint/${data.userId}`, data, setResponse);
-            console.log(response);
-            // await axiosPrivate.post(`entrepreneurs/addcomplaint/${data.userId}`,JSON.stringify(data));
+            const setSuccessNotification = (value) => {
+                setShowSuccessNotification(value);
+            };
+
+            post(`/entrepreneurs/addcomplaint/${data.userId.id}`, data, setSuccessNotification);
+            // post(`/entrepreneurs/addcomplaint/${data.userId.id}`, data, setResponse);
+           
         }
     }
-
     return (
         <div>
         <Header active="Complains">
@@ -71,6 +79,15 @@ function AddComplains() {
                 <div className="complaints w-[50%] rounded-r-[1rem] hidden lg:block"></div>
             </form>
         </main>
+        <div>
+            {showSuccessNotification && (
+                <StatusPopUp
+                successTitle="Complain added Successful"
+                successMessage="You have successfully add a new complain!"
+                redirectUrl="/entrepreneur/add-complain"
+                />
+            )}
+        </div>
         </Header>
         </div>
     );

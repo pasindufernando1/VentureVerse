@@ -27,6 +27,7 @@ public class UserDTO {
     private String secondLineAddress;
     private String town;
     private String district;
+    private Date registeredDate;
 
     @Enumerated(EnumType.STRING)
     private Status approvalStatus = Status.PENDING;

@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Builder
@@ -21,11 +22,12 @@ public class InvestorInterestedListingDTO implements Serializable {
     private Integer amountFinalized;
     private Integer returnEquityPercentage;
     private Integer returnUnitProfitPercentage;
-    private String finalizedDate;
+    private Date finalizedDate;
     private String status;
     private String investorProofDocument;
     private String entrepreneurProofDocument;
     private String systemGeneratedDocument;
+    private Date interestedDate;
 
     @Data
     @NoArgsConstructor
