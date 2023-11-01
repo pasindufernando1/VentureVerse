@@ -3,7 +3,6 @@ package com.ventureverse.server.service;
 import com.ventureverse.server.enumeration.Chat;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.ChatDTO;
-import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.PayLoadDTO;
 import com.ventureverse.server.repository.ChatRepository;
 import com.ventureverse.server.repository.UserRepository;

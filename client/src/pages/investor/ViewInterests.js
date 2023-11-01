@@ -28,52 +28,50 @@ function ViewInterests() {
 
     useEffect(() => {
         get(`/investors/interestListings/${id}`,setResponse);
-    }, []);
-
-    useEffect(() => {
         get(`/investors/getcounters/${id}`,setCounter);
+
     }, []);
 
-    // const registrationRequests = [];
+    const registrationRequests = [];
 
-    // response.forEach(element => {
-    //     let listingid1=element.id.listingId.listingId;
-    //     let investorInterested1 = element.id.listingId.entrepreneurId.firstname+" "+element.id.listingId.entrepreneurId.lastname;
-    //     let amountOffered1 = element.id.listingId.expectedAmount;
-    //     let equityExpected1 = element.id.listingId.returnEquityPercentage;
-    //     let profitPerUnitExpected1 = element.id.listingId.returnUnitProfitPercentage;
+    response.forEach(element => {
+        let listingid1=element.id.listingId.listingId;
+        let investorInterested1 = element.id.listingId.entrepreneurId.firstname+" "+element.id.listingId.entrepreneurId.lastname;
+        let amountOffered1 = element.id.listingId.expectedAmount;
+        let equityExpected1 = element.id.listingId.returnEquityPercentage;
+        let profitPerUnitExpected1 = element.id.listingId.returnUnitProfitPercentage;
 
-    //     //push the results into the registrationRequests array
-    //     registrationRequests.push({
-    //         id: listingid1,
-    //         investorInterested: investorInterested1,
-    //         amountOffered: amountOffered1,
-    //         equityExpected: equityExpected1,
-    //         profitPerUnitExpected: profitPerUnitExpected1,
-    //         type:"Interested",
-    //         actions: "View"
-    //     })
+        //push the results into the registrationRequests array
+        registrationRequests.push({
+            id: listingid1,
+            investorInterested: investorInterested1,
+            amountOffered: amountOffered1,
+            equityExpected: equityExpected1,
+            profitPerUnitExpected: profitPerUnitExpected1,
+            type:"Interested",
+            actions: "View"
+        })
 
-    // });
+    });
 
-    // counteroffers.forEach(element => {
-    //     let listingid1=element.listingId.listingId;
-    //     let investorInterested1 = element.entrepreneurId.firstname+" "+element.entrepreneurId.lastname;
-    //     let amountOffered1 = element.amount;
-    //     let equityExpected1 = element.returnEquityPercentage;
-    //     let profitPerUnitExpected1 = element.returnUnitProfitPercentage;
+    counteroffers.forEach(element => {
+        let listingid1=element.listingId.listingId;
+        let investorInterested1 = element.entrepreneurId.firstname+" "+element.entrepreneurId.lastname;
+        let amountOffered1 = element.amount;
+        let equityExpected1 = element.returnEquityPercentage;
+        let profitPerUnitExpected1 = element.returnUnitProfitPercentage;
 
-    //     //push the results into the registrationRequests array
-    //     registrationRequests.push({
-    //         id: listingid1,
-    //         investorInterested: investorInterested1,
-    //         amountOffered: amountOffered1,
-    //         equityExpected: equityExpected1,
-    //         profitPerUnitExpected: profitPerUnitExpected1,
-    //         type:"Counter Offer",
-    //         actions: "View"
-    //     })
-    // });
+        //push the results into the registrationRequests array
+        registrationRequests.push({
+            id: listingid1,
+            investorInterested: investorInterested1,
+            amountOffered: amountOffered1,
+            equityExpected: equityExpected1,
+            profitPerUnitExpected: profitPerUnitExpected1,
+            type:"Counter Offer",
+            actions: "View"
+        })
+    });
 
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(

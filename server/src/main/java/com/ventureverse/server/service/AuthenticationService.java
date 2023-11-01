@@ -9,7 +9,10 @@ import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
-import com.ventureverse.server.model.normal.*;
+import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
+import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
+import com.ventureverse.server.model.normal.RegisterRequestDTO;
+import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,11 +28,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor

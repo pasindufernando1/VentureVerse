@@ -1,6 +1,5 @@
 package com.ventureverse.server.repository;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
 import jakarta.transaction.Transactional;

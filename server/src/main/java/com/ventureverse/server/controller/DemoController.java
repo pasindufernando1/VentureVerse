@@ -1,12 +1,11 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Complain;
-import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.*;
+import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.model.entity.ComplainDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.DemoService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -2,20 +2,20 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.exception.CustomErrorException;
-import com.ventureverse.server.exception.CustomExceptionHandler;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.entity.ScheduleDTO;
-import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
-import com.ventureverse.server.repository.*;
+import com.ventureverse.server.repository.EnterpriseInvestorRepository;
+import com.ventureverse.server.repository.IndividualInvestorRepository;
+import com.ventureverse.server.repository.InvestorRepository;
+import com.ventureverse.server.repository.ScheduleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @AllArgsConstructor

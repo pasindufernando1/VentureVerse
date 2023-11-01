@@ -159,7 +159,7 @@ public class EntrepreneurController {
     }
     @PutMapping("/ban/{id}")
     public ResponseEntity<String> banEntrepreneur(@PathVariable Integer id) {
-        EntrepreneurDTO bannedEntrepreneur = entrepreneurService.banEntrepreneur(id);
+        UserDTO bannedEntrepreneur = entrepreneurService.banEntrepreneur(id);
         if (bannedEntrepreneur != null) {
             return ResponseEntity.ok("Entrepreneur banned successfully");
         } else {

@@ -2,11 +2,10 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.ComplainDTO;
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.ChatDTO;
+import com.ventureverse.server.model.entity.ComplainDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

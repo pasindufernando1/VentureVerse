@@ -2,7 +2,6 @@ package com.ventureverse.server.repository;
 
 import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.ListingSubscriptionDTO;
-import com.ventureverse.server.service.ListingService;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

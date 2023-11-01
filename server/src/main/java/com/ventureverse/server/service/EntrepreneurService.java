@@ -7,6 +7,7 @@ import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -330,7 +331,7 @@ public class EntrepreneurService {
         if (existingUserOptional.isPresent()) {
             UserDTO existingUser = existingUserOptional.get();
 
-            existingEntrepreneur.setApprovalStatus(Status.PENDING);
+//            existingEntrepreneur.setApprovalStatus(Status.PENDING);
             existingUser.setApprovalStatus(Status.PENDING);
 
             // Update other fields as needed...

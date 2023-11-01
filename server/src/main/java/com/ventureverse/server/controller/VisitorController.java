@@ -1,7 +1,5 @@
 package com.ventureverse.server.controller;
 
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.service.VisitorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
@@ -15,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/auth")
