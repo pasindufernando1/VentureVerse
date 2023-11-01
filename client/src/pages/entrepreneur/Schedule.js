@@ -1,4 +1,4 @@
-import {Header} from "../webcomponent";
+import {Button, Header} from "../webcomponent";
 import React, {useEffect, useState} from 'react';
 import  FullCalendar  from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -15,7 +15,7 @@ import {
     TimelineConnector,
     TimelineHeader,
     TimelineIcon,
-    TimelineBody,
+    TimelineBody, List,
 } from "@material-tailwind/react";
 import {UserIcon,ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
 
@@ -57,6 +57,35 @@ function Schedule() {
         })
         setEvents(temp);
     },[schedules] )
+
+    const checkTimeGap = (time) => {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinute = currentTime.getMinutes();
+        const meetingTime = time.split(':')
+
+        console.log(currentHour,' ',currentMinute);
+        console.log(meetingTime[0],' ',meetingTime[1])
+
+        // 10 minutes in milliseconds
+        const tenMinutes = 10 * 60 * 1000;
+
+        let timeGap = currentMinute - Number(meetingTime[1])
+
+        // If the time gap is less than 10 minutes, enable the button
+        return currentHour === Number(meetingTime[0]) && timeGap <= tenMinutes;
+    };
+    
+    const handleVideoCAll = () =>{
+        const conferenceWindow = window.open(
+            '/meeting/01/entrepreneur/' + new Date().toISOString(),
+            '_blank'
+        );
+        if (conferenceWindow) {
+            localStorage.setItem('meetngInProgress', 'true');
+            conferenceWindow.focus();
+        }
+    }
 
     return (
         <div>
@@ -144,6 +173,15 @@ function Schedule() {
                                     </TimelineItem>
                                 </Timeline>
                             </div>
+                                <a href="#" className="text-initial">
+                                    <List>
+                                        <a href="#" className="text-initial">
+                                            <listItem onClick={checkTimeGap(selectedEvent.time) ? null : handleVideoCAll} >
+                                                <Button disabled={!checkTimeGap(selectedEvent.time)} onClick={handleVideoCAll}>Start now</Button>
+                                            </listItem>
+                                        </a>
+                                    </List>
+                                </a>
                             </CardBody>
                     </Card>
                 </div>    

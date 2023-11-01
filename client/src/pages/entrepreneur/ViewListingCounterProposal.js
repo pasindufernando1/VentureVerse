@@ -3,10 +3,13 @@ import {Button, Header} from "../webcomponent";
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-import useData from "../../hooks/useData";
 import {useParams} from "react-router-dom";
+import useData from "../../hooks/useData";
 
 function ViewListingCounterProposal() {
+
+    const {setData} = useData();
+
     const { get } = useAxiosMethods();
     const [response, setResponse] = useState([]);
     const {id} = useParams();
@@ -17,7 +20,6 @@ function ViewListingCounterProposal() {
         get(`entrepreneurs/offers/${listingId}`, setResponse);
     }, []);
 
-    const {setData} = useData();
 
     const handleVideoCAll = () => {
         const conferenceWindow = window.open(
@@ -71,7 +73,7 @@ function ViewListingCounterProposal() {
                                     <tbody>
                                     {response.map((request) => (
                                         <tr className="font-medium text-gray-700 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                                            key={key}>
+                                            key={request.id}>
                                             <td>
                                                 <Avatar
                                                     variant="circular"

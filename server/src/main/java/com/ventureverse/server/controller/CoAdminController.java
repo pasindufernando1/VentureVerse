@@ -20,9 +20,8 @@ public class CoAdminController {
         List<AdminDTO> coAdmins = coAdminService.getAllCoAdmins();
         System.out.println(coAdmins);
         return ResponseEntity.ok(coAdmins);
-
-
     }
+
     @GetMapping("/update/view/{id}")
     public ResponseEntity<AdminDTO> getCoAdminDetails(@PathVariable Integer id) {
         AdminDTO findCoAdmin =  coAdminService.getDetails(id);

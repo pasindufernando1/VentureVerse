@@ -28,7 +28,7 @@ const UpdateCoAdmin = () => {
 
     useEffect(() => {
 
-            get(`/coadmin/update/view/${id}`,setResponse, true);
+            get(`/coadmin/update/view/${id}`,setResponse);
 
 
 

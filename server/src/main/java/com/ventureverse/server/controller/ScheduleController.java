@@ -38,6 +38,7 @@ public class ScheduleController {
             @PathVariable Integer id,
             @RequestBody ScheduleDTO scheduleDTO
     ) {
+        System.out.println("Arrived");
         return ResponseEntity.ok(scheduleService.addSchedule(id,scheduleDTO));
     }
 

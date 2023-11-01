@@ -3,17 +3,28 @@ import {Header,Button} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {put} from "axios";
 
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = React.useState(4);
-    const {get} = useAxiosMethods();
+    const {get,put} = useAxiosMethods();
     const [response, setResponse] = useState([]);
     const [search, setSearch] = useState('');
+    const[response2, setResponse2] = useState([]);
 
     useEffect(() => {
-        get("investors/EnterpriseInvestor/view", setResponse, true);
+        get("investors/EnterpriseInvestor/view", setResponse);
     }, []);
     console.log(response);
+
+    const handleBan=  () => {
+        put(`investors/EnterpriseInvestor/ban/${response[0].id}`, "", setResponse2);
+        if (response2.status === 200) {
+            console.log("Banned");
+        } else {
+            console.log("Not Banned Something went wong" );
+        }
+    }
 
 
     //create dummy array for table data
@@ -100,7 +111,11 @@ const ViewEntrepreneurs = () => {
 
                             <div className="pl-2 w-1/5">
                                 <div className="text-[15px] font-semibold">{user.businessName}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+                            {/* className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
+
+                            <div className="pl-2 w-1/5">
+                                <div className="text-[15px] font-semibold">{user.name}</div>
+                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div> */}
                             </div>
                         </th>
                         <td className="px-12 py-3 text-sm">
@@ -111,7 +126,7 @@ const ViewEntrepreneurs = () => {
                                     <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>
                                 )}
                                 <span className="text-gray-700 dark:text-gray-400">
-                                    {user.status}
+                                    {"OFFLINE"}
                                 </span>
                             </div>
                         </td>
@@ -135,7 +150,7 @@ const ViewEntrepreneurs = () => {
                         </button>
                             </Link>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

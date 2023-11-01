@@ -74,6 +74,25 @@ public class EntrepreneurService {
         }
         return complainMap;
     }
+    
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.findByEntreprenuerListingId(id);
+    }
+
+    public ResponseDTO updateListing(Integer Listingid, InvestorInterestedListingDTO investorInterestedListingDTO) {
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(Listingid);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setEntrepreneurProofDocument(investorInterestedListingDTO.getEntrepreneurProofDocument());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated Successfully");
+        }else{
+            return GlobalService.response("Failed","Listing not found");
+        }
+    }
 
     public List<Map<String, String>> getListings(Integer id) {
         List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
@@ -96,7 +115,7 @@ public class EntrepreneurService {
                 investorName = enterpriseInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getBusinessName();
             }
             Map<String, String> user = Map.of(
-                    "id", listing.getId().getInvestorId().toString(),
+                    "id", listing.getId().getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", listing.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
@@ -125,7 +144,7 @@ public class EntrepreneurService {
             }
             Map<String, String> user = Map.of(
                     "Investor", investorName,
-                    "id", proposal.getInvestorId().toString(),
+                    "id", proposal.getInvestorId().getId().toString(),
                     "amount", proposal.getAmount().toString(),
                     "type","Counter",
                     "equity",String.valueOf(equity),
@@ -172,6 +191,7 @@ public class EntrepreneurService {
         return listingMap;
     }
 
+
     public List<Map<String, String>> getCompletedListings(Integer id) {
         List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
         List<Map<String, String>> listingMap = new ArrayList<>();
@@ -187,25 +207,6 @@ public class EntrepreneurService {
             }
         }
         return listingMap;
-    }
-    
-    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
-        return investor_interestedListingRepository.findByEntreprenuerListingId(id);
-    }
-
-    public ResponseDTO updateListing(Integer Listingid, InvestorInterestedListingDTO investorInterestedListingDTO) {
-        ListingDTO listingDTO = new ListingDTO();
-        listingDTO.setListingId(Listingid);
-
-        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
-        if (listing.isPresent()) {
-            InvestorInterestedListingDTO oldListing = listing.get();
-            oldListing.setEntrepreneurProofDocument(investorInterestedListingDTO.getEntrepreneurProofDocument());
-            investor_interestedListingRepository.save(oldListing);
-            return GlobalService.response("Success","Listing updated Successfully");
-        }else{
-            return GlobalService.response("Failed","Listing not found");
-        }
     }
 
     public String getdoc(Integer id) {
@@ -269,12 +270,10 @@ public class EntrepreneurService {
         }
         return listingMap;
     }
-
+    
     public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
         return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
     }
-
-
 
     public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
         Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
@@ -301,28 +300,7 @@ public class EntrepreneurService {
         }
     }
 
-
-    public EntrepreneurDTO banEntrepreneur(Integer id) {
-        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
-
-        if (existingEntrepreneurOptional.isPresent()) {
-            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
-
-            existingEntrepreneur.setApprovalStatus(Status.PENDING);
-
-            // You can update other fields here if needed...
-
-            // Save the updated entrepreneur entity back to the database
-            return entrepreneurRepository.save(existingEntrepreneur);
-        } else {
-            return null; // You can also throw an exception indicating that the entrepreneur with the given ID was not found
-        }
-    }
-    public long countEntrepreneurs() {
-        return entrepreneurRepository.count();
-    }
-
-
+    
     // public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
     //     Integer entrepreneurId = updatedEntrepreneur.getId();
     //     Optional<EntrepreneurDTO> existingEntrepreneuroptional = entrepreneurRepository.findById(id);
@@ -345,7 +323,28 @@ public class EntrepreneurService {
     //     }
     // }
 
-}
+
+    public UserDTO banEntrepreneur(Integer id) {
+        Optional<UserDTO> existingUserOptional = userRepository.findById(id);
+
+        if (existingUserOptional.isPresent()) {
+            UserDTO existingUser = existingUserOptional.get();
+
+            existingEntrepreneur.setApprovalStatus(Status.PENDING);
+            existingUser.setApprovalStatus(Status.PENDING);
+
+            // Update other fields as needed...
+
+            // Save the updated entrepreneur entity back to the database
+            return userRepository.save(existingUser);
+        } else {
+            return null;
+        }
+
+    }
+    public long countEntrepreneurs() {
+        return entrepreneurRepository.count();
+    }
 
     public String getadmindoc(Integer listingId,Integer investorId) {
        return investor_interestedListingRepository.findByEntrepreneurFinalizeDoc(listingId,investorId);
@@ -371,5 +370,7 @@ public class EntrepreneurService {
             }
         }
         return name;
-    }
+    }  
+
+
 }

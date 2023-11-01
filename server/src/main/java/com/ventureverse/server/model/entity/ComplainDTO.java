@@ -32,6 +32,6 @@ public class ComplainDTO {
     @JoinColumn(name = "adminId", referencedColumnName = "id")
     private AdminDTO adminId;
 
-    private String ActionDescription;
+    private String actionDescription;
 
 }

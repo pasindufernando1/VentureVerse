@@ -67,9 +67,8 @@ public class ListingService {
                 .build();
         listingRepository.save(list);
 
-        //Get the listing id inserted to the listing table by the above code
+        // Get the listing id inserted to the listing table by the above code
         var listingId = listingRepository.findLastInsertedListing();
-
 
         var listingSectors = listingRequestDTO.getSectorId();
         for (Integer sectorId : listingSectors) {
@@ -80,7 +79,7 @@ public class ListingService {
             listingIndustrySectorsRepository.save(listingSectorObject);
         }
 
-        //Update the listing images table
+        // Update the listing images table
         var listingImages = listingRequestDTO.getImages();
         for (String image : listingImages) {
             listingImagesRepository.save(ListingImagesDTO.builder()
@@ -90,14 +89,14 @@ public class ListingService {
         return GlobalService.response("Success", "Listing added successfully");
     }
 
-    //Function to get the listing details by id
+    // Function to get the listing details by id
     public ListingDTO getListing(int id) {
         return listingRepository.findById(id).orElseThrow();
     }
 
-    //Function to get the subscriptiontype of a listing
+    // Function to get the subscriptiontype of a listing
     public ListingSubscriptionDTO getSubscriptionType(int id) {
-        //Get the listigDTO object
+        // Get the listigDTO object
         var listing = listingRepository.findById(id).orElseThrow();
         return listingSubscriptionRepository.findByListingId(listing).orElseThrow();
     }
@@ -117,8 +116,7 @@ public class ListingService {
                 Map<String, String> map = Map.of(
                         "id", listing.getListingId().toString(),
                         "publishedDate", publishDate,
-                        "subscriptionprice", listing.getSubscriptionType().getPrice().toString()
-                );
+                        "subscriptionprice", listing.getSubscriptionType().getPrice().toString());
                 userMap.add(map);
             }
         }
@@ -127,7 +125,8 @@ public class ListingService {
 
     public List<Map<String, String>> getAllListings() {
         List<ListingDTO> listings = listingRepository.findAll();
-        List<InvestorInterestedListingDTO> completedListings = investor_interestedListingRepository.findCompletedListings();
+        List<InvestorInterestedListingDTO> completedListings = investor_interestedListingRepository
+                .findCompletedListings();
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -12);
@@ -135,40 +134,77 @@ public class ListingService {
         List<Map<String, String>> userMap = new ArrayList<>();
         List<Integer> completedListingIds = new ArrayList<>();
         for (InvestorInterestedListingDTO completedListing : completedListings) {
-            if(completedListing.getFinalizedDate().after(calendar.getTime())){
+            if (completedListing.getFinalizedDate().after(calendar.getTime())) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
                 String finalizedDate = dateFormat.format(completedListing.getFinalizedDate());
                 completedListingIds.add(completedListing.getId().getListingId().getListingId());
                 Map<String, String> map = Map.of(
                         "id", completedListing.getId().getListingId().getListingId().toString(),
                         "date", finalizedDate,
-                        "status", "Completed"
-                );
+                        "status", "Completed");
                 userMap.add(map);
             }
         }
-        //Listings that are in progress
+        // Listings that are in progress
         for (ListingDTO listing : listings) {
-            if (!completedListingIds.contains(listing.getListingId()) && listing.getPublishedDate().after(calendar.getTime())) {
+            if (!completedListingIds.contains(listing.getListingId())
+                    && listing.getPublishedDate().after(calendar.getTime())) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
                 String publishDate = dateFormat.format(listing.getPublishedDate());
                 Map<String, String> map = Map.of(
                         "id", listing.getListingId().toString(),
                         "date", publishDate,
-                        "status", "In Progress"
-                );
+                        "status", "In Progress");
                 userMap.add(map);
             }
         }
         return userMap;
     }
 
-    //Function to get the latest listing of an entrepreneur
+    public List<Map<String, String>> getAllListings2() {
+        List<ListingDTO> listings = listingRepository.findAll();
+        List<InvestorInterestedListingDTO> completedListings = investor_interestedListingRepository
+                .findCompletedListings();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -12);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        List<Integer> completedListingIds = new ArrayList<>();
+        for (InvestorInterestedListingDTO completedListing : completedListings) {
+            if (completedListing.getFinalizedDate().after(calendar.getTime())) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String finalizedDate = dateFormat.format(completedListing.getFinalizedDate());
+                completedListingIds.add(completedListing.getId().getListingId().getListingId());
+                Map<String, String> map = Map.of(
+                        "id", completedListing.getId().getListingId().getListingId().toString(),
+                        "date", finalizedDate,
+                        "status", "Completed");
+                userMap.add(map);
+            }
+        }
+        // Listings that are in progress
+        for (ListingDTO listing : listings) {
+            if (!completedListingIds.contains(listing.getListingId())
+                    && listing.getPublishedDate().after(calendar.getTime())) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String publishDate = dateFormat.format(listing.getPublishedDate());
+                Map<String, String> map = Map.of(
+                        "id", listing.getListingId().toString(),
+                        "date", publishDate,
+                        "status", "In Progress");
+                userMap.add(map);
+            }
+        }
+        return userMap;
+    }
+
+    // Function to get the latest listing of an entrepreneur
     public ListingDTO getLatestListing(int id) {
-        //Get the entrepreneur object
+        // Get the entrepreneur object
         var entrepreneur = entrepreneurRepository.findById(id).orElseThrow();
 
-        //Get the latest listing of the entrepreneur
+        // Get the latest listing of the entrepreneur
         var listing = listingRepository.findLatestListing(entrepreneur);
         if (listing == null) {
             exit(0);
@@ -176,14 +212,14 @@ public class ListingService {
         return listing;
     }
 
-    //Function to get the listing from the listing id
+    // Function to get the listing from the listing id
     public ListingDTO getListingFromListingId(int id) {
         return listingRepository.findById(id).orElseThrow();
     }
 
-    //Function to get the listing video
+    // Function to get the listing video
     public String getVideo(int id) {
-        //Get the listing object
+        // Get the listing object
         var listing = listingRepository.findById(id).orElseThrow();
         return listing.getPitchingVideo();
     }
@@ -192,14 +228,16 @@ public class ListingService {
         return investor_interestedListingRepository.findByListingId(id);
     }
 
-    public ResponseDTO updateDate(Integer id,InvestorInterestedListingDTO i) {
+    public ResponseDTO updateDate(Integer id, Integer investorid, InvestorInterestedListingDTO i) {
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(id);
 
-        Optional<InvestorInterestedListingDTO> listing = investor_interestedListingRepository.findByListing(listingDTO);
+        Optional<InvestorInterestedListingDTO> listing = investor_interestedListingRepository
+                .findByInvestorIdAndListingId2(investorid, id);
         if (listing.isPresent()) {
             InvestorInterestedListingDTO oldListing = listing.get();
             oldListing.setFinalizedDate(i.getFinalizedDate());
+            oldListing.setStatus("Finalized");
             investor_interestedListingRepository.save(oldListing);
             return GlobalService.response("Success", "Listing updated successfully");
         } else {
@@ -210,28 +248,6 @@ public class ListingService {
     public List<String> getListingImages(ListingDTO i) {
         return listingImagesRepository.getListingImages(i);
     }
-
-    // public List<ListingDTO> getAllListings() {
-    //     var basicDetails = listingRepository.findAll();
-        //Print the list of listingDTO objects nicely
-//        for (ListingDTO listing : basicDetails) {
-//            System.out.println(listing);
-//        }
-//        //Get the industry sectors of each listing and append to the listingDTO object
-//        for (ListingDTO listing : basicDetails) {
-//            //Get the listing DTO object related to the listing id
-//            var listingSectors = listingIndustrySectorsRepository.findByListingId(listing);
-//            //Get the list of sector names
-//            var sectorNames = new ArrayList<String>();
-//            for (ListingIndustrySectorsDTO listingSector : listingSectors) {
-//                sectorNames.add(listingSector.getId().getSectorId().getName());
-//            }
-//            //Append the sector names to the listingDTO object as a list
-//            listing.setSectorNames(sectorNames);
-//        }
-
-    //     return basicDetails;
-    // }
 
     public ResponseDTO addInterestedListing(List<Integer> listingIds) {
         var listingid = listingIds.get(0);
@@ -282,12 +298,11 @@ public class ListingService {
         return GlobalService.response("Success", "Counter proposal added successfully");
     }
 
-
     public List<String> getListingSectors(ListingDTO listing) {
         return listingIndustrySectorsRepository.getListingSectors(listing);
     }
 
-    //Function to get the finalized investment amount of a listing
+    // Function to get the finalized investment amount of a listing
     public Integer getCompletedInvestment(ListingDTO listing) {
         return investor_interestedListingRepository.getCompletedInvestment(listing);
     }
@@ -300,9 +315,10 @@ public class ListingService {
         return investor_interestedListingRepository.getInterestedInvestors(listing);
     }
 
-    //Function to delete a listing from the listingid. The Status of the listing will be changed to "DELETED"
+    // Function to delete a listing from the listingid. The Status of the listing
+    // will be changed to "DELETED"
     public ResponseDTO deleteListing(int id) {
-        //Get the listing object
+        // Get the listing object
         var listing = listingRepository.findById(id).orElseThrow();
         listing.setStatus("DELETED");
         listingRepository.save(listing);
@@ -310,10 +326,10 @@ public class ListingService {
     }
 
     public ResponseDTO checkActiveListing(Integer id) {
-        //Get the entrepreneur object related to the entrepreneur id
+        // Get the entrepreneur object related to the entrepreneur id
         var entrepreneur = entrepreneurRepository.findById(id).orElseThrow();
 
-        //Find the latest listing object relevant to the user id
+        // Find the latest listing object relevant to the user id
         String status = listingRepository.findLatestListingStatus(entrepreneur);
 
         System.out.println(status);
@@ -330,24 +346,25 @@ public class ListingService {
         ListingDTO listingDTOfinal = new ListingDTO();
         listingDTOfinal.setListingId(id);
 
-        //Get the subscription object related to the subscription id
-        var subscription = subscriptionRepository.findById(listingDTO.getSubscriptionType().getSubscriptionId()).orElseThrow();
+        // Get the subscription object related to the subscription id
+        var subscription = subscriptionRepository.findById(listingDTO.getSubscriptionType().getSubscriptionId())
+                .orElseThrow();
 
         Optional<ListingDTO> listing = listingRepository.findById(id);
-        if(listing.isPresent()) {
+        if (listing.isPresent()) {
             ListingDTO oldListing = listing.get();
             oldListing.setPublishedDate(listingDTO.getPublishedDate());
             oldListing.setSubscriptionType(subscription);
             listingRepository.save(oldListing);
             return GlobalService.response("Success", "Listing updated successfully");
-        }else{
+        } else {
             return GlobalService.response("Error", "Listing not found");
         }
     }
-    
+
     public long countListings() {
         return listingRepository.count();
-}
+    }
 
     public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
         return investor_interestedListingRepository.finalizeListings(id);
@@ -356,4 +373,5 @@ public class ListingService {
     public void updateListing(ListingDTO listingDTO) {
         listingRepository.save(listingDTO);
     }
+    
 }

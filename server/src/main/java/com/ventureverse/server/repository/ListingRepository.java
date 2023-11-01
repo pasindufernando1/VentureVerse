@@ -2,8 +2,12 @@ package com.ventureverse.server.repository;
 
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
+import com.ventureverse.server.model.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import java.util.List;
+
+import java.util.List;
 
 import java.util.List;
 
@@ -17,13 +21,6 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
             """)
     ListingDTO findLastInsertedListing();
 
-    @Query("""
-            SELECT l 
-            FROM ListingDTO l 
-            WHERE l.entrepreneurId.id= :id
-            """)
-    List<ListingDTO> findByEntrepreneurId(Integer id);
-    
     //Find the latest listing from an entrepreneur using the entrepreneurId
     @Query("""
             SELECT l 
@@ -68,4 +65,29 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
             """)
     //Function to find the latest listing status
     String findLatestListingStatus(EntrepreneurDTO id);
+    @Query("""
+           SELECT entrepreneurId,count(*)   
+            from ListingDTO 
+           group by entrepreneurId
+            """)
+    List<Object[]> entrepreneurLeaderboard();
+
+    @Query("""
+            SELECT COUNT(e)
+            FROM ListingDTO e
+            WHERE e.entrepreneurId = :id
+    """)
+    Long getCountById(EntrepreneurDTO id);
+
+    @Query("""
+            SELECT l 
+            FROM ListingDTO l 
+            WHERE l.entrepreneurId.id= :id
+            """)
+    List<ListingDTO> findByEntrepreneurId(Integer id);
+
+
+    List<ListingDTO> findAllByEntrepreneurId(EntrepreneurDTO entrepreneurId);
+
+    List<InvestorInterestedListingDTO> findAllByListingId(ListingDTO listingId );
 }

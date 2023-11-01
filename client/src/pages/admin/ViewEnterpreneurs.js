@@ -15,7 +15,7 @@ const ViewEntrepreneurs = () => {
     const [search, setSearch] = useState("");
     console.log(search);
     useEffect(() => {
-        get("/entrepreneurs/view", setResponse, true);
+        get("/entrepreneurs/view", setResponse);
         console.log(response);
 
     }, []);
@@ -168,7 +168,7 @@ const ViewEntrepreneurs = () => {
                         </th>
                         <td className="px-12 py-3  text-sm">
                             <div className="flex justify-center">
-                                {user.status === 'Online' ? (
+                                {user.status === 'ONLINE' ? (
                                     <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
                                 ) : (
                                     <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>

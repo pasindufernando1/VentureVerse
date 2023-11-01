@@ -28,7 +28,7 @@ const UpdateEnterpriseInvestor = () => {
 
     useEffect(() => {
 
-        get(`/investors/EnterpriseInvestor/view/${id}`,setResponse, true);
+        get(`/investors/EnterpriseInvestor/view/${id}`,setResponse);
 
 
 
@@ -183,13 +183,13 @@ const UpdateEnterpriseInvestor = () => {
                 setShowSuccessNotification(true);
 
             } else {
-
+                console.error('Update failed');
                 setShowSuccessNotification(true);
 
             }
         } catch (error) {
             console.error('An error occurred: error', error);
-            setShowSuccessNotification(false);
+            setShowSuccessNotification(true);
 
         }
     };

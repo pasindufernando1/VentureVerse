@@ -1,29 +1,30 @@
 import { Avatar } from "@material-tailwind/react";
 import {Header, Button} from "../webcomponent";
-import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import useAuth from "../../hooks/useAuth";
 import {Link, NavLink} from "react-router-dom";
-import DatetimePicker from 'react-datetime-picker';
 import {
     Popover,
     PopoverHandler,
     PopoverContent,
-    Typography,
     List,
     ListItem,
-    ListItemPrefix,
 } from "@material-tailwind/react";
+import useData from "../../hooks/useData";
 
 
 
 function ViewInterests() {
+
+    const {setData} = useData();
+
     const {get} = useAxiosMethods();
     const[response, setResponse] = useState([]);
     const[counteroffers, setCounter] = useState([]);
     const {auth} = useAuth();
     const id = auth.id;
+    const entrepreneurId = 2153;
 
     useEffect(() => {
         get(`/investors/interestListings/${id}`,setResponse);
@@ -32,6 +33,47 @@ function ViewInterests() {
     useEffect(() => {
         get(`/investors/getcounters/${id}`,setCounter);
     }, []);
+
+    // const registrationRequests = [];
+
+    // response.forEach(element => {
+    //     let listingid1=element.id.listingId.listingId;
+    //     let investorInterested1 = element.id.listingId.entrepreneurId.firstname+" "+element.id.listingId.entrepreneurId.lastname;
+    //     let amountOffered1 = element.id.listingId.expectedAmount;
+    //     let equityExpected1 = element.id.listingId.returnEquityPercentage;
+    //     let profitPerUnitExpected1 = element.id.listingId.returnUnitProfitPercentage;
+
+    //     //push the results into the registrationRequests array
+    //     registrationRequests.push({
+    //         id: listingid1,
+    //         investorInterested: investorInterested1,
+    //         amountOffered: amountOffered1,
+    //         equityExpected: equityExpected1,
+    //         profitPerUnitExpected: profitPerUnitExpected1,
+    //         type:"Interested",
+    //         actions: "View"
+    //     })
+
+    // });
+
+    // counteroffers.forEach(element => {
+    //     let listingid1=element.listingId.listingId;
+    //     let investorInterested1 = element.entrepreneurId.firstname+" "+element.entrepreneurId.lastname;
+    //     let amountOffered1 = element.amount;
+    //     let equityExpected1 = element.returnEquityPercentage;
+    //     let profitPerUnitExpected1 = element.returnUnitProfitPercentage;
+
+    //     //push the results into the registrationRequests array
+    //     registrationRequests.push({
+    //         id: listingid1,
+    //         investorInterested: investorInterested1,
+    //         amountOffered: amountOffered1,
+    //         equityExpected: equityExpected1,
+    //         profitPerUnitExpected: profitPerUnitExpected1,
+    //         type:"Counter Offer",
+    //         actions: "View"
+    //     })
+    // });
 
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
@@ -70,7 +112,7 @@ function ViewInterests() {
                                             Entrepreneur
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Expected amount
+                                            Willing to offer
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Equity expected
@@ -108,8 +150,10 @@ function ViewInterests() {
                                             {/* Two icons to start messaging and start video call */}
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center space-x-4 text-sm">
-                                                    <img src="/assets/images/chat.png" alt="View"
-                                                         className="cursor-pointer"/>
+                                                    <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
+                                                               <img src="/assets/images/chat.png" alt="View"
+                                                                    className="cursor-pointer"/>
+                                                            </Link>
                                                     <Popover placement="bottom">
                                                         <PopoverHandler>
                                                             <img src="/assets/images/videocall.png" alt="View"/>
@@ -122,7 +166,7 @@ function ViewInterests() {
                                                                     </ListItem>
                                                                 </a>
                                                                     <ListItem >
-                                                                        <NavLink to={`/investor/schedules/${request.id}`} >Schedule meeting</NavLink>
+                                                                        <NavLink to={`/investor/schedules/${entrepreneurId}`} >Schedule meeting</NavLink>
                                                                     </ListItem>
 
                                                             </List>

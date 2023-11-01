@@ -25,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.exit;
 
@@ -78,43 +79,43 @@ public class ListingController {
     //     return ResponseEntity.ok(listingService.getAllListings());
     // }
 
-    //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
-    @GetMapping("/getAllFinalizedListings")
-    public ResponseEntity<List<ListingDTO>> getAllFinalizedListings() {
-        return ResponseEntity.ok(listingService.getAllFinalizedListings());
-    }
+    // //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
+    // @GetMapping("/getAllFinalizedListings")
+    // public ResponseEntity<List<ListingDTO>> getAllFinalizedListings() {
+    //     return ResponseEntity.ok(listingService.getAllFinalizedListings());
+    // }
 
-    //Get the listing sectors of the listing using the listing id
-    @GetMapping("/getListingSectors/{id}")
-    public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
-        //Get the listing object using the listing id
-        ListingDTO listing = listingService.getListing(id);
+    // //Get the listing sectors of the listing using the listing id
+    // @GetMapping("/getListingSectors/{id}")
+    // public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
+    //     //Get the listing object using the listing id
+    //     ListingDTO listing = listingService.getListing(id);
 
-        //Get the listing sectors related to the listing
-        List<String> listingSectors = listingService.getListingSectors(listing);
+    //     //Get the listing sectors related to the listing
+    //     List<String> listingSectors = listingService.getListingSectors(listing);
 
 
-        System.out.println(listingSectors);
-        return ResponseEntity.ok(listingSectors);
-    }
+    //     System.out.println(listingSectors);
+    //     return ResponseEntity.ok(listingSectors);
+    // }
 
-    //Function to get the finalized offered amounts of the listing
-    @GetMapping("/getCompletedInvestment/{id}")
-    public ResponseEntity<Integer> getCompletedInvestment(@PathVariable Integer id) {
-        //Get the listing object using the listing id
-        ListingDTO listing = listingService.getListing(id);
+    // //Function to get the finalized offered amounts of the listing
+    // @GetMapping("/getCompletedInvestment/{id}")
+    // public ResponseEntity<Integer> getCompletedInvestment(@PathVariable Integer id) {
+    //     //Get the listing object using the listing id
+    //     ListingDTO listing = listingService.getListing(id);
 
-        //Get the completed investment related to the listing
-        Integer completedInvestment = listingService.getCompletedInvestment(listing);
+    //     //Get the completed investment related to the listing
+    //     Integer completedInvestment = listingService.getCompletedInvestment(listing);
 
-        if(completedInvestment == null){
-            System.out.println("null");
-            return ResponseEntity.ok(0);
-        }else{
-            System.out.println(completedInvestment);
-            return ResponseEntity.ok(completedInvestment);
-        }
-    }
+    //     if(completedInvestment == null){
+    //         System.out.println("null");
+    //         return ResponseEntity.ok(0);
+    //     }else{
+    //         System.out.println(completedInvestment);
+    //         return ResponseEntity.ok(completedInvestment);
+    //     }
+    // }
 
     @GetMapping("/getAllListings")
     public ResponseEntity<List<ListingDTO>> getAllListings() {
@@ -158,6 +159,55 @@ public class ListingController {
             }
         }
         return ResponseEntity.ok(newactiveListings);
+    }
+
+    @GetMapping("/getalllistings")
+    public ResponseEntity<List<Map<String, String>>> getAllListings2() {
+        List<Map<String, String>> users = listingService.getAllListings2();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+    //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
+    @GetMapping("/getAllFinalizedListings")
+    public ResponseEntity<List<ListingDTO>> getAllFinalizedListings() {
+        return ResponseEntity.ok(listingService.getAllFinalizedListings());
+    }
+
+    //Get the listing sectors of the listing using the listing id
+    @GetMapping("/getListingSectors/{id}")
+    public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the listing sectors related to the listing
+        List<String> listingSectors = listingService.getListingSectors(listing);
+
+
+        System.out.println(listingSectors);
+        return ResponseEntity.ok(listingSectors);
+    }
+
+    //Function to get the finalized offered amounts of the listing
+    @GetMapping("/getCompletedInvestment/{id}")
+    public ResponseEntity<Integer> getCompletedInvestment(@PathVariable Integer id) {
+        //Get the listing object using the listing id
+        ListingDTO listing = listingService.getListing(id);
+
+        //Get the completed investment related to the listing
+        Integer completedInvestment = listingService.getCompletedInvestment(listing);
+
+        if(completedInvestment == null){
+            System.out.println("null");
+            return ResponseEntity.ok(0);
+        }else{
+            System.out.println(completedInvestment);
+            return ResponseEntity.ok(completedInvestment);
+        }
+
+
     }
 
     //Send the video relevent to the listing to the frontend using the listing id
@@ -329,7 +379,9 @@ public class ListingController {
 
     @GetMapping("/finalizeListing/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        System.out.println("Id" + id);
         List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
+        System.out.println(finalizedListings);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
@@ -368,12 +420,13 @@ public class ListingController {
         return ResponseEntity.ok().body(pdfs);
     }
 
-    @PutMapping("/updateDate/{id}")
+    @PutMapping("/updateDate/{id}/{investorId}")
     public ResponseEntity<ResponseDTO> updateDate(
             @PathVariable("id") Integer id,
+            @PathVariable("investorId") Integer investorId,
             @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
     ) {
-        return ResponseEntity.ok(listingService.updateDate(id, investorInterestedListingDTO));
+        return ResponseEntity.ok(listingService.updateDate(id,investorId,investorInterestedListingDTO));
     }
 
     @PostMapping("/addInterestedListing")
@@ -396,10 +449,4 @@ public class ListingController {
         System.out.println("Awaaaaa : " + listingDTO);
         return ResponseEntity.ok(listingService.updateListing(id, listingDTO));
     }
-
-
-
-
-
-
 }

@@ -56,6 +56,8 @@ const Dashboard = () => {
         const investorid=Number(element.id);
         allinvestorid.push(investorid);
     }
+    console.log(top5Listings);
+    console.log(allinvestorid);
 
     useEffect(() => {
         get(`/entrepreneurs/getEntrepreneurPic/${allinvestorid}`, setinvestorpic);

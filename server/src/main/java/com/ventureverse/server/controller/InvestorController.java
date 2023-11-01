@@ -24,6 +24,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.ventureverse.server.model.entity.*;
+import com.ventureverse.server.model.normal.RegisterRequestDTO;
+import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.service.EntrepreneurService;
+import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.service.InvestorService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -92,8 +102,8 @@ public class InvestorController {
 
     }
 
-    @PutMapping("/IndividualInvestor/update/{id}")
-    public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestor(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
+    @PutMapping("/IndividualInvestors/update/{id}")
+    public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestors(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
         IndividualInvestorDTO individualInvestor = investorService.updateIndividualInvestor(updatedIndividualInvestor, id);
         System.out.println(individualInvestor);
         return ResponseEntity.ok(individualInvestor);
@@ -181,12 +191,29 @@ public class InvestorController {
         if (interestedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Interested listings" + interestedListings.size());
         return ResponseEntity.ok(interestedListings);
     }
 
     @GetMapping("/getcounters/{id}")
     public ResponseEntity<List<CounterProposalDTO>> getCounters(@PathVariable Integer id) {
         List<CounterProposalDTO> counters = investorService.getCounters(id);
+        System.out.println(counters.size());
+
+        //Get all interested listings for the investor
+        List<InvestorInterestedListingDTO> interestedListings = investorService.getPendingListings(id);
+        System.out.println(interestedListings.size());
+
+        //For each counter, check if the listing is in the interested listings.If it is, remove it from the list
+        for (int i = 0; i < counters.size(); i++) {
+            for (int j = 0; j < interestedListings.size(); j++) {
+                if (counters.get(i).getListingId() == interestedListings.get(j).getId().getListingId()) {
+                    counters.remove(i);
+                }
+            }
+        }
+
+        System.out.println("Counter size" + counters.size());
         if (counters.isEmpty()) {
             return ResponseEntity.notFound().build();
         }

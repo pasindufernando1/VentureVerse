@@ -32,4 +32,11 @@ public interface ListingIndustrySectorsRepository extends JpaRepository<ListingI
             WHERE l.id.listingId = :listing
             """)
     List<String> getListingSectors(ListingDTO listing);
+
+    @Query("""
+            SELECT l 
+            FROM ListingIndustrySectorsDTO l 
+            WHERE l.id.listingId.listingId = :listingId
+            """)
+    List<ListingIndustrySectorsDTO> findByListingId2(Integer listingId);
 }

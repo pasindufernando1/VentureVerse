@@ -13,12 +13,28 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.repository.*;
+import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
+import com.ventureverse.server.model.entity.IndividualInvestorDTO;
+import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
+import com.ventureverse.server.repository.EnterpriseInvestorRepository;
+import com.ventureverse.server.repository.IndividualInvestorRepository;
+import com.ventureverse.server.repository.IndustrySectorRepository;
+import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
+import org.springframework.stereotype.Service;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class InvestorService {
     private final IndividualInvestorRepository individualInvestorRepository;
-
     private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
     private final Investor_InterestedListingRepository investorInterestedListingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
@@ -107,6 +123,16 @@ public class InvestorService {
         return userMap;
     }
 
+    // public List<Map<String, String>> getUserInterest() {
+    //     System.out.println("Inside getUserInterest");
+    //     List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
+    //     List<Map<String, String>> userMap = new ArrayList<>();
+
+    //     Calendar calendar = Calendar.getInstance();
+    //     calendar.add(Calendar.MONTH, -12);
+    //     return userMap;
+    // }
+
     public List<Map<String, String>> getInvestedAmount(Integer id) {
         List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findByInvestorId(id);
         List<Map<String, String>> userMap = new ArrayList<>();
@@ -128,7 +154,6 @@ public class InvestorService {
         }
         return userMap;
     }
-
 
     public List<Map<String, String>> getProjects(Integer id) {
         List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAllByInvestorId(id);
@@ -205,6 +230,57 @@ public class InvestorService {
         return userMap;
     }
 
+    // public List<Map<String, String>> getInterestSectors() {
+    //     List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
+
+    //     Map<Integer, List<Integer>> listingInvestorMap = new HashMap<>();
+    //     for(InvestorInterestedListingDTO interest : interests){
+    //         int listingId = interest.getId().getListingId().getListingId();
+    //         int investorId = interest.getId().getInvestorId().getId();
+    //         if(listingInvestorMap.containsKey(listingId)){
+    //             List<Integer> investors = listingInvestorMap.get(listingId);
+    //             investors.add(investorId);
+    //             listingInvestorMap.put(listingId, investors);
+    //         }else{
+    //             List<Integer> investors = new ArrayList<>();
+    //             investors.add(investorId);
+    //             listingInvestorMap.put(listingId, investors);
+    //         }
+    //     }
+
+    //     System.out.println("listingInvestorMap: " + listingInvestorMap);
+    //     List<Map<String, String>> userMap = new ArrayList<>();
+
+    //     for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
+    //         int listingId = entry.getKey();
+    //         List<Integer> investors = entry.getValue();
+
+    //         //for each investor get the sector
+    //         for(Integer investorId : investors){
+    //             //check whether that is completed or not
+    //             InvestorInterestedListingDTO interest = investor_interestedListingRepository.findByInvestorIdAndListingId(investorId, listingId);
+    //             if(interest.getFinalizedDate() == null){
+    //                 continue;
+    //             }
+    //             int amount = interest.getAmountFinalized();
+
+    //             List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
+    //             for(ListingIndustrySectorsDTO sector : sectors){
+    //                 if(sector.getId().getListingId().getListingId() == listingId){
+    //                     Map<String, String> user = Map.of(
+    //                             "listingId", String.valueOf(listingId),
+    //                             "sectorName", sector.getId().getSectorId().getName(),
+    //                             "amount", String.valueOf(amount)
+    //                     );
+    //                     userMap.add(user);
+    //                 }
+    //             }
+    //         }
+
+    //     }
+    //     return userMap;
+    // }
+
     public List<Map<String, String>> getMeetings(Integer id) {
         List<ScheduleDTO> meetings=scheduleRepository.findMeetings(id);
 
@@ -220,10 +296,72 @@ public class InvestorService {
         return userMap;
     }
 
+    public List<InvestorInterestedListingDTO> getListings(Integer id) {
+        return investor_interestedListingRepository.findPendingListingsOfInvestor(id);
+    }
+
+    // public List<InvestorInterestedListingDTO> getListings(Integer id) {
+    //     return investor_interestedListingRepository.findByInvestorId(id);
+    // }
+
+    public List<InvestorInterestedListingDTO> getListingsByListingId(ListingDTO listingDTO) {
+        return investor_interestedListingRepository.findByListingid(listingDTO);
+    }
+
+
+    public ResponseDTO updateListing(List<Integer> id, InvestorInterestedListingDTO investorInterestedListingDTO) {
+        //make the listingid a type of listingDTO
+        var Listingid= id.get(0);
+        var investorId= id.get(1);
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(Listingid);
+
+        InvestorDTO investorDTO = new InvestorDTO();
+        investorDTO.setId(investorId);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListingInvestor(listingDTO,investorId);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
+            oldListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
+            oldListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
+            oldListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+            oldListing.setStatus(investorInterestedListingDTO.getStatus());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated Successfully");
+        } else {
+            Optional<CounterProposalDTO> counterProposal= counterProposalRepository.findByListingInvestorId(Listingid,investorId);
+            if(counterProposal.isPresent()){
+                InvestorInterestedListingDTO newListing = new InvestorInterestedListingDTO();
+                newListing.setId(new InvestorInterestedListingDTO.CompositeKey(investorDTO, listingDTO));
+                newListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
+                newListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
+                newListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
+                newListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+                newListing.setStatus(investorInterestedListingDTO.getStatus());
+                newListing.setInterestedDate(counterProposal.get().getDate());
+                investor_interestedListingRepository.save(newListing);
+                //delete the counter proposal
+                counterProposalRepository.delete(counterProposal.get());
+                return GlobalService.response("Success","Listing updated Successfully");
+            }else{
+                return GlobalService.response("Error","Listing not found");
+            }
+        }
+    }
+
+    public String getdoc(Integer id) {
+        return investor_interestedListingRepository.findByListingId(id).getInvestorProofDocument();
+    }
+
+    public List<CounterProposalDTO> getCounters(Integer id) {
+        return counterProposalRepository.findByInvestorId(id);
+    }
+    
     public List<Map<String, String>> getInterestedListings(Integer id) {
-        List<InvestorInterestedListingDTO> listings=investorInterestedListingRepository.findPendingListings(id);
+        List<InvestorInterestedListingDTO> listings=investor_interestedListingRepository.findPendingListings(id);
         List<CounterProposalDTO> proposals=counterProposalRepository.findAll();
-        List<InvestorInterestedListingDTO> completedListings=investorInterestedListingRepository.findByInvestorId(id);
+        List<InvestorInterestedListingDTO> completedListings=investor_interestedListingRepository.findByInvestorId(id);
 
         //take completed listing ids to a list
         List<Integer> completedListingIds = new ArrayList<>();
@@ -290,25 +428,25 @@ public class InvestorService {
     }
 
     //Individual Investor Update
-    public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedIndividualInvestor, Integer id) {
-        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
-
-        IndividualInvestorDTO existingIndividualInvestor = individualInvestorRepository.findById(id).orElse(null);
-
-        if (existingIndividualInvestor != null) {
-            existingIndividualInvestor.setFirstname(updatedIndividualInvestor.getFirstname());
-            existingIndividualInvestor.setLastname(updatedIndividualInvestor.getLastname());
-            existingIndividualInvestor.setEmail(updatedIndividualInvestor.getEmail());
-            existingIndividualInvestor.setNic(updatedIndividualInvestor.getNic());
-            existingIndividualInvestor.setContactNumber(updatedIndividualInvestor.getContactNumber());
-
-        }
-        if (existingIndividualInvestor != null) {
-            return individualInvestorRepository.save(existingIndividualInvestor);
-        } else {
-            return null;
-        }
-    }
+//    public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedIndividualInvestor, Integer id) {
+//        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
+//
+//        IndividualInvestorDTO existingIndividualInvestor = individualInvestorRepository.findById(id).orElse(null);
+//
+//        if (existingIndividualInvestor != null) {
+//            existingIndividualInvestor.setFirstname(updatedIndividualInvestor.getFirstname());
+//            existingIndividualInvestor.setLastname(updatedIndividualInvestor.getLastname());
+//            existingIndividualInvestor.setEmail(updatedIndividualInvestor.getEmail());
+//            existingIndividualInvestor.setNic(updatedIndividualInvestor.getNic());
+//            existingIndividualInvestor.setContactNumber(updatedIndividualInvestor.getContactNumber());
+//
+//        }
+//        if (existingIndividualInvestor != null) {
+//            return individualInvestorRepository.save(existingIndividualInvestor);
+//        } else {
+//            return null;
+//        }
+//    }
 
 
     public EnterpriseInvestorDTO getEnterpriseInvestorById(Integer id) {
@@ -332,8 +470,6 @@ public class InvestorService {
             return existingEnterpriseInvestor;
 
         }
-
-
         else{
             return null;
         }
@@ -356,70 +492,93 @@ public class InvestorService {
         }
     }
     
-    public List<InvestorInterestedListingDTO> getListings(Integer id) {
-        return investor_interestedListingRepository.findByInvestorId(id);
-    }
-
-
-    public ResponseDTO updateListing(List<Integer> id, InvestorInterestedListingDTO investorInterestedListingDTO) {
-        //make the listingid a type of listingDTO
-        var Listingid= id.get(0);
-        var investorId= id.get(1);
-        ListingDTO listingDTO = new ListingDTO();
-        listingDTO.setListingId(Listingid);
-
-        InvestorDTO investorDTO = new InvestorDTO();
-        investorDTO.setId(investorId);
-
-        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListingInvestor(listingDTO,investorId);
-        if (listing.isPresent()) {
-            InvestorInterestedListingDTO oldListing = listing.get();
-            oldListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
-            oldListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
-            oldListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
-            oldListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
-            oldListing.setStatus(investorInterestedListingDTO.getStatus());
-            investor_interestedListingRepository.save(oldListing);
-            return GlobalService.response("Success","Listing updated Successfully");
-        } else {
-            Optional<CounterProposalDTO> counterProposal= counterProposalRepository.findByListingInvestorId(Listingid,investorId);
-            if(counterProposal.isPresent()){
-                InvestorInterestedListingDTO newListing = new InvestorInterestedListingDTO();
-                newListing.setId(new InvestorInterestedListingDTO.CompositeKey(investorDTO, listingDTO));
-                newListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
-                newListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
-                newListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
-                newListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
-                newListing.setStatus(investorInterestedListingDTO.getStatus());
-                newListing.setInterestedDate(counterProposal.get().getDate());
-                investor_interestedListingRepository.save(newListing);
-                //delete the counter proposal
-                counterProposalRepository.delete(counterProposal.get());
-                return GlobalService.response("Success","Listing updated Successfully");
-            }else{
-                return GlobalService.response("Error","Listing not found");
-            }
-        }
-    }
-
-    public String getdoc(Integer id) {
-        return investor_interestedListingRepository.findByListingId(id).getInvestorProofDocument();
-    }
-
-    public List<CounterProposalDTO> getCounters(Integer id) {
-        return counterProposalRepository.findByInvestorId(id);
+    // public UserDTO banIndividualInvestor(Integer id) {
+    //     UserDTO user  = userRepository.findByUserID(id);
+    //     user.setApprovalStatus(Status.PENDING);
+    //     userRepository.save(user);
+    //     return user;
+    // }
+    
+    public String getadmindoc(Integer investorId, Integer listingId) {
+        return investor_interestedListingRepository.findByListingInvestorId(listingId,investorId);
     }
     public IndividualInvestorDTO save(IndividualInvestorDTO investor) {
         return individualInvestorRepository.save(investor);
     }
 
-   public long countIndividualInvestors (){
-        return individualInvestorRepository.count();
-   }
+    public long countIndividualInvestors (){
+            return individualInvestorRepository.count();
+    }
 
+    public UserDTO banEnterpriseInvestor(Integer id) {
+        Optional<UserDTO> existingUserOptional = userRepository.findByEnterprice(id);
 
+        System.out.println("existingUserOptional = " + existingUserOptional);
 
-    public String getadmindoc(Integer investorId, Integer listingId) {
-        return investor_interestedListingRepository.findByListingInvestorId(listingId,investorId);
+        if (existingUserOptional.isPresent()) {
+            UserDTO existingUser = existingUserOptional.get();
+
+            System.out.println("existingUser = " + existingUser);
+
+            existingUser.setApprovalStatus(Status.PENDING);
+
+            System.out.println(existingUser.getApprovalStatus());
+
+            // Update other fields as needed...
+
+            // Save the updated co-admin entity back to the database
+            userRepository.save(existingUser);
+
+            return existingUser;
+        } else {
+            return null;
+        }
+    }
+//        for(InvestorInterestedListingDTO interest : interests) {
+//            if(interest.getInterestedDate().after(calendar.getTime())){
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+//                String publishDate = dateFormat.format(interest.getInterestedDate());
+//                Map<String, String> user = Map.of(
+//                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+//                        "inerestedDate", publishDate
+//                );
+//                userMap.add(user);
+//            }
+//        }
+//        System.out.println("userMap: " + userMap);
+//        return userMap;
+//    }
+
+    //Get the investor interested listing by investor id where finalized date is null
+//    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
+//        return investor_interestedListingRepository.findPendingListings(id);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MONTH, -12);
+//
+//        for(InvestorInterestedListingDTO interest : interests) {
+//            if(interest.getInterestedDate().after(calendar.getTime())){
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+//                String publishDate = dateFormat.format(interest.getInterestedDate());
+//                Map<String, String> user = Map.of(
+//                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+//                        "inerestedDate", publishDate
+//                );
+//                userMap.add(user);
+//            }
+//        }
+//        System.out.println("userMap: " + userMap);
+//        return userMap;
+//    }
+
+    
+
+    
+
+    
+
+    
+
+    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
+        return investor_interestedListingRepository.findPendingListings(id);
     }
 }

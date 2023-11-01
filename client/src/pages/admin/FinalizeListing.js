@@ -19,9 +19,9 @@ function FinalizeListingAdmin() {
     const [response, setResponse] = useState([]);
     const [response1, setResponse1] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
-    // const [pdf, setpdf] = useState([]);
-    const {id} = useParams();
-    const [pdf, setpdfEntrepreneur] = useState([]);
+    const [pdf, setpdf] = useState([]);
+    // const {id} = useParams();
+    // const [pdf, setpdfEntrepreneur] = useState([]);
     const [pdf1, setpdfInvestor] = useState([]);
     const [entrepreneurpic, setentrepreneurpic] = useState([]);
     const [investorpic, setinvestorpic] = useState([]);
@@ -36,6 +36,8 @@ function FinalizeListingAdmin() {
     var counter1 = 0;
     var counter2 = 0;
     var counter3 = 0;
+    var i=0;
+    const {id} = useParams();
 
     useEffect(() => {
         get(`/entrepreneur/finalizeListing/${parseInt(id)}`, setResponse);
@@ -50,10 +52,26 @@ function FinalizeListingAdmin() {
         };
 
 
-    const handleSubmit = () => {
-        put(`/entrepreneur/updateDate/${parseInt(id)}`,requestData,setResponse1);
-        setShowSuccessNotification(true);
-    };
+    // const handleSubmit = () => {
+    //     put(`/entrepreneur/updateDate/${parseInt(id)}`,requestData,setResponse1);
+    //     setShowSuccessNotification(true);
+    // };
+        const handleSubmit = (investorId) => {
+            console.log(investorId);
+            put(`/entrepreneur/updateDate/${id}/${investorId}`,requestData,setResponse1);
+            setShowSuccessNotification(true);
+        };
+
+        console.log(requestData); 
+        console.log(response1);
+
+        //useeffect to store data into image array
+        response && response.map((item) => (
+            allinvestorid.push(item.id.investorId.id),
+            allentrepreneurid.push(item.id.listingId.entrepreneurId.id),
+            allinvestorproofdoc.push(item.investorProofDocument),
+            allentrepreneurproofdoc.push(item.entrepreneurProofDocument)
+        )) 
 
         useEffect(() => {
             get(`/entrepreneurs/getEntrepreneurPic/${allentrepreneurid}`, setentrepreneurpic);
@@ -100,10 +118,11 @@ function FinalizeListingAdmin() {
                                                 <div className='flex justify-center'>    
                                                     <div>
                                                         <Card className="w-80">
-                                                            <CardHeader floated={false} className="h-70">    
+                                                            <CardHeader floated={false}>    
                                                                 <img
                                                                     src={`data:application/pdf;base64,${entrepreneurpic[counter2++]}`}
                                                                     width="100%"
+                                                                    height="340px"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
                                                             <CardBody className="text-center">
@@ -119,15 +138,15 @@ function FinalizeListingAdmin() {
                                                     </div>
                                                     <div>
                                                     <Card className="w-80 ml-10">
-                                                            <CardHeader floated={false} className="h-60">
+                                                            <CardHeader floated={false} className="h-70">
                                                                 <img
                                                                     src={`data:application/pdf;base64,${investorpic[counter3++]}`}
                                                                     width="100%"
+                                                                    height="340px"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
                                                             <CardBody className="text-center">
-                                                                <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                                    
+                                                                <Typography variant="h4" color="blue-gray" className="mb-2">                                                                
                                                                     {investorfirstname} {investorlastname}
                                                                 </Typography>
                                                                 <Typography color="blue-gray" className="font-medium" textGradient>
@@ -198,7 +217,7 @@ function FinalizeListingAdmin() {
                                     <Button
                                         type="button"
                                         className="float-right mt-2"
-                                        onClick={handleSubmit}
+                                        onClick={() => handleSubmit(allinvestorid[i++])}
                                     >
                                         Mark as finished
                                     </Button>
