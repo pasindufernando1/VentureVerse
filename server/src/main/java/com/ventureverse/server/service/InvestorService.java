@@ -14,6 +14,10 @@ import com.ventureverse.server.repository.IndustrySectorRepository;
 import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -280,21 +284,54 @@ public class InvestorService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -12);
-
-        for(InvestorInterestedListingDTO interest : interests) {
-            if(interest.getInterestedDate().after(calendar.getTime())){
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-                String publishDate = dateFormat.format(interest.getInterestedDate());
-                Map<String, String> user = Map.of(
-                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
-                        "inerestedDate", publishDate
-                );
-                userMap.add(user);
-            }
-        }
-        System.out.println("userMap: " + userMap);
         return userMap;
     }
+
+    public UserDTO banIndividualInvestor(Integer id) {
+        UserDTO user  = userRepository.findByUserID(id);
+        user.setApprovalStatus(Status.PENDING);
+        userRepository.save(user);
+        return user;
+    }
+
+    public UserDTO banEnterpriseInvestor(Integer id) {
+        Optional<UserDTO> existingUserOptional = userRepository.findByEnterprice(id);
+
+        System.out.println("existingUserOptional = " + existingUserOptional);
+
+        if (existingUserOptional.isPresent()) {
+            UserDTO existingUser = existingUserOptional.get();
+
+            System.out.println("existingUser = " + existingUser);
+
+            existingUser.setApprovalStatus(Status.PENDING);
+
+            System.out.println(existingUser.getApprovalStatus());
+
+            // Update other fields as needed...
+
+            // Save the updated co-admin entity back to the database
+            userRepository.save(existingUser);
+
+            return existingUser;
+        } else {
+            return null;
+        }
+    }
+//        for(InvestorInterestedListingDTO interest : interests) {
+//            if(interest.getInterestedDate().after(calendar.getTime())){
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+//                String publishDate = dateFormat.format(interest.getInterestedDate());
+//                Map<String, String> user = Map.of(
+//                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+//                        "inerestedDate", publishDate
+//                );
+//                userMap.add(user);
+//            }
+//        }
+//        System.out.println("userMap: " + userMap);
+//        return userMap;
+//    }
 
     //Get the investor interested listing by investor id where finalized date is null
 //    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {

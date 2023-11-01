@@ -18,13 +18,8 @@ import java.util.Optional;
         private final AdminRepository adminRepository;
         private final UserRepository userRepository;
 
-
-//        public List<AdminDTO> getAllCoAdmins() {
-//
-//            return adminRepository.findAll();
-//        }
-
         public List<AdminDTO> getAllCoAdmins() {
+            System.out.println(adminRepository.findAllByRole(Role.CO_ADMIN));
             return adminRepository.findAllByRole(Role.CO_ADMIN);
         }
         public AdminDTO getDetails(Integer id) {
@@ -43,6 +38,9 @@ import java.util.Optional;
                 existingCoAdmin.setLastname(updatedAdmin.getLastname());
                 existingCoAdmin.setEmail(updatedAdmin.getEmail());
                 existingCoAdmin.setNic(updatedAdmin.getNic());
+                existingCoAdmin.setFirstLineAddress(updatedAdmin.getFirstLineAddress());
+                existingCoAdmin.setSecondLineAddress(updatedAdmin.getSecondLineAddress());
+
                 existingCoAdmin.setContactNumber(updatedAdmin.getContactNumber());
                 existingCoAdmin.setTown(updatedAdmin.getTown());
                 
@@ -63,7 +61,7 @@ import java.util.Optional;
             if (existingUserOptional.isPresent()) {
                 UserDTO existingUser = existingUserOptional.get();
 
-                existingUser.setApprovalStatus(Status.BANNED);
+                existingUser.setApprovalStatus(Status.PENDING);
 
                 // Update other fields as needed...
 

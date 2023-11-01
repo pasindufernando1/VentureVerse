@@ -28,7 +28,7 @@ const UpdateEnterpreneur = () => {
 
     useEffect(() => {
 
-        get(`/entrepreneurs/view/${id}`,setResponse, true);
+        get(`/entrepreneurs/view/${id}`,setResponse);
 
 
 
@@ -137,14 +137,17 @@ const UpdateEnterpreneur = () => {
 
             if (response2.status === 200) {
                 console.log('Co-admin updated successfully');
+                setShowSuccessNotification(true);
 
             } else {
                 console.error('Update failed');
+                setShowSuccessNotification(true);
 
 
             }
         } catch (error) {
             console.error('An error occurred:', error);
+            setShowSuccessNotification(true);
 
         }
     };
@@ -283,9 +286,9 @@ const UpdateEnterpreneur = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Registration Successful"
-                            successMessage="You have successfully registered a new Co-Admin!"
-                            redirectUrl="/admin/users/coAdmins"
+                            successTitle="Update Successful"
+                            successMessage="You have successfully Updated Entrepreneur!"
+                            redirectUrl="/admin/users/entrepreneurs"
                         />
                     )}
                 </div>

@@ -3,17 +3,28 @@ import {Header,Button} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {put} from "axios";
 
 const ViewEntrepreneurs = () => {
     const [rated, setRated] = React.useState(4);
-    const {get} = useAxiosMethods();
+    const {get,put} = useAxiosMethods();
     const [response, setResponse] = useState([]);
     const [search, setSearch] = useState('');
+    const[response2, setResponse2] = useState([]);
 
     useEffect(() => {
-        get("investors/EnterpriseInvestor/view", setResponse, true);
+        get("investors/EnterpriseInvestor/view", setResponse);
     }, []);
     console.log(response);
+
+    const handleBan=  () => {
+        put(`investors/EnterpriseInvestor/ban/${response[0].id}`, "", setResponse2);
+        if (response2.status === 200) {
+            console.log("Banned");
+        } else {
+            console.log("Not Banned Something went wong" );
+        }
+    }
 
 
     //create dummy array for table data
@@ -93,14 +104,12 @@ const ViewEntrepreneurs = () => {
                             ? user
                             : user.email.toLowerCase().includes(search)})
                         .map((user) => (
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600" key={user.id}>
 
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
-                            <img className="w-8 h-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                                alt="Jese"/>
-                            <div className="pl-2">
+
+                            <div className="pl-2 w-1/5">
                                 <div className="text-[15px] font-semibold">{user.name}</div>
                                 <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
                             </div>
@@ -113,7 +122,7 @@ const ViewEntrepreneurs = () => {
                                     <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>
                                 )}
                                 <span className="text-gray-700 dark:text-gray-400">
-                                    {user.status}
+                                    {"OFFLINE"}
                                 </span>
                             </div>
                         </td>
@@ -137,7 +146,7 @@ const ViewEntrepreneurs = () => {
                         </button>
                             </Link>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -147,15 +156,7 @@ const ViewEntrepreneurs = () => {
                             </svg>
                             Ban
                         </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-[15px] rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Delete
-                        </button>
+
                         </td>
                         </tr>  
                         ))}

@@ -126,7 +126,7 @@ function FinalizeListingAdmin() {
                                                     </div>
                                                     <div>
                                                     <Card className="w-80 ml-10">
-                                                            <CardHeader floated={false}>
+                                                            <CardHeader floated={false} className="h-70">
                                                                 <img
                                                                     src={`data:application/pdf;base64,${investorpic[counter3++]}`}
                                                                     width="100%"

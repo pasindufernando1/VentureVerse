@@ -386,7 +386,7 @@ function ViewListing() {
                                                 alt="user 1"
                                                 className="border-2 border-white hover:z-10 focus:z-10"
                                                 src={`data:application/img;base64,${interestedParty}`}
-                                                title="Mr. Nimal Fernando"
+
                                             />
                                         ))}
                                         { card.interestedParties && card.interestedParties.length === 0 &&(

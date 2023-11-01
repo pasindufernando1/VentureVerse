@@ -43,4 +43,19 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
         WHERE u.id = :id
     """)
     String getimage(Integer id);
+
+    @Query("""
+        SELECT u
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    Optional<UserDTO> findByEnterprice(Integer id);
+
+    @Query("""
+        SELECT u
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    UserDTO findByUserID(Integer id);
+
 }
