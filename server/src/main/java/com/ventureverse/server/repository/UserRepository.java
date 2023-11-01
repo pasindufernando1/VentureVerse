@@ -35,4 +35,10 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
     """)
     Role findRoleById(Integer id);
 
+    @Query("""
+        SELECT u.profileImage
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    String getimage(Integer id);
 }

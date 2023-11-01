@@ -5,6 +5,7 @@ import com.ventureverse.server.model.entity.ComplainDTO;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
+import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -176,5 +181,43 @@ public class EntrepreneurController {
 
 
 
+    @GetMapping("/getEntrepreneurPic/{id}")
+    public ResponseEntity<List<byte[]>> getEntrepreneurPic(@PathVariable List<Integer> id) throws IOException {
+        System.out.println("id = " + id);
+        List<byte[]> img = new ArrayList<>();
+        for ( Integer i : id) {
+            System.out.println("i = " + i);
+            String entrepreneurPic = entrepreneurService.getEntrepreneurPic(i);
+
+            String rootDirectory = System.getProperty("user.dir");
+            String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+            Path entrepreneurPath = Paths.get(imageUploadPath,entrepreneurPic);
+            img.add(Files.readAllBytes(entrepreneurPath));
+        }
+        if (img.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().body(img);
+    }
+
+    @GetMapping("/getInvestorName/{id}")
+    public ResponseEntity<List<String>> getInvestorName(@PathVariable List<Integer> id) {
+        List<String> investorName = entrepreneurService.getInvestorName(id);
+        if (investorName.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(investorName);
+    }
+
+    @GetMapping("/getListingDetails/{id}")
+    public ResponseEntity<ListingDTO> getListingDetails(@PathVariable Integer id) {
+        ListingDTO listingDTO = entrepreneurService.getListingDetails(id);
+        System.out.println("listingDTO = " + listingDTO);
+        if (listingDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(listingDTO);
+    }
 }
 

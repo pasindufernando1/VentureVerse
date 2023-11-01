@@ -192,7 +192,7 @@ public class ListingService {
         return investor_interestedListingRepository.findByListingId(id);
     }
 
-    public ResponseDTO updateDate(Integer id, InvestorInterestedListingDTO i) {
+    public ResponseDTO updateDate(Integer id,InvestorInterestedListingDTO i) {
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(id);
 
@@ -347,5 +347,13 @@ public class ListingService {
     
     public long countListings() {
         return listingRepository.count();
+}
+
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.finalizeListings(id);
+    }
+
+    public void updateListing(ListingDTO listingDTO) {
+        listingRepository.save(listingDTO);
     }
 }

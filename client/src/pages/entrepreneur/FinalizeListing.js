@@ -18,9 +18,14 @@ import { useParams } from 'react-router-dom';
 
 function FinalizeListing() {
     const {get, post,put} = useAxiosMethods();
-    const [response, setResponse] = useState([]);
+    const[response, setResponse] = useState([]);
     const[response1, setResponse1] = useState([]);
+    const[investorpic, setinvestorpic] = useState([]);
+    const[investorname, setinvestorname] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    var allinvestorid=[];
+    var count=0;
+    var count1=0;
     const {auth} = useAuth();
     // const { id } = useParams();
 
@@ -37,9 +42,20 @@ function FinalizeListing() {
 
     useEffect(() => {
         get(`/entrepreneurs/finalizeListings/${id}`, setResponse);
-    }, []);
+    }, [response]);
 
-    console.log(response);
+    //useeffect to store data into image array
+    response && response.map((item) => (
+        allinvestorid.push(item.id.investorId.id)
+    )); 
+
+    useEffect(() => {
+        get(`/entrepreneurs/getEntrepreneurPic/${allinvestorid}`, setinvestorpic);
+    }, [response]);
+
+    useEffect(() => {
+        get(`/entrepreneurs/getInvestorName/${allinvestorid}`, setinvestorname);
+    }, [response]);
 
     const requestData = {
         entrepreneurProofDocument:formData.agreement,
@@ -59,9 +75,7 @@ function FinalizeListing() {
         setShowSuccessNotification(true);
 
     };
-
-    console.log(response1);
-
+ 
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         //if condition to check the size of the response array
@@ -84,12 +98,13 @@ function FinalizeListing() {
                                                     <Card className="w-60">
                                                         <CardHeader floated={false} className="h-60">
                                                             <img
-                                                                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
+                                                                src={`data:application/pdf;base64,${investorpic[count++]}`}
+                                                                width="100%"
                                                                 alt="profile-picture"/>
                                                         </CardHeader>
                                                         <CardBody className="text-center">
                                                             <Typography variant="h6" color="blue-gray" className="mb-2">
-                                                                {item.id.investorId.firstname} {item.id.investorId.lastname}
+                                                                {investorname[count1++]}
                                                             </Typography>
                                                             <Typography color="blue-gray" className="font-medium" textGradient>
                                                                 CEO / Co-Founder

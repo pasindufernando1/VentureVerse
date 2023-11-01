@@ -346,3 +346,30 @@ public class EntrepreneurService {
     // }
 
 }
+
+    public String getadmindoc(Integer listingId,Integer investorId) {
+       return investor_interestedListingRepository.findByEntrepreneurFinalizeDoc(listingId,investorId);
+    }
+
+
+    public String getEntrepreneurPic(Integer id) {
+        return userRepository.getimage(id);
+    }
+
+    public ListingDTO getListingDetails(Integer id) {
+        return listingRepository.findById(id).orElse(null);
+    }
+
+    public List<String> getInvestorName(List<Integer> id) {
+        List<String> name=new ArrayList<>();
+        for(Integer i:id){
+            Role userRole = userRepository.findById(i).orElse(null).getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                name.add(individualInvestorRepository.findById(i).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(i).orElse(null).getLastname());
+            }else {
+                name.add(enterpriseInvestorRepository.findById(i).orElse(null).getBusinessName());
+            }
+        }
+        return name;
+    }
+}

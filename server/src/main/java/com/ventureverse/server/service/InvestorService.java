@@ -26,6 +26,7 @@ public class InvestorService {
     private final CounterProposalRepository counterProposalRepository;
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
     private final Investor_InterestedListingRepository investor_interestedListingRepository;
+    private final UserRepository userRepository;
 
 
 
@@ -417,4 +418,8 @@ public class InvestorService {
    }
 
 
+
+    public String getadmindoc(Integer investorId, Integer listingId) {
+        return investor_interestedListingRepository.findByListingInvestorId(listingId,investorId);
+    }
 }
