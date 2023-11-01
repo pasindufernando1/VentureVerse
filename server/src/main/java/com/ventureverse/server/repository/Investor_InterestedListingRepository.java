@@ -61,6 +61,16 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
     @Query("""
             SELECT i\s
             FROM InvestorInterestedListingDTO i\s
+            WHERE i.finalizedDate IS NULL 
+            AND i.id.investorId.id = :id
+            AND i.entrepreneurProofDocument IS NULL
+            AND i.investorProofDocument IS NULL
+            """)
+    List<InvestorInterestedListingDTO> findPendingListingsOfInvestor(Integer id);
+
+    @Query("""
+            SELECT i\s
+            FROM InvestorInterestedListingDTO i\s
             WHERE i.finalizedDate IS NOT NULL 
             AND i.id.listingId.entrepreneurId.id = :id
             """)
@@ -173,6 +183,13 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
     """)
     Date getLastDate1(EnterpriseInvestorDTO enterpriseInvestor);
 
+    //Get the investor interested listings of a listing
+    @Query("""
+            SELECT i
+            FROM InvestorInterestedListingDTO i
+            WHERE i.id.listingId = :listingDTO
+            """)
+    List<InvestorInterestedListingDTO> findByListingid(ListingDTO listingDTO);
     @Query("""
             SELECT i 
             FROM InvestorInterestedListingDTO i 

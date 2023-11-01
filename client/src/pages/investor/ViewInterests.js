@@ -113,7 +113,7 @@ function ViewInterests() {
                                             Entrepreneur
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Expected amount
+                                            Willing to offer
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Equity expected
