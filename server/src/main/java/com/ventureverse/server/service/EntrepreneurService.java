@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EntrepreneurService {
 
     private final EntrepreneurRepository entrepreneurRepository;
@@ -26,18 +28,6 @@ public class EntrepreneurService {
     private final ScheduleRepository scheduleRepository;
     private final ListingRepository listingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
-    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, UserRepository userRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository) {
-        this.entrepreneurRepository = entrepreneurRepository;
-        this.complainRepository = complainRepository;
-        this.userRepository = userRepository;
-        this.investor_interestedListingRepository = investorInterestedListingRepository;
-        this.individualInvestorRepository = individualInvestorRepository;
-        this.enterpriseInvestorRepository = enterpriseInvestorRepository;
-        this.counterProposalRepository = counterProposalRepository;
-        this.scheduleRepository = scheduleRepository;
-        this.listingRepository = listingRepository;
-        this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
-    }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
         return entrepreneurRepository.findByApprovalStatus(status);
@@ -255,5 +245,54 @@ public class EntrepreneurService {
             listingMap.add(user);
         }
         return listingMap;
+    }
+
+    public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
+        return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
+    }
+
+
+
+    public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
+        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
+
+        if (existingEntrepreneurOptional.isPresent()) {
+            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
+
+            // Update the fields of the existing entrepreneur with data from updatedEntrepreneur
+            existingEntrepreneur.setFirstname(updatedEntrepreneur.getFirstname());
+            existingEntrepreneur.setLastname(updatedEntrepreneur.getLastname());
+            existingEntrepreneur.setEmail(updatedEntrepreneur.getEmail());
+            existingEntrepreneur.setNic(updatedEntrepreneur.getNic());
+            existingEntrepreneur.setContactNumber(updatedEntrepreneur.getContactNumber());
+            existingEntrepreneur.setBusinessName(updatedEntrepreneur.getBusinessName());
+            existingEntrepreneur.setBusinessEmail(updatedEntrepreneur.getBusinessEmail());
+
+            // Save the updated existing entrepreneur to the repository
+            entrepreneurRepository.save(existingEntrepreneur);
+
+            // Return the updated entrepreneur
+            return existingEntrepreneur;
+        } else {
+            return null; // Or you can throw an exception indicating that the entrepreneur with the given ID was not found
+        }
+    }
+
+
+    public EntrepreneurDTO banEntrepreneur(Integer id) {
+        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
+
+        if (existingEntrepreneurOptional.isPresent()) {
+            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
+
+            existingEntrepreneur.setApprovalStatus(Status.PENDING);
+
+            // You can update other fields here if needed...
+
+            // Save the updated entrepreneur entity back to the database
+            return entrepreneurRepository.save(existingEntrepreneur);
+        } else {
+            return null; // You can also throw an exception indicating that the entrepreneur with the given ID was not found
+        }
     }
 }

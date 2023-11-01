@@ -1,5 +1,6 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
@@ -23,4 +24,8 @@ public interface IndividualInvestorRepository extends JpaRepository<IndividualIn
     int saveInvestorSector(@Param("investor") Integer investor, @Param("sectorId") Integer sectorId);
 
     List<IndividualInvestorDTO> findByApprovalStatus(Status approvalStatus);
+
+    List<IndividualInvestorDTO> findByRole(Role role);
+
+//    IndividualInvestorDTO findAllByRole(Role INDIVIDUAL_INVESTOR);
 }

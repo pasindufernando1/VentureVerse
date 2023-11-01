@@ -14,6 +14,12 @@ public interface EntrepreneurRepository extends JpaRepository<EntrepreneurDTO, I
 
     Optional<EntrepreneurDTO> findById(Integer id);
 
+
     List<EntrepreneurDTO> findByApprovalStatus(Status ApprovalStatus);
+
+    //Function to get the entrepreneur by the userId
+    EntrepreneurDTO findAllById(Integer id);
+
+
 
 }
