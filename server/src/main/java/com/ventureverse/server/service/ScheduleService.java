@@ -70,6 +70,27 @@ public class ScheduleService {
         }
     }
 
+    public ResponseDTO addScheduleEntrepreneur(Integer id, ScheduleDTO scheduleDTO) {
+        try {
+            if(scheduleDTO.getInvestorId().getId() == null){
+                scheduleDTO.setInvestorId(null);
+            }else{
+                scheduleDTO.setEntrepreneurId(scheduleDTO.getEntrepreneurId());
+            }
+            var schedule = ScheduleDTO.builder()
+                    .title(scheduleDTO.getTitle())
+                    .time(scheduleDTO.getTime())
+                    .date(scheduleDTO.getDate())
+                    .investorId(null)
+                    .entrepreneurId(scheduleDTO.getEntrepreneurId())
+                    .build();
+            scheduleRepository.save(schedule);
+            return new ResponseDTO("Schedule added successfully", "true");
+        } catch (Exception e) {
+            return new ResponseDTO("Failed to add schedule.", "false");
+        }
+    }
+
 
     public List<Map<String, String>> getAllSchedulesEntrepreneur(Integer id) {
         List<ScheduleDTO> name= scheduleRepository.findByEntrepreneurId(id);
@@ -77,18 +98,22 @@ public class ScheduleService {
         List<Map<String, String>> scheduleMap = new ArrayList<>();
         for (ScheduleDTO scheduleDTO : name) {
             String investorName;
-            Role userRole = scheduleDTO.getInvestorId().getRole();
-            InvestorDTO list = scheduleDTO.getInvestorId();
-            if(userRole==Role.INDIVIDUAL_INVESTOR){
-                investorName=individualInvestorRepository.findById(list.getId()).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(list.getId()).orElse(null).getLastname();
+            if(scheduleDTO.getInvestorId()==null){
+                investorName = "Not Assigned";
             }else {
-                investorName = enterpriseInvestorRepository.findById(list.getId()).orElse(null).getBusinessName();
+                Role userRole = scheduleDTO.getInvestorId().getRole();
+                InvestorDTO list = scheduleDTO.getInvestorId();
+                if (userRole == Role.INDIVIDUAL_INVESTOR) {
+                    investorName = individualInvestorRepository.findById(list.getId()).orElse(null).getFirstname() + " " + individualInvestorRepository.findById(list.getId()).orElse(null).getLastname();
+                } else {
+                    investorName = enterpriseInvestorRepository.findById(list.getId()).orElse(null).getBusinessName();
+                }
             }
             scheduleMap.add(Map.of(
-                    "title", scheduleDTO.getTitle(),
-                    "time", scheduleDTO.getTime(),
-                    "date", scheduleDTO.getDate(),
-                    "investorName", investorName
+                "title", scheduleDTO.getTitle(),
+                "time", scheduleDTO.getTime(),
+                "date", scheduleDTO.getDate(),
+                "investorName", investorName
             ));
         }
         return scheduleMap;

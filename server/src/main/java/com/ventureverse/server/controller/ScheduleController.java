@@ -42,6 +42,15 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.addSchedule(id,scheduleDTO));
     }
 
+    @PostMapping("EntrepreneurAdd/{id}")
+    public ResponseEntity<ResponseDTO> addScheduleEntrepreneur(
+            @PathVariable Integer id,
+            @RequestBody ScheduleDTO scheduleDTO
+    ) {
+        System.out.println("Arrived");
+        return ResponseEntity.ok(scheduleService.addScheduleEntrepreneur(id,scheduleDTO));
+    }
+
     @GetMapping("/listEntrepreneur/{id}")
     public ResponseEntity<List<Map<String, String>>> getAllSchedulesEntrepreneur(
             @PathVariable Integer id

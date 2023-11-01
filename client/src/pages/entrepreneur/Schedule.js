@@ -1,10 +1,11 @@
-import {Button, Header} from "../webcomponent";
+import {Button, Header,Input} from "../webcomponent";
 import React, {useEffect, useState} from 'react';
 import  FullCalendar  from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import {AiOutlineCloseCircle} from "react-icons/ai";
 import useAuth from "../../hooks/useAuth";
 import {
     Card,
@@ -21,13 +22,17 @@ import {UserIcon,ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
 
 
 function Schedule() {
+    const [eventTitle, setEventTitle] = useState('');
+    const [date, setDate] = useState('');
+    const [Time, setTime] = useState('');
     const [events, setEvents] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [schedules,setSchedules]=useState([]);
     const {auth} = useAuth();
+    const [response, setResponse] = useState([]);
     const [selectedEvent, setSelectedEvent] = useState(null);
-    const {get} = useAxiosMethods();
-
+    const [showAddEventForm, setShowAddEventForm] = useState(false);
+    const {get,post} = useAxiosMethods();
     const enterpreneur=auth.id;
 
     const handleEventClick = (info) => {
@@ -40,6 +45,41 @@ function Schedule() {
     const closePopup = () => {
         setShowPopup(false);
     }
+
+    const closeAddEventForm = () => {
+        setShowAddEventForm(false);
+    }
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        if (eventTitle && Date && Time) {
+            const newEvent = {
+                title: eventTitle,
+                date: date,
+                time: Time,
+                investorId:{
+                    id: null
+                },
+                entrepreneurId:{
+                    id: enterpreneur
+                }
+            };
+            setEvents([...events, newEvent]);
+            setEventTitle('');
+            setDate('');
+            setTime('');
+            //Sent event to controller
+            console.log(newEvent);
+            post(`/schedule/EntrepreneurAdd/${newEvent.entrepreneurId.id}`, newEvent, setResponse);
+            // Hide the form after submission
+            setShowAddEventForm(false);
+        }
+    };
+
+    const handleDateClick = () => {
+        // Show the Add Event form when a date is clicked
+        setShowAddEventForm(true);
+    };
 
     useEffect(()=>{
         get(`schedule/listEntrepreneur/${enterpreneur}`,setSchedules);
@@ -88,12 +128,55 @@ function Schedule() {
     return (
         <div>
             <Header>
+            {showAddEventForm && (
+                <div className="popup-modal">
+                    <div className="popup-content">
+                <form  className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleFormSubmit}>
+                    <div className="flex justify-end">
+                    <div className="close-icon" onClick={closeAddEventForm}>
+                        <AiOutlineCloseCircle/>
+                    </div>
+                    </div>
+                    <div className="mb-4 flex flex-col gap-6">
+                        <h1>Add an Event</h1>
+                    <Input
+                        type="text"
+                        label = "Event Title"
+                        value={eventTitle}
+                        onChange={(e) => setEventTitle(e.target.value)}
+                    />
+                    <Input
+                        type="date"
+                        placeholder="Date"
+                        label = "date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                    />
+                    <Input
+                        // add custom calendar here
+                        type="time"
+                        placeholder="Time"
+                        label="Time"
+                        value={Time}
+                        onChange={(e) => setTime(e.target.value)}
+                    />
+                    </div>
+                    <Button type="submit">Add Event</Button>
+
+
+                </form>
+            </div>
+            </div>
+
+
+            )}
             {/* FullCalendar */}
             <div>
                 <FullCalendar
                     plugins={[dayGridPlugin, timeGridPlugin,interactionPlugin  ]}
                     initialView="dayGridMonth"
                     events={events}
+                    dateClick={handleDateClick}
                     eventClick={(eventInfo) => handleEventClick(eventInfo)}
                     eventBackgroundColor="#7339a1"
                     eventBorderColor="#7339a1"
