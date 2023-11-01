@@ -18,7 +18,6 @@ import LineChart from "./CustomLineCharts";
 import Calendar from "./CustomCalendar";
 import StatusPopUp from "./CustomStatusPopUp";
 
-
 import Navbar from "./CustomNavbar";
 import Header from "./CustomHeader";
 import Footer from "./CustomFooter";

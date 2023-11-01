@@ -4,5 +4,5 @@ public enum Complain {
     PENDING,
     SOLVED,
     REJECTED,
-    MARKED,
+    MARKED
 }

@@ -1,11 +1,14 @@
 package com.ventureverse.server.model.normal;
 
-import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.enumeration.Chat;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -21,6 +24,7 @@ public class DetailsDTO {
     private String secondLineAddress;
     private String town;
     private String district;
+    private byte[] profileImage;
 
     // ADMIN | ENTREPRENEUR |INDIVIDUAL INVESTOR
     private String firstname;
@@ -56,10 +60,29 @@ public class DetailsDTO {
     private String businessRegDoc;
     private List<Integer> sectorId;
 
+    //HOME
+    private String title;
+    private String description;
+    private byte[] thumbnail;
+    private String video;
+    private Integer expectedAmount;
+    private Integer returnEquityPercentage;
+    private Integer returnUnitProfitPercentage;
+    private Float investmentPercentage;
+    private String investorName;
+    private String investorQuote;
+    private String investorType;
+    
     //COMPLAIN
     private Integer complainId;
     private Integer adminId;
     private String actionDescription;
 
 
+    //Schedule
+    private Integer meetingId;
+    private String date;
+    private String time;
+    private Integer entrepreneurId;
+    private Integer investorId;
 }

@@ -23,7 +23,8 @@ public class FileUploadController {
     @PostMapping("/upload")
     public ResponseEntity <ResponseDTO> uploadFile(
             @RequestParam("image") List<MultipartFile> images,
-            @RequestParam("video") MultipartFile video
+            @RequestParam("video") MultipartFile video,
+            @RequestParam("thumbnail") MultipartFile thumbnail
     ) {
         // Project root directory
         String rootDirectory = System.getProperty("user.dir");
@@ -31,6 +32,9 @@ public class FileUploadController {
         // Example paths for saving images and video
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images";
         String videoUploadPath = rootDirectory + "/src/main/resources/static/uploads/videos";
+
+        //Path to save the thumbnail
+        String thumbnailUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
 
         System.out.println("imageUploadPath: " + imageUploadPath);
         System.out.println("videoUploadPath: " + videoUploadPath);
@@ -43,6 +47,11 @@ public class FileUploadController {
                 Path filePath = Paths.get(imageUploadPath, fileName);
                 Files.write(filePath, image.getBytes());
             }
+
+            //Upload the thumbnail
+            String thumbnailFileName = thumbnail.getOriginalFilename();
+            Path thumbnailFilePath = Paths.get(thumbnailUploadPath, thumbnailFileName);
+            Files.write(thumbnailFilePath, thumbnail.getBytes());
 
             // Save video
             String videoFileName = video.getOriginalFilename();

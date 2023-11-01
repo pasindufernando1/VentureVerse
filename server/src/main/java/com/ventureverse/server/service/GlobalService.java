@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
@@ -23,11 +24,13 @@ public class GlobalService {
 
     private static final ResourceLoader resourceLoader = null;
 
-    static AuthenticationResponseDTO authenticationResponse(String accessToken, Integer userId, Role role) {
+    static AuthenticationResponseDTO authenticationResponse(String accessToken, Integer userId, Role role
+    , byte[] profileImage) {
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .id(userId)
                 .role(role)
+                .profileImage(profileImage)
                 .build();
     }
 

@@ -1,57 +1,47 @@
 import React, {useState, useEffect} from "react";
 import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
 import axios from '../../api/axios';
+
 import { Rating } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import {json, Link} from "react-router-dom";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
 
 
-const ViewCoAdmin = () => {
+const ViewCoAdmin = (props) => {
     const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
-    const [users, setCoAdmins] = useState([
-        {
-            name: "Tharuhsi Chethana",
-            status: "Online",
-            Rating: "5",
-            email: "tharushi@gmail.com"
-        },
-        {
-            name: "Harini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "harini@gmail.com"
-        },
-        {
-            name: "Shashini Jayawardana",
-            status: "Online",
-            Rating: "4",
-            email: "shashi@gamil.com"
-        },
-        {
-            name: "Dilan Perera",
-            status: "Offline",
-            Rating: "4",
-            email: "dilan@gmail.com",
-        },
-        {
-            name: "Malindu Bandara",
-            status: "Offline",
-            Rating: "4",
-            email: "malindu@gmail.com"
-        },
-    ]);
+    const {get} = useAxiosMethods();
+    const {put} = useAxiosMethods();
+    const [response, setResponse] = useState([]);
+    const [search, setSearch] = useState("");
+
+
+    useEffect(() => {
+        get("/coadmin/view", setResponse);
+    }, []);
+
+    const handleBan=  () => {
+
+
+        put(`/coadmin/ban/${response[0].id}`, "", setResponse);
+        if (response.status === 200) {
+            console.log("Banned");
+
+        } else {
+          console.log("Not Banned Something went wong" );
+
+        }
+
+    }
+
+    useEffect(() => {
+        console.log(response)
+    }, [response]);
+
+    //Convert response to an array
+
     return(
         <div>
         <Header active="Co-Admins">
-            {/* <div className="flex justify-between ml-10">
-                <Button>
-                    <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                </Button>
-                <br></br>
-                <Button className="mr-10">
-                    <Link to="/admin/add-enterprise-investor">Add New enterprise Investor</Link>
-                </Button>
-            </div>   */}
             <br></br>        
             <main className="h-auto flex justify-center items-center g:h-screen">
             <div className="relative border-[2px] border-main-purple sm:rounded-lg p-2 w-full">
@@ -74,6 +64,8 @@ const ViewCoAdmin = () => {
                                 id="table-search-users"
                                 className="block p-2 pl-10 text-[15px]text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                 placeholder="Search For users"
+                                onChange={(event) => setSearch(event.target.value)}
+
                             />
                         </div>
                         <div className="ml-4 mt-2">
@@ -94,60 +86,50 @@ const ViewCoAdmin = () => {
                         </div>
                     </div>
                     <div>
-                        <Button>
-                            <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                        </Button>
+                        {/* display button only if userrole is admin */}
+
+                            <Button>
+                                <Link to="/admin/add-co-admin">Add New Co Admin</Link>
+                            </Button>
+
                     </div>
                 </div>
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-[15px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" className="p-4">
-                            <div className="flex items-center">
-                                <input 
-                                    id="checkbox-all-search" 
-                                    type="checkbox"
-                                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                />
-                                <label htmlFor="checkbox-all-search" className="sr-only">checkbox</label>
-                            </div>
-                        </th>
+
                         <th scope="col" className="w-1/5">
                             Name
                         </th>
                         <th scope="col" className="w-1/5">
                             Status
                         </th>
-                        <th scope="col" className="w-1/5">
-                            Rating
-                        </th>
+
                         <th scope="col" className="w-2/5">
                             {/* Action */}
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                        {users.map((user) => (
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                        <td className="w-4 p-2">
-                            <div className="flex items-center">
-                                <input id="checkbox-table-search-1" type="checkbox"
-                                        className="w-3 h-3 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-1 dark:bg-gray-700 dark:border-gray-600"/>
-                                <label htmlFor="checkbox-table-search-1" className="sr-only">checkbox</label>
-                            </div>
-                        </td>
+                    {
+
+                        response.filter((user) => {
+                        return search.toLowerCase() === ''
+                            ? user
+                            : user.email.toLowerCase().includes(search)})
+                        .map((user) => (
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 " key={user.id}>
+
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
-                            <img className="w-8 h-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                                alt="Jese"/>
-                            <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user.name}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+
+                            <div className="pl-2 flex flex-col items-start w-1/5 ">
+                                <div className="text-[15px] font-semibold pr-4">{user.firstname+' '+user.lastname}</div>
+                                <div className="text-[13px] text-gray-500 dark:text-gray-400 ">{user.email}</div>
                             </div>
                         </th>
                         <td className="px-12 py-3 text-sm">
-                            <div className="flex items-center">
+                            <div className="flex justify-center">
                                 {user.status === 'Online' ? (
                                     <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
                                 ) : (
@@ -158,11 +140,7 @@ const ViewCoAdmin = () => {
                                 </span>
                             </div>
                         </td>
-                        <td>
-                            <div className="px-12 py-3">
-                                <Rating value={1} onChange={(value) => setRated(value)}/>
-                            </div>
-                        </td>
+
                         <td className="px-4 py-2 text-right">
                         <button
                             className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
@@ -173,10 +151,12 @@ const ViewCoAdmin = () => {
                                 <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
                                     d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
                             </svg>
+                            <Link to={`/admin/update-co-admin/${user.id} ` }>
                             Update
+                            </Link>
                         </button>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1">
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
@@ -186,15 +166,7 @@ const ViewCoAdmin = () => {
                             </svg>
                             Ban
                         </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-[15px] rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Delete
-                        </button>
+
                         </td>
                         </tr>  
                         ))}

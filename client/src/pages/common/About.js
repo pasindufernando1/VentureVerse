@@ -1,10 +1,13 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import { Button, Navbar, Footer } from "../webcomponent";
+import useAxiosMethods from "../../hooks/useAxiosMethods";
+import axios from '../../api/axios';
+import {Link} from "react-router-dom";
 
 function Jumbotron() {
     // do something to the image
     return (
-        <div className={'w-full bg-main-purple py-16 px-14'}>
+        <div className={'w-full bg-gradient-to-r from-main-purple to-white py-32 px-14'}>
             <div className='max-w-[1240px] mx-auto grid md:grid-cols-2'>
                 <div className='flex flex-col justify-center'>
                     <div className="text-white">
@@ -12,21 +15,82 @@ function Jumbotron() {
                         <h4 className="mb-6 md:text-2xl sm:text-xl text-4xl font-semibold ">Unlocking Opportunities by Connecting dreams </h4>
                     </div>
                 </div>
-                <img className='w-[600px] mx-auto my-4' src="/assets/images/hero.png" alt='/' />
+                {/*<img className='w-[600px] mx-auto my-4' src="/assets/images/hero.png" alt='/' />*/}
             </div>
         </div>
     );
 }
+
 const Cards = () => {
+    const [response, setResponse] = useState(0)
+    const [response1, setResponse1] = useState(0)
+    const [response2, setResponse2] = useState(0)
+    const [response3, setResponse3] = useState(0)
+
+    //get the count of entrepreneurs
+        useEffect(() => {
+
+            axios.get(`/auth/getCountEntrepreneurs`)
+                .then(res => {
+                        setResponse(res.data)
+                    }
+                )
+    .catch(err => {
+        console.log(err)
+    })
+        },[]);
+
+    //get the count of investors
+    useEffect(() => {
+
+        axios.get(`/auth/getCountIndividualInvestors`)
+            .then(res => {
+                    setResponse1(res.data)
+                }
+            )
+            .catch(err => {
+                console.log(err)
+            })
+    },[]);
+
+    //get the count of listings
+     useEffect(() => {
+
+            axios.get(`/auth/getCountListings`)
+                .then(res => {
+                        setResponse2(res.data)
+                    }
+                )
+                .catch(err => {
+                    console.log(err)
+                })
+     },[]);
+
+     //get the count of sectors
+        useEffect(() => {
+
+                axios.get(`/auth/getCountSectors`)
+                    .then(res => {
+                            setResponse3(res.data)
+                        }
+                    )
+                    .catch(err => {
+                        console.log(err)
+                    })
+        },[]);
+
+
     const stats = [
-        {num : '150k', des:'Happy Entrepreneurs'},
-        {num : '15k', des:'Happy Investors'},
-        {num : '10k', des:'Monthly Visitors'},
-        {num : '100+', des:'Partners'},
+        {num : response, des:'Total Entrepreneurs'},
+        {num : response1, des:'Happy Investors'},
+        {num : response2, des:'Total Listings'},
+
     ]
+
+
     return (
         <div className='w-full py-[1rem] px-4 bg-white mt-10'>
-            <div className='max-w-[1240px] mx-auto grid md:grid-cols-4 gap-8 '>
+            <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8 '>
                 {stats.map((number,index) =>
                     (
                         <div className='w-full flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300'>
@@ -73,7 +137,7 @@ const OurTeam = () => {
             <div className='w-full py-[1rem] px-4 bg-white flex justify-center items-center  '>
                 <div className='max-w-[1240px] mx-auto grid md:grid-cols-3 gap-8 justify-center items-center' >
                     {teamMembers.map((member, index) => (
-                        <div key={index} className="flex justify-center items-center flex-col w-48 h-auto rounded-xl bg-main-gray hover:scale-105 duration-300">
+                        <div key={index} className="flex justify-center items-center flex-col w-48 h-auto rounded-xl bg-main-purple hover:scale-105 duration-300">
                             <div className="relative overflow-hidden bg-cover bg-no-repeat">
                                 <img className="w-48 h-auto rounded-t-xl" src={"/assets/images/team/" + member.image} alt="/" />
                             </div>
@@ -122,7 +186,9 @@ const JoinUs = () => {
                         Don't miss out on the chance to unlock your potential and seize opportunities for growth and success.
                         Register now and embark on an exciting entrepreneurial journey with us.
                     </p>
-                    <Button className='bg-black text-white w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>Get Started</Button>
+                    <Link to={`/Signup`}>
+                        <Button className='bg-black text-white w-[200px] rounded-md font-medium my-6 mx-auto md:mx-0 py-3'>Get Started</Button>
+                    </Link>
                 </div>
                 <img className='w-[500px] mx-auto my-4' src="/assets/images/VentureVerse-Black.png" alt='/' />
             </div>
@@ -160,7 +226,7 @@ const About = () => {
             <Cards/>
             <Video1/>
             <OurTeam/>
-            <EnterpriseInvestors/>
+            {/*/!*<EnterpriseInvestors/>*! must include the logos here*/}
             <JoinUs/>
             <ContactUs/>
             <Footer/>

@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 @Data
 @Builder
@@ -25,6 +26,7 @@ public class ListingDTO {
     private String title;
     @Column(columnDefinition = "text")
     private String description;
+    private String thumbnail;
     private String pitchingVideo;
     private String intention;
     private Timestamp businessStartDate;
@@ -59,5 +61,6 @@ public class ListingDTO {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "entrepreneurId", referencedColumnName = "id")
     private EntrepreneurDTO entrepreneurId;
+
 
 }

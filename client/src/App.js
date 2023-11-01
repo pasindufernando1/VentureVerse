@@ -48,6 +48,9 @@ import AnalyticsInvestor from "./pages/investor/Analytics";
 import ProfitReport from "./pages/investor/ProfitReport";
 import SectorReport from "./pages/investor/SectorReport";
 import InvestorProfileView from "./pages/investor/InvestorProfileView";
+import ViewVideo from "./pages/investor/ViewVideo";
+import Schedules from "./pages/investor/Schedule";
+
 
 
 
@@ -70,8 +73,14 @@ import GainsReports from "./pages/admin/GainsReport";
 import InterestReports from "./pages/admin/InterestReports";
 import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
+import Topup from "./pages/entrepreneur/Topup";
 
 import {Routes, Route} from "react-router-dom";
+import UpdateCoAdmin from "./pages/admin/UpdateCoAdmin";
+import UpdateEnterpreneur from "./pages/admin/UpdateEnterpreneur";
+import UpdateIndividualInvestor from "./pages/admin/UpdateIndividualInvestor";
+import UpdateEnterpriseInvestor from "./pages/admin/UpdateEnterpriseInvestor";
+
 
 function App() {
     return (
@@ -91,6 +100,7 @@ function App() {
                 <Route path="/comp" element={<Components />}/>
                 <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
 
+
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
                     <Route element={<RequireAuth allowedRoles={["ADMIN", "CO ADMIN", "INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR", "ENTREPRENEUR"]}/>}>
@@ -107,36 +117,45 @@ function App() {
                         <Route path="/admin/view-investor-details/:id" element={<ViewInvestorDetails/>}/>  
                         <Route path="/admin/users" element={<Users/>}/>  
                         <Route path="/admin/add-enterprise-investor" element={<EnterpriseInvestorSignup />} />
-                        <Route path="/admin/users/enterpreneurs" element={<ViewEntrepreneurs/>}/>
+                        <Route path="/admin/users/entrepreneurs" element={<ViewEntrepreneurs/>}/>
                         <Route path="/admin/users/coadmins" element={<ViewCoAdmin/>}/>   
                         <Route path="/admin/users/individualInvestors" element={<IndividualInvestors/>}/>  
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
                         <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                         <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
-                        <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
+                        <Route path="/admin/view-finalizedOffering/:id" element={<FinalizedListingOffering />} />
                         <Route path="/admin/analytics" element={<Analytics />} />
                         <Route path="/admin/users/reports" element={<UserReports />} />
                         <Route path="/admin/gains/reports" element={<GainsReports/>}/>
                         <Route path="/admin/interest/reports" element={<InterestReports/>}/>
                         <Route path="/admin/complain/reports" element={<ComplainReports/>}/>
+                        <Route path="/admin/update-co-admin/:id" element={<UpdateCoAdmin/>}/>
+                        <Route path="/admin/update-enterpreneur/:id" element={<UpdateEnterpreneur/>}/>
+                        <Route path="/admin/update-IndividualInvestor/:id" element={<UpdateIndividualInvestor/>}/>
+                        <Route path="/admin/update-enterpriseInvestor/:id" element={<UpdateEnterpriseInvestor/>}/>
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["INDIVIDUAL INVESTOR", "ENTERPRISE INVESTOR"]}/>}>
                         {/* Routes Authorized to Investors */}
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
-                        <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
+                        <Route path="/investor/view-listingFull/:id" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
-                        <Route path="/investor/schedules" element={<Schedule />} />
+                        <Route path="/investor/schedules" element={<Schedules />} />
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
-                        <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
+                        <Route path="/investor/finalize-listing/:id" element={<InvestorFinalizeListing />} />               
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} /> 
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
                         <Route path="/investor/sector/reports" element={<SectorReport />} />
-                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />
+
                         <Route path="/investor/Investor-Profile-View/:id" element={<InvestorProfileView />} />   
+
+
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />      
+                        <Route path="/investor/view-video" element={<ViewVideo />} />             
+                        <Route path="/investor/schedules/:entrepreneur" element={<Schedules />} />         
 
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
@@ -144,14 +163,15 @@ function App() {
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
-                        <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
+                        <Route path="/entrepreneur/view-listingCounterProposal/:id" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplains />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
                         <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
                         <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
-                        <Route path="/entrepreneur/finalize-listing/" element={<EntrepreneurFinalizeListing />} />      
                         <Route path="/entrepreneur/entrepreneur-Profile-View/:id" element={<EntrepreneurProfileView />} />    
+                        <Route path="/entrepreneur/finalize-listing/:id" element={<EntrepreneurFinalizeListing />} />
+                        <Route path="/entrepreneur/topup/:id" element={<Topup />} />
                     </Route>
                 </Route>
                 {/*404*/}

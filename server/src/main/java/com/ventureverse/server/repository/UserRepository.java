@@ -15,13 +15,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserDTO, Integer> {
 
     @Query("""
-        SELECT u.salt
-        FROM UserDTO u
-        WHERE u.email = :email
-    """)
-    Optional<String> findSaltByEmail(String email);
-
-    @Query("""
         SELECT u.approvalStatus
         FROM UserDTO u
         WHERE u.id = :id
@@ -44,6 +37,25 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
     """)
     Role findRoleById(Integer id);
 
+    @Query("""
+        SELECT u.profileImage
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    String getimage(Integer id);
 
+    @Query("""
+        SELECT u
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    Optional<UserDTO> findByEnterprice(Integer id);
+
+    @Query("""
+        SELECT u
+        FROM UserDTO u
+        WHERE u.id = :id
+    """)
+    UserDTO findByUserID(Integer id);
 
 }

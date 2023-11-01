@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
-import {Button, Textarea, Header} from "../webcomponent";
+import React, {useEffect, useState} from 'react';
+import {Button, Textarea, Header,StatusPopUp} from "../webcomponent";
 import useAxiosMethods from '../../hooks/useAxiosMethods';
 import Modal from "react-modal";
 import Terms from "../common/Terms";
+import useAuth from "../../hooks/useAuth";
+import { useParams } from 'react-router-dom';
 import {
     Card,
     CardHeader,
@@ -15,7 +17,74 @@ import {Link} from "react-router-dom";
 import {Input,Checkbox} from "../webcomponent";
 
 
+
 function FinalizeListingInvestor() {
+    const {put,post,get} = useAxiosMethods();
+    const[response, setResponse] = useState([]);
+    const[response1, setResponse1] = useState([]);
+    const[investorpic, setinvestorpic] = useState([]);
+    const[listings, setListings] = useState([]);
+    const [showSuccessNotification, setShowSuccessNotification] = useState(false);
+    const {auth} = useAuth();
+    const { id } = useParams();
+
+    const [formData, setFormData] = useState({
+        amountOffered: "",
+        equityExpected: "",
+        profitPerUnitExpected: "",
+        agreement: "",
+    });
+
+    const handledocumentUpload = (event) => {
+        const { name, files } = event.target;
+        setFormData({ ...formData, [name]: files[0]});
+    };
+    const investor = auth.id;
+    const listing=parseInt(id);
+
+    const listing_data=[];
+    listing_data[0]=listing;
+    listing_data[1]=investor;
+
+    const requestData = {
+        amountFinalized: formData.amountOffered,
+        returnEquityPercentage: formData.equityExpected,
+        returnUnitProfitPercentage: formData.profitPerUnitExpected,
+        investorProofDocument: formData.agreement,
+        status: "Investor_Finalized"
+    };
+
+    const finalizeListing = async () => {
+        const formData = new FormData();
+
+        const agreementName =  Date.now() + Math.random() + requestData.investorProofDocument.name;
+        formData.append("agreement", requestData.investorProofDocument, agreementName);
+        post("/investors/upload", formData, setResponse, true);
+
+        requestData.investorProofDocument = agreementName;
+        put(`/investors/finalizeListing/${listing_data}`,requestData,setResponse1);
+
+        setShowSuccessNotification(true);
+
+    };
+
+    useEffect(() => {
+        get(`/entrepreneurs/getListingDetails/${listing}`, setListings);
+    }, [response]);
+
+    console.log(listings);
+
+    var entrepreneurid=[];
+    if(listings && listings.entrepreneurId){
+        entrepreneurid[0]=listings.entrepreneurId.id;
+    }
+
+    useEffect(() => {
+        get(`/entrepreneurs/getEntrepreneurPic/${entrepreneurid[0]}`, setinvestorpic);
+    }, [listings]);
+
+
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <div>
@@ -33,27 +102,28 @@ function FinalizeListingInvestor() {
                                     <div className="row2 flex flex-row flex-wrap">
                                         <div>
                                             <Card className="w-80">
-                                                <CardHeader floated={false} className="h-80">
+                                                <CardHeader floated={false} className="h-70">
                                                     <img
-                                                        src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1288&q=80"
+                                                        src={`data:application/pdf;base64,${investorpic[0]}`}
+                                                        width="100%"
                                                         alt="profile-picture"/>
                                                 </CardHeader>
                                                 <CardBody className="text-center">
                                                     <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                        Dinuni Fernando
+                                                        {listings && listings.entrepreneurId && listings.entrepreneurId.firstname} {listings && listings.entrepreneurId && listings.entrepreneurId.lastname}
                                                     </Typography>
                                                     <Typography color="blue-gray" className="font-medium" textGradient>
-                                                        Lanka Apparels
+                                                        {listings && listings.entrepreneurId && listings.title}
                                                     </Typography>
                                                 </CardBody>
-                                                
+
                                             </Card>
 
                                         </div>
                                         <div>
-                                        <Card className="w-full shadow-lg p-6 border-2 border-main-purple  mt-2 ml-5">
+                                            <Card className="w-full shadow-lg p-6 border-2 border-main-purple  mt-2 ml-5">
                                                 <p className="text-main-purple justify-center flex font-extrabold">
-                                                        Finalize investment
+                                                    Finalize investment
                                                 </p>
                                                 <label htmlFor="seek" className="text-main-gray block mb-2 text-[14px] mt-2 font-extrabold">
                                                     I am offering (Rs) :
@@ -62,26 +132,32 @@ function FinalizeListingInvestor() {
                                                     type="text"
                                                     id="seek"
                                                     className="w-full"
-                                                    
-                                                    
+                                                    required={true}
+                                                    value={formData.amountOffered}
+                                                    onChange={(event) => {
+                                                        setFormData({...formData, amountOffered: event.target.value});
+                                                    }}
                                                 />
                                                 <label htmlFor="seek"
                                                        className="text-main-gray block mb-2 mt-5 text-[14px] font-extrabold">
                                                     And willing to take up (Should select at least one option) :
-                                                    
+
                                                 </label>
                                                 <div className="flex items-center mb-3">
                                                     <Input
                                                         type="text"
                                                         id="equityinput"
                                                         className="w-full mr-2"
-                                                        
+                                                        value={formData.equityExpected}
+                                                        onChange={(event) => {
+                                                            setFormData({...formData, equityExpected: event.target.value});
+                                                        }}
                                                     />
                                                     <Checkbox
                                                         label="On Equity"
                                                         name="equitybox"
                                                         id="equity"
-                                                        
+
                                                     />
                                                 </div>
                                                 <div className="flex items-center">
@@ -89,19 +165,22 @@ function FinalizeListingInvestor() {
                                                         type="text"
                                                         id="profitinput"
                                                         className="w-full mr-2"
-                                                        
+                                                        value={formData.profitPerUnitExpected}
+                                                        onChange={(event) => {
+                                                            setFormData({...formData, profitPerUnitExpected: event.target.value});
+                                                        }}
                                                     />
                                                     <Checkbox
                                                         label="Profit per unit"
                                                         name="profitunit"
                                                         id="profitunitpercentage"
-                                                        
+
 
                                                     />
                                                 </div>
                                                 <div className="row">
                                                     <div className="file-input-container mt-2">
-                                                        <label htmlFor="bankStatement"
+                                                        <label htmlFor="agreement"
                                                                className="text-main-black block mb-1 text-[14px] font-extrabold">
                                                             Please provide a copy of your contractual agreement. Use a
                                                             scanned pdf file
@@ -109,18 +188,18 @@ function FinalizeListingInvestor() {
                                                         </label>
                                                         <input
                                                             type="file"
-                                                            id="bankStatement"
-                                                            name="bankStatement"
+                                                            id="agreement"
+                                                            name="agreement"
                                                             accept=".pdf"
                                                             className="hidden"
-                                                            
+                                                            onChange={handledocumentUpload}
                                                             required={true}
                                                         />
-                                                        <label htmlFor="bankStatement" className="file-input-button">
+                                                        <label htmlFor="agreement" className="file-input-button">
                                                             Select File
                                                         </label>
                                                         <span className="file-input-text">
-                                                            No file chosen
+                                                            {formData.agreement ? formData.agreement.name : 'No file chosen'}
                                                         </span>
                                                     </div>
                                                 </div>
@@ -137,6 +216,7 @@ function FinalizeListingInvestor() {
                             <Button
                                 type="button"
                                 className="float-right mt-2"
+                                onClick={finalizeListing}
                             >
                                 Finalize
                             </Button>
@@ -151,6 +231,13 @@ function FinalizeListingInvestor() {
 
                     </form>
                 </main>
+                {showSuccessNotification && (
+                    <StatusPopUp
+                        successTitle="Listing finalized successfully"
+                        successMessage="You have successfully finalized the listing."
+                        redirectUrl="/investor/interests"
+                    />
+                )}
             </Header>
         </div>
     );

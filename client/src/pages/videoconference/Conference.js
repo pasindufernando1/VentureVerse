@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { VideoSDKMeeting } from "@videosdk.live/rtc-js-prebuilt";
 import { useParams } from "react-router-dom";
 
-
-
 const Conference = () => {
 
     const { id, user, time } = useParams();
@@ -12,7 +10,7 @@ const Conference = () => {
     const [enterpreneurjoined, setenterpreneurjoined] = useState(false);
 
 
-    // when checking user doctor or patient as any one can change the url and join, implemenet a way to confirm users identity( can use the auth state as it has the role)
+    // when checking user investor or entrepreneur as any one can change the url and join, implemenet a way to confirm users identity( can use the auth state as it has the role)
     // need to check if the meeting is sceduled or not, should maintain a flag when scheduling, before passing to use effect, if that a invalid url this should be denied
     useEffect(() => {
 
