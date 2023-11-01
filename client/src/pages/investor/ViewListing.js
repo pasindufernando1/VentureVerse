@@ -386,11 +386,11 @@ function ViewListing() {
                                                 alt="user 1"
                                                 className="border-2 border-white hover:z-10 focus:z-10"
                                                 src={`data:application/img;base64,${interestedParty}`}
-                                                title="Mr. Nimal Fernando"
+
                                             />
                                         ))}
                                         { card.interestedParties && card.interestedParties.length === 0 &&(
-                                            <Typography variant="h6" color="blue-gray" className="mb-2 mt-2 text-center ">
+                                            <Typography variant="h8" color="blue-gray" className="mb-2 mt-2 text-center ">
                                                 No interested parties yet
                                             </Typography>
                                         )}

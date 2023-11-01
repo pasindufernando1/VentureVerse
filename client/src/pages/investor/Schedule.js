@@ -15,15 +15,23 @@ import {
     TimelineConnector,
     TimelineHeader,
     TimelineIcon,
-    TimelineBody,
+    TimelineBody, ListItem, List,
 } from "@material-tailwind/react";
 import {UserIcon,ClockIcon, CalendarIcon } from "@heroicons/react/24/solid";
-import { useParams } from 'react-router-dom';
+import {NavLink, useParams} from 'react-router-dom';
+import {AiOutlineCloseCircle} from "react-icons/ai";
+import {Link} from "react-router-dom";
+import { Avatar } from "@material-tailwind/react";
+import VideoCall from "./VideoCall";
+
+
+
+
 
 function Schedules() {
     const [events, setEvents] = useState([]);
     const [eventTitle, setEventTitle] = useState('');
-    const [Date, setDate] = useState('');
+    const [date, setDate] = useState('');
     const [Time, setTime] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [showAddEventForm, setShowAddEventForm] = useState(false);
@@ -33,6 +41,18 @@ function Schedules() {
     const {auth} = useAuth();
     const investorid = auth.id;
     const {post,get} = useAxiosMethods();
+
+    const handleVideoCAll = () =>{
+        const conferenceWindow = window.open(
+            '/meeting/01/investor/' + new Date().toISOString(),
+            '_blank'
+        );
+        if (conferenceWindow) {
+            localStorage.setItem('meetngInProgress', 'true');
+            conferenceWindow.focus();
+        }
+    }
+
 
     //get the id passed from the url
     var {entrepreneur} = useParams();
@@ -66,7 +86,7 @@ function Schedules() {
         if (eventTitle && Date && Time) {
             const newEvent = {
                 title: eventTitle,
-                date: Date,
+                date: date,
                 time: Time,
                 investorId:{
                     id: investorid
@@ -93,7 +113,8 @@ function Schedules() {
     };
 
     const handleEventClick = (info) => {
-        const event = schedules.filter((schedule) => schedule.date === info.event.startStr);
+        const event = schedules.filter((schedule) =>
+            schedule.date === info.event.startStr && schedule.time === info.event.title.split(" ")[2]);
         setSelectedEvent(event[0]);
         setShowPopup(true);
     };
@@ -101,13 +122,45 @@ function Schedules() {
     const closePopup = () => {
         setShowPopup(false);
     }
+    const closeAddEventForm = () => {
+        setShowAddEventForm(false);
+    }
+
+
+    const checkTimeGap = (time) => {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        const currentMinute = currentTime.getMinutes();
+        const meetingTime = time.split(':')
+
+        console.log(currentHour,' ',currentMinute);
+        console.log(meetingTime[0],' ',meetingTime[1])
+
+        // 10 minutes in milliseconds
+        const tenMinutes = 10 * 60 * 1000;
+
+        let timeGap = currentMinute - Number(meetingTime[1])
+
+        // If the time gap is less than 10 minutes, enable the button
+        return currentHour === Number(meetingTime[0]) && timeGap <= tenMinutes;
+    };
+
+
 
     return (
         <div>
             <Header>
+
             {/* Add Event Form */}
             {showAddEventForm && (
+                <div className="popup-modal">
+                    <div className="popup-content">
                 <form  className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96" onSubmit={handleFormSubmit}>
+                    <div className="flex justify-end">
+                    <div className="close-icon" onClick={closeAddEventForm}>
+                        <AiOutlineCloseCircle/>
+                    </div>
+                    </div>
                     <div className="mb-4 flex flex-col gap-6">
                         <h1>Add an Event</h1>
                     <Input
@@ -120,7 +173,7 @@ function Schedules() {
                         type="date"
                         placeholder="Date"
                         label = "date"
-                        value={Date}
+                        value={date}
                         onChange={(e) => setDate(e.target.value)}
                     />
                     <Input
@@ -133,7 +186,13 @@ function Schedules() {
                     />
                     </div>
                     <Button type="submit">Add Event</Button>
+
+
                 </form>
+        </div>
+                </div>
+
+
             )}
 
             {/* FullCalendar */}
@@ -156,15 +215,18 @@ function Schedules() {
 
         </Header>
             {showPopup && selectedEvent &&(
-                <div className="popup-modal">
+                <div className="justify-center flex w-full">
+                <div className="popup-modal ">
                     <div className="popup-content">
                         <Card className="mt-6 w-200">
-                            <div className="close-icon" onClick={closePopup}>
-                                X
+                            <div className="flex justify-end">
+                                <div className="close-icon" onClick={closePopup}>
+                                    <AiOutlineCloseCircle/>
+                                </div>
                             </div>
                             <CardBody>
                                 <Typography variant="h5" color="blue-gray">
-                                    Sheduling Details-{selectedEvent.title}
+                                    Scheduling Details-{selectedEvent.title}
                                 </Typography>
                             </CardBody>
                             <CardBody className="flex items-start">
@@ -173,14 +235,14 @@ function Schedules() {
                                         <TimelineItem>
                                             <TimelineConnector />
                                             <TimelineHeader>
-                                                <TimelineIcon className="p-2">
+                                                <TimelineIcon className="p-2 bg-main-purple">
                                                     <UserIcon className="h-4 w-4" />
                                                 </TimelineIcon>
                                                 <Typography variant="h6" color="blue-gray">
                                                     Entrepreneur Name
                                                 </Typography>
                                             </TimelineHeader>
-                                            <TimelineBody className="pb-2">
+                                            <TimelineBody className="pb-2 mai">
                                                 <Typography color="gary" className="font-normal text-gray-600">
                                                     {selectedEvent.entrepreneurName}
                                                 </Typography>
@@ -189,8 +251,8 @@ function Schedules() {
                                         <TimelineItem>
                                             <TimelineConnector />
                                             <TimelineHeader>
-                                                <TimelineIcon className="p-2">
-                                                    <CalendarIcon className="h-4 w-4" />
+                                                <TimelineIcon className="p-2 bg-main-purple">
+                                                    <CalendarIcon className="h-4 w-4 bg-main-purple" />
                                                 </TimelineIcon>
                                                 <Typography variant="h6" color="blue-gray">
                                                     Date
@@ -204,7 +266,7 @@ function Schedules() {
                                         </TimelineItem>
                                         <TimelineItem>
                                             <TimelineHeader>
-                                                <TimelineIcon className="p-2">
+                                                <TimelineIcon className="p-2 bg-main-purple">
                                                     <ClockIcon className="h-4 w-4" />
                                                 </TimelineIcon>
                                                 <Typography variant="h6" color="blue-gray">
@@ -219,12 +281,24 @@ function Schedules() {
                                         </TimelineItem>
                                     </Timeline>
                                 </div>
+                                <a href="#" className="text-initial">
+                                    <List>
+                                        <a href="#" className="text-initial">
+                                            <listItem onClick={checkTimeGap(selectedEvent.time) ? null : handleVideoCAll} >
+                                                <Button disabled={!checkTimeGap(selectedEvent.time)} onClick={handleVideoCAll}>Start now</Button>
+                                            </listItem>
+                                        </a>
+                                    </List>
+                                </a>
                             </CardBody>
                         </Card>
                     </div>
                 </div>
+                    </div>
             )}
         </div>
+
+
     );
 }
 export default Schedules;

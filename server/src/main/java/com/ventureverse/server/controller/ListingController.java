@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.exit;
 
@@ -113,6 +114,15 @@ public class ListingController {
             }
         }
         return ResponseEntity.ok(newactiveListings);
+    }
+
+    @GetMapping("/getalllistings")
+    public ResponseEntity<List<Map<String, String>>> getAllListings2() {
+        List<Map<String, String>> users = listingService.getAllListings2();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
 
     //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
@@ -306,7 +316,9 @@ public class ListingController {
 
     @GetMapping("/finalizeListing/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        System.out.println("Id" + id);
         List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
+        System.out.println(finalizedListings);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
@@ -372,6 +384,15 @@ public class ListingController {
     ) {
         System.out.println("Awaaaaa : " + listingDTO);
         return ResponseEntity.ok(listingService.updateListing(id, listingDTO));
+    }
+
+    @GetMapping("/userGains")
+    public ResponseEntity<List<Map<String, String>>> getUserGains() {
+        List<Map<String, String>> users = listingService.getUserGains();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
     }
 
 

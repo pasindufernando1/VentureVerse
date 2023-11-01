@@ -26,8 +26,11 @@ const Dashboard = () => {
     const[listings,setListings]=useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [selectedInvestor, setSelectedInvestor] = useState(null);
+    var allentrepreneurid=[];
+    const[entrepreneurpic,setentrepreneurpic]=useState([]);
     const {auth} = useAuth();
     const id = auth.id;
+    var count=0;
 
     useEffect(() => {
         get(`/investors/projects/${id}`,setResponse);
@@ -46,7 +49,19 @@ const Dashboard = () => {
 
     //get top 5 listings  
     const top5Listings = listings.slice(0, 5);
+
+    for (let i = 0; i < top5Listings.length; i++) {
+        const element = top5Listings[i];
+        const investorid=Number(element.id);
+        allentrepreneurid.push(investorid);
+    }
+
+
+    useEffect(() => {
+        get(`/entrepreneurs/getEntrepreneurPic/${allentrepreneurid}`, setentrepreneurpic);
+    }, [listings]);
     
+
     //take meetings of this month and put the date and time to the value array
     const value = {};
     const today = new Date();
@@ -205,7 +220,8 @@ const Dashboard = () => {
                                              className="flex items-center py-[1rem] border-b-[1px] justify-between">
                                             <div className="flex items-center gap-4  w-[50%]">
                                                 <Avatar
-                                                    src={investor.image}
+                                                    src={`data:application/pdf;base64,${entrepreneurpic[count++]}`}
+                                                    width="100%"
                                                     alt="avatar"
                                                 />
                                                 <div>

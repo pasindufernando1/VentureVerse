@@ -57,4 +57,5 @@ public interface UserRepository extends JpaRepository<UserDTO, Integer> {
         WHERE u.id = :id
     """)
     UserDTO findByUserID(Integer id);
+
 }

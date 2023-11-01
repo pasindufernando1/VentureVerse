@@ -155,6 +155,57 @@ public class EntrepreneurController {
         return ResponseEntity.ok(listingDTO);
     }
 
+    @GetMapping("/getcomplains")
+    public ResponseEntity<List<Map<String, String>>> getComplains() {
+        List<Map<String, String>> complains = entrepreneurService.getComplains();
+        if (complains.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(complains);
+    }
+
+    @GetMapping("/listingsCounter/{id}")
+    public ResponseEntity<List<Map<String, String>>> getCounterListings(@PathVariable Integer id) {
+        List<Map<String, String>> schedules = entrepreneurService.getListings(id);
+        if (schedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(schedules);
+    }
+
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<List<Map<String, String>>> getMeetings(@PathVariable Integer id) {
+        List<Map<String, String>> schedules = entrepreneurService.getSchedules(id);
+        if (schedules.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(schedules);
+    }
+
+    @GetMapping("/listingsInterests/{id}")
+    public ResponseEntity<List<Map<String, String>>> getInterests(@PathVariable Integer id) {
+        List<Map<String, String>> interests = entrepreneurService.getInterests(id);
+        if (interests.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(interests);
+    }
+
+    @GetMapping("/completedListings/{id}")
+    public ResponseEntity<List<Map<String, String>>> getCompletedListings(@PathVariable Integer id) {
+        List<Map<String, String>> completedListings = entrepreneurService.getCompletedListings(id);
+        if (completedListings.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(completedListings);
+    }
+
+
 
 
 }

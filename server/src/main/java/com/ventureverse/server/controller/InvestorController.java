@@ -109,12 +109,29 @@ public class InvestorController {
         if (interestedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Interested listings" + interestedListings.size());
         return ResponseEntity.ok(interestedListings);
     }
 
     @GetMapping("/getcounters/{id}")
     public ResponseEntity<List<CounterProposalDTO>> getCounters(@PathVariable Integer id) {
         List<CounterProposalDTO> counters = investorService.getCounters(id);
+        System.out.println(counters.size());
+
+        //Get all interested listings for the investor
+        List<InvestorInterestedListingDTO> interestedListings = investorService.getPendingListings(id);
+        System.out.println(interestedListings.size());
+
+        //For each counter, check if the listing is in the interested listings.If it is, remove it from the list
+        for (int i = 0; i < counters.size(); i++) {
+            for (int j = 0; j < interestedListings.size(); j++) {
+                if (counters.get(i).getListingId() == interestedListings.get(j).getId().getListingId()) {
+                    counters.remove(i);
+                }
+            }
+        }
+
+        System.out.println("Counter size" + counters.size());
         if (counters.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -206,4 +223,58 @@ public class InvestorController {
         }
     }
 
+
+    @GetMapping("/userInterest")
+    public ResponseEntity<List<Map<String,String>>> getUserInterest() {
+        List<Map<String,String>> interestedSectors = investorService.getUserInterest();
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
+    @GetMapping("/interestSectors")
+    public ResponseEntity<List<Map<String,String>>> getInterestSectors() {
+        List<Map<String,String>> interestedSectors = investorService.getInterestSectors();
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
+    @GetMapping("/InvestedAmount/{id}")
+    public ResponseEntity<List<Map<String,String>>> getInvestedAmount(@PathVariable Integer id) {
+        List<Map<String,String>> investedAmount = investorService.getInvestedAmount(id);
+        if (investedAmount.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(investedAmount);
+    }
+
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<List<Map<String,String>>> getProjects(@PathVariable Integer id) {
+        List<Map<String,String>> projects = investorService.getProjects(id);
+        if (projects.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(projects);
+    }
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<List<Map<String,String>>> getMeetings(@PathVariable Integer id){
+        List<Map<String,String>> meetings= investorService.getMeetings(id);
+        if(meetings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(meetings);
+    }
+
+    @GetMapping("/interestedListings/{id}")
+    public ResponseEntity<List<Map<String,String>>> getInterestedListings(@PathVariable Integer id){
+        List<Map<String,String>> interestedListings= investorService.getInterestedListings(id);
+        if(interestedListings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedListings);
+    }
 }

@@ -22,9 +22,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -286,7 +291,7 @@ public class AuthenticationService {
         return GlobalService.response("Success", "User " + id + " Approved");
     }
 
-    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {
+    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) throws IOException {
 
         var salt = credentialRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
@@ -304,8 +309,20 @@ public class AuthenticationService {
         var credentials = credentialRepository.findByUsername(user.getEmail()).orElseThrow(() -> new CustomErrorException("Credentials Not Found"));
         var accessToken = jwtService.generateToken(credentials);
         var refreshToken = jwtService.generateRefreshToken(credentials);
+
         updateUserToken(user, accessToken);
         creatCookie(response, refreshToken, refreshExpiration / 1000);
+
+        //Get the user image of the user
+        var profileImage=userRepository.getimage(user.getId());
+        System.out.println(profileImage);
+
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+        Path path = Paths.get(imageUploadPath,profileImage);
+        byte[] image = Files.readAllBytes(path);
+        System.out.println(image);
 
         user.setStatus(Chat.ONLINE);
         user.setLastLogin(null);
@@ -314,7 +331,8 @@ public class AuthenticationService {
         return GlobalService.authenticationResponse(
                 accessToken,
                 user.getId(),
-                user.getRole()
+                user.getRole(),
+                image
         );
     }
 

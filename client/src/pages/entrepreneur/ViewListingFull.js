@@ -491,13 +491,7 @@ function ViewListingFull() {
 
                             </CardBody>
                             <CardFooter className="pt-0 flex justify-center">
-                                <Button
-                                    variant="clear"
-                                    label="Show less"
-                                    icon="previous"
-                                >
-                                    <Link to="/entrepreneur/view-listing">Show less</Link>
-                                </Button>
+
                                 <Button
                                     variant="primary"
                                     label="View offerings"

@@ -140,12 +140,6 @@ function ViewListingInvestor() {
 
 
 
-
-
-
-
-
-
     const [subView, setSubView] = useState(false);
     const [fullView, setFullView] = useState(true);
 
