@@ -134,14 +134,13 @@ public class DemoController {
 
 
     @GetMapping("/GivingStarRatingBoth/{id}")
-    public List LeaderBordBoth(
+    public List<Object> LeaderBordBoth(
             @PathVariable Integer id
     )
     {
-        List Both = demoService.LeaderboardBothService(id);
 
-        // return ResponseEntity.ok("  done successfully");
-        return Both;
+        System.out.println("Awa");
+        return demoService.LeaderboardBothService(id);
 
     }
 
