@@ -7,6 +7,9 @@ import {useParams} from "react-router-dom";
 import useData from "../../hooks/useData";
 
 function ViewListingCounterProposal() {
+
+    const {setData} = useData();
+
     const { get } = useAxiosMethods();
     const [response, setResponse] = useState([]);
     const {id} = useParams();
@@ -18,254 +21,6 @@ function ViewListingCounterProposal() {
     }, []);
 
     console.log(response);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     const handleVideoCAll = () => {
         const conferenceWindow = window.open(
@@ -334,8 +89,10 @@ function ViewListingCounterProposal() {
                                             {/* Two icons to start messaging and start video call */}
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center space-x-4 text-sm">
-                                                    <img src="/assets/images/chat.png" alt="View"
-                                                         className="cursor-pointer"/>
+                                                    <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
+                                                        <img src="/assets/images/chat.png" alt="View"
+                                                             className="cursor-pointer"/>
+                                                    </Link>
 
                                                     <img src="/assets/images/videocall.png" alt="View"
                                                          className="cursor-pointer" onClick={handleVideoCAll}/>

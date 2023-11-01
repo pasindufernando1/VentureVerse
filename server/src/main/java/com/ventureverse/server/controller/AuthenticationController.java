@@ -86,7 +86,7 @@ public class AuthenticationController {
     public ResponseEntity<AuthenticationResponseDTO> authenticate(
             HttpServletResponse response,
             @RequestBody AuthenticationRequestDTO authenticationRequestDTO
-    ) {
+    ) throws IOException {
         return ResponseEntity.ok(authenticationService.authenticate(response, authenticationRequestDTO));
     }
 

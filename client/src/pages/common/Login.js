@@ -50,11 +50,13 @@ const Login = () => {
                 JSON.stringify({email, password}),
                 {
                     headers: {'Content-Type': 'application/json'},
-                    withCredentials: true
+                    withCredentials: true,
+
                 }
             );
-
+            console.log(response?.data)
             response.data.role = response?.data?.role.replace("_", " ");
+            console.log(response?.data)
             setAuth(response?.data);
             
             setEmail('');

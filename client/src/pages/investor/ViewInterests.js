@@ -11,10 +11,14 @@ import {
     List,
     ListItem,
 } from "@material-tailwind/react";
+import useData from "../../hooks/useData";
 
 
 
 function ViewInterests() {
+
+    const {setData} = useData();
+
     const {get} = useAxiosMethods();
     const[response, setResponse] = useState([]);
     const[counteroffers, setCounter] = useState([]);
@@ -109,7 +113,7 @@ function ViewInterests() {
                                             Entrepreneur
                                         </th>
                                         <th scope="col" className="px-6 py-3">
-                                            Expected amount
+                                            Willing to offer
                                         </th>
                                         <th scope="col" className="px-6 py-3">
                                             Equity expected
@@ -151,7 +155,10 @@ function ViewInterests() {
                                                          className="cursor-pointer"/>
                                                     <Popover placement="bottom">
                                                         <PopoverHandler>
-                                                            <img src="/assets/images/videocall.png" alt="View"/>
+                                                            <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
+                                                                <img src="/assets/images/chat.png" alt="View"
+                                                                     className="cursor-pointer"/>
+                                                            </Link>
                                                         </PopoverHandler>
                                                         <PopoverContent className="w-72">
                                                             <List className="p-0">

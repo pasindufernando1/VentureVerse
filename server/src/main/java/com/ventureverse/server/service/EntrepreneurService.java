@@ -110,7 +110,7 @@ public class EntrepreneurService {
                 investorName = enterpriseInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getBusinessName();
             }
             Map<String, String> user = Map.of(
-                    "id", listing.getId().getInvestorId().toString(),
+                    "id", listing.getId().getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", listing.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
@@ -139,7 +139,7 @@ public class EntrepreneurService {
             }
             Map<String, String> user = Map.of(
                     "Investor", investorName,
-                    "id", proposal.getInvestorId().toString(),
+                    "id", proposal.getInvestorId().getId().toString(),
                     "amount", proposal.getAmount().toString(),
                     "type","Counter",
                     "equity",String.valueOf(equity),
@@ -313,5 +313,76 @@ public class EntrepreneurService {
     //         return entrepreneurRepository.save(updatedEntrepreneur);
     //     }
     // }
+
+    public List <Map<String, String>> getComplains() {
+        List<ComplainDTO> complains = complainRepository.findAll();
+        List<Map<String, String>> complainMap = new ArrayList<>();
+        for (ComplainDTO complain : complains) {
+            UserDTO user = userRepository.findById(complain.getUserId().getId()).orElse(null);
+            if (user == null) {
+                return null;
+            }else{
+                complainMap.add(Map.of(
+                        "complainType", complain.getComplainType().toString(),
+                        "userRole", user.getRole().toString(),
+                        "date", complain.getDate().toString()
+                ));
+            }
+        }
+        return complainMap;
+    }
+
+    public List<Map<String, String>> getSchedules(Integer id) {
+        List<ScheduleDTO> meetings=scheduleRepository.findEntrepreneurMeetings(id);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for (ScheduleDTO meeting:meetings) {
+            Map<String, String> user = Map.of(
+                    "date",meeting.getDate().toString(),
+                    "time",meeting.getTime().toString(),
+                    "title",meeting.getTitle()
+            );
+            userMap.add(user);
+        }
+        return userMap;
+
+    }
+
+    public List<Map<String, String>> getInterests(Integer id) {
+        List<ListingDTO> listings = listingRepository.findByEntrepreneurId(id);
+        List<Map<String, String>> listingMap = new ArrayList<>();
+
+        for(ListingDTO listing:listings) {
+            //sectors that investor is interested in
+            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId2(listing.getListingId());
+            for (ListingIndustrySectorsDTO sector:sectors) {
+                Map<String, String> user = Map.of(
+                        "sector", sector.getId().getSectorId().getSectorName(),
+                        "amount", listing.getExpectedAmount().toString()
+                );
+                listingMap.add(user);
+            }
+        }
+        return listingMap;
+    }
+
+    public List<Map<String, String>> getCompletedListings(Integer id) {
+        List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
+        List<Map<String, String>> listingMap = new ArrayList<>();
+
+        for(InvestorInterestedListingDTO listing:listings){
+            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId2(listing.getId().getListingId().getListingId());
+            for (ListingIndustrySectorsDTO sector:sectors) {
+                Map<String, String> user = Map.of(
+                        "sector", sector.getId().getSectorId().getSectorName(),
+                        "amount", listing.getId().getListingId().getExpectedAmount().toString()
+                );
+                listingMap.add(user);
+            }
+        }
+        return listingMap;
+    }
+
+
 
 }

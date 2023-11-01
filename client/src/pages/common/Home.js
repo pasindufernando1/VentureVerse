@@ -22,7 +22,8 @@ const Home = () => {
                 let response = await axios.get('/auth/home',
                     {
                         headers: {'Content-Type': 'application/json'},
-                        withCredentials: true
+                        withCredentials: true,
+
                     }
                 );
 
@@ -102,7 +103,8 @@ const Home = () => {
         return stars;
     };
 
-    const navigate = useNavigate()
+    const navigate  = useNavigate() ;
+
 
     return (
 
