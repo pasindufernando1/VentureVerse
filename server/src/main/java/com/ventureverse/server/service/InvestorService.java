@@ -278,9 +278,6 @@ public class InvestorService {
         List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
         List<Map<String, String>> userMap = new ArrayList<>();
 
-    //Get the investor interested listing by investor id where finalized date is null
-    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
-        return investor_interestedListingRepository.findPendingListings(id);
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -12);
 
@@ -298,6 +295,27 @@ public class InvestorService {
         System.out.println("userMap: " + userMap);
         return userMap;
     }
+
+    //Get the investor interested listing by investor id where finalized date is null
+//    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
+//        return investor_interestedListingRepository.findPendingListings(id);
+//        Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.MONTH, -12);
+//
+//        for(InvestorInterestedListingDTO interest : interests) {
+//            if(interest.getInterestedDate().after(calendar.getTime())){
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+//                String publishDate = dateFormat.format(interest.getInterestedDate());
+//                Map<String, String> user = Map.of(
+//                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+//                        "inerestedDate", publishDate
+//                );
+//                userMap.add(user);
+//            }
+//        }
+//        System.out.println("userMap: " + userMap);
+//        return userMap;
+//    }
 
     public List<Map<String, String>> getInvestedAmount(Integer id) {
         List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findByInvestorId(id);
@@ -412,4 +430,7 @@ public class InvestorService {
         return userMap;
     }
 
+    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
+        return investor_interestedListingRepository.findPendingListings(id);
+    }
 }
