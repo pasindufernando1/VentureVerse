@@ -79,7 +79,7 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
     @Query("""
             SELECT i\s
             FROM InvestorInterestedListingDTO i\s
-            WHERE i.finalizedDate IS NULL 
+            WHERE i.finalizedDate IS NULL
             AND i.id.listingId.listingId = :id
             """)
     List<InvestorInterestedListingDTO> findByPendingListingId(Integer id);
@@ -95,6 +95,7 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             FROM InvestorInterestedListingDTO i\s
             WHERE i.status='Investor_Finalized'
             AND i.id.listingId.listingId = :id
+            AND i.entrepreneurProofDocument IS NOT NULL
             """)
     List<InvestorInterestedListingDTO> findByEntreprenuerListingId(Integer id);
 
@@ -121,6 +122,7 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE i.id.listingId.listingId = :id
             AND i.entrepreneurProofDocument IS NOT NULL
             AND i.investorProofDocument IS NOT NULL
+            AND i.finalizedDate IS NULL
             """)
     List<InvestorInterestedListingDTO> finalizeListings(Integer id);
 
@@ -206,4 +208,13 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             """)
     InvestorInterestedListingDTO findByInvestorIdAndListingId(@Param("investorId") Integer investorId, @Param("listingId") int listingId);
 
+
+    @Query("""
+            SELECT i
+            FROM InvestorInterestedListingDTO i 
+            WHERE
+            i.id.listingId.listingId = :listingId
+            AND i.id.investorId.id = :investorId
+            """)
+    Optional<InvestorInterestedListingDTO> findByInvestorIdAndListingId2(@Param("investorId") Integer investorId, @Param("listingId") int listingId);
 }

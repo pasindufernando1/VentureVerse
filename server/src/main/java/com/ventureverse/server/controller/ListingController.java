@@ -355,12 +355,13 @@ public class ListingController {
         return ResponseEntity.ok().body(pdfs);
     }
 
-    @PutMapping("/updateDate/{id}")
+    @PutMapping("/updateDate/{id}/{investorId}")
     public ResponseEntity<ResponseDTO> updateDate(
             @PathVariable("id") Integer id,
+            @PathVariable("investorId") Integer investorId,
             @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
     ) {
-        return ResponseEntity.ok(listingService.updateDate(id, investorInterestedListingDTO));
+        return ResponseEntity.ok(listingService.updateDate(id,investorId,investorInterestedListingDTO));
     }
 
     @PostMapping("/addInterestedListing")

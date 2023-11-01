@@ -10,6 +10,7 @@ import {
     Tooltip, Input, Checkbox,
 } from "@material-tailwind/react";
 import {Link, useParams} from "react-router-dom";
+import { all } from 'axios';
 
 
 function FinalizeListingAdmin() {
@@ -32,22 +33,25 @@ function FinalizeListingAdmin() {
     var counter1 = 0;
     var counter2 = 0;
     var counter3 = 0;
-    let id=3;
+    var i=0;
+    const {id} = useParams();
 
     useEffect(() => {
         get(`/entrepreneur/finalizeListing/${parseInt(id)}`, setResponse);
     }, []);
 
-    console.log(response);
-
         const requestData = {
             finalizedDate: new Date()
         };
 
-        const handleSubmit = () => {
-            put(`/entrepreneur/updateDate/${id}`,requestData,setResponse1);
+        const handleSubmit = (investorId) => {
+            console.log(investorId);
+            put(`/entrepreneur/updateDate/${id}/${investorId}`,requestData,setResponse1);
             setShowSuccessNotification(true);
         };
+
+        console.log(requestData); 
+        console.log(response1);
 
         //useeffect to store data into image array
         response && response.map((item) => (
@@ -102,10 +106,11 @@ function FinalizeListingAdmin() {
                                                 <div className='flex justify-center'>    
                                                     <div>
                                                         <Card className="w-80">
-                                                            <CardHeader floated={false} className="h-70">    
+                                                            <CardHeader floated={false}>    
                                                                 <img
                                                                     src={`data:application/pdf;base64,${entrepreneurpic[counter2++]}`}
                                                                     width="100%"
+                                                                    height="340px"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
                                                             <CardBody className="text-center">
@@ -121,15 +126,15 @@ function FinalizeListingAdmin() {
                                                     </div>
                                                     <div>
                                                     <Card className="w-80 ml-10">
-                                                            <CardHeader floated={false} className="h-60">
+                                                            <CardHeader floated={false}>
                                                                 <img
                                                                     src={`data:application/pdf;base64,${investorpic[counter3++]}`}
                                                                     width="100%"
+                                                                    height="340px"
                                                                     alt="profile-picture"/>
                                                             </CardHeader>
                                                             <CardBody className="text-center">
-                                                                <Typography variant="h4" color="blue-gray" className="mb-2">
-                                                                    
+                                                                <Typography variant="h4" color="blue-gray" className="mb-2">                                                                
                                                                     {investorfirstname} {investorlastname}
                                                                 </Typography>
                                                                 <Typography color="blue-gray" className="font-medium" textGradient>
@@ -200,7 +205,7 @@ function FinalizeListingAdmin() {
                                     <Button
                                         type="button"
                                         className="float-right mt-2"
-                                        onClick={handleSubmit}
+                                        onClick={() => handleSubmit(allinvestorid[i++])}
                                     >
                                         Mark as finished
                                     </Button>

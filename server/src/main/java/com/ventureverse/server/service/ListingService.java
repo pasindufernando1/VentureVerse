@@ -126,14 +126,15 @@ public class ListingService {
         return investor_interestedListingRepository.findByListingId(id);
     }
 
-    public ResponseDTO updateDate(Integer id, InvestorInterestedListingDTO i) {
+    public ResponseDTO updateDate(Integer id,Integer investorid, InvestorInterestedListingDTO i) {
         ListingDTO listingDTO = new ListingDTO();
         listingDTO.setListingId(id);
 
-        Optional<InvestorInterestedListingDTO> listing = investor_interestedListingRepository.findByListing(listingDTO);
+        Optional<InvestorInterestedListingDTO> listing = investor_interestedListingRepository.findByInvestorIdAndListingId2(investorid,id);
         if (listing.isPresent()) {
             InvestorInterestedListingDTO oldListing = listing.get();
             oldListing.setFinalizedDate(i.getFinalizedDate());
+            oldListing.setStatus("Finalized");
             investor_interestedListingRepository.save(oldListing);
             return GlobalService.response("Success", "Listing updated successfully");
         } else {
