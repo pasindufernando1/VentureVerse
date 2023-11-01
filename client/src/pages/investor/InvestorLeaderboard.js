@@ -33,9 +33,6 @@ const InvestorLeaderboard = () => {
 
 
 
-    if (!filteredList[0]) {
-            return null; // or a loading indicator
-     }
 
      
     
@@ -149,10 +146,9 @@ const InvestorLeaderboard = () => {
                         
                     </tr>
                     </thead>
+                    
                     <tbody>
                       {firstArrayOfObjects.map((user, key=user.id) => (
-
-
                         
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
@@ -164,12 +160,14 @@ const InvestorLeaderboard = () => {
                                 </span>
                             </div>
                         </td>
-                        
+                        <Link to={`/investor/Investor-Profile-View/${user.id}`}>
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white justify-left">
+                           
                             <img className="w-8 h-8 rounded-full"
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                                 alt="Jese"/>
+                            
                            <div className="pl-2">
                             {user.lastname == null ? (
                                 <div className="text-[15px] font-semibold">{user.firstName}</div>
@@ -178,20 +176,22 @@ const InvestorLeaderboard = () => {
                             )}
                             <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
                         </div>
-
+                       
 
                         </th>
-                       
+                        </Link>
                         <td>
                             <div className="px-48	 py-3">
                            
-                                <Rating value={getstarvalue(user.id)}  edit={false}/>
+                                <Rating value={getstarvalue(user.id)} readonly={true}  edit={false}/>
                             </div>
                         </td>
                         
-                        </tr>  
+                        </tr> 
+                       
                         ))}
                     </tbody>
+                    
                 </table>
             </div>
             </main> 
