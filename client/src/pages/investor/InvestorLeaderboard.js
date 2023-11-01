@@ -33,9 +33,6 @@ const InvestorLeaderboard = () => {
 
 
 
-    if (!filteredList[0]) {
-            return null; // or a loading indicator
-     }
 
      
     

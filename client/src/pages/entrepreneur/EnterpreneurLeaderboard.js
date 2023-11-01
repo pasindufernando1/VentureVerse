@@ -4,47 +4,86 @@ import axios from '../../api/axios';
 import { Rating } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+import { interactionSettingsStore } from "@fullcalendar/core/internal";
 
 
 const EnterpreneurLeaderboard = () => {
     const { get,put} = useAxiosMethods();
     const [rated, setRated] = React.useState(4);
-
+    const [firstArrayOfObjects, setfirstArrayOfObjects] =useState([]);
     const [response, setResponse] = useState(['']);
     const [filteredList, setFilteredList] =useState([]);
+    const {auth}=useAuth();
 
     useEffect(() => {
-        get("auth/EntrepreneurLeaderboard", setResponse);
-        get("auth/EntrepreneurLeaderboard", setFilteredList);
+        get(`auth/GivingStarRatingBoth/${auth.id}`, setResponse);
+        get(`auth/GivingStarRatingBoth/${auth.id}`, setFilteredList);
     }, []);
+
+    useEffect(() => {
+        if (filteredList.length > 0) {
+          setfirstArrayOfObjects(filteredList[0]);
+        }
+      }, [filteredList]);
 
 
 
     console.log(response);
 
+
     const filterBySearch = (event) => {
         const query = event.target.value; // Convert query to lowercase
         console.log(query);
         if(query === ''){
+            console.log("hi");
             setFilteredList(response);
+            setfirstArrayOfObjects(response[0]);
         }
 
         else{
         var updatedList = [...response];
-
-        updatedList = response.filter((user) => {
-            const firstName = `${user[3]}${user[4]}`.toLowerCase();
+        
+        updatedList = response[0].filter((user) => {
+            const firstName = `${user.firstname}${user.lastname}`.toLowerCase();
             const queryLowerCase = query.toLowerCase();
-
+            
+        
+        
           return firstName.includes(queryLowerCase);
 
         }); 
-        // Trigger render with updated values
-        setFilteredList(updatedList);
+         setfirstArrayOfObjects(updatedList);
+         
+        
         }
       };
 
+      const findIndex = (id) =>{
+        for (let i = 0; i < response[0].length; i++) {
+            const user = response[0][i];
+            if (user.id === id) {
+              return i+1; // Return the index where the ID matches
+            }
+          }
+          return -1; // Return -1 if ID is not found in the response
+        }
 
+
+        
+
+        const getstarvalue = (id) =>{
+            for (let i = 0; i < response[0].length; i++) {
+                const user = response[0][i];
+                if (user.id === id) {
+                   var star= Math.round(5/response[1][0]* response[1][i]);
+                   
+                  return star; // Return the index where the ID matches
+
+                }
+              }
+              return -1; // Return -1 if ID is not found in the response
+            }   
    
     return(
         <div className="">
@@ -95,30 +134,42 @@ const EnterpreneurLeaderboard = () => {
                     </thead>
                     
                     <tbody>
-                        {filteredList.map((user, key=user[0]) => (
+                      {firstArrayOfObjects.map((user, key=user.id) => (
+
+
+                        
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+
+                             <td className="px-12 py-3 text-sm justify-end">
+                            <div className="flex items-center justify-center">
+
+                                <span className="text-[15px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    {findIndex(user.id)}
+                                </span>
+                            </div>
+                        </td>
                         
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white justify-left">
                             <img className="w-8 h-8 rounded-full"
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
                                 alt="Jese"/>
-                            <div className="pl-2">
-                                <div className="text-[15px] font-semibold">{user[3]} {user[4]}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400">{user[5]}</div>
-                            </div>
-                        </th>
-                        <td className="px-12 py-3 text-sm justify-end">
-                            <div className="flex items-center justify-center">
+                           <div className="pl-2">
+                            {user.lastname == null ? (
+                                <div className="text-[15px] font-semibold">{user.firstName}</div>
+                            ) : (
+                                <div className="text-[15px] font-semibold">{user.firstname} {user.lastname}</div>
+                            )}
+                            <div className="text-[13px] text-gray-500 dark:text-gray-400">{user.email}</div>
+                        </div>
 
-                                <span className="text-gray-700 dark:text-gray-400">
-                                    {user[2]}
-                                </span>
-                            </div>
-                        </td>
+
+                        </th>
+                       
                         <td>
                             <div className="px-48	 py-3">
-                                <Rating value={1} onChange={(value) => setRated(value)}/>
+                           
+                                <Rating value={getstarvalue(user.id)}  edit={false}/>
                             </div>
                         </td>
                         

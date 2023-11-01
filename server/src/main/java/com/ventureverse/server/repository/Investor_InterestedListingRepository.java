@@ -48,4 +48,10 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE e.id.investorId = :enterpriseInvestor
     """)
     Date getLastDate1(EnterpriseInvestorDTO enterpriseInvestor);
+    @Query("""
+            SELECT e
+            FROM InvestorInterestedListingDTO e
+            WHERE e.id.listingId =:id
+    """)
+    List<InvestorInterestedListingDTO> findAllByListingId(ListingDTO id);
 }
