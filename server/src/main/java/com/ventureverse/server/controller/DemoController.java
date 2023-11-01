@@ -140,6 +140,8 @@ public class DemoController {
     )
     {
         List Both = demoService.LeaderboardBothService(id);
+System.out.println(Both);
+
 
         // return ResponseEntity.ok("  done successfully");
         return Both;
