@@ -99,6 +99,8 @@ const DashBoard = () => {
         get(`/entrepreneurs/getEntrepreneurPic/${userid}`, setuserpic);
     }, [usercomplains]);
 
+    console.log(userpic);
+
     // Function to open the popup
     const openPopup = (complain) => {
         setSelectedComplain(complain);

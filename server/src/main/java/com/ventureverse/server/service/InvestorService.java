@@ -339,7 +339,6 @@ public class InvestorService {
         return userMap;
     }
 
-
     public List<Map<String, String>> getProjects(Integer id) {
         List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAllByInvestorId(id);
         List<Map<String, String>> userMap = new ArrayList<>();
