@@ -88,6 +88,13 @@ public class InvestorController {
         return ResponseEntity.ok(enterpriseInvestor);
 
     }
+    @PutMapping("/IndividualInvestor/ban/{id}")
+    public ResponseEntity<IndividualInvestorDTO> banIndividualInvestor(@PathVariable Integer id) {
+        IndividualInvestorDTO individualInvestor = investorService.banIndividualInvestor(id);
+        System.out.println(individualInvestor);
+        return ResponseEntity.ok(individualInvestor);
+
+    }
 
 
 }

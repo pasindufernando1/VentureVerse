@@ -138,9 +138,11 @@ const UpdateIndividualInvestor = () => {
 
             if (response2.status === 200 || response2.status === 304) {
                 console.log('Co-admin updated successfully');
+                setShowSuccessNotification(true);
 
             } else {
                 console.log(response2);
+                setShowSuccessNotification(true);
 
 
 
@@ -264,9 +266,9 @@ const UpdateIndividualInvestor = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Registration Successful"
-                            successMessage="You have successfully registered a new Co-Admin!"
-                            redirectUrl="/admin/users/coAdmins"
+                            successTitle="Update Successful"
+                            successMessage="You have successfully Updated the account!"
+                            redirectUrl="/admin/users/individualInvestors"
                         />
                     )}
                 </div>

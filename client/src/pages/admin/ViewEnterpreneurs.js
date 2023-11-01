@@ -3,6 +3,7 @@ import {Header} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import {json, Link } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 
 
@@ -18,14 +19,49 @@ const ViewEntrepreneurs = () => {
         console.log(response);
 
     }, []);
-    const handleBan = () => {
-        put(`/entrepreneurs/ban/${response[0].id}`,"" , true);
-        if(response.status == 200){
-            alert("ok");
-        }
-        else{
-            alert("not ok");
-        }
+    const handleBan = () => {const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success',
+            cancelButton: 'btn btn-danger'
+        },
+        buttonsStyling: false
+    })
+
+        swalWithBootstrapButtons.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'No, cancel!',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                put(`/entrepreneurs/ban/${response[0].id}`,"" , true);
+                console.log("wade wuna");
+                swalWithBootstrapButtons.fire(
+                    'Deleted!',
+                    'Your file has been deleted.',
+                    'success'
+                )
+            } else if (
+                /* Read more about handling dismissals below */
+                result.dismiss === Swal.DismissReason.cancel
+            ) {
+                swalWithBootstrapButtons.fire(
+                    'Cancelled',
+                    'Your imaginary file is safe :)',
+                    'error'
+                )
+            }
+        })
+
+        // if(response.status == 200){
+        //     alert("ok");
+        // }
+        // else{
+        //     alert("not ok");
+        // }
 
     }
 
@@ -173,15 +209,7 @@ const ViewEntrepreneurs = () => {
                             </svg>
                             Ban
                         </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-[15px] rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Delete
-                        </button>
+
                         </td>
                         </tr>  
                         ))}

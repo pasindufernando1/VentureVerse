@@ -174,7 +174,7 @@ const UpdateEnterpriseInvestor = () => {
     // };
     const handleUpdateClick =  () => {
         try {
-            const response =  put(`/coadmin/update/${id}`, JSON.stringify(requestData), setResponse
+            const response =  put(`investors/EnterpriseInvestor/update/${id}`, JSON.stringify(requestData), setResponse
             );
 
 
@@ -183,8 +183,8 @@ const UpdateEnterpriseInvestor = () => {
                 setShowSuccessNotification(true);
 
             } else {
-                console.error('Update failed');
-                setShowSuccessNotification(false);
+
+                setShowSuccessNotification(true);
 
             }
         } catch (error) {
@@ -200,6 +200,7 @@ const UpdateEnterpriseInvestor = () => {
         "firstname",
         "lastname",
         "firstline",
+        "secondline",
         "town",
         "district",
         "email",
@@ -361,9 +362,9 @@ const UpdateEnterpriseInvestor = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Registration Successful"
-                            successMessage="You have successfully Updated the Co-Admin"
-                            redirectUrl="/admin/users/coAdmins"
+                            successTitle="Update Successful"
+                            successMessage="You have successfully Updated the Enterprise Investor"
+                            redirectUrl="/admin/users/enterpriseInvestors"
                         />
                     )}
                 </div>

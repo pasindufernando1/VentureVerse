@@ -63,7 +63,7 @@ import java.util.Optional;
             if (existingUserOptional.isPresent()) {
                 UserDTO existingUser = existingUserOptional.get();
 
-                existingUser.setApprovalStatus(Status.BANNED);
+                existingUser.setApprovalStatus(Status.PENDING);
 
                 // Update other fields as needed...
 

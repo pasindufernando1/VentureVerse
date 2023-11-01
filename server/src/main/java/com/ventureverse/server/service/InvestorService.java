@@ -98,12 +98,34 @@ public class InvestorService {
             existingEnterpriseInvestor.setEmail(updatedEnterpriseInvestor.getEmail());
             existingEnterpriseInvestor.setContactNumber(updatedEnterpriseInvestor.getContactNumber());
             existingEnterpriseInvestor.setBusinessName(updatedEnterpriseInvestor.getBusinessName());
+            existingEnterpriseInvestor.setFirstLineAddress(updatedEnterpriseInvestor.getFirstLineAddress());
+            existingEnterpriseInvestor.setSecondLineAddress(updatedEnterpriseInvestor.getSecondLineAddress());
+            existingEnterpriseInvestor.setTown(updatedEnterpriseInvestor.getTown());
+
+            enterpriseInvestorRepository.save(existingEnterpriseInvestor);
+            return existingEnterpriseInvestor;
 
         }
-        if(existingEnterpriseInvestor != null) {
-            return enterpriseInvestorRepository.save(existingEnterpriseInvestor);
-        }
+
+
         else{
+            return null;
+        }
+    }
+
+    public IndividualInvestorDTO banIndividualInvestor(Integer id) {
+        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
+
+        if (existingIndividualInvestorOptional.isPresent()) {
+            IndividualInvestorDTO existingIndividualInvestor = existingIndividualInvestorOptional.get();
+
+            existingIndividualInvestor.setApprovalStatus(Status.PENDING);
+
+            // Update other fields as needed...
+
+            // Save the updated co-admin entity back to the database
+            return individualInvestorRepository.save(existingIndividualInvestor);
+        } else {
             return null;
         }
     }
