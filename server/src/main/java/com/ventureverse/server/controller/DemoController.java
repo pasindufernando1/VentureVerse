@@ -146,6 +146,16 @@ public class DemoController {
 
     }
 
+    @GetMapping("/GetInformation/{id}")
+    public  DetailsDTO GetInformation(
+            @PathVariable  Integer id
+    ){
+
+        DetailsDTO information = demoService.GetInformation(id);
+
+        return information;
+    }
+
 
 
 

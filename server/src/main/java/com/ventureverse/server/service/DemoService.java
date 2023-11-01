@@ -643,6 +643,47 @@ if(Successful_Business_Building_Attempts >5){
         return null;
     }
 
+    public DetailsDTO  GetInformation(Integer id) {
+        UserDTO user =  userRepository.getById(id);
+
+        if(user.getRole().equals(Role.ENTREPRENEUR)){
+            EntrepreneurDTO Entrepreneur = entrepreneurRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(Entrepreneur.getFirstname())
+                    .lastname(Entrepreneur.getLastname())
+                    .bfirstLineAddress(Entrepreneur.getBfirstLineAddress())
+                    .bsecondLineAddress(Entrepreneur.getBsecondLineAddress())
+                    .btown(Entrepreneur.getBtown())
+                    .bdistrict(Entrepreneur.getBdistrict())
+                    .gender(Entrepreneur.getGender())
+                    .contactNumber(Entrepreneur.getContactNumber())
+                    .email(Entrepreneur.getBusinessEmail())
+                    .build();
+
+        } else if(user.getRole().equals(Role.INDIVIDUAL_INVESTOR)){
+            IndividualInvestorDTO INDIVIDUAL_INVESTOR = individualInvestorRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(INDIVIDUAL_INVESTOR.getFirstname())
+                    .lastname(INDIVIDUAL_INVESTOR.getLastname())
+                    .gender(INDIVIDUAL_INVESTOR.getGender())
+
+                    .build();
+
+        }
+        else{
+            EnterpriseInvestorDTO EnterpriseInvestor = enterpriseInvestorRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(EnterpriseInvestor.getBusinessName())
+                    .build();
+        }
+
+
+
+    }
+
 //    public EntreprenenrStarRatingDTO GivingStarRating(EntreprenenrStarRatingDTO starRating) {
 //        EntrepreneurDTO entId= starRating.getId().getEntrepreneurId();
 //        UserDTO userID = starRating.getId().getId();

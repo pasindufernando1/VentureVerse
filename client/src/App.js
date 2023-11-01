@@ -32,6 +32,7 @@ import Schedule from "./pages/entrepreneur/Schedule";
 import Conference from "./pages/videoconference/Conference";
 import EntrepreneurLeaderboard from "./pages/entrepreneur/EnterpreneurLeaderboard";
 import EntrepreneurFinalizeListing from "./pages/entrepreneur/FinalizeListing";
+import EntrepreneurProfileView from "./pages/entrepreneur/EntrepreneurProfileView";
 
 
 // Investor Pages
@@ -46,6 +47,8 @@ import InvestorFinalizeListing from "./pages/investor/FinalizeListingInvestor";
 import AnalyticsInvestor from "./pages/investor/Analytics";
 import ProfitReport from "./pages/investor/ProfitReport";
 import SectorReport from "./pages/investor/SectorReport";
+import InvestorProfileView from "./pages/investor/InvestorProfileView";
+
 
 
 // Admin Pages
@@ -132,7 +135,9 @@ function App() {
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
                         <Route path="/investor/sector/reports" element={<SectorReport />} />
-                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />                   
+                        <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />
+                        <Route path="/investor/Investor-Profile-View/:id" element={<InvestorProfileView />} />   
+
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}
@@ -145,7 +150,8 @@ function App() {
                         <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
                         <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
-                        <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
+                        <Route path="/entrepreneur/finalize-listing/" element={<EntrepreneurFinalizeListing />} />      
+                        <Route path="/entrepreneur/entrepreneur-Profile-View/:id" element={<EntrepreneurProfileView />} />    
                     </Route>
                 </Route>
                 {/*404*/}

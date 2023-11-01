@@ -148,7 +148,7 @@ const EnterpreneurLeaderboard = () => {
                                 </span>
                             </div>
                         </td>
-                        
+                        <Link to={`/entrepreneur/entrepreneur-Profile-View/${user.id}`}>
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white justify-left">
                             <img className="w-8 h-8 rounded-full"
@@ -165,7 +165,7 @@ const EnterpreneurLeaderboard = () => {
 
 
                         </th>
-                       
+                        </Link>
                         <td>
                             <div className="px-48	 py-3">
                            
