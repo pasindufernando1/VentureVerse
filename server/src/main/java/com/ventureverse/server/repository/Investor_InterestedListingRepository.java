@@ -117,7 +117,7 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             FROM InvestorInterestedListingDTO i\s
             WHERE i.status='Investor_Finalized'
             AND i.id.listingId.listingId = :id
-            AND i.entrepreneurProofDocument IS NOT NULL
+            AND i.entrepreneurProofDocument IS NULL
             """)
     List<InvestorInterestedListingDTO> findByEntreprenuerListingId(Integer id);
 
