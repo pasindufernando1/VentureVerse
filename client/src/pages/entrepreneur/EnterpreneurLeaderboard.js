@@ -169,7 +169,7 @@ const EnterpreneurLeaderboard = () => {
                         <td>
                             <div className="px-48	 py-3">
                            
-                                <Rating value={getstarvalue(user.id)}  edit={false}/>
+                                <Rating value={getstarvalue(user.id)}   readonly={true}  edit={false}/>
                             </div>
                         </td>
                         

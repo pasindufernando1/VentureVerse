@@ -148,9 +148,7 @@ const InvestorLeaderboard = () => {
                     </thead>
                     <tbody>
                       {firstArrayOfObjects.map((user, key=user.id) => (
-
-
-                        
+  
                         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
 
                              <td className="px-12 py-3 text-sm justify-end">
@@ -182,7 +180,7 @@ const InvestorLeaderboard = () => {
                         <td>
                             <div className="px-48	 py-3">
                            
-                                <Rating value={getstarvalue(user.id)}  edit={false}/>
+                                <Rating value={getstarvalue(user.id)} readonly={true}  edit={false}/>
                             </div>
                         </td>
                         
