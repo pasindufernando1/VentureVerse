@@ -99,7 +99,6 @@ public class InvestorService {
                 userMap.add(user);
             }
         }
-        System.out.println("userMap: " + userMap);
         return userMap;
     }
 
@@ -273,6 +272,7 @@ public class InvestorService {
             );
             userMap.add(user);
         }
+        System.out.println(userMap);
         return userMap;
     }
 
