@@ -235,41 +235,11 @@ public class DemoService {
            Integer array_count=0;
                 System.out.println("ENTREPRENEUR");
 
-
-
-//
-//           If (Sales Performance > Z) then
-//           Score += 6
-//
-//           If (Average Customer Review > 4.0) then
-//           Score += 5
-//
-
-
-//
-//
-//
-//
-
-
-//
-//           If (Pitch Motivation > S) then
-//           Score += 1
-//
-//           If (Unique Selling Proposition == Notable) then
-//           Score += 3
-//
-//           If (Circumstances of Business Conception > T) then
-//           Score += 2
-//
-//           If (Overcame Major Hurdles == Yes) then
-//           Score += 2
-//
-//           If (Organization or Club Affiliation == True) then
-//           Score += 1
-
-
-
+           Double Total_Total_Sale_Projections_This_Year = 0.0;
+           Double Total_Total_Sale_Projections_Next_Year = 0.0;
+           Double Total_Net_Income_Last_Year= 0.0;
+           Double Total_Gross_Income_Last_Year =0.0;
+           Double Total_Total_Lifetime_Sales =0.0;
 
 
            List<EntrepreneurDTO> allEntrepreneur = entrepreneurRepository.findAll();
@@ -283,6 +253,10 @@ public class DemoService {
                Double  Net_Income_Last_Year= 0.0;
                Double Gross_Income_Last_Year =0.0;
                Double Total_Lifetime_Sales =0.0;
+
+
+
+
                Integer Score=0;
                Double Total_Funding_Raised=0.0;
                Double Project_Success_Rate=0.0;
@@ -297,19 +271,38 @@ public class DemoService {
 
 
                for(ListingDTO ListOneDTO : EnterLists){
+                   if(ListOneDTO.getSalesProjectionThisYear()!=null){
+                       Total_Sale_Projections_This_Year = Total_Sale_Projections_This_Year + ListOneDTO.getSalesProjectionThisYear();
+                       Total_Total_Sale_Projections_This_Year=Total_Total_Sale_Projections_This_Year+Total_Sale_Projections_This_Year;
+                   }
+                   if(ListOneDTO.getSalesProjectionNextYear()!=null){
+                       Total_Sale_Projections_Next_Year = Total_Sale_Projections_Next_Year + ListOneDTO.getSalesProjectionNextYear();
+                       Total_Total_Sale_Projections_Next_Year= Total_Total_Sale_Projections_Next_Year +  Total_Sale_Projections_Next_Year;
+                   }
+                   if(ListOneDTO.getLastYearNetIncome()!=null){
+                       Net_Income_Last_Year = Net_Income_Last_Year + ListOneDTO.getLastYearNetIncome();
+                       Total_Net_Income_Last_Year=Total_Net_Income_Last_Year+Net_Income_Last_Year;
+                   }
+                   if(ListOneDTO.getLastYearGrossIncome()!=null){
+                       Gross_Income_Last_Year = Gross_Income_Last_Year + ListOneDTO.getLastYearGrossIncome();
+                       Total_Gross_Income_Last_Year=Total_Gross_Income_Last_Year+Gross_Income_Last_Year;
+                   }
+                   if(ListOneDTO.getLifetimeSales()!=null){
+                       Total_Lifetime_Sales=  Total_Lifetime_Sales + ListOneDTO.getLifetimeSales();
+                       Total_Total_Lifetime_Sales=Total_Total_Lifetime_Sales+Total_Lifetime_Sales;
+                   }
+                   if(ListOneDTO.getAttemptsToGrow()!=null){
+                       Successful_Business_Building_Attempts = Successful_Business_Building_Attempts + Integer.parseInt(ListOneDTO.getAttemptsToGrow());
 
-                   Total_Sale_Projections_This_Year = Total_Sale_Projections_This_Year + ListOneDTO.getSalesProjectionThisYear();
+                   }
 
-                   Total_Sale_Projections_Next_Year = Total_Sale_Projections_Next_Year + ListOneDTO.getSalesProjectionNextYear();
 
-                   Net_Income_Last_Year = Net_Income_Last_Year + ListOneDTO.getLastYearNetIncome();
 
-                   Gross_Income_Last_Year = Gross_Income_Last_Year + ListOneDTO.getLastYearGrossIncome();
 
-                   Total_Lifetime_Sales=  Total_Lifetime_Sales + ListOneDTO.getLifetimeSales();
 
-                   Successful_Business_Building_Attempts = Successful_Business_Building_Attempts + Integer.parseInt(ListOneDTO.getAttemptsToGrow());
-//           If (Raised Money from Outside Sources == Yes) then
+
+
+                  //           If (Raised Money from Outside Sources == Yes) then
 //           Score += 2
                   if(ListOneDTO.getOutsideSources()=="Yes"){
                         if(flag==0){
@@ -321,8 +314,8 @@ public class DemoService {
 
 //                   If (Received Awards or Accolades == True) then
 //                   Score += 2
-                   if (Integer.parseInt(ListOneDTO.getAwards()) > 0) {
-                       Score = Score + 4;
+                   if (ListOneDTO.getAwards() != null && Integer.parseInt(ListOneDTO.getAwards()) > 0) {
+                       Score += 4;
                    }
 
                    //Scores equals to
@@ -330,65 +323,61 @@ public class DemoService {
 //           Score += 10
 
 
+                    if(ListOneDTO.getExpectedAmount()!=null){
+                        FUll_Total_NEED_AMOUNT=FUll_Total_NEED_AMOUNT+ ListOneDTO.getExpectedAmount();
 
-                   FUll_Total_NEED_AMOUNT=FUll_Total_NEED_AMOUNT+ ListOneDTO.getExpectedAmount();
+                    }
 
-                   List<InvestorInterestedListingDTO> InterestedListing = listingRepository.findAllByListingId(ListOneDTO);
-                   for(InvestorInterestedListingDTO ListInterestedDTO : InterestedListing) {
-
-                       Total_Funding_Raised = Total_Funding_Raised + ListInterestedDTO.getAmountFinalized();
+                   List<InvestorInterestedListingDTO> interestedListing = investorInterestedListingRepository.findAllByListingId(ListOneDTO);
+                   for (InvestorInterestedListingDTO listInterestedDTO : interestedListing) {
+                       if (listInterestedDTO.getAmountFinalized() != null) {
+                           Total_Funding_Raised += listInterestedDTO.getAmountFinalized();
+                       }
                    }
 
  //           If (Project Success Rate > Y%) then
 //           Score += 8
 
-                   if(Total_Funding_Raised/FUll_Total_NEED_AMOUNT*100>50){
+                   if(Total_Funding_Raised/FUll_Total_NEED_AMOUNT*100>50 && FUll_Total_NEED_AMOUNT!=0){
                        Score=Score+8;
                    }
 
-//
-//           If (Sales Performance > Z) then
-//           Score += 6
 
-//           If (Business Longevity > A years) then
-//           Score += 3
-//
-
-                   if(ListOneDTO.getBusinessDuration()>3){
-                       Score += 3;
-                   }
 
                }
 
 //If (Sale Projections for This Year > P) then
 // Score += 3
-if(Total_Sale_Projections_This_Year > 0){
+
+if( Total_Sale_Projections_This_Year/Total_Total_Sale_Projections_This_Year*100 >30 && Total_Total_Sale_Projections_This_Year!=0 ){
     Score +=3;
 }
 //If (Sale Projections for Next Year > Q) then
 //           Score += 3
-if(Total_Sale_Projections_Next_Year > 0){
+
+if(Total_Sale_Projections_Next_Year/Total_Total_Sale_Projections_Next_Year*100 > 30 && Total_Total_Sale_Projections_Next_Year>0){
                    Score +=3;
 }
 //           If (Net Income Last Year > N) then
-//           Score += 2
-if(Net_Income_Last_Year > 0){
+//         Score += 2
+
+if(Net_Income_Last_Year > 1000000){
                    Score +=3;
 }
 //           If (Gross Income Last Year > M) then
 //           Score += 2
-if(Gross_Income_Last_Year > 0){
+if(Gross_Income_Last_Year > 1000000){
                    Score +=3;
 }
 //           If (Total Lifetime Sales > W) then
 //           Score += 4
- if(Total_Lifetime_Sales > 0){
+ if(Total_Lifetime_Sales > 20){
                    Score +=3;
 }
 //
 //           If (Successful Business Building Attempts > R) then
 //           Score += 3
-if(Successful_Business_Building_Attempts >0){
+if(Successful_Business_Building_Attempts >5){
     Score += 3;
 }
 
@@ -447,9 +436,7 @@ if(Successful_Business_Building_Attempts >0){
 
 
 
-//
-//        If (Average Project Review > 4.0) then
-//        Score += 4
+
 
 
 
@@ -507,24 +494,8 @@ if(Successful_Business_Building_Attempts >0){
 //        Score += 6
                    Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId(individualInvestor);
                    Score = Score + TypeCount;
-//
-//        If (Long-Term Commitment > E years) then
-//        Score += 3
-//                   Date lastUpdateDate1 = investorInterestedListingRepository.getLastDate(individualInvestor);
-//                   if (lastUpdateDate1 != null) {
-//                       // Calculate the difference in years between lastUpdateDate and the current date
-//                       Calendar lastUpdateCalendar = Calendar.getInstance();
-//                       lastUpdateCalendar.setTime(lastUpdateDate1);
-//                       Calendar currentCalendar = Calendar.getInstance();
-//
-//                       // Calculate the difference in years
-//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
-//
-//                       // Check if the experience is less than 4 years (greater than 3 years)
-//                       if (yearsDifference > 3) {
-//                           Score = Score + 3;
-//                       }
-//                   }
+
+
 
 
 
@@ -604,24 +575,7 @@ if(Successful_Business_Building_Attempts >0){
                    Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId1(enterpriseInvestor);
                    Score = Score + TypeCount;
 //
-//        If (Long-Term Commitment > E years) then
-//        Score += 3
 
-                 // Date lastUpdateDate = userRepository.getRegisteredDate(enterpriseInvestor);
-//                   if (lastUpdateDate != null) {
-//                       // Calculate the difference in years between lastUpdateDate and the current date
-//                       Calendar lastUpdateCalendar = Calendar.getInstance();
-//                       lastUpdateCalendar.setTime(lastUpdateDate);
-//                       Calendar currentCalendar = Calendar.getInstance();
-//
-//                       // Calculate the difference in years
-//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
-//
-//                       // Check if the experience is less than 4 years (greater than 3 years)
-//                       if (yearsDifference > 3) {
-//                           Score = Score + 3;
-//                       }
-//                   }
 
 
 
@@ -638,11 +592,6 @@ if(Successful_Business_Building_Attempts >0){
                    array1.add(Score);
                    array2.add(enterpriseInvestor);
                    array_count =array_count +1;
-
-
-
-
-
 
 
 
@@ -692,6 +641,47 @@ if(Successful_Business_Building_Attempts >0){
 
        }
         return null;
+    }
+
+    public DetailsDTO  GetInformation(Integer id) {
+        UserDTO user =  userRepository.getById(id);
+
+        if(user.getRole().equals(Role.ENTREPRENEUR)){
+            EntrepreneurDTO Entrepreneur = entrepreneurRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(Entrepreneur.getFirstname())
+                    .lastname(Entrepreneur.getLastname())
+                    .bfirstLineAddress(Entrepreneur.getBfirstLineAddress())
+                    .bsecondLineAddress(Entrepreneur.getBsecondLineAddress())
+                    .btown(Entrepreneur.getBtown())
+                    .bdistrict(Entrepreneur.getBdistrict())
+                    .gender(Entrepreneur.getGender())
+                    .contactNumber(Entrepreneur.getContactNumber())
+                    .email(Entrepreneur.getBusinessEmail())
+                    .build();
+
+        } else if(user.getRole().equals(Role.INDIVIDUAL_INVESTOR)){
+            IndividualInvestorDTO INDIVIDUAL_INVESTOR = individualInvestorRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(INDIVIDUAL_INVESTOR.getFirstname())
+                    .lastname(INDIVIDUAL_INVESTOR.getLastname())
+                    .gender(INDIVIDUAL_INVESTOR.getGender())
+
+                    .build();
+
+        }
+        else{
+            EnterpriseInvestorDTO EnterpriseInvestor = enterpriseInvestorRepository.getReferenceById(id);
+
+            return DetailsDTO.builder()
+                    .firstname(EnterpriseInvestor.getBusinessName())
+                    .build();
+        }
+
+
+
     }
 
 //    public EntreprenenrStarRatingDTO GivingStarRating(EntreprenenrStarRatingDTO starRating) {
