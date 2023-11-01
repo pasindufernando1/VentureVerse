@@ -33,6 +33,8 @@ const ViewCoAdmin = (props) => {
 
     }
 
+    //Convert response to an array
+
     return(
         <div>
         <Header active="Co-Admins">
@@ -81,11 +83,11 @@ const ViewCoAdmin = (props) => {
                     </div>
                     <div>
                         {/* display button only if userrole is admin */}
-                        {userrole === 'ADMIN' && (
+
                             <Button>
                                 <Link to="/admin/add-co-admin">Add New Co Admin</Link>
                             </Button>
-                        )}
+
                     </div>
                 </div>
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">
