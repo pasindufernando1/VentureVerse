@@ -13,13 +13,6 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<UserDTO, Integer> {
 
     @Query("""
-        SELECT u.salt
-        FROM UserDTO u
-        WHERE u.email = :email
-    """)
-    Optional<String> findSaltByEmail(String email);
-
-    @Query("""
         SELECT u.approvalStatus
         FROM UserDTO u
         WHERE u.id = :id

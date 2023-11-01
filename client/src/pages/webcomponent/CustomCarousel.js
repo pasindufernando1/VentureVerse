@@ -5,7 +5,7 @@ const CustomCarousel = (props) => {
     const {children, navigationActive="main-purple", navigationInactive="light-purple", ...rest} = props;
     return (
         <Carousel
-            // autoplay={true}
+            autoplay={true}
             autoplayspeed={5000}
             loop={true}
             className="rounded-xl overflow-hidden"

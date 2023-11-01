@@ -5,6 +5,8 @@ import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.ComplainDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.UserDTO;
+import com.ventureverse.server.exception.CustomErrorException;
+import com.ventureverse.server.model.entity.ChatDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,7 @@ public class UserService {
     private final IndividualInvestorRepository individualInvestorRepository;
     private final AdminRepository adminRepository;
     private final ComplainRepository complainRepository;
+    private final ChatRepository chatRepository;
 
     public DetailsDTO getDetails(Integer id) {
 
@@ -170,4 +175,9 @@ public class UserService {
         return complainMap;
     }
 
+    public List<ChatDTO> getChats(Integer id) {
+
+        var user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User not found"));
+        return chatRepository.findBySenderReceiver(user);
+    }
 }

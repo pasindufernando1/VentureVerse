@@ -7,6 +7,7 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 import {faFacebook, faInstagram, faTwitter} from "@fortawesome/free-brands-svg-icons";
+import {Link} from "react-router-dom";
 
 const CustomFooter = () => {
 
@@ -16,11 +17,7 @@ const CustomFooter = () => {
             links: [
                 {
                     name: "About Us",
-                    link: "#",
-                },
-                {
-                    name: "Carrier",
-                    link: "#"
+                    link: "/About",
                 },
                 {
                     name: "We are hiring",
@@ -86,7 +83,7 @@ const CustomFooter = () => {
                                 </h4>
                                 <ul className="list-none w-auto">
                                     <li className={`font-[400] text-[0.875rem] leading-[1.5rem] tracking-[0.2px] text-light-purple hover:text-secondary cursor-pointer`}>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Join our community and keep in touch with the latest updates.
                                     </li>
                                 </ul>
                                 <div className="flex flex-row gap-[1.5rem]">
@@ -115,7 +112,8 @@ const CustomFooter = () => {
                                                     key={link.name}
                                                     className={`font-[700] text-[0.875rem] leading-[1.5rem] tracking-[0.2px] text-light-purple hover:text-secondary cursor-pointer`}
                                                 >
-                                                    {link.name}
+                                                    {link.link !== "#" && <Link to={link.link}>{link.name}</Link>}
+                                                    {link.link === "#" && <span>{link.name}</span>}
                                                 </li>
                                             ))}
                                         </ul>

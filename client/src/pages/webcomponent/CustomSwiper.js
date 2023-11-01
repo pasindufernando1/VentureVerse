@@ -12,13 +12,16 @@ import {faAngleLeft, faAngleRight} from "@fortawesome/free-solid-svg-icons";
 
 const CustomSwiper = (props) => {
 
+    const {initialSlide= 1} = props;
+
+
     return (
             <Swiper
                 effect={'coverflow'}
                 grabCursor={true}
                 centeredSlides={true}
                 slidesPerView={'auto'}
-                initialSlide={1}
+                initialSlide={initialSlide}
                 coverflowEffect={{
                     rotate: 0,
                     stretch: 0,
