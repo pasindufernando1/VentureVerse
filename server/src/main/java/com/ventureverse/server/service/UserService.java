@@ -37,6 +37,7 @@ public class UserService {
             return DetailsDTO.builder()
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
+                    .email(user.getEmail())
                     .build();
         } else if (userRepository.findRoleById(id).equals(Role.ENTERPRISE_INVESTOR)) {
 
@@ -52,6 +53,7 @@ public class UserService {
             return DetailsDTO.builder()
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
+                    .email(user.getEmail())
                     .build();
         } else {
             var user = adminRepository.findById(id).orElseThrow();
@@ -59,6 +61,7 @@ public class UserService {
             return DetailsDTO.builder()
                     .firstname(user.getFirstname())
                     .lastname(user.getLastname())
+                    .email(user.getEmail())
                     .build();
         }
     }

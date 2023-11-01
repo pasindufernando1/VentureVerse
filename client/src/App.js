@@ -47,6 +47,8 @@ import AnalyticsInvestor from "./pages/investor/Analytics";
 import ProfitReport from "./pages/investor/ProfitReport";
 import SectorReport from "./pages/investor/SectorReport";
 import ViewVideo from "./pages/investor/ViewVideo";
+import Schedules from "./pages/investor/Schedule";
+
 
 
 // Admin Pages
@@ -76,6 +78,7 @@ import UpdateEnterpreneur from "./pages/admin/UpdateEnterpreneur";
 import UpdateIndividualInvestor from "./pages/admin/UpdateIndividualInvestor";
 import UpdateEnterpriseInvestor from "./pages/admin/UpdateEnterpriseInvestor";
 
+
 function App() {
     return (
         <Routes>
@@ -93,6 +96,7 @@ function App() {
                 <Route path="/meeting/:id/:user/:time" element={<Conference />} />
                 <Route path="/comp" element={<Components />}/>
                 <Route path="/termsAndConditions" element={<TermsAndCondition/>}/>
+
 
                 {/*Protected Routes*/}
                 <Route element={<PersistLogin/>}>
@@ -133,7 +137,7 @@ function App() {
                         <Route path="/investor/view-listing" element={<ViewListing />} />
                         <Route path="/investor/view-listingFull/:id" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
-                        <Route path="/investor/schedules" element={<Schedule />} />
+                        <Route path="/investor/schedules" element={<Schedules />} />
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
@@ -144,6 +148,7 @@ function App() {
                         <Route path="/investor/sector/reports" element={<SectorReport />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />      
                         <Route path="/investor/view-video" element={<ViewVideo />} />             
+                        <Route path="//investor/schedules/:entrepreneur" element={<Schedules />} />         
                     </Route>
                     <Route element={<RequireAuth allowedRoles={["ENTREPRENEUR"]}/>}>
                         {/* Routes Authorized to Entrepreneurs */}

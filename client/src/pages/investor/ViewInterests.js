@@ -4,6 +4,19 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import useAuth from "../../hooks/useAuth";
+import {Link, NavLink} from "react-router-dom";
+import DatetimePicker from 'react-datetime-picker';
+import {
+    Popover,
+    PopoverHandler,
+    PopoverContent,
+    Typography,
+    List,
+    ListItem,
+    ListItemPrefix,
+} from "@material-tailwind/react";
+
+
 
 function ViewInterests() {
     const {get} = useAxiosMethods();
@@ -20,48 +33,6 @@ function ViewInterests() {
         get(`/investors/getcounters/${id}`,setCounter);
     }, []);
 
-    const registrationRequests = [];
-
-    response.forEach(element => {
-        let listingid1=element.id.listingId.listingId;
-        let investorInterested1 = element.id.listingId.entrepreneurId.firstname+" "+element.id.listingId.entrepreneurId.lastname;
-        let amountOffered1 = element.id.listingId.expectedAmount;
-        let equityExpected1 = element.id.listingId.returnEquityPercentage;
-        let profitPerUnitExpected1 = element.id.listingId.returnUnitProfitPercentage;
-
-        //push the results into the registrationRequests array
-        registrationRequests.push({
-            id: listingid1,
-            investorInterested: investorInterested1,
-            amountOffered: amountOffered1,
-            equityExpected: equityExpected1,
-            profitPerUnitExpected: profitPerUnitExpected1,
-            type:"Interested",
-            actions: "View"
-        })
-
-    });
-
-    counteroffers.forEach(element => {
-        let listingid1=element.listingId.listingId;
-        let investorInterested1 = element.entrepreneurId.firstname+" "+element.entrepreneurId.lastname;
-        let amountOffered1 = element.amount;
-        let equityExpected1 = element.returnEquityPercentage;
-        let profitPerUnitExpected1 = element.returnUnitProfitPercentage;
-
-        //push the results into the registrationRequests array
-        registrationRequests.push({
-            id: listingid1,
-            investorInterested: investorInterested1,
-            amountOffered: amountOffered1,
-            equityExpected: equityExpected1,
-            profitPerUnitExpected: profitPerUnitExpected1,
-            type:"Counter Offer",
-            actions: "View"
-        })
-    });
-
-
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
             '/meeting/01/investor/' + new Date().toISOString(),
@@ -72,6 +43,8 @@ function ViewInterests() {
             conferenceWindow.focus();
         }
     }
+
+
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
 
@@ -137,9 +110,25 @@ function ViewInterests() {
                                                 <div className="flex items-center space-x-4 text-sm">
                                                     <img src="/assets/images/chat.png" alt="View"
                                                          className="cursor-pointer"/>
+                                                    <Popover placement="bottom">
+                                                        <PopoverHandler>
+                                                            <img src="/assets/images/videocall.png" alt="View"/>
+                                                        </PopoverHandler>
+                                                        <PopoverContent className="w-72">
+                                                            <List className="p-0">
+                                                                <a href="#" className="text-initial">
+                                                                    <ListItem onClick={handleVideoCAll}>
+                                                                        Start meeting now
+                                                                    </ListItem>
+                                                                </a>
+                                                                    <ListItem >
+                                                                        <NavLink to={`/investor/schedules/${request.id}`} >Schedule meeting</NavLink>
+                                                                    </ListItem>
 
-                                                    <img src="/assets/images/videocall.png" alt="View"
-                                                         className="cursor-pointer" onClick={handleVideoCAll}/>
+                                                            </List>
+                                                        </PopoverContent>
+                                                    </Popover>
+
                                                 </div>
                                             </td>
                                             <td className="px-2 py-4">
@@ -178,4 +167,9 @@ function ViewInterests() {
     )
 }
 
-export default ViewInterests
+
+
+
+
+export default ViewInterests;
+

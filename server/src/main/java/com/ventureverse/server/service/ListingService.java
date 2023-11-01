@@ -344,4 +344,8 @@ public class ListingService {
             return GlobalService.response("Error", "Listing not found");
         }
     }
+    
+    public long countListings() {
+        return listingRepository.count();
+    }
 }

@@ -10,7 +10,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +27,32 @@ public class InvestorService {
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
     private final Investor_InterestedListingRepository investor_interestedListingRepository;
 
+
+
+
+    public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedInvestor, Integer id) {
+        Integer individualInvestorId = updatedInvestor.getId();
+
+        Optional<IndividualInvestorDTO> existingIndividualInvestoroptional = individualInvestorRepository.findById(id);
+
+        if (existingIndividualInvestoroptional.isPresent()) {
+            IndividualInvestorDTO existingIndividualInvestor = existingIndividualInvestoroptional.get();
+            // Update the existing individual investor fields with the values from updatedAdmin
+            existingIndividualInvestor.setFirstname(updatedInvestor.getFirstname());
+            existingIndividualInvestor.setLastname(updatedInvestor.getLastname());
+            existingIndividualInvestor.setFirstLineAddress(updatedInvestor.getFirstLineAddress());
+            existingIndividualInvestor.setSecondLineAddress(updatedInvestor.getSecondLineAddress());
+            existingIndividualInvestor.setTown(updatedInvestor.getTown());
+            existingIndividualInvestor.setDistrict(updatedInvestor.getDistrict());
+            existingIndividualInvestor.setContactNumber(updatedInvestor.getContactNumber());
+            //save to backend
+            return individualInvestorRepository.save(existingIndividualInvestor);
+        }else{
+            //return the existing individual investor
+            return individualInvestorRepository.save(updatedInvestor);
+        }
+    }
+
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
         return individualInvestorRepository.findByApprovalStatus(status);
     }
@@ -43,6 +68,15 @@ public class InvestorService {
             sectorNames.add(interestedSector.getId().getSectorId().getName());
         }
         return sectorNames;
+    }
+
+    public List<Integer> findInterestedSectorsId(Integer id) {
+        List<InvestorInterestedSectorDTO> interestedSectors= investorInterestedSectorRepository.findByInvestorId(id);
+        List<Integer> sectorIds = new ArrayList<>();
+        for (InvestorInterestedSectorDTO interestedSector : interestedSectors) {
+            sectorIds.add(interestedSector.getId().getSectorId().getSectorId());
+        }
+        return sectorIds;
     }
 
     public IndividualInvestorDTO getInvestorById(int i) {
@@ -374,4 +408,13 @@ public class InvestorService {
     public List<CounterProposalDTO> getCounters(Integer id) {
         return counterProposalRepository.findByInvestorId(id);
     }
+    public IndividualInvestorDTO save(IndividualInvestorDTO investor) {
+        return individualInvestorRepository.save(investor);
+    }
+
+   public long countIndividualInvestors (){
+        return individualInvestorRepository.count();
+   }
+
+
 }
