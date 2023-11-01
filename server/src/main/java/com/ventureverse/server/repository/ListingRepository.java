@@ -79,6 +79,13 @@ public interface ListingRepository extends JpaRepository<ListingDTO, Integer> {
     """)
     Long getCountById(EntrepreneurDTO id);
 
+    @Query("""
+            SELECT l 
+            FROM ListingDTO l 
+            WHERE l.entrepreneurId.id= :id
+            """)
+    List<ListingDTO> findByEntrepreneurId(Integer id);
+
 
     List<ListingDTO> findAllByEntrepreneurId(EntrepreneurDTO entrepreneurId);
 
