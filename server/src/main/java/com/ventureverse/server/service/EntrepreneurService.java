@@ -89,6 +89,69 @@ public class EntrepreneurService {
         }
     }
 
+    public List<Map<String, String>> getListings(Integer id) {
+        List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
+        List<CounterProposalDTO> counterProposals = counterProposalRepository.findByEntrepreneurId(id);
+        List<Map<String, String>> listingMap = new ArrayList<>();
+        for(InvestorInterestedListingDTO listing:listings) {
+            float equity=0;
+            float profit=0;
+            String investorName="";
+            if(listing.getReturnEquityPercentage()!=null){
+                equity=listing.getReturnEquityPercentage();
+            }
+            if(listing.getReturnUnitProfitPercentage()!=null){
+                profit=listing.getReturnUnitProfitPercentage();
+            }
+            Role userRole = listing.getId().getInvestorId().getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                investorName=individualInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getLastname();
+            }else {
+                investorName = enterpriseInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getBusinessName();
+            }
+            Map<String, String> user = Map.of(
+                    "id", listing.getId().getInvestorId().toString(),
+                    "Investor", investorName,
+                    "amount", listing.getId().getListingId().getExpectedAmount().toString(),
+                    "type","Interested",
+                    "equity",String.valueOf(equity),
+                    "profit",String.valueOf(profit),
+                    "date",listing.getInterestedDate().toString(),
+                    "title",listing.getId().getListingId().getTitle()
+            );
+            listingMap.add(user);
+        }
+        for(CounterProposalDTO proposal:counterProposals){
+            float equity=0;
+            float profit=0;
+            String investorName="";
+            if(proposal.getReturnEquityPercentage()!=null){
+                equity=proposal.getReturnEquityPercentage();
+            }
+            if(proposal.getReturnUnitProfitPercentage()!=null){
+                profit=proposal.getReturnUnitProfitPercentage();
+            }
+            Role userRole = proposal.getInvestorId().getRole();
+            if(userRole==Role.INDIVIDUAL_INVESTOR){
+                investorName=individualInvestorRepository.findById(proposal.getInvestorId().getId()).orElse(null).getFirstname()+" "+individualInvestorRepository.findById(proposal.getInvestorId().getId()).orElse(null).getLastname();
+            }else {
+                investorName = enterpriseInvestorRepository.findById(proposal.getInvestorId().getId()).orElse(null).getBusinessName();
+            }
+            Map<String, String> user = Map.of(
+                    "Investor", investorName,
+                    "id", proposal.getInvestorId().toString(),
+                    "amount", proposal.getAmount().toString(),
+                    "type","Counter",
+                    "equity",String.valueOf(equity),
+                    "profit",String.valueOf(profit),
+                    "date",proposal.getDate().toString(),
+                    "title",proposal.getListingId().getTitle()
+            );
+            listingMap.add(user);
+        }
+        return listingMap;
+    }
+
     public String getdoc(Integer id) {
         return investor_interestedListingRepository.findByListingId(id).getEntrepreneurProofDocument();
     }
@@ -149,7 +212,7 @@ public class EntrepreneurService {
             listingMap.add(user);
         }
         return listingMap;
-}
+    }
     public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
         return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
     }
