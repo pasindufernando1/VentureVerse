@@ -316,7 +316,9 @@ public class ListingController {
 
     @GetMapping("/finalizeListing/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        System.out.println("Id" + id);
         List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
+        System.out.println(finalizedListings);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }

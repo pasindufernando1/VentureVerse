@@ -32,7 +32,7 @@ function FinalizeListingAdmin() {
     var counter1 = 0;
     var counter2 = 0;
     var counter3 = 0;
-    let id=3;
+    const {id} = useParams();
 
     useEffect(() => {
         get(`/entrepreneur/finalizeListing/${parseInt(id)}`, setResponse);
@@ -121,7 +121,7 @@ function FinalizeListingAdmin() {
                                                     </div>
                                                     <div>
                                                     <Card className="w-80 ml-10">
-                                                            <CardHeader floated={false} className="h-60">
+                                                            <CardHeader floated={false} className="h-70">
                                                                 <img
                                                                     src={`data:application/pdf;base64,${investorpic[counter3++]}`}
                                                                     width="100%"
