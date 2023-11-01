@@ -235,50 +235,14 @@ public class DemoService {
            Integer array_count=0;
                 System.out.println("ENTREPRENEUR");
 
-
-
-//
-//           If (Sales Performance > Z) then
-//           Score += 6
-//
-//           If (Average Customer Review > 4.0) then
-//           Score += 5
-//
-
-
-//
-//
-//
-//
-
-
-//
-//           If (Pitch Motivation > S) then
-//           Score += 1
-//
-//           If (Unique Selling Proposition == Notable) then
-//           Score += 3
-//
-//           If (Circumstances of Business Conception > T) then
-//           Score += 2
-//
-//           If (Overcame Major Hurdles == Yes) then
-//           Score += 2
-//
-//           If (Organization or Club Affiliation == True) then
-//           Score += 1
-
-
-
-
-
-           List<EntrepreneurDTO> allEntrepreneur = entrepreneurRepository.findAll();
-
            Double Total_Total_Sale_Projections_This_Year = 0.0;
            Double Total_Total_Sale_Projections_Next_Year = 0.0;
            Double Total_Net_Income_Last_Year= 0.0;
            Double Total_Gross_Income_Last_Year =0.0;
            Double Total_Total_Lifetime_Sales =0.0;
+
+
+           List<EntrepreneurDTO> allEntrepreneur = entrepreneurRepository.findAll();
 
            for(EntrepreneurDTO EntrepreneurOneDTO : allEntrepreneur){
                List<ListingDTO>  EnterLists =  listingRepository.findAllByEntrepreneurId(EntrepreneurOneDTO);
@@ -378,46 +342,36 @@ public class DemoService {
                        Score=Score+8;
                    }
 
-//
-//           If (Sales Performance > Z) then
-//           Score += 6
 
-//           If (Business Longevity > A years) then
-//           Score += 3
-//
-
-//                   if(ListOneDTO.getBusinessDuration()>3){
-//                       Score += 3;
-//                   }
 
                }
 
 //If (Sale Projections for This Year > P) then
 // Score += 3
 
-if(Total_Sale_Projections_This_Year > 0){
+if( Total_Sale_Projections_This_Year/Total_Total_Sale_Projections_This_Year*100 >30 && Total_Total_Sale_Projections_This_Year!=0 ){
     Score +=3;
 }
 //If (Sale Projections for Next Year > Q) then
 //           Score += 3
 
-if(Total_Sale_Projections_Next_Year > 0){
+if(Total_Sale_Projections_Next_Year/Total_Total_Sale_Projections_Next_Year*100 > 30 && Total_Total_Sale_Projections_Next_Year>0){
                    Score +=3;
 }
 //           If (Net Income Last Year > N) then
 //         Score += 2
 
-if(Net_Income_Last_Year > 0){
+if(Net_Income_Last_Year > 1000000){
                    Score +=3;
 }
 //           If (Gross Income Last Year > M) then
 //           Score += 2
-if(Gross_Income_Last_Year > 0){
+if(Gross_Income_Last_Year > 1000000){
                    Score +=3;
 }
 //           If (Total Lifetime Sales > W) then
 //           Score += 4
- if(Total_Lifetime_Sales > 0){
+ if(Total_Lifetime_Sales > 20){
                    Score +=3;
 }
 //
@@ -482,9 +436,7 @@ if(Successful_Business_Building_Attempts >5){
 
 
 
-//
-//        If (Average Project Review > 4.0) then
-//        Score += 4
+
 
 
 
@@ -542,24 +494,8 @@ if(Successful_Business_Building_Attempts >5){
 //        Score += 6
                    Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId(individualInvestor);
                    Score = Score + TypeCount;
-//
-//        If (Long-Term Commitment > E years) then
-//        Score += 3
-//                   Date lastUpdateDate1 = investorInterestedListingRepository.getLastDate(individualInvestor);
-//                   if (lastUpdateDate1 != null) {
-//                       // Calculate the difference in years between lastUpdateDate and the current date
-//                       Calendar lastUpdateCalendar = Calendar.getInstance();
-//                       lastUpdateCalendar.setTime(lastUpdateDate1);
-//                       Calendar currentCalendar = Calendar.getInstance();
-//
-//                       // Calculate the difference in years
-//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
-//
-//                       // Check if the experience is less than 4 years (greater than 3 years)
-//                       if (yearsDifference > 3) {
-//                           Score = Score + 3;
-//                       }
-//                   }
+
+
 
 
 
@@ -639,24 +575,7 @@ if(Successful_Business_Building_Attempts >5){
                    Integer TypeCount = investorInterestedSectorRepository.getCountByInverstorId1(enterpriseInvestor);
                    Score = Score + TypeCount;
 //
-//        If (Long-Term Commitment > E years) then
-//        Score += 3
 
-                 // Date lastUpdateDate = userRepository.getRegisteredDate(enterpriseInvestor);
-//                   if (lastUpdateDate != null) {
-//                       // Calculate the difference in years between lastUpdateDate and the current date
-//                       Calendar lastUpdateCalendar = Calendar.getInstance();
-//                       lastUpdateCalendar.setTime(lastUpdateDate);
-//                       Calendar currentCalendar = Calendar.getInstance();
-//
-//                       // Calculate the difference in years
-//                       int yearsDifference = currentCalendar.get(Calendar.YEAR) - lastUpdateCalendar.get(Calendar.YEAR);
-//
-//                       // Check if the experience is less than 4 years (greater than 3 years)
-//                       if (yearsDifference > 3) {
-//                           Score = Score + 3;
-//                       }
-//                   }
 
 
 
@@ -673,11 +592,6 @@ if(Successful_Business_Building_Attempts >5){
                    array1.add(Score);
                    array2.add(enterpriseInvestor);
                    array_count =array_count +1;
-
-
-
-
-
 
 
 
