@@ -40,6 +40,7 @@ const UserReports = () => {
         let amount = 0;
         response.forEach(investment => {
             if(investment.finalizeDate === element){
+                investment.amount = parseInt(investment.amount);
                 amount = amount + investment.amount;
             }
         });

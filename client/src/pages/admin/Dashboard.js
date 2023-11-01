@@ -442,12 +442,7 @@ const DashBoard = () => {
                                                 X
                                     </div>
                                     <CardBody className="flex items-start">
-                                        <Avatar
-                                            variant="circular"
-                                            // alt="tania andrew"
-                                            className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
-                                            // src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
-                                        />
+                                        
                                         <div className="ml-4">
                                             <Typography variant="h5" color="blue-gray" className="mb-2">
                                                 {selectedComplain.complainUser} - {selectedComplain.complainDate}
