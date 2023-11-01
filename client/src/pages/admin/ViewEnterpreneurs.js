@@ -14,7 +14,7 @@ const ViewEntrepreneurs = () => {
     const [search, setSearch] = useState("");
     console.log(search);
     useEffect(() => {
-        get("/entrepreneurs/view", setResponse, true);
+        get("/entrepreneurs/view", setResponse);
         console.log(response);
 
     }, []);
@@ -132,7 +132,7 @@ const ViewEntrepreneurs = () => {
                         </th>
                         <td className="px-12 py-3  text-sm">
                             <div className="flex justify-center">
-                                {user.status === 'Online' ? (
+                                {user.status === 'ONLINE' ? (
                                     <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
                                 ) : (
                                     <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>
@@ -173,15 +173,7 @@ const ViewEntrepreneurs = () => {
                             </svg>
                             Ban
                         </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-[15px] rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Delete
-                        </button>
+
                         </td>
                         </tr>  
                         ))}

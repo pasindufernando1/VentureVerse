@@ -16,13 +16,13 @@ const ViewCoAdmin = (props) => {
 
 
     useEffect(() => {
-        get("/coadmin/view", setResponse, true);
+        get("/coadmin/view", setResponse);
     }, []);
 
     const handleBan=  () => {
-        const status = JSON.stringify({ approval_status: "BANNED" });
 
-        put(`/coadmin/ban/${response[0].id}`, status, setResponse);
+
+        put(`/coadmin/ban/${response[0].id}`, "", setResponse);
         if (response.status === 200) {
             console.log("Banned");
 
@@ -32,6 +32,10 @@ const ViewCoAdmin = (props) => {
         }
 
     }
+
+    useEffect(() => {
+        console.log(response)
+    }, [response]);
 
     //Convert response to an array
 
@@ -100,16 +104,16 @@ const ViewCoAdmin = (props) => {
                         <th scope="col" className="w-1/5">
                             Status
                         </th>
-                        <th scope="col" className="w-1/5">
-                            Rating
-                        </th>
+
                         <th scope="col" className="w-2/5">
                             {/* Action */}
                         </th>
                     </tr>
                     </thead>
                     <tbody>
-                    {response.filter((user) => {
+                    {
+
+                        response.filter((user) => {
                         return search.toLowerCase() === ''
                             ? user
                             : user.email.toLowerCase().includes(search)})
@@ -118,10 +122,8 @@ const ViewCoAdmin = (props) => {
 
                         <th scope="row"
                             className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
-                            <img className="w-8 h-8 rounded-full"
-                                src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-                                alt="Jese"/>
-                            <div className="pl-2 flex flex-col items-start ">
+
+                            <div className="pl-2 flex flex-col items-start w-1/5 ">
                                 <div className="text-[15px] font-semibold pr-4">{user.firstname+' '+user.lastname}</div>
                                 <div className="text-[13px] text-gray-500 dark:text-gray-400 ">{user.email}</div>
                             </div>
@@ -138,11 +140,7 @@ const ViewCoAdmin = (props) => {
                                 </span>
                             </div>
                         </td>
-                        <td>
-                            <div className="px-12 py-3 flex justify-center">
-                                <Rating value={1} onChange={(value) => setRated(value)}/>
-                            </div>
-                        </td>
+
                         <td className="px-4 py-2 text-right">
                         <button
                             className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
@@ -168,15 +166,7 @@ const ViewCoAdmin = (props) => {
                             </svg>
                             Ban
                         </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-red-600 hover:bg-red-700 text-white text-[15px] rounded-md">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                            </svg>
-                            Delete
-                        </button>
+
                         </td>
                         </tr>  
                         ))}

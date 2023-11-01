@@ -164,4 +164,5 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE e.id.investorId = :enterpriseInvestor
     """)
     Date getLastDate1(EnterpriseInvestorDTO enterpriseInvestor);
+
 }

@@ -182,21 +182,22 @@ public class EntrepreneurService {
     }
 
 
-    public EntrepreneurDTO banEntrepreneur(Integer id) {
-        Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
+    public UserDTO banEntrepreneur(Integer id) {
+        Optional<UserDTO> existingUserOptional = userRepository.findById(id);
 
-        if (existingEntrepreneurOptional.isPresent()) {
-            EntrepreneurDTO existingEntrepreneur = existingEntrepreneurOptional.get();
+        if (existingUserOptional.isPresent()) {
+            UserDTO existingUser = existingUserOptional.get();
 
-            existingEntrepreneur.setApprovalStatus(Status.BANNED);
+            existingUser.setApprovalStatus(Status.PENDING);
 
-            // You can update other fields here if needed...
+            // Update other fields as needed...
 
             // Save the updated entrepreneur entity back to the database
-            return entrepreneurRepository.save(existingEntrepreneur);
+            return userRepository.save(existingUser);
         } else {
-            return null; // You can also throw an exception indicating that the entrepreneur with the given ID was not found
+            return null;
         }
+
     }
 
     public String getadmindoc(Integer listingId,Integer investorId) {

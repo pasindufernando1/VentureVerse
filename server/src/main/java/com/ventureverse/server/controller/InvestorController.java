@@ -2,14 +2,10 @@ package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.CounterProposalDTO;
-import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
-import com.ventureverse.server.model.entity.IndividualInvestorDTO;
-import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
-import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
@@ -84,13 +80,13 @@ public class InvestorController {
 
     }
 
-//    @PutMapping("/IndividualInvestor/update/{id}")
-//    public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestor(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
-//        IndividualInvestorDTO individualInvestor = investorService.updateIndividualInvestor(updatedIndividualInvestor, id);
-//        System.out.println(individualInvestor);
-//        return ResponseEntity.ok(individualInvestor);
-//
-//    }
+    @PutMapping("/IndividualInvestors/update/{id}")
+    public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestors(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
+        IndividualInvestorDTO individualInvestor = investorService.updateIndividualInvestor(updatedIndividualInvestor, id);
+        System.out.println(individualInvestor);
+        return ResponseEntity.ok(individualInvestor);
+
+    }
     @GetMapping("EnterpriseInvestor/view/{id}")
         public ResponseEntity<EnterpriseInvestorDTO> getEnterpriseInvestorById(@PathVariable Integer id) {
             EnterpriseInvestorDTO enterpriseInvestor = investorService.getEnterpriseInvestorById(id);
@@ -189,4 +185,25 @@ public class InvestorController {
             return ResponseEntity.notFound().build();
         }
     }
+    @PutMapping("/IndividualInvestor/ban/{id}")
+    public ResponseEntity<String> banIndividualInvestor(@PathVariable Integer id) {
+
+        UserDTO bannedIndividualInvestor =investorService.banIndividualInvestor(id);
+        System.out.println(bannedIndividualInvestor);
+        if (bannedIndividualInvestor != null) {
+            return ResponseEntity.ok("Individual Investor banned successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @PutMapping("/EnterpriseInvestor/ban/{id}")
+    public ResponseEntity<String> banEnterpriseInvestor(@PathVariable Integer id) {
+        UserDTO bannedEnterpriseInvestor =investorService.banEnterpriseInvestor(id);
+        if (bannedEnterpriseInvestor != null) {
+            return ResponseEntity.ok("Enterprise Investor banned successfully");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

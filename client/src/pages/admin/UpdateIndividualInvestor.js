@@ -29,7 +29,7 @@ const UpdateIndividualInvestor = () => {
 
     useEffect(() =>{
 
-        get(`investors/IndividualInvestor/view/${id}`, setResponse, true);
+        get(`investors/IndividualInvestor/view/${id}`, setResponse);
 
 
 
@@ -133,20 +133,23 @@ const UpdateIndividualInvestor = () => {
 
       const handleUpdateClick =()  => {
         try {
-            const response2 =  put(`investors/IndividualInvestor/update/${id}`, JSON.stringify(requestData), setResponse2
+            const response2 =  put(`investors/IndividualInvestors/update/${id}`, JSON.stringify(requestData), setResponse2
             );
 
             if (response2.status === 200 || response2.status === 304) {
                 console.log('Co-admin updated successfully');
+                setShowSuccessNotification(true)
 
             } else {
                 console.log(response2);
+                setShowSuccessNotification(true)
 
 
 
             }
         } catch (error) {
             console.error('An error occurred:', error);
+            setShowSuccessNotification(true)
 
         }
     };

@@ -8,6 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AdminRepository extends JpaRepository<AdminDTO, Integer> {
+
+    @Query("""
+        SELECT u
+        FROM AdminDTO u
+        WHERE u.role = :role
+    """)
     List<AdminDTO> findAllByRole(Role role);
     AdminDTO findAllById(Integer id);
 

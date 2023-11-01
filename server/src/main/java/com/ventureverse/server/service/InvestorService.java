@@ -13,6 +13,8 @@ import com.ventureverse.server.repository.IndividualInvestorRepository;
 import com.ventureverse.server.repository.IndustrySectorRepository;
 import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
 import org.springframework.stereotype.Service;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -216,4 +218,35 @@ public class InvestorService {
    }
 
 
+    public UserDTO banIndividualInvestor(Integer id) {
+        UserDTO user  = userRepository.findByUserID(id);
+        user.setApprovalStatus(Status.PENDING);
+        userRepository.save(user);
+        return user;
+    }
+
+    public UserDTO banEnterpriseInvestor(Integer id) {
+        Optional<UserDTO> existingUserOptional = userRepository.findByEnterprice(id);
+
+        System.out.println("existingUserOptional = " + existingUserOptional);
+
+        if (existingUserOptional.isPresent()) {
+            UserDTO existingUser = existingUserOptional.get();
+
+            System.out.println("existingUser = " + existingUser);
+
+            existingUser.setApprovalStatus(Status.PENDING);
+
+            System.out.println(existingUser.getApprovalStatus());
+
+            // Update other fields as needed...
+
+            // Save the updated co-admin entity back to the database
+             userRepository.save(existingUser);
+
+             return existingUser;
+        } else {
+            return null;
+        }
+    }
 }
