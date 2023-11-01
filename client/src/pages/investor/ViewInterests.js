@@ -24,6 +24,7 @@ function ViewInterests() {
     const[counteroffers, setCounter] = useState([]);
     const {auth} = useAuth();
     const id = auth.id;
+    const entrepreneurId = 2153;
 
     useEffect(() => {
         get(`/investors/interestListings/${id}`,setResponse);
@@ -155,10 +156,11 @@ function ViewInterests() {
                                                          className="cursor-pointer"/>
                                                     <Popover placement="bottom">
                                                         <PopoverHandler>
-                                                            <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
-                                                                <img src="/assets/images/chat.png" alt="View"
-                                                                     className="cursor-pointer"/>
-                                                            </Link>
+                                                            {/*<Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>*/}
+                                                            {/*    <img src="/assets/images/chat.png" alt="View"*/}
+                                                            {/*         className="cursor-pointer"/>*/}
+                                                            {/*</Link>*/}
+                                                            <img src="/assets/images/videocall.png" alt="View"/>
                                                         </PopoverHandler>
                                                         <PopoverContent className="w-72">
                                                             <List className="p-0">
@@ -168,7 +170,7 @@ function ViewInterests() {
                                                                     </ListItem>
                                                                 </a>
                                                                     <ListItem >
-                                                                        <NavLink to={`/investor/schedules/${request.id}`} >Schedule meeting</NavLink>
+                                                                        <NavLink to={`/investor/schedules/${entrepreneurId}`} >Schedule meeting</NavLink>
                                                                     </ListItem>
 
                                                             </List>
