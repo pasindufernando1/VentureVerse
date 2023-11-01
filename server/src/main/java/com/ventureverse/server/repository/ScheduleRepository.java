@@ -1,5 +1,6 @@
 package com.ventureverse.server.repository;
 
+import com.ventureverse.server.model.entity.InvestorDTO;
 import com.ventureverse.server.model.entity.ScheduleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

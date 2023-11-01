@@ -282,7 +282,6 @@ public class ListingService {
         } else {
             return GlobalService.response("Error", "Listing not found");
         }
-        return GlobalService.response("Success", "Counter proposal added successfully");
     }
 
     public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {

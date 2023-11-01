@@ -1,13 +1,13 @@
 package com.ventureverse.server.repository;
 
-import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
-import com.ventureverse.server.model.entity.ListingDTO;
+import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

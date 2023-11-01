@@ -12,7 +12,6 @@ import com.ventureverse.server.repository.EnterpriseInvestorRepository;
 import com.ventureverse.server.repository.IndividualInvestorRepository;
 import com.ventureverse.server.repository.IndustrySectorRepository;
 import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
-import com.ventureverse.server.repository.InvestorRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,12 +28,13 @@ public class InvestorService {
 
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, CounterProposalRepository counterProposalRepository, UserRepository userRepository) {
+    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, CounterProposalRepository counterProposalRepository, UserRepository userRepository, EnterpriseInvestorRepository enterpriseInvestorRepository) {
         this.individualInvestorRepository = individualInvestorRepository;
         this.investorInterestedSectorRepository = investorInterestedSectorRepository;
         this.investor_interestedListingRepository = investorInterestedListingRepository;
         this.counterProposalRepository = counterProposalRepository;
         this.userRepository = userRepository;
+        this.enterpriseInvestorRepository = enterpriseInvestorRepository;
     }
 
 
@@ -160,25 +160,25 @@ public class InvestorService {
     }
 
     //Individual Investor Update
-    public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedIndividualInvestor, Integer id) {
-        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
-
-        IndividualInvestorDTO existingIndividualInvestor = individualInvestorRepository.findById(id).orElse(null);
-
-        if (existingIndividualInvestor != null) {
-            existingIndividualInvestor.setFirstname(updatedIndividualInvestor.getFirstname());
-            existingIndividualInvestor.setLastname(updatedIndividualInvestor.getLastname());
-            existingIndividualInvestor.setEmail(updatedIndividualInvestor.getEmail());
-            existingIndividualInvestor.setNic(updatedIndividualInvestor.getNic());
-            existingIndividualInvestor.setContactNumber(updatedIndividualInvestor.getContactNumber());
-
-        }
-        if (existingIndividualInvestor != null) {
-            return individualInvestorRepository.save(existingIndividualInvestor);
-        } else {
-            return null;
-        }
-    }
+//    public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedIndividualInvestor, Integer id) {
+//        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
+//
+//        IndividualInvestorDTO existingIndividualInvestor = individualInvestorRepository.findById(id).orElse(null);
+//
+//        if (existingIndividualInvestor != null) {
+//            existingIndividualInvestor.setFirstname(updatedIndividualInvestor.getFirstname());
+//            existingIndividualInvestor.setLastname(updatedIndividualInvestor.getLastname());
+//            existingIndividualInvestor.setEmail(updatedIndividualInvestor.getEmail());
+//            existingIndividualInvestor.setNic(updatedIndividualInvestor.getNic());
+//            existingIndividualInvestor.setContactNumber(updatedIndividualInvestor.getContactNumber());
+//
+//        }
+//        if (existingIndividualInvestor != null) {
+//            return individualInvestorRepository.save(existingIndividualInvestor);
+//        } else {
+//            return null;
+//        }
+//    }
 
 
     public EnterpriseInvestorDTO getEnterpriseInvestorById(Integer id) {
