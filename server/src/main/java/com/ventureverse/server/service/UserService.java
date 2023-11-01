@@ -139,6 +139,7 @@ public class UserService {
                 var user = entrepreneurRepository.findById(complain.getUserId().getId()).orElseThrow();
                 complainMap.add(Map.of(
                         "complainUser", user.getFirstname() + " " + user.getLastname(),
+                        "id",(complain.getUserId().getId()).toString(),
                         "userRole","Entrepreneur",
                         "complainDate", complainDate,
                         "complainStatus", complain.getComplainType().toString(),
@@ -148,6 +149,7 @@ public class UserService {
                 var user = enterpriseInvestorRepository.findById(complain.getUserId().getId()).orElseThrow();
                 complainMap.add(Map.of(
                         "complainUser", user.getBusinessName(),
+                        "id",(complain.getUserId().getId()).toString(),
                         "userRole","Enterprise Investor",
                         "complainDate", complainDate,
                         "complainStatus", complain.getComplainType().toString(),
@@ -157,6 +159,7 @@ public class UserService {
                 var user = individualInvestorRepository.findById(complain.getUserId().getId()).orElseThrow();
                 complainMap.add(Map.of(
                         "complainUser", user.getFirstname() + " " + user.getLastname(),
+                        "id",(complain.getUserId().getId()).toString(),
                         "userRole","Individual Investor",
                         "complainDate", complainDate,
                         "complainStatus", complain.getComplainType().toString(),

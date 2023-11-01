@@ -208,6 +208,7 @@ public class InvestorService {
             }
             Map<String, String> user = Map.of(
                     "Entrepreneur", listing.getId().getListingId().getEntrepreneurId().getFirstname()+" "+listing.getId().getListingId().getEntrepreneurId().getLastname(),
+                    "id",listing.getId().getListingId().getEntrepreneurId().getId().toString(),
                     "amount", listing.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
                     "equity",String.valueOf(equity),
@@ -228,6 +229,7 @@ public class InvestorService {
                 }
                 Map<String, String> user = Map.of(
                         "Entrepreneur", proposal.getEntrepreneurId().getFirstname() + " " + proposal.getEntrepreneurId().getLastname(),
+                        "id", proposal.getEntrepreneurId().getId().toString(),
                         "amount", proposal.getAmount().toString(),
                         "type", "Counter",
                         "equity", String.valueOf(equity),

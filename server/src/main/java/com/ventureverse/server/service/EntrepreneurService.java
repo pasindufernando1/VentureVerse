@@ -106,6 +106,7 @@ public class EntrepreneurService {
                 investorName = enterpriseInvestorRepository.findById(listing.getId().getInvestorId().getId()).orElse(null).getBusinessName();
             }
             Map<String, String> user = Map.of(
+                    "id", listing.getId().getInvestorId().toString(),
                     "Investor", investorName,
                     "amount", listing.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
@@ -134,6 +135,7 @@ public class EntrepreneurService {
             }
             Map<String, String> user = Map.of(
                     "Investor", investorName,
+                    "id", proposal.getInvestorId().toString(),
                     "amount", proposal.getAmount().toString(),
                     "type","Counter",
                     "equity",String.valueOf(equity),
