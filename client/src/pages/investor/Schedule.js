@@ -22,7 +22,6 @@ import {NavLink, useParams} from 'react-router-dom';
 import {AiOutlineCloseCircle} from "react-icons/ai";
 import {Link} from "react-router-dom";
 import { Avatar } from "@material-tailwind/react";
-import VideoCall from "./VideoCall";
 
 
 

@@ -284,6 +284,8 @@ public class InvestorService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.MONTH, -12);
+        return userMap;
+    }
 
     public UserDTO banIndividualInvestor(Integer id) {
         UserDTO user  = userRepository.findByUserID(id);
@@ -309,26 +311,27 @@ public class InvestorService {
             // Update other fields as needed...
 
             // Save the updated co-admin entity back to the database
-             userRepository.save(existingUser);
+            userRepository.save(existingUser);
 
-             return existingUser;
+            return existingUser;
         } else {
             return null;
         }
-        for(InvestorInterestedListingDTO interest : interests) {
-            if(interest.getInterestedDate().after(calendar.getTime())){
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-                String publishDate = dateFormat.format(interest.getInterestedDate());
-                Map<String, String> user = Map.of(
-                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
-                        "inerestedDate", publishDate
-                );
-                userMap.add(user);
-            }
-        }
-        System.out.println("userMap: " + userMap);
-        return userMap;
     }
+//        for(InvestorInterestedListingDTO interest : interests) {
+//            if(interest.getInterestedDate().after(calendar.getTime())){
+//                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+//                String publishDate = dateFormat.format(interest.getInterestedDate());
+//                Map<String, String> user = Map.of(
+//                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+//                        "inerestedDate", publishDate
+//                );
+//                userMap.add(user);
+//            }
+//        }
+//        System.out.println("userMap: " + userMap);
+//        return userMap;
+//    }
 
     //Get the investor interested listing by investor id where finalized date is null
 //    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
