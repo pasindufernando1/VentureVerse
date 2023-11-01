@@ -1,76 +1,64 @@
 import React, {useEffect, useState} from "react";
-import {Header} from "../webcomponent";
+import {Alert, Header} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-import {json, Link } from "react-router-dom";
-import Swal from 'sweetalert2'
+import { Link } from "react-router-dom";
 
-
+let i;
 
 const ViewEntrepreneurs = () => {
+    const { get,put } = useAxiosMethods();
     const [rated, setRated] = React.useState(4);
-    // create dummy array for table data 
-   const { get,put } = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const [banResponse,setBanResponse] = useState(null);
+    const [errorMsg, setErrorMsg] = useState({State: false, Type: "", Message: ""});
     const [search, setSearch] = useState("");
-    console.log(search);
+
     useEffect(() => {
         get("/entrepreneurs/view", setResponse);
-        console.log(response);
-
     }, []);
-    const handleBan = () => {const swalWithBootstrapButtons = Swal.mixin({
-        customClass: {
-            confirmButton: 'btn btn-success',
-            cancelButton: 'btn btn-danger'
-        },
-        buttonsStyling: false
-    })
 
-        swalWithBootstrapButtons.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, cancel!',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-                put(`/entrepreneurs/ban/${response[0].id}`,"" , true);
-                console.log("wade wuna");
-                swalWithBootstrapButtons.fire(
-                    'Deleted!',
-                    'Your file has been deleted.',
-                    'success'
-                )
-            } else if (
-                /* Read more about handling dismissals below */
-                result.dismiss === Swal.DismissReason.cancel
-            ) {
-                swalWithBootstrapButtons.fire(
-                    'Cancelled',
-                    'Your imaginary file is safe :)',
-                    'error'
-                )
-            }
-        })
+    const handleBan = (id) => {
 
-        // if(response.status == 200){
-        //     alert("ok");
-        // }
-        // else{
-        //     alert("not ok");
-        // }
+        put(`/entrepreneurs/ban/${id}`,"" , setBanResponse);
+        i = id;
 
     }
 
-    console.log(response);
+    useEffect(() => {
+
+        if (banResponse === null) {
+            return;
+        }
+
+        if (banResponse?.status === "200") {
+
+            setErrorMsg({State: true, Type: "Success", Message: banResponse?.message});
+            let index = response.findIndex(user => user.id === i);
+            const temp = [...response]
+            temp.splice(index,1)
+            setResponse(temp)
+
+        } else {
+            setErrorMsg({State: true, Type: "Error", Message: banResponse?.message});
+        }
+
+    }, [banResponse]);
+
+    useEffect(() => {
+        const interval = setTimeout(() => {
+            setErrorMsg({State: false, Type: "", Message: ""});
+            setBanResponse(null)
+        }, 2000);
+
+        // Cleanup the timer to prevent memory leaks
+        return () => clearTimeout(interval);
+    }, [response]);
 
     return(
         <div>
         <Header active="Enterpreneurs">
-            <br></br>        
+            <Alert Type={errorMsg.Type} Message={errorMsg.Message} State={errorMsg.State} />
             <main className="h-auto flex justify-center items-center g:h-screen">
             <div className="relative border-[2px] border-main-purple sm:rounded-lg p-2 w-full">
                 <h2 className="text-2xl font-extrabold my-5">
@@ -199,7 +187,7 @@ const ViewEntrepreneurs = () => {
                             </Link>
                         </button>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={() => handleBan(user.id)}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

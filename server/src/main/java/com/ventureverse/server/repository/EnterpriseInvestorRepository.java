@@ -1,7 +1,9 @@
 package com.ventureverse.server.repository;
 
 import com.ventureverse.server.enumeration.Role;
+import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
+import com.ventureverse.server.model.entity.IndividualInvestorDTO;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -31,4 +33,7 @@ public interface EnterpriseInvestorRepository extends JpaRepository<EnterpriseIn
     
 """)
     EnterpriseInvestorDTO findByenterpriseinvestorId(int id);
+
+    List<EnterpriseInvestorDTO> findByApprovalStatus(Status approvalStatus);
+
 }

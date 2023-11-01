@@ -174,7 +174,7 @@ const UpdateEnterpriseInvestor = () => {
     // };
     const handleUpdateClick =  () => {
         try {
-            const response =  put(`investors/EnterpriseInvestor/update/${id}`, JSON.stringify(requestData), setResponse
+            const response =  put(`/coadmin/update/${id}`, JSON.stringify(requestData), setResponse
             );
 
 
@@ -200,7 +200,6 @@ const UpdateEnterpriseInvestor = () => {
         "firstname",
         "lastname",
         "firstline",
-        "secondline",
         "town",
         "district",
         "email",
@@ -362,9 +361,9 @@ const UpdateEnterpriseInvestor = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Update Successful"
-                            successMessage="You have successfully Updated the Enterprise Investor"
-                            redirectUrl="/admin/users/enterpriseInvestors"
+                            successTitle="Registration Successful"
+                            successMessage="You have successfully Updated the Co-Admin"
+                            redirectUrl="/admin/users/coAdmins"
                         />
                     )}
                 </div>

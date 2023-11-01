@@ -3,6 +3,7 @@ package com.ventureverse.server.service;
 import com.ventureverse.server.enumeration.Complain;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
@@ -326,23 +327,11 @@ public class EntrepreneurService {
 
 
     public UserDTO banEntrepreneur(Integer id) {
-        Optional<UserDTO> existingUserOptional = userRepository.findById(id);
-
-        if (existingUserOptional.isPresent()) {
-            UserDTO existingUser = existingUserOptional.get();
-
-//            existingEntrepreneur.setApprovalStatus(Status.PENDING);
-            existingUser.setApprovalStatus(Status.PENDING);
-
-            // Update other fields as needed...
-
-            // Save the updated entrepreneur entity back to the database
-            return userRepository.save(existingUser);
-        } else {
-            return null;
-        }
-
+        UserDTO user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        user.setApprovalStatus(Status.BANNED);
+        return userRepository.save(user);
     }
+
     public long countEntrepreneurs() {
         return entrepreneurRepository.count();
     }

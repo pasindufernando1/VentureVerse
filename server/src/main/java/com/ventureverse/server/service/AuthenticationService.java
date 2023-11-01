@@ -428,6 +428,7 @@ public class AuthenticationService {
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         user.setLastLogin(timestamp);
+        user.setStatus(Chat.OFFLINE);
         userRepository.save(user);
 
         return GlobalService.response("Success", "");

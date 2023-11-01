@@ -24,7 +24,4 @@ public interface IndividualInvestorRepository extends JpaRepository<IndividualIn
 
     List<IndividualInvestorDTO> findByApprovalStatus(Status approvalStatus);
 
-    List<IndividualInvestorDTO> findByRole(Role role);
-
-//    IndividualInvestorDTO findAllByRole(Role INDIVIDUAL_INVESTOR);
 }

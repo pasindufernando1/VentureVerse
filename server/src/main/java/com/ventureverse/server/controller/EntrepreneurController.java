@@ -133,23 +133,21 @@ public class EntrepreneurController {
     @GetMapping("/view")
     public ResponseEntity<List<EntrepreneurDTO>> getAllApprovedEntrepreneurs() {
         List<EntrepreneurDTO> approvedEntrepreneurs = entrepreneurService.getAllApprovedEntrepreneurs();
-        System.out.println(approvedEntrepreneurs);
         return ResponseEntity.ok(approvedEntrepreneurs);
     }
+
     @GetMapping("/view/{id}")
     public ResponseEntity<EntrepreneurDTO> getEntrepreneurDetails(@PathVariable Integer id) {
         EntrepreneurDTO findEntrepreneur = entrepreneurService.getEntrepreneurById(id);
         if (findEntrepreneur == null) {
             return ResponseEntity.notFound().build();
         } else {
-            System.out.println(findEntrepreneur);
             return ResponseEntity.ok(findEntrepreneur);
         }
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateEntrepreneur(@RequestBody EntrepreneurDTO updatedEntrepreneur , @PathVariable Integer id) {
         EntrepreneurDTO updatedEntrepreneur1 = entrepreneurService.updateEntrepreneur(updatedEntrepreneur, id);
-        System.out.println(updatedEntrepreneur1);
 
         if (updatedEntrepreneur1 != null) {
             return ResponseEntity.ok("Entrepreneur updated successfully");
@@ -158,10 +156,16 @@ public class EntrepreneurController {
         }
     }
     @PutMapping("/ban/{id}")
-    public ResponseEntity<String> banEntrepreneur(@PathVariable Integer id) {
+    public ResponseEntity<ResponseDTO> banEntrepreneur(@PathVariable Integer id) {
         UserDTO bannedEntrepreneur = entrepreneurService.banEntrepreneur(id);
+
         if (bannedEntrepreneur != null) {
-            return ResponseEntity.ok("Entrepreneur banned successfully");
+            return ResponseEntity.ok(
+                    ResponseDTO.builder()
+                            .status("200")
+                            .message("User " + id + " Banned Successfully")
+                            .build()
+            );
         } else {
             return ResponseEntity.notFound().build();
         }

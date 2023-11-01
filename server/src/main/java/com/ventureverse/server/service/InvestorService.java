@@ -2,6 +2,7 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
@@ -396,11 +397,11 @@ public class InvestorService {
     }
     
     public List<IndividualInvestorDTO> getAllIndividualInvestors() {
-        return individualInvestorRepository.findByRole(Role.INDIVIDUAL_INVESTOR);
+        return individualInvestorRepository.findByApprovalStatus(Status.APPROVED);
     }
 
     public List<EnterpriseInvestorDTO> getAllEnterpriseInvestors() {
-        return enterpriseInvestorRepository.findByRole(Role.ENTERPRISE_INVESTOR);
+        return enterpriseInvestorRepository.findByApprovalStatus(Status.APPROVED);
     }
 
     public IndividualInvestorDTO getIndividualInvestorById(Integer id) {
@@ -455,21 +456,10 @@ public class InvestorService {
         }
     }
 
-    public IndividualInvestorDTO banIndividualInvestor(Integer id) {
-        Optional<IndividualInvestorDTO> existingIndividualInvestorOptional = individualInvestorRepository.findById(id);
-
-        if (existingIndividualInvestorOptional.isPresent()) {
-            IndividualInvestorDTO existingIndividualInvestor = existingIndividualInvestorOptional.get();
-
-            existingIndividualInvestor.setApprovalStatus(Status.PENDING);
-
-            // Update other fields as needed...
-
-            // Save the updated co-admin entity back to the database
-            return individualInvestorRepository.save(existingIndividualInvestor);
-        } else {
-            return null;
-        }
+    public UserDTO banInvestor(Integer id) {
+        UserDTO user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        user.setApprovalStatus(Status.BANNED);
+        return userRepository.save(user);
     }
     
     // public UserDTO banIndividualInvestor(Integer id) {
@@ -490,30 +480,7 @@ public class InvestorService {
             return individualInvestorRepository.count();
     }
 
-    public UserDTO banEnterpriseInvestor(Integer id) {
-        Optional<UserDTO> existingUserOptional = userRepository.findByEnterprice(id);
 
-        System.out.println("existingUserOptional = " + existingUserOptional);
-
-        if (existingUserOptional.isPresent()) {
-            UserDTO existingUser = existingUserOptional.get();
-
-            System.out.println("existingUser = " + existingUser);
-
-            existingUser.setApprovalStatus(Status.PENDING);
-
-            System.out.println(existingUser.getApprovalStatus());
-
-            // Update other fields as needed...
-
-            // Save the updated co-admin entity back to the database
-            userRepository.save(existingUser);
-
-            return existingUser;
-        } else {
-            return null;
-        }
-    }
 //        for(InvestorInterestedListingDTO interest : interests) {
 //            if(interest.getInterestedDate().after(calendar.getTime())){
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
