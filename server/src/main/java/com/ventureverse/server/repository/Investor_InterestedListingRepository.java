@@ -13,6 +13,14 @@ import java.util.Optional;
 
 public interface Investor_InterestedListingRepository extends JpaRepository<InvestorInterestedListingDTO, Integer> {
 
+//    @Query("""
+//            SELECT investorInterestedListingDTO
+//            FROM InvestorInterestedListingDTO investorInterestedListingDTO
+//            WHERE investorInterestedListingDTO.id.investorId.id = :id
+//            AND investorInterestedListingDTO.amountFinalized IS NULL
+//            """)
+//    List<InvestorInterestedListingDTO> findByInvestorId(Integer id);
+
     @Query("""
             SELECT i 
             FROM InvestorInterestedListingDTO i 
@@ -182,4 +190,20 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE i.id.listingId = :listingDTO
             """)
     List<InvestorInterestedListingDTO> findByListingid(ListingDTO listingDTO);
+    @Query("""
+            SELECT i 
+            FROM InvestorInterestedListingDTO i 
+            WHERE i.id.investorId.id = :id
+            """)
+    List<InvestorInterestedListingDTO> findAllByInvestorId(Integer id);
+
+    @Query("""
+            SELECT i
+            FROM InvestorInterestedListingDTO i 
+            WHERE
+            i.id.listingId.listingId = :listingId 
+            AND i.id.investorId.id = :investorId
+            """)
+    InvestorInterestedListingDTO findByInvestorIdAndListingId(@Param("investorId") Integer investorId, @Param("listingId") int listingId);
+
 }
