@@ -118,7 +118,7 @@ const CustomHeader = (props) => {
         );
         accountMenu.push(
             {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
-            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
+            // {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
         // Entrepreneur
     } else if (auth?.role === "ENTREPRENEUR") {
@@ -141,7 +141,7 @@ const CustomHeader = (props) => {
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
-            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
+            // {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
         /// Investor
     } else if (auth?.role === "INDIVIDUAL INVESTOR" || auth?.role === "ENTERPRISE INVESTOR") {
@@ -161,7 +161,7 @@ const CustomHeader = (props) => {
         accountMenu.push(
             {'icon': faInbox, 'title': "Inbox", 'link': "/inbox", "suffix": true},
             {'icon': faCircleUser, 'title': "Profile", 'link': "/profile", "suffix": false},
-            {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
+            // {'icon': faGear, 'title': "Settings", 'link': "#", "suffix": false},
         )
     }
 

@@ -113,49 +113,49 @@ public class ListingController {
     //     }
     // }
 
-//    @GetMapping("/getAllListings")
-//    public ResponseEntity<List<Map<String, String>>> getAllListings() {
-//        List<Map<String, String>> listings=listingService.getAllListings();
-//        List<ListingDTO> activeListings=new ArrayList<>();
-//
-//        //Remove listing where status!=Active
-//        for (int i = 0; i < listings.size(); i++) {
-//            if(listings.get(i).getStatus().equals("Active")) {
-//                activeListings.add(listings.get(i));
-//            }
-//        }
-//
-//        for(int i=0;i<activeListings.size();i++){
-//            int days=activeListings.get(i).getSubscriptionType().getDays();
-//            Date startDate=activeListings.get(i).getPublishedDate();
-//
-//            //Get the current date
-//            Date currentDate=new Date();
-//
-//            //get the number of days passed since the listing was published
-//            long diff = currentDate.getTime() - startDate.getTime();
-//            long diffDays = diff / (24 * 60 * 60 * 1000);
-//
-//            //If the number of days passed is greater than the number of days in the subscription type, change the status to "Expired"
-//            if(diffDays>days) {
-//                activeListings.get(i).setStatus("Expired");
-//                listingService.updateListing(activeListings.get(i));
-//            }else{
-//                activeListings.get(i).setStatus("Active");
-//                listingService.updateListing(activeListings.get(i));
-//            }
-//        }
-//        List<ListingDTO> newlistings=listingService.getAllListings();
-//        List<ListingDTO> newactiveListings=new ArrayList<>();
-//
-//        //Remove listing where status!=Active
-//        for (int i = 0; i < listings.size(); i++) {
-//            if(newlistings.get(i).getStatus().equals("Active")) {
-//                newactiveListings.add(listings.get(i));
-//            }
-//        }
-//        return ResponseEntity.ok(newactiveListings);
-//    }
+    @GetMapping("/getAllListings")
+    public ResponseEntity<List<ListingDTO>> getAllListings() {
+        List<ListingDTO> listings = listingService.getAllListings();
+        List<ListingDTO> activeListings=new ArrayList<>();
+
+        //Remove listing where status!=Active
+        for (int i = 0; i < listings.size(); i++) {
+            if(listings.get(i).getStatus().equals("Active")) {
+                activeListings.add(listings.get(i));
+            }
+        }
+
+        for(int i=0;i<activeListings.size();i++){
+            int days=activeListings.get(i).getSubscriptionType().getDays();
+            Date startDate=activeListings.get(i).getPublishedDate();
+
+            //Get the current date
+            Date currentDate=new Date();
+
+            //get the number of days passed since the listing was published
+            long diff = currentDate.getTime() - startDate.getTime();
+            long diffDays = diff / (24 * 60 * 60 * 1000);
+
+            //If the number of days passed is greater than the number of days in the subscription type, change the status to "Expired"
+            if(diffDays>days) {
+                activeListings.get(i).setStatus("Expired");
+                listingService.updateListing(activeListings.get(i));
+            }else{
+                activeListings.get(i).setStatus("Active");
+                listingService.updateListing(activeListings.get(i));
+            }
+        }
+        List<ListingDTO> newlistings=listingService.getAllListings();
+        List<ListingDTO> newactiveListings=new ArrayList<>();
+
+        //Remove listing where status!=Active
+        for (int i = 0; i < listings.size(); i++) {
+            if(newlistings.get(i).getStatus().equals("Active")) {
+                newactiveListings.add(listings.get(i));
+            }
+        }
+        return ResponseEntity.ok(newactiveListings);
+    }
 
     @GetMapping("/getalllistings")
     public ResponseEntity<List<Map<String, String>>> getAllListings2() {
@@ -221,8 +221,6 @@ public class ListingController {
                 .contentType(mediaType)
                 .body(videoResource);
     }
-
-
 
     //Get the videos of all the videonames in the path variable
     @GetMapping("/getVideos")
@@ -347,8 +345,6 @@ public class ListingController {
         return ResponseEntity.ok().body(images);
     }
 
-
-
     //Get the subscription
     @GetMapping("/getSubscription/{id}")
     public ResponseEntity<ListingSubscriptionDTO> getSubscriptionType(@PathVariable Integer id) {
@@ -364,20 +360,10 @@ public class ListingController {
         return ResponseEntity.ok(users);
     }
 
-    // @GetMapping("/getalllistings")
-    // public ResponseEntity<List<Map<String, String>>> getAllListings() {
-    //     List<Map<String, String>> users = listingService.getAllListings();
-    //     if (users.isEmpty()) {
-    //         return ResponseEntity.notFound().build();
-    //     }
-    //     return ResponseEntity.ok(users);
-    // }
 
     @GetMapping("/finalizeListing/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
-        System.out.println("Id" + id);
         List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
-        System.out.println(finalizedListings);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
