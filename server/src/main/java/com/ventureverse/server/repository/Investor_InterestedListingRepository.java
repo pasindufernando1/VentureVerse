@@ -14,12 +14,12 @@ import java.util.Optional;
 public interface Investor_InterestedListingRepository extends JpaRepository<InvestorInterestedListingDTO, Integer> {
 
     @Query("""
-            SELECT investorInterestedListingDTO
-            FROM InvestorInterestedListingDTO investorInterestedListingDTO
-            WHERE investorInterestedListingDTO.id.investorId.id = :id
-            AND investorInterestedListingDTO.amountFinalized IS NULL
+            SELECT i 
+            FROM InvestorInterestedListingDTO i 
+            WHERE i.id.investorId.id = :investor
+            AND i.finalizedDate IS NOT NULL
             """)
-    List<InvestorInterestedListingDTO> findByInvestorId(Integer id);
+    List<InvestorInterestedListingDTO> findByInvestorId(Integer investor);
 
     @Query("""
             SELECT investorInterestedListingDTO
@@ -49,6 +49,16 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             AND i.id.investorId.id = :id
             """)
     List<InvestorInterestedListingDTO> findPendingListings(Integer id);
+
+    @Query("""
+            SELECT i\s
+            FROM InvestorInterestedListingDTO i\s
+            WHERE i.finalizedDate IS NULL 
+            AND i.id.investorId.id = :id
+            AND i.entrepreneurProofDocument IS NULL
+            AND i.investorProofDocument IS NULL
+            """)
+    List<InvestorInterestedListingDTO> findPendingListingsOfInvestor(Integer id);
 
     @Query("""
             SELECT i\s
@@ -164,4 +174,12 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE e.id.investorId = :enterpriseInvestor
     """)
     Date getLastDate1(EnterpriseInvestorDTO enterpriseInvestor);
+
+    //Get the investor interested listings of a listing
+    @Query("""
+            SELECT i
+            FROM InvestorInterestedListingDTO i
+            WHERE i.id.listingId = :listingDTO
+            """)
+    List<InvestorInterestedListingDTO> findByListingid(ListingDTO listingDTO);
 }

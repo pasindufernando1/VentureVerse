@@ -390,7 +390,7 @@ function ViewListing() {
                                             />
                                         ))}
                                         { card.interestedParties && card.interestedParties.length === 0 &&(
-                                            <Typography variant="h6" color="blue-gray" className="mb-2 mt-2 text-center ">
+                                            <Typography variant="h8" color="blue-gray" className="mb-2 mt-2 text-center ">
                                                 No interested parties yet
                                             </Typography>
                                         )}

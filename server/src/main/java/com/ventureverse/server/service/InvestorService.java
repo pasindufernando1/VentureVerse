@@ -94,7 +94,11 @@ public class InvestorService {
     }
 
     public List<InvestorInterestedListingDTO> getListings(Integer id) {
-        return investor_interestedListingRepository.findByInvestorId(id);
+        return investor_interestedListingRepository.findPendingListingsOfInvestor(id);
+    }
+
+    public List<InvestorInterestedListingDTO> getListingsByListingId(ListingDTO listingDTO) {
+        return investor_interestedListingRepository.findByListingid(listingDTO);
     }
 
 
@@ -215,5 +219,9 @@ public class InvestorService {
         return individualInvestorRepository.count();
    }
 
+    //Get the investor interested listing by investor id where finalized date is null
+    public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
+        return investor_interestedListingRepository.findPendingListings(id);
+    }
 
 }

@@ -54,24 +54,24 @@ const CustomHeader = (props) => {
 
     useEffect(() => {
 
-        let socket = new SockJS('http://localhost:8080/api/auth/ws');
-        stompClient = over(socket);
-        stompClient.connect({}, onConnected, onError);
+        // let socket = new SockJS('http://localhost:8080/api/auth/ws');
+        // stompClient = over(socket);
+        // stompClient.connect({}, onConnected, onError);
 
         get(`/user/details/${auth?.id}`, setUser);
     }, []);
 
-    const onConnected = () => {
-        stompClient.subscribe('/user/' + auth.id + '/private', onMessageReceived);
-    }
-
-    const onError = () => {
-        console.log("Error Connecting to Websocket");
-    }
-
-    const onMessageReceived = (payload) => {
-        setNotification(notification + 1)
-    }
+    // const onConnected = () => {
+    //     stompClient.subscribe('/user/' + auth.id + '/private', onMessageReceived);
+    // }
+    //
+    // const onError = () => {
+    //     console.log("Error Connecting to Websocket");
+    // }
+    //
+    // const onMessageReceived = (payload) => {
+    //     setNotification(notification + 1)
+    // }
 
     const logout = async () => {
 

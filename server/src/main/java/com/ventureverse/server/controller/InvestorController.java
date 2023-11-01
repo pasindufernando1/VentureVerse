@@ -113,12 +113,29 @@ public class InvestorController {
         if (interestedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        System.out.println("Interested listings" + interestedListings.size());
         return ResponseEntity.ok(interestedListings);
     }
 
     @GetMapping("/getcounters/{id}")
     public ResponseEntity<List<CounterProposalDTO>> getCounters(@PathVariable Integer id) {
         List<CounterProposalDTO> counters = investorService.getCounters(id);
+        System.out.println(counters.size());
+
+        //Get all interested listings for the investor
+        List<InvestorInterestedListingDTO> interestedListings = investorService.getPendingListings(id);
+        System.out.println(interestedListings.size());
+
+        //For each counter, check if the listing is in the interested listings.If it is, remove it from the list
+        for (int i = 0; i < counters.size(); i++) {
+            for (int j = 0; j < interestedListings.size(); j++) {
+                if (counters.get(i).getListingId() == interestedListings.get(j).getId().getListingId()) {
+                    counters.remove(i);
+                }
+            }
+        }
+
+        System.out.println("Counter size" + counters.size());
         if (counters.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
