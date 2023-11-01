@@ -41,6 +41,6 @@ public class InvestorInterestedListingDTO implements Serializable {
         @ManyToOne(cascade = CascadeType.ALL)
         @JoinColumn(name = "listingId", referencedColumnName = "listingId")
         private ListingDTO listingId;
-    }
+}
 
 }

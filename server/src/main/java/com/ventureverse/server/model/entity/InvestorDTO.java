@@ -24,4 +24,5 @@ public class InvestorDTO extends UserDTO {
     @JoinColumn(name = "badgeId")
     private BadgeDTO badgeId;
 
+
 }

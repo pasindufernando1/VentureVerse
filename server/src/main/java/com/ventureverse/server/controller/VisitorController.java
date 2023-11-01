@@ -24,6 +24,7 @@ import java.util.Objects;
 public class VisitorController {
 
     private final VisitorService visitorService;
+    
     @GetMapping("/home")
     public ResponseEntity<Object> home() throws IOException {
         return ResponseEntity.ok(visitorService.home());

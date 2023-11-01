@@ -4,18 +4,18 @@ import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
 import useData from "../../hooks/useData";
+import {useParams} from "react-router-dom";
 
 function ViewListingCounterProposal() {
     const { get } = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const {id} = useParams();
 
-    const listingId=2;
+    const listingId = id;
 
     useEffect(() => {
         get(`entrepreneurs/offers/${listingId}`, setResponse);
     }, []);
-
-    console.log(response);
 
     const {setData} = useData();
 
@@ -35,8 +35,7 @@ function ViewListingCounterProposal() {
     return (
         <div>
             <Header active="Listing">
-                <main
-                    className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
+                <main className="h-auto flex justify-center items-center bg-white mt-[-2rem] w-full ml-2 border-[1px] border-main-purple rounded-[1rem]"
                 >
                     <form className="bg-white flex drop-shadow-md w-full h-auto lg:rounded-[1rem]">
                         <div className="text-gray-700 p-[2rem] w-full">
@@ -74,12 +73,12 @@ function ViewListingCounterProposal() {
                                         <tr className="font-medium text-gray-700 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                                             key={key}>
                                             <td>
-                                                    <Avatar
-                                                        variant="circular"
-                                                        alt="tania andrew"
-                                                        className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
-                                                        src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"/>
-                                                    <span className="ml-2">{request.Investor}</span>
+                                                <Avatar
+                                                    variant="circular"
+                                                    alt="tania andrew"
+                                                    className="cursor-pointer border-2 border-main-purple hover:z-10 focus:z-10 ml-1"
+                                                    src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"/>
+                                                <span className="ml-2">{request.Investor}</span>
                                             </td>
                                             <td className="px-6 py-4">Rs. {request.amount}</td>
                                             <td className="px-6 py-4">{request.equity} %</td>

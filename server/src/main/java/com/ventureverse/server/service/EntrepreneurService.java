@@ -188,6 +188,29 @@ public class EntrepreneurService {
         }
         return listingMap;
     }
+    
+    public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
+        return investor_interestedListingRepository.findByEntreprenuerListingId(id);
+    }
+
+    public ResponseDTO updateListing(Integer Listingid, InvestorInterestedListingDTO investorInterestedListingDTO) {
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(Listingid);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListing(listingDTO);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setEntrepreneurProofDocument(investorInterestedListingDTO.getEntrepreneurProofDocument());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated Successfully");
+        }else{
+            return GlobalService.response("Failed","Listing not found");
+        }
+    }
+
+    public String getdoc(Integer id) {
+        return investor_interestedListingRepository.findByListingId(id).getEntrepreneurProofDocument();
+    }
 
     public List<Map<String, String>> getOffers(Integer id) {
         List<InvestorInterestedListingDTO> listing=investor_interestedListingRepository.findByPendingListingId(id);

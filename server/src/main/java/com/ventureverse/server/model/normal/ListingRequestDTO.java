@@ -18,6 +18,7 @@ import java.util.List;
 public class ListingRequestDTO {
     private String title;
     private String description;
+    private String thumbnail;
     private String pitchingVideo;
     private String intention;
     private Timestamp businessStartDate;

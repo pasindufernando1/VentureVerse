@@ -4,6 +4,7 @@ import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.ComplainDTO;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
+import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -96,8 +97,25 @@ public class EntrepreneurController {
         if (completedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-
+        
         return ResponseEntity.ok(completedListings);
+    }
+    
+    @GetMapping("/finalizeListings/{id}")
+    public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
+        List<InvestorInterestedListingDTO> finalizedListings = entrepreneurService.finalizeListings(id);
+        if (finalizedListings == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(finalizedListings);
+    }
+
+    @PutMapping("/updatefinalizeListing/{id}")
+    public ResponseEntity<ResponseDTO> updateListings(
+            @PathVariable("id") Integer id,
+            @RequestBody InvestorInterestedListingDTO investorInterestedListingDTO
+    ) {
+        return ResponseEntity.ok(entrepreneurService.updateListing(id, investorInterestedListingDTO));
     }
 
     @GetMapping("/offers/{id}")

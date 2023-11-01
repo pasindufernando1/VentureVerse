@@ -68,6 +68,7 @@ import GainsReports from "./pages/admin/GainsReport";
 import InterestReports from "./pages/admin/InterestReports";
 import ComplainReports from "./pages/admin/ComplainReports";
 import AdminViewComplains from "./pages/admin/ViewComplains";
+import Topup from "./pages/entrepreneur/Topup";
 
 import {Routes, Route} from "react-router-dom";
 import UpdateCoAdmin from "./pages/admin/UpdateCoAdmin";
@@ -115,7 +116,7 @@ function App() {
                         <Route path="/admin/users/enterpriseInvestors" element={<EnterpriseInvestors/>}/>
                         <Route path="/admin/view-complains" element={<AdminViewComplains />} />
                         <Route path="/admin/view-finalizedListings" element={<FinalizedListings />} />
-                        <Route path="/admin/view-finalizedOffering" element={<FinalizedListingOffering />} />
+                        <Route path="/admin/view-finalizedOffering/:id" element={<FinalizedListingOffering />} />
                         <Route path="/admin/analytics" element={<Analytics />} />
                         <Route path="/admin/users/reports" element={<UserReports />} />
                         <Route path="/admin/gains/reports" element={<GainsReports/>}/>
@@ -130,13 +131,13 @@ function App() {
                         {/* Routes Authorized to Investors */}
                         <Route path="/investor/dashboard" element={<InvestorDashboard />}/>
                         <Route path="/investor/view-listing" element={<ViewListing />} />
-                        <Route path="/investor/view-listingFull" element={<ViewListingFullInvestor />} />
+                        <Route path="/investor/view-listingFull/:id" element={<ViewListingFullInvestor />} />
                         <Route path="/investor/interests" element={<ViewInterests />} />
                         <Route path="/investor/schedules" element={<Schedule />} />
                         <Route path="/investor/add-complains" element={<AddComplainsInvestor />} />
                         <Route path="/investor/view-complains" element={<ViewComplains />} />
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} />    
-                        <Route path="/investor/finalize-listing" element={<InvestorFinalizeListing />} />               
+                        <Route path="/investor/finalize-listing/:id" element={<InvestorFinalizeListing />} />               
                         <Route path="/investor/view-leaderboard" element={<InvestorLeaderboard />} /> 
                         <Route path="/investor/analytics" element={<AnalyticsInvestor />} />     
                         <Route path="/investor/profit/reports" element={<ProfitReport />} />
@@ -149,13 +150,14 @@ function App() {
                         <Route path="/entrepreneur/dashboard" element={<EntrepreneurDashboard />}/>
                         <Route path="/entrepreneur/add-listing" element={<AddListing />} />
                         <Route path="/entrepreneur/view-listingFull" element={<ViewListingFull />} />
-                        <Route path="/entrepreneur/view-listingCounterProposal" element={<ViewListingCounterProposal />} />
+                        <Route path="/entrepreneur/view-listingCounterProposal/:id" element={<ViewListingCounterProposal />} />
                         <Route path="/entrepreneur/add-complain" element={<AddComplains />} />
                         <Route path="/entrepreneur/schedules" element={<Schedule />} />
                         <Route path="/entrepreneur/add-complains" element={<AddComplains />} />
                         <Route path="/entrepreneur/view-complains" element={<ViewComplainsEntrepreneur />} />
                         <Route path="/entrepreneur/view-leaderboard" element={<EntrepreneurLeaderboard />} /> 
-                        <Route path="/entrepreneur/finalize-listing" element={<EntrepreneurFinalizeListing />} />       
+                        <Route path="/entrepreneur/finalize-listing/:id" element={<EntrepreneurFinalizeListing />} />
+                        <Route path="/entrepreneur/topup/:id" element={<Topup />} />
                     </Route>
                 </Route>
                 {/*404*/}

@@ -8,6 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import com.ventureverse.server.model.normal.ResponseDTO;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -20,7 +26,7 @@ public class InvestorService {
     private final ScheduleRepository scheduleRepository;
     private final CounterProposalRepository counterProposalRepository;
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
-
+    private final Investor_InterestedListingRepository investor_interestedListingRepository;
 
     public List<IndividualInvestorDTO> findByApprovalStatus(Status status) {
         return individualInvestorRepository.findByApprovalStatus(status);
@@ -313,5 +319,59 @@ public class InvestorService {
         } else {
             return null;
         }
+    }
+    
+    public List<InvestorInterestedListingDTO> getListings(Integer id) {
+        return investor_interestedListingRepository.findByInvestorId(id);
+    }
+
+
+    public ResponseDTO updateListing(List<Integer> id, InvestorInterestedListingDTO investorInterestedListingDTO) {
+        //make the listingid a type of listingDTO
+        var Listingid= id.get(0);
+        var investorId= id.get(1);
+        ListingDTO listingDTO = new ListingDTO();
+        listingDTO.setListingId(Listingid);
+
+        InvestorDTO investorDTO = new InvestorDTO();
+        investorDTO.setId(investorId);
+
+        Optional<InvestorInterestedListingDTO> listing= investor_interestedListingRepository.findByListingInvestor(listingDTO,investorId);
+        if (listing.isPresent()) {
+            InvestorInterestedListingDTO oldListing = listing.get();
+            oldListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
+            oldListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
+            oldListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
+            oldListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+            oldListing.setStatus(investorInterestedListingDTO.getStatus());
+            investor_interestedListingRepository.save(oldListing);
+            return GlobalService.response("Success","Listing updated Successfully");
+        } else {
+            Optional<CounterProposalDTO> counterProposal= counterProposalRepository.findByListingInvestorId(Listingid,investorId);
+            if(counterProposal.isPresent()){
+                InvestorInterestedListingDTO newListing = new InvestorInterestedListingDTO();
+                newListing.setId(new InvestorInterestedListingDTO.CompositeKey(investorDTO, listingDTO));
+                newListing.setAmountFinalized(investorInterestedListingDTO.getAmountFinalized());
+                newListing.setReturnEquityPercentage(investorInterestedListingDTO.getReturnEquityPercentage());
+                newListing.setReturnUnitProfitPercentage(investorInterestedListingDTO.getReturnUnitProfitPercentage());
+                newListing.setInvestorProofDocument(investorInterestedListingDTO.getInvestorProofDocument());
+                newListing.setStatus(investorInterestedListingDTO.getStatus());
+                newListing.setInterestedDate(counterProposal.get().getDate());
+                investor_interestedListingRepository.save(newListing);
+                //delete the counter proposal
+                counterProposalRepository.delete(counterProposal.get());
+                return GlobalService.response("Success","Listing updated Successfully");
+            }else{
+                return GlobalService.response("Error","Listing not found");
+            }
+        }
+    }
+
+    public String getdoc(Integer id) {
+        return investor_interestedListingRepository.findByListingId(id).getInvestorProofDocument();
+    }
+
+    public List<CounterProposalDTO> getCounters(Integer id) {
+        return counterProposalRepository.findByInvestorId(id);
     }
 }
