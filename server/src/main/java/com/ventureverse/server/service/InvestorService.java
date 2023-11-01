@@ -15,6 +15,7 @@ import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -148,9 +149,9 @@ public class InvestorService {
     }
     
     public List<Map<String, String>> getInterestedListings(Integer id) {
-        List<InvestorInterestedListingDTO> listings=investorInterestedListingRepository.findPendingListings(id);
+        List<InvestorInterestedListingDTO> listings=investor_interestedListingRepository.findPendingListings(id);
         List<CounterProposalDTO> proposals=counterProposalRepository.findAll();
-        List<InvestorInterestedListingDTO> completedListings=investorInterestedListingRepository.findByInvestorId(id);
+        List<InvestorInterestedListingDTO> completedListings=investor_interestedListingRepository.findByInvestorId(id);
 
         //take completed listing ids to a list
         List<Integer> completedListingIds = new ArrayList<>();
