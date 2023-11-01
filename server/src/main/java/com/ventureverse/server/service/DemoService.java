@@ -274,6 +274,12 @@ public class DemoService {
 
            List<EntrepreneurDTO> allEntrepreneur = entrepreneurRepository.findAll();
 
+           Double Total_Total_Sale_Projections_This_Year = 0.0;
+           Double Total_Total_Sale_Projections_Next_Year = 0.0;
+           Double Total_Net_Income_Last_Year= 0.0;
+           Double Total_Gross_Income_Last_Year =0.0;
+           Double Total_Total_Lifetime_Sales =0.0;
+
            for(EntrepreneurDTO EntrepreneurOneDTO : allEntrepreneur){
                List<ListingDTO>  EnterLists =  listingRepository.findAllByEntrepreneurId(EntrepreneurOneDTO);
                Long ListCount  =  listingRepository.getCountById(EntrepreneurOneDTO);
@@ -283,6 +289,10 @@ public class DemoService {
                Double  Net_Income_Last_Year= 0.0;
                Double Gross_Income_Last_Year =0.0;
                Double Total_Lifetime_Sales =0.0;
+
+
+
+
                Integer Score=0;
                Double Total_Funding_Raised=0.0;
                Double Project_Success_Rate=0.0;
@@ -299,23 +309,23 @@ public class DemoService {
                for(ListingDTO ListOneDTO : EnterLists){
                    if(ListOneDTO.getSalesProjectionThisYear()!=null){
                        Total_Sale_Projections_This_Year = Total_Sale_Projections_This_Year + ListOneDTO.getSalesProjectionThisYear();
-
+                       Total_Total_Sale_Projections_This_Year=Total_Total_Sale_Projections_This_Year+Total_Sale_Projections_This_Year;
                    }
                    if(ListOneDTO.getSalesProjectionNextYear()!=null){
                        Total_Sale_Projections_Next_Year = Total_Sale_Projections_Next_Year + ListOneDTO.getSalesProjectionNextYear();
-
+                       Total_Total_Sale_Projections_Next_Year= Total_Total_Sale_Projections_Next_Year +  Total_Sale_Projections_Next_Year;
                    }
                    if(ListOneDTO.getLastYearNetIncome()!=null){
                        Net_Income_Last_Year = Net_Income_Last_Year + ListOneDTO.getLastYearNetIncome();
-
+                       Total_Net_Income_Last_Year=Total_Net_Income_Last_Year+Net_Income_Last_Year;
                    }
                    if(ListOneDTO.getLastYearGrossIncome()!=null){
                        Gross_Income_Last_Year = Gross_Income_Last_Year + ListOneDTO.getLastYearGrossIncome();
-
+                       Total_Gross_Income_Last_Year=Total_Gross_Income_Last_Year+Gross_Income_Last_Year;
                    }
                    if(ListOneDTO.getLifetimeSales()!=null){
                        Total_Lifetime_Sales=  Total_Lifetime_Sales + ListOneDTO.getLifetimeSales();
-
+                       Total_Total_Lifetime_Sales=Total_Total_Lifetime_Sales+Total_Lifetime_Sales;
                    }
                    if(ListOneDTO.getAttemptsToGrow()!=null){
                        Successful_Business_Building_Attempts = Successful_Business_Building_Attempts + Integer.parseInt(ListOneDTO.getAttemptsToGrow());
@@ -413,7 +423,7 @@ if(Gross_Income_Last_Year > 0){
 //
 //           If (Successful Business Building Attempts > R) then
 //           Score += 3
-if(Successful_Business_Building_Attempts >0){
+if(Successful_Business_Building_Attempts >5){
     Score += 3;
 }
 
