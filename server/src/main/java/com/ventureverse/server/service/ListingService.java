@@ -328,8 +328,6 @@ public class ListingService {
         // Find the latest listing object relevant to the user id
         String status = listingRepository.findLatestListingStatus(entrepreneur);
 
-        System.out.println(status);
-
         if (status.equals("Active")) {
             return GlobalService.response("Success", "Active listing found");
         } else {

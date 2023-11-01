@@ -208,7 +208,6 @@ public class DemoService {
         // System.out.println(user.getRole());
         if (user.getRole().equals(Role.ENTREPRENEUR)) {
             int array_count = 0;
-            System.out.println("ENTREPRENEUR");
 
             double Total_Total_Sale_Projections_This_Year = 0.0;
             double Total_Total_Sale_Projections_Next_Year = 0.0;
@@ -361,11 +360,6 @@ public class DemoService {
                 }
             }
 
-            System.out.println(array1);
-            System.out.println("\n");
-            System.out.println(array2);
-
-
             ALL.add(array2);
             ALL.add(array1);
             return ALL;
@@ -377,8 +371,6 @@ public class DemoService {
 
 
             if (user.getRole().equals(Role.INDIVIDUAL_INVESTOR)) {
-
-                System.out.println("INDIVIDUAL_INVESTOR");
 
                 List<IndividualInvestorDTO> allINDIVIDUAL_INVESTOR = individualInvestorRepository.findAll();
 
@@ -449,7 +441,6 @@ public class DemoService {
 
 
             if (user.getRole().equals(Role.ENTERPRISE_INVESTOR)) {
-                System.out.println("ENTERPRISE_INVESTOR");
 
 
                 List<EnterpriseInvestorDTO> EnterpriseInvestor = enterpriseInvestorRepository.findAll();
@@ -547,11 +538,6 @@ public class DemoService {
                     break;
                 }
             }
-
-            System.out.println(array1);
-            System.out.println("\n");
-            System.out.println(array2);
-
 
             ALL.add(array2);
             ALL.add(array1);

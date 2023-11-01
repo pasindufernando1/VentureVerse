@@ -60,9 +60,7 @@ public class DemoController {
             @RequestBody DetailsDTO complainRequest,
             @PathVariable Integer id
     ) {
- //       System.out.println(complainRequest);
      ComplainDTO IgnoreComplain = demoService.addComplain(id,complainRequest);
-//
      if(IgnoreComplain !=null){
             return ResponseEntity.ok("  done successfully");
       }
@@ -74,8 +72,7 @@ public class DemoController {
     @GetMapping("/EntrepreneurLeaderboard")
     public List<Object[]> entrepreneurLeaderboard() {
         List<Object[]> AllEnter = demoService.entrepreneurLeaderboard();
-       System.out.println(AllEnter);
-       // return ResponseEntity.ok("  done successfully");
+
         return AllEnter;
     }
 
@@ -83,8 +80,6 @@ public class DemoController {
     @GetMapping("/InvestorLeaderboard")
     public List<Object[]> InvestorLeaderboard() {
         List<Object[]> AllObjects = demoService.investorLeaderboard();
-        System.out.println(AllObjects);
-        // return ResponseEntity.ok("  done successfully");
         return AllObjects;
     }
 
@@ -103,7 +98,6 @@ public class DemoController {
     public ResponseEntity<String> MarkedComplains(
             @PathVariable Integer id
     ){
-        System.out.println("hi");
         ComplainDTO MarkedComplains = demoService.MarkedComplains(id);
 
         if(MarkedComplains !=null){
@@ -138,8 +132,6 @@ public class DemoController {
             @PathVariable Integer id
     )
     {
-
-        System.out.println("Awa");
         return demoService.LeaderboardBothService(id);
 
     }

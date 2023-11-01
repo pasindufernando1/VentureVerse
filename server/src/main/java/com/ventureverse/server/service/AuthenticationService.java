@@ -315,14 +315,12 @@ public class AuthenticationService {
 
         //Get the user image of the user
         var profileImage=userRepository.getimage(user.getId());
-        System.out.println(profileImage);
 
         String rootDirectory = System.getProperty("user.dir");
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
 
         Path path = Paths.get(imageUploadPath,profileImage);
         byte[] image = Files.readAllBytes(path);
-        System.out.println(image);
 
         user.setStatus(Chat.ONLINE);
         user.setLastLogin(null);

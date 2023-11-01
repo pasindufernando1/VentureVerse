@@ -184,10 +184,8 @@ public class EntrepreneurController {
 
     @GetMapping("/getEntrepreneurPic/{id}")
     public ResponseEntity<List<byte[]>> getEntrepreneurPic(@PathVariable List<Integer> id) throws IOException {
-        System.out.println("id = " + id);
         List<byte[]> img = new ArrayList<>();
         for ( Integer i : id) {
-            System.out.println("i = " + i);
             String entrepreneurPic = entrepreneurService.getEntrepreneurPic(i);
 
             String rootDirectory = System.getProperty("user.dir");
@@ -214,7 +212,6 @@ public class EntrepreneurController {
     @GetMapping("/getListingDetails/{id}")
     public ResponseEntity<ListingDTO> getListingDetails(@PathVariable Integer id) {
         ListingDTO listingDTO = entrepreneurService.getListingDetails(id);
-        System.out.println("listingDTO = " + listingDTO);
         if (listingDTO == null) {
             return ResponseEntity.notFound().build();
         }

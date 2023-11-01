@@ -36,8 +36,6 @@ public class FileUploadController {
         //Path to save the thumbnail
         String thumbnailUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
 
-        System.out.println("imageUploadPath: " + imageUploadPath);
-        System.out.println("videoUploadPath: " + videoUploadPath);
 
         try {
             //If there exists images in the request

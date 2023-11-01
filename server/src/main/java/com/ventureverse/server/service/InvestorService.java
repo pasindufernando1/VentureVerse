@@ -82,7 +82,6 @@ public class InvestorService {
     }
 
     public List<Map<String, String>> getUserInterest() {
-        System.out.println("Inside getUserInterest");
         List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAll();
         List<Map<String, String>> userMap = new ArrayList<>();
 
@@ -104,7 +103,6 @@ public class InvestorService {
     }
 
     // public List<Map<String, String>> getUserInterest() {
-    //     System.out.println("Inside getUserInterest");
     //     List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
     //     List<Map<String, String>> userMap = new ArrayList<>();
 
@@ -177,7 +175,6 @@ public class InvestorService {
             }
         }
 
-        System.out.println("listingInvestorMap: " + listingInvestorMap);
         List<Map<String, String>> userMap = new ArrayList<>();
 
         for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
@@ -228,7 +225,6 @@ public class InvestorService {
     //         }
     //     }
 
-    //     System.out.println("listingInvestorMap: " + listingInvestorMap);
     //     List<Map<String, String>> userMap = new ArrayList<>();
 
     //     for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
@@ -273,7 +269,6 @@ public class InvestorService {
             );
             userMap.add(user);
         }
-        System.out.println(userMap);
         return userMap;
     }
 
@@ -492,7 +487,6 @@ public class InvestorService {
 //                userMap.add(user);
 //            }
 //        }
-//        System.out.println("userMap: " + userMap);
 //        return userMap;
 //    }
 
@@ -513,7 +507,6 @@ public class InvestorService {
 //                userMap.add(user);
 //            }
 //        }
-//        System.out.println("userMap: " + userMap);
 //        return userMap;
 //    }
 
