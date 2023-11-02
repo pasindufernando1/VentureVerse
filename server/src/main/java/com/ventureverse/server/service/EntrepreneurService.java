@@ -236,7 +236,9 @@ public class EntrepreneurService {
             }else {
                 investorName = enterpriseInvestorRepository.findById(list.getId().getInvestorId().getId()).orElse(null).getBusinessName();
             }
+
             Map<String, String> user = Map.of(
+                    "id", list.getId().getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", list.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
@@ -262,6 +264,7 @@ public class EntrepreneurService {
                 investorName = enterpriseInvestorRepository.findById(prop.getInvestorId().getId()).orElse(null).getBusinessName();
             }
             Map<String, String> user = Map.of(
+                    "id", prop.getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", prop.getAmount().toString(),
                     "type","Counter",
