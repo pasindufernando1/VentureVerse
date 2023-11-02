@@ -1,6 +1,8 @@
 package com.ventureverse.server.model.normal;
 
 import com.ventureverse.server.enumeration.Chat;
+import com.ventureverse.server.enumeration.Role;
+import com.ventureverse.server.model.entity.UserDTO;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
@@ -88,4 +90,22 @@ public class DetailsDTO {
     private String time;
     private Integer entrepreneurId;
     private Integer investorId;
+
+    //CHAT
+    private Integer id;
+    private UserDTO sender;
+    private UserDTO receiver;
+    private String roomOwnerName;
+    private byte[] roomOwnerImage;
+    @Enumerated(EnumType.STRING)
+    private Role roomOwnerRole;
+    @Enumerated(EnumType.STRING)
+    private Chat roomOwnerStatus;
+    private Timestamp roomOwnerLastLogin;
+    private String message;
+    private Timestamp timestamp;
+    @Enumerated(EnumType.STRING)
+    private Chat type;
+    @Enumerated(EnumType.STRING)
+    private Chat status;
 }

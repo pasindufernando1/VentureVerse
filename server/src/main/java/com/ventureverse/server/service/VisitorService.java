@@ -34,7 +34,7 @@ public class VisitorService {
 
         String rootDirectory = System.getProperty("user.dir");
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
-        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profiles";
+        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
 
         Listings.forEach(listing -> {
             Path imagePath = Paths.get(imageUploadPath, listing.getThumbnail());

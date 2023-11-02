@@ -2,10 +2,14 @@ import React, {useState, useEffect} from "react";
 import { Button, Header, Alert} from "../webcomponent";
 import { Link } from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
+
 
 let i;
 
 const ViewCoAdmin = (props) => {
+
+    const {auth} = useAuth();
     const {get, put} = useAxiosMethods();
     const [response, setResponse] = useState([]);
     const [banResponse,setBanResponse] = useState(null);
@@ -99,11 +103,18 @@ const ViewCoAdmin = (props) => {
                             </button>
                         </div>
                     </div>
-                    <div>
-                            <Button>
-                                <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                            </Button>
-                    </div>
+                    {
+                        auth?.role === "ADMIN" ? (
+                            <div>
+                                <Button>
+                                    <Link to="/admin/add-co-admin">Add New Co Admin</Link>
+                                </Button>
+                            </div>
+                        ) : (
+                            <></>
+                        )
+                    }
+
                 </div>
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-[15px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
