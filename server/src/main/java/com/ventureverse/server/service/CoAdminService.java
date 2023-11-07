@@ -1,6 +1,8 @@
 package com.ventureverse.server.service;
+
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.AdminDTO;
 import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.repository.AdminRepository;
@@ -19,8 +21,7 @@ import java.util.Optional;
         private final UserRepository userRepository;
 
         public List<AdminDTO> getAllCoAdmins() {
-            System.out.println(adminRepository.findAllByRole(Role.CO_ADMIN));
-            return adminRepository.findAllByRole(Role.CO_ADMIN);
+            return adminRepository.findAllByRole(Role.CO_ADMIN, Status.APPROVED);
         }
         public AdminDTO getDetails(Integer id) {
             return adminRepository.findAllById(id);
@@ -56,20 +57,9 @@ import java.util.Optional;
             }
         }
         public UserDTO banCoAdmin (Integer id) {
-            Optional<UserDTO> existingUserOptional = userRepository.findById(id);
-
-            if (existingUserOptional.isPresent()) {
-                UserDTO existingUser = existingUserOptional.get();
-
-                existingUser.setApprovalStatus(Status.PENDING);
-
-                // Update other fields as needed...
-
-                // Save the updated co-admin entity back to the database
-                return userRepository.save(existingUser);
-            } else {
-                return null;
-            }
+            UserDTO user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
+            user.setApprovalStatus(Status.BANNED);
+            return userRepository.save(user);
         }
 
 

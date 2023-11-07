@@ -77,7 +77,7 @@ const Inbox = () => {
                 room = {
                     id: roomOwner?.id,
                     name: name,
-                    image: roomOwner?.profileImage,
+                    image: data?.roomOwnerImage,
                     lastSeen: lastSeen,
                     lastMessageDate: lastMessageDate,
                     lastMessage: data?.message
@@ -119,7 +119,7 @@ const Inbox = () => {
 
     useEffect(() => {
 
-        if (rooms.length === 0) return;
+        if (data === null && rooms.length === 0) return;
 
         if (data?.id) {
             if (isExist(rooms, data?.id)) {
@@ -130,7 +130,7 @@ const Inbox = () => {
                     id: data?.id,
                     name: data?.name,
                     image: data?.profileImage,
-                    lastSeen: "Last Seen 12.20 A.M.",
+                    lastSeen: "",
                     lastMessageDate: "",
                     lastMessage: ""
                 }
@@ -238,7 +238,7 @@ const Inbox = () => {
                                     <div
                                         className="flex items-center justify-center gap-4 w-full cursor-pointer">
                                         <Avatar
-                                            src={`assets/images/user/${room.image}`}
+                                            src={`data:application/img;base64,${room.image}`}
                                             alt="avatar"
                                             size="sm"
                                         />
@@ -272,7 +272,7 @@ const Inbox = () => {
                                     <div className="flex w-full px-[1rem] justify-between items-center">
                                         <div className="flex items-center justify-center gap-4 w-full cursor-pointer">
                                             <Avatar
-                                                src={`assets/images/user/${rooms[currentRoom[1]].image}`}
+                                                src={`data:application/img;base64,${rooms[currentRoom[1]].image}`}
                                                 alt="avatar"
                                             />
                                             <div className="w-full">

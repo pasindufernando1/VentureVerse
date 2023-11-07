@@ -2,46 +2,32 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
-import com.ventureverse.server.model.entity.EnterpriseInvestorDTO;
-import com.ventureverse.server.model.entity.IndividualInvestorDTO;
-import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
-import com.ventureverse.server.repository.EnterpriseInvestorRepository;
-import com.ventureverse.server.repository.IndividualInvestorRepository;
-import com.ventureverse.server.repository.IndustrySectorRepository;
-import com.ventureverse.server.repository.InvestorInterestedSectorRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
+@AllArgsConstructor
 public class InvestorService {
     private final IndividualInvestorRepository individualInvestorRepository;
     private final InvestorInterestedSectorRepository investorInterestedSectorRepository;
-    private final Investor_InterestedListingRepository investor_interestedListingRepository;
-    private final CounterProposalRepository counterProposalRepository;
-    private final UserRepository userRepository;
-    private final ScheduleRepository scheduleRepository;
-    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
+    private final Investor_InterestedListingRepository investorInterestedListingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
+    private final ScheduleRepository scheduleRepository;
+    private final CounterProposalRepository counterProposalRepository;
+    private final EnterpriseInvestorRepository enterpriseInvestorRepository;
+    private final Investor_InterestedListingRepository investor_interestedListingRepository;
+    private final UserRepository userRepository;
 
-    public InvestorService(IndividualInvestorRepository individualInvestorRepository, InvestorInterestedSectorRepository investorInterestedSectorRepository, IndustrySectorRepository industrySectorRepository, Investor_InterestedListingRepository investorInterestedListingRepository, CounterProposalRepository counterProposalRepository, UserRepository userRepository, ScheduleRepository scheduleRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository) {
-        this.individualInvestorRepository = individualInvestorRepository;
-        this.investorInterestedSectorRepository = investorInterestedSectorRepository;
-        this.investor_interestedListingRepository = investorInterestedListingRepository;
-        this.counterProposalRepository = counterProposalRepository;
-        this.userRepository = userRepository;
-        this.scheduleRepository = scheduleRepository;
-        this.enterpriseInvestorRepository = enterpriseInvestorRepository;
-        this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
-    }
+
+
+
     public IndividualInvestorDTO updateIndividualInvestor(IndividualInvestorDTO updatedInvestor, Integer id) {
         Integer individualInvestorId = updatedInvestor.getId();
 
@@ -95,9 +81,204 @@ public class InvestorService {
         return individualInvestorRepository.findById(i).orElse(null);
     }
 
+    public List<Map<String, String>> getUserInterest() {
+        List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAll();
+        List<Map<String, String>> userMap = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -12);
+
+        for(InvestorInterestedListingDTO interest : interests) {
+            if(interest.getInterestedDate().after(calendar.getTime())){
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String publishDate = dateFormat.format(interest.getInterestedDate());
+                Map<String, String> user = Map.of(
+                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+                        "inerestedDate", publishDate
+                );
+                userMap.add(user);
+            }
+        }
+        return userMap;
+    }
+
+    // public List<Map<String, String>> getUserInterest() {
+    //     List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
+    //     List<Map<String, String>> userMap = new ArrayList<>();
+
+    //     Calendar calendar = Calendar.getInstance();
+    //     calendar.add(Calendar.MONTH, -12);
+    //     return userMap;
+    // }
+
+    public List<Map<String, String>> getInvestedAmount(Integer id) {
+        List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findByInvestorId(id);
+        List<Map<String, String>> userMap = new ArrayList<>();
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -12);
+
+        for(InvestorInterestedListingDTO interest : interests) {
+            if(interest.getInterestedDate().after(calendar.getTime())){
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                String publishDate = dateFormat.format(interest.getFinalizedDate());
+                Map<String, String> user = Map.of(
+                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
+                        "finalizeDate", publishDate,
+                        "amount", String.valueOf(interest.getAmountFinalized())
+                );
+                userMap.add(user);
+            }
+        }
+        return userMap;
+    }
+
+    public List<Map<String, String>> getProjects(Integer id) {
+        List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAllByInvestorId(id);
+        List<Map<String, String>> userMap = new ArrayList<>();
+
+        for(InvestorInterestedListingDTO interest : interests) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+                //handle null pointer exception for finalized date
+                String FinalizeDate = "";
+                if(interest.getFinalizedDate() != null){
+                    FinalizeDate = dateFormat.format(interest.getFinalizedDate());
+                }else {
+                    FinalizeDate= "Not Finalized";
+                }
+                String publishDate = dateFormat.format(interest.getInterestedDate());
+                Map<String, String> user = Map.of(
+                        "listingId", String.valueOf(interest.getId().getListingId().getListingId()),
+                        "interestedDate", publishDate,
+                        "finalizeDate", FinalizeDate
+                );
+                userMap.add(user);
+        }
+        return userMap;
+    }
+
+    public List<Map<String, String>> getInterestSectors() {
+        List<InvestorInterestedListingDTO> interests = investorInterestedListingRepository.findAll();
+
+        Map<Integer, List<Integer>> listingInvestorMap = new HashMap<>();
+        for(InvestorInterestedListingDTO interest : interests){
+            int listingId = interest.getId().getListingId().getListingId();
+            int investorId = interest.getId().getInvestorId().getId();
+            if(listingInvestorMap.containsKey(listingId)){
+                List<Integer> investors = listingInvestorMap.get(listingId);
+                investors.add(investorId);
+                listingInvestorMap.put(listingId, investors);
+            }else{
+                List<Integer> investors = new ArrayList<>();
+                investors.add(investorId);
+                listingInvestorMap.put(listingId, investors);
+            }
+        }
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+
+        for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
+            int listingId = entry.getKey();
+            List<Integer> investors = entry.getValue();
+
+            //for each investor get the sector
+            for(Integer investorId : investors){
+                //check whether that is completed or not
+                InvestorInterestedListingDTO interest = investorInterestedListingRepository.findByInvestorIdAndListingId(investorId, listingId);
+                if(interest.getFinalizedDate() == null){
+                    continue;
+                }
+                int amount = interest.getAmountFinalized();
+
+                List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
+                for(ListingIndustrySectorsDTO sector : sectors){
+                    if(sector.getId().getListingId().getListingId() == listingId){
+                        Map<String, String> user = Map.of(
+                                "listingId", String.valueOf(listingId),
+                                "sectorName", sector.getId().getSectorId().getName(),
+                                "amount", String.valueOf(amount)
+                        );
+                        userMap.add(user);
+                    }
+                }
+            }
+
+        }
+        return userMap;
+    }
+
+    // public List<Map<String, String>> getInterestSectors() {
+    //     List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
+
+    //     Map<Integer, List<Integer>> listingInvestorMap = new HashMap<>();
+    //     for(InvestorInterestedListingDTO interest : interests){
+    //         int listingId = interest.getId().getListingId().getListingId();
+    //         int investorId = interest.getId().getInvestorId().getId();
+    //         if(listingInvestorMap.containsKey(listingId)){
+    //             List<Integer> investors = listingInvestorMap.get(listingId);
+    //             investors.add(investorId);
+    //             listingInvestorMap.put(listingId, investors);
+    //         }else{
+    //             List<Integer> investors = new ArrayList<>();
+    //             investors.add(investorId);
+    //             listingInvestorMap.put(listingId, investors);
+    //         }
+    //     }
+
+    //     List<Map<String, String>> userMap = new ArrayList<>();
+
+    //     for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
+    //         int listingId = entry.getKey();
+    //         List<Integer> investors = entry.getValue();
+
+    //         //for each investor get the sector
+    //         for(Integer investorId : investors){
+    //             //check whether that is completed or not
+    //             InvestorInterestedListingDTO interest = investor_interestedListingRepository.findByInvestorIdAndListingId(investorId, listingId);
+    //             if(interest.getFinalizedDate() == null){
+    //                 continue;
+    //             }
+    //             int amount = interest.getAmountFinalized();
+
+    //             List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
+    //             for(ListingIndustrySectorsDTO sector : sectors){
+    //                 if(sector.getId().getListingId().getListingId() == listingId){
+    //                     Map<String, String> user = Map.of(
+    //                             "listingId", String.valueOf(listingId),
+    //                             "sectorName", sector.getId().getSectorId().getName(),
+    //                             "amount", String.valueOf(amount)
+    //                     );
+    //                     userMap.add(user);
+    //                 }
+    //             }
+    //         }
+
+    //     }
+    //     return userMap;
+    // }
+
+    public List<Map<String, String>> getMeetings(Integer id) {
+        List<ScheduleDTO> meetings=scheduleRepository.findMeetings(id);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for (ScheduleDTO meeting:meetings) {
+            Map<String, String> user = Map.of(
+                    "date",meeting.getDate().toString(),
+                    "time",meeting.getTime().toString(),
+                    "title",meeting.getTitle()
+            );
+            userMap.add(user);
+        }
+        return userMap;
+    }
+
     public List<InvestorInterestedListingDTO> getListings(Integer id) {
         return investor_interestedListingRepository.findPendingListingsOfInvestor(id);
     }
+
+    // public List<InvestorInterestedListingDTO> getListings(Integer id) {
+    //     return investor_interestedListingRepository.findByInvestorId(id);
+    // }
 
     public List<InvestorInterestedListingDTO> getListingsByListingId(ListingDTO listingDTO) {
         return investor_interestedListingRepository.findByListingid(listingDTO);
@@ -211,11 +392,11 @@ public class InvestorService {
     }
     
     public List<IndividualInvestorDTO> getAllIndividualInvestors() {
-        return individualInvestorRepository.findByRole(Role.INDIVIDUAL_INVESTOR);
+        return individualInvestorRepository.findByApprovalStatus(Status.APPROVED);
     }
 
     public List<EnterpriseInvestorDTO> getAllEnterpriseInvestors() {
-        return enterpriseInvestorRepository.findByRole(Role.ENTERPRISE_INVESTOR);
+        return enterpriseInvestorRepository.findByApprovalStatus(Status.APPROVED);
     }
 
     public IndividualInvestorDTO getIndividualInvestorById(Integer id) {
@@ -257,16 +438,32 @@ public class InvestorService {
             existingEnterpriseInvestor.setEmail(updatedEnterpriseInvestor.getEmail());
             existingEnterpriseInvestor.setContactNumber(updatedEnterpriseInvestor.getContactNumber());
             existingEnterpriseInvestor.setBusinessName(updatedEnterpriseInvestor.getBusinessName());
+            existingEnterpriseInvestor.setFirstLineAddress(updatedEnterpriseInvestor.getFirstLineAddress());
+            existingEnterpriseInvestor.setSecondLineAddress(updatedEnterpriseInvestor.getSecondLineAddress());
+            existingEnterpriseInvestor.setTown(updatedEnterpriseInvestor.getTown());
 
-        }
-        if(existingEnterpriseInvestor != null) {
-            return enterpriseInvestorRepository.save(existingEnterpriseInvestor);
+            enterpriseInvestorRepository.save(existingEnterpriseInvestor);
+            return existingEnterpriseInvestor;
+
         }
         else{
             return null;
         }
     }
 
+    public UserDTO banInvestor(Integer id) {
+        UserDTO user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        user.setApprovalStatus(Status.BANNED);
+        return userRepository.save(user);
+    }
+    
+    // public UserDTO banIndividualInvestor(Integer id) {
+    //     UserDTO user  = userRepository.findByUserID(id);
+    //     user.setApprovalStatus(Status.PENDING);
+    //     userRepository.save(user);
+    //     return user;
+    // }
+    
     public String getadmindoc(Integer investorId, Integer listingId) {
         return investor_interestedListingRepository.findByListingInvestorId(listingId,investorId);
     }
@@ -274,50 +471,11 @@ public class InvestorService {
         return individualInvestorRepository.save(investor);
     }
 
-   public long countIndividualInvestors (){
-        return individualInvestorRepository.count();
-   }
-    public List<Map<String, String>> getUserInterest() {
-        System.out.println("Inside getUserInterest");
-        List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
-        List<Map<String, String>> userMap = new ArrayList<>();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -12);
-        return userMap;
+    public long countIndividualInvestors (){
+            return individualInvestorRepository.count();
     }
 
-    public UserDTO banIndividualInvestor(Integer id) {
-        UserDTO user  = userRepository.findByUserID(id);
-        user.setApprovalStatus(Status.PENDING);
-        userRepository.save(user);
-        return user;
-    }
 
-    public UserDTO banEnterpriseInvestor(Integer id) {
-        Optional<UserDTO> existingUserOptional = userRepository.findByEnterprice(id);
-
-        System.out.println("existingUserOptional = " + existingUserOptional);
-
-        if (existingUserOptional.isPresent()) {
-            UserDTO existingUser = existingUserOptional.get();
-
-            System.out.println("existingUser = " + existingUser);
-
-            existingUser.setApprovalStatus(Status.PENDING);
-
-            System.out.println(existingUser.getApprovalStatus());
-
-            // Update other fields as needed...
-
-            // Save the updated co-admin entity back to the database
-            userRepository.save(existingUser);
-
-            return existingUser;
-        } else {
-            return null;
-        }
-    }
 //        for(InvestorInterestedListingDTO interest : interests) {
 //            if(interest.getInterestedDate().after(calendar.getTime())){
 //                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
@@ -329,7 +487,6 @@ public class InvestorService {
 //                userMap.add(user);
 //            }
 //        }
-//        System.out.println("userMap: " + userMap);
 //        return userMap;
 //    }
 
@@ -350,121 +507,16 @@ public class InvestorService {
 //                userMap.add(user);
 //            }
 //        }
-//        System.out.println("userMap: " + userMap);
 //        return userMap;
 //    }
 
-    public List<Map<String, String>> getInvestedAmount(Integer id) {
-        List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findByInvestorId(id);
-        List<Map<String, String>> userMap = new ArrayList<>();
+    
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, -12);
+    
 
-        for(InvestorInterestedListingDTO interest : interests) {
-            if(interest.getInterestedDate().after(calendar.getTime())){
-                SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-                String publishDate = dateFormat.format(interest.getFinalizedDate());
-                Map<String, String> user = Map.of(
-                        "id", String.valueOf(interest.getId().getInvestorId().getId()),
-                        "finalizeDate", publishDate,
-                        "amount", String.valueOf(interest.getAmountFinalized())
-                );
-                userMap.add(user);
-            }
-        }
-        return userMap;
-    }
+    
 
-    public List<Map<String, String>> getProjects(Integer id) {
-        List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAllByInvestorId(id);
-        List<Map<String, String>> userMap = new ArrayList<>();
-
-        for(InvestorInterestedListingDTO interest : interests) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
-            //handle null pointer exception for finalized date
-            String FinalizeDate = "";
-            if(interest.getFinalizedDate() != null){
-                FinalizeDate = dateFormat.format(interest.getFinalizedDate());
-            }else {
-                FinalizeDate= "Not Finalized";
-            }
-            String publishDate = dateFormat.format(interest.getInterestedDate());
-            Map<String, String> user = Map.of(
-                    "listingId", String.valueOf(interest.getId().getListingId().getListingId()),
-                    "interestedDate", publishDate,
-                    "finalizeDate", FinalizeDate
-            );
-            userMap.add(user);
-        }
-        return userMap;
-    }
-
-    public List<Map<String, String>> getInterestSectors() {
-        List<InvestorInterestedListingDTO> interests = investor_interestedListingRepository.findAll();
-
-        Map<Integer, List<Integer>> listingInvestorMap = new HashMap<>();
-        for(InvestorInterestedListingDTO interest : interests){
-            int listingId = interest.getId().getListingId().getListingId();
-            int investorId = interest.getId().getInvestorId().getId();
-            if(listingInvestorMap.containsKey(listingId)){
-                List<Integer> investors = listingInvestorMap.get(listingId);
-                investors.add(investorId);
-                listingInvestorMap.put(listingId, investors);
-            }else{
-                List<Integer> investors = new ArrayList<>();
-                investors.add(investorId);
-                listingInvestorMap.put(listingId, investors);
-            }
-        }
-
-        System.out.println("listingInvestorMap: " + listingInvestorMap);
-        List<Map<String, String>> userMap = new ArrayList<>();
-
-        for(Map.Entry<Integer, List<Integer>> entry : listingInvestorMap.entrySet()){
-            int listingId = entry.getKey();
-            List<Integer> investors = entry.getValue();
-
-            //for each investor get the sector
-            for(Integer investorId : investors){
-                //check whether that is completed or not
-                InvestorInterestedListingDTO interest = investor_interestedListingRepository.findByInvestorIdAndListingId(investorId, listingId);
-                if(interest.getFinalizedDate() == null){
-                    continue;
-                }
-                int amount = interest.getAmountFinalized();
-
-                List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findAll();
-                for(ListingIndustrySectorsDTO sector : sectors){
-                    if(sector.getId().getListingId().getListingId() == listingId){
-                        Map<String, String> user = Map.of(
-                                "listingId", String.valueOf(listingId),
-                                "sectorName", sector.getId().getSectorId().getName(),
-                                "amount", String.valueOf(amount)
-                        );
-                        userMap.add(user);
-                    }
-                }
-            }
-
-        }
-        return userMap;
-    }
-
-    public List<Map<String, String>> getMeetings(Integer id) {
-        List<ScheduleDTO> meetings=scheduleRepository.findMeetings(id);
-
-        List<Map<String, String>> userMap = new ArrayList<>();
-        for (ScheduleDTO meeting:meetings) {
-            Map<String, String> user = Map.of(
-                    "date",meeting.getDate().toString(),
-                    "time",meeting.getTime().toString(),
-                    "title",meeting.getTitle()
-            );
-            userMap.add(user);
-        }
-        return userMap;
-    }
+    
 
     public List<InvestorInterestedListingDTO> getPendingListings(Integer id) {
         return investor_interestedListingRepository.findPendingListings(id);

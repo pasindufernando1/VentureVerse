@@ -2,20 +2,21 @@ package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.ComplainDTO;
-import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.ChatDTO;
+import com.ventureverse.server.model.entity.ComplainDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -178,9 +179,56 @@ public class UserService {
         return complainMap;
     }
 
-    public List<ChatDTO> getChats(Integer id) {
-
+    public List<DetailsDTO> getChats(Integer id) {
         var user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User not found"));
-        return chatRepository.findBySenderReceiver(user);
+        List<ChatDTO> Chats = chatRepository.findBySenderReceiver(user);
+
+        List<DetailsDTO> Details = new ArrayList<>();
+
+        for (ChatDTO Chat : Chats) {
+
+            String rootDirectory = System.getProperty("user.dir");
+            String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+            String profileImage;
+
+            if (Objects.equals(Chat.getSender().getId(), id)) {
+                profileImage = Chat.getSender().getProfileImage();
+            } else {
+                profileImage = Chat.getReceiver().getProfileImage();
+            }
+
+            Path imagePath = Paths.get(profileUploadPath, profileImage);
+
+            try {
+                Details.add(DetailsDTO.builder()
+                        .sender(Chat.getSender())
+                        .receiver(Chat.getReceiver())
+                        .roomOwnerImage(Files.readAllBytes(imagePath))
+                        .message(Chat.getMessage())
+                        .timestamp(Chat.getTimestamp())
+                        .type(Chat.getType())
+                        .status(Chat.getStatus())
+                        .build());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+            return Details;
+    }
+
+    public byte[] getProfileImage(Integer id) {
+
+        String image = userRepository.getimage(id);
+
+        String rootDirectory = System.getProperty("user.dir");
+        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+        Path imagePath = Paths.get(profileUploadPath, image);
+
+        try {
+            return Files.readAllBytes(imagePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

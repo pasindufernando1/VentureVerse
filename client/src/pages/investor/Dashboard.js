@@ -40,6 +40,8 @@ const Dashboard = () => {
         get(`/investors/schedules/${id}`,setSchedules);
     }, []);
 
+    console.log(schedules);
+
     useEffect(() => {
         get(`/investors/interestedListings/${id}`,setListings);
     }, []);

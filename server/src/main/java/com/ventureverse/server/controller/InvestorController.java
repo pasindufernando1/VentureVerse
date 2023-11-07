@@ -1,12 +1,10 @@
 package com.ventureverse.server.controller;
 
-import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
-import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.InvestorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -61,21 +59,18 @@ public class InvestorController {
     @GetMapping("/IndividualInvestor/view")
     public ResponseEntity<List<IndividualInvestorDTO>> getAllIndividualInvestors() {
         List<IndividualInvestorDTO> individualInvestors = investorService.getAllIndividualInvestors();
-        System.out.println(individualInvestors);
         return ResponseEntity.ok(individualInvestors);
 
     }
     @GetMapping("/EnterpriseInvestor/view")
     public ResponseEntity<List<EnterpriseInvestorDTO>> getAllEnterpriseInvestors() {
         List<EnterpriseInvestorDTO> enterpriseInvestors = investorService.getAllEnterpriseInvestors();
-        System.out.println(enterpriseInvestors);
         return ResponseEntity.ok(enterpriseInvestors);
 
     }
     @GetMapping("/IndividualInvestor/view/{id}")
     public ResponseEntity<IndividualInvestorDTO> getIndividualInvestorById(@PathVariable Integer id) {
         IndividualInvestorDTO individualInvestor = investorService.getIndividualInvestorById(id);
-        System.out.println(individualInvestor);
         return ResponseEntity.ok(individualInvestor);
 
     }
@@ -83,25 +78,90 @@ public class InvestorController {
     @PutMapping("/IndividualInvestors/update/{id}")
     public ResponseEntity<IndividualInvestorDTO> updateIndividualInvestors(@RequestBody IndividualInvestorDTO updatedIndividualInvestor, @PathVariable Integer id) {
         IndividualInvestorDTO individualInvestor = investorService.updateIndividualInvestor(updatedIndividualInvestor, id);
-        System.out.println(individualInvestor);
         return ResponseEntity.ok(individualInvestor);
 
     }
     @GetMapping("EnterpriseInvestor/view/{id}")
         public ResponseEntity<EnterpriseInvestorDTO> getEnterpriseInvestorById(@PathVariable Integer id) {
             EnterpriseInvestorDTO enterpriseInvestor = investorService.getEnterpriseInvestorById(id);
-            System.out.println(enterpriseInvestor);
             return ResponseEntity.ok(enterpriseInvestor);
 
         }
 @PutMapping("/EnterpriseInvestor/update/{id}")
     public ResponseEntity<EnterpriseInvestorDTO> updateEnterpriseInvestor(@RequestBody EnterpriseInvestorDTO updatedEnterpriseInvestor, @PathVariable Integer id) {
         EnterpriseInvestorDTO enterpriseInvestor = investorService.updateEnterpriseInvestor(updatedEnterpriseInvestor, id);
-        System.out.println(enterpriseInvestor);
         return ResponseEntity.ok(enterpriseInvestor);
 
     }
+    @PutMapping("/ban/{id}")
+    public ResponseEntity<ResponseDTO> banInvestor(@PathVariable Integer id) {
+        UserDTO individualInvestor = investorService.banInvestor(id);
 
+        if (individualInvestor != null) {
+            return ResponseEntity.ok(
+                    ResponseDTO.builder()
+                            .status("200")
+                            .message("User " + id + " Banned Successfully")
+                            .build()
+            );
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @GetMapping("/userInterest")
+    public ResponseEntity<List<Map<String,String>>> getUserInterest() {
+        List<Map<String,String>> interestedSectors = investorService.getUserInterest();
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
+    @GetMapping("/interestSectors")
+    public ResponseEntity<List<Map<String,String>>> getInterestSectors() {
+        List<Map<String,String>> interestedSectors = investorService.getInterestSectors();
+        if (interestedSectors.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedSectors);
+    }
+
+    @GetMapping("/InvestedAmount/{id}")
+    public ResponseEntity<List<Map<String,String>>> getInvestedAmount(@PathVariable Integer id) {
+        List<Map<String,String>> investedAmount = investorService.getInvestedAmount(id);
+        if (investedAmount.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(investedAmount);
+    }
+
+    @GetMapping("/projects/{id}")
+    public ResponseEntity<List<Map<String,String>>> getProjects(@PathVariable Integer id) {
+        List<Map<String,String>> projects = investorService.getProjects(id);
+        if (projects.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(projects);
+    }
+    @GetMapping("/schedules/{id}")
+    public ResponseEntity<List<Map<String,String>>> getMeetings(@PathVariable Integer id){
+        List<Map<String,String>> meetings= investorService.getMeetings(id);
+        if(meetings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(meetings);
+    }
+
+    @GetMapping("/interestedListings/{id}")
+    public ResponseEntity<List<Map<String,String>>> getInterestedListings(@PathVariable Integer id){
+        List<Map<String,String>> interestedListings= investorService.getInterestedListings(id);
+        if(interestedListings.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(interestedListings);
+    }
 
     @GetMapping("/interestListings/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> getInvestorById(@PathVariable Integer id) {
@@ -109,18 +169,15 @@ public class InvestorController {
         if (interestedListings.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        System.out.println("Interested listings" + interestedListings.size());
         return ResponseEntity.ok(interestedListings);
     }
 
     @GetMapping("/getcounters/{id}")
     public ResponseEntity<List<CounterProposalDTO>> getCounters(@PathVariable Integer id) {
         List<CounterProposalDTO> counters = investorService.getCounters(id);
-        System.out.println(counters.size());
 
         //Get all interested listings for the investor
         List<InvestorInterestedListingDTO> interestedListings = investorService.getPendingListings(id);
-        System.out.println(interestedListings.size());
 
         //For each counter, check if the listing is in the interested listings.If it is, remove it from the list
         for (int i = 0; i < counters.size(); i++) {
@@ -131,7 +188,6 @@ public class InvestorController {
             }
         }
 
-        System.out.println("Counter size" + counters.size());
         if (counters.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
@@ -168,22 +224,6 @@ public class InvestorController {
         return ResponseEntity.ok(investorService.updateListing(id, investorInterestedListingDTO));
     }
 
-    @GetMapping("/getInvestorPic/{id}")
-    public ResponseEntity<List<byte[]>> getInvestorPic(@PathVariable Integer id) throws IOException {
-        List<byte[]> img = new ArrayList<>();
-        String InvestorPic = entrepreneurService.getEntrepreneurPic(id);
-
-        String rootDirectory = System.getProperty("user.dir");
-        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
-
-        Path InvestorPath = Paths.get(imageUploadPath,InvestorPic);
-        img.add(Files.readAllBytes(InvestorPath));
-
-        if (InvestorPic.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok().body(img);
-    }
     @GetMapping("/interested-sectors-Ids/{id}")
     public ResponseEntity<List<Integer>> getInterestedSectorsIds(@PathVariable Integer id) {
         List<Integer> interestedSectors = investorService.findInterestedSectorsId(id);
@@ -202,79 +242,21 @@ public class InvestorController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/IndividualInvestor/ban/{id}")
-    public ResponseEntity<String> banIndividualInvestor(@PathVariable Integer id) {
+    
+    @GetMapping("/getInvestorPic/{id}")
+    public ResponseEntity<List<byte[]>> getInvestorPic(@PathVariable Integer id) throws IOException {
+        List<byte[]> img = new ArrayList<>();
+        String InvestorPic = entrepreneurService.getEntrepreneurPic(id);
 
-        UserDTO bannedIndividualInvestor =investorService.banIndividualInvestor(id);
-        System.out.println(bannedIndividualInvestor);
-        if (bannedIndividualInvestor != null) {
-            return ResponseEntity.ok("Individual Investor banned successfully");
-        } else {
+        String rootDirectory = System.getProperty("user.dir");
+        String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+
+        Path InvestorPath = Paths.get(imageUploadPath,InvestorPic);
+        img.add(Files.readAllBytes(InvestorPath));
+
+        if (InvestorPic.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-    }
-    @PutMapping("/EnterpriseInvestor/ban/{id}")
-    public ResponseEntity<String> banEnterpriseInvestor(@PathVariable Integer id) {
-        UserDTO bannedEnterpriseInvestor =investorService.banEnterpriseInvestor(id);
-        if (bannedEnterpriseInvestor != null) {
-            return ResponseEntity.ok("Enterprise Investor banned successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-
-    @GetMapping("/userInterest")
-    public ResponseEntity<List<Map<String,String>>> getUserInterest() {
-        List<Map<String,String>> interestedSectors = investorService.getUserInterest();
-        if (interestedSectors.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(interestedSectors);
-    }
-
-    @GetMapping("/interestSectors")
-    public ResponseEntity<List<Map<String,String>>> getInterestSectors() {
-        List<Map<String,String>> interestedSectors = investorService.getInterestSectors();
-        if (interestedSectors.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(interestedSectors);
-    }
-
-    @GetMapping("/InvestedAmount/{id}")
-    public ResponseEntity<List<Map<String,String>>> getInvestedAmount(@PathVariable Integer id) {
-        List<Map<String,String>> investedAmount = investorService.getInvestedAmount(id);
-        if (investedAmount.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(investedAmount);
-    }
-
-
-    @GetMapping("/projects/{id}")
-    public ResponseEntity<List<Map<String,String>>> getProjects(@PathVariable Integer id) {
-        List<Map<String,String>> projects = investorService.getProjects(id);
-        if (projects.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(projects);
-    }
-    @GetMapping("/schedules/{id}")
-    public ResponseEntity<List<Map<String,String>>> getMeetings(@PathVariable Integer id){
-        List<Map<String,String>> meetings= investorService.getMeetings(id);
-        if(meetings.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(meetings);
-    }
-
-    @GetMapping("/interestedListings/{id}")
-    public ResponseEntity<List<Map<String,String>>> getInterestedListings(@PathVariable Integer id){
-        List<Map<String,String>> interestedListings= investorService.getInterestedListings(id);
-        if(interestedListings.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(interestedListings);
+        return ResponseEntity.ok().body(img);
     }
 }

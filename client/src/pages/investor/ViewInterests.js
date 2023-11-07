@@ -28,10 +28,8 @@ function ViewInterests() {
 
     useEffect(() => {
         get(`/investors/interestListings/${id}`,setResponse);
-    }, []);
-
-    useEffect(() => {
         get(`/investors/getcounters/${id}`,setCounter);
+
     }, []);
 
     const registrationRequests = [];
@@ -85,9 +83,7 @@ function ViewInterests() {
             conferenceWindow.focus();
         }
     }
-    const handleGoToCalender = () => {
 
-    }
 
 
     const [showsuccessNotification, setshowsuccessNotification] = useState(false);
@@ -152,14 +148,12 @@ function ViewInterests() {
                                             {/* Two icons to start messaging and start video call */}
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center space-x-4 text-sm">
-                                                    <img src="/assets/images/chat.png" alt="View"
-                                                         className="cursor-pointer"/>
+                                                    <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
+                                                               <img src="/assets/images/chat.png" alt="View"
+                                                                    className="cursor-pointer"/>
+                                                            </Link>
                                                     <Popover placement="bottom">
                                                         <PopoverHandler>
-                                                            {/*<Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>*/}
-                                                            {/*    <img src="/assets/images/chat.png" alt="View"*/}
-                                                            {/*         className="cursor-pointer"/>*/}
-                                                            {/*</Link>*/}
                                                             <img src="/assets/images/videocall.png" alt="View"/>
                                                         </PopoverHandler>
                                                         <PopoverContent className="w-72">

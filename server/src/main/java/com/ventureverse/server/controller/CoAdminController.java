@@ -1,6 +1,8 @@
 package com.ventureverse.server.controller;
+
 import com.ventureverse.server.model.entity.AdminDTO;
 import com.ventureverse.server.model.entity.UserDTO;
+import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.CoAdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/coadmin")
+@RequestMapping("/api/coAdmin")
 @RequiredArgsConstructor
 public class CoAdminController {
 
@@ -18,7 +20,6 @@ public class CoAdminController {
     @GetMapping("/view")
     public ResponseEntity<List<AdminDTO>> getAllCoAdmins() {
         List<AdminDTO> coAdmins = coAdminService.getAllCoAdmins();
-        System.out.println(coAdmins);
         return ResponseEntity.ok(coAdmins);
     }
 
@@ -29,17 +30,13 @@ public class CoAdminController {
             return ResponseEntity.notFound().build();
         }
         else {
-            System.out.println(findCoAdmin);
             return ResponseEntity.ok(findCoAdmin);
         }
-
-
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<String> updateCoAdmin(@RequestBody AdminDTO updatedAdmin , @PathVariable Integer id) {
         AdminDTO updatedCoAdmin = coAdminService.updateCoAdmin(updatedAdmin, id);
-        System.out.println(updatedCoAdmin);
 
         if (updatedCoAdmin != null) {
             return ResponseEntity.ok("Co-admin updated successfully");
@@ -49,12 +46,16 @@ public class CoAdminController {
     }
 
     @PutMapping("/ban/{id}")
-    public ResponseEntity<String> banCoAdmin(@PathVariable Integer id) {
+    public ResponseEntity<ResponseDTO> banCoAdmin(@PathVariable Integer id) {
         UserDTO updatedCoAdmin = coAdminService.banCoAdmin(id);
-        System.out.println(updatedCoAdmin);
 
         if (updatedCoAdmin != null) {
-            return ResponseEntity.ok("Co-admin banned successfully");
+            return ResponseEntity.ok(
+                    ResponseDTO.builder()
+                            .status("200")
+                            .message("User " + id + " Banned Successfully")
+                            .build()
+            );
         } else {
             return ResponseEntity.notFound().build();
         }

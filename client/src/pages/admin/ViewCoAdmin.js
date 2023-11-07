@@ -1,48 +1,66 @@
 import React, {useState, useEffect} from "react";
-import { Input, Select, Button, Header, StatusPopUp } from "../webcomponent";
-import axios from '../../api/axios';
-
-import { Rating } from "@material-tailwind/react";
-import {json, Link} from "react-router-dom";
+import { Button, Header, Alert} from "../webcomponent";
+import { Link } from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
+import useAuth from "../../hooks/useAuth";
 
+
+let i;
 
 const ViewCoAdmin = (props) => {
-    const [rated, setRated] = React.useState(4);
-    const {get} = useAxiosMethods();
-    const {put} = useAxiosMethods();
+
+    const {auth} = useAuth();
+    const {get, put} = useAxiosMethods();
     const [response, setResponse] = useState([]);
+    const [banResponse,setBanResponse] = useState(null);
+    const [errorMsg, setErrorMsg] = useState({State: false, Type: "", Message: ""});
     const [search, setSearch] = useState("");
 
-
     useEffect(() => {
-        get("/coadmin/view", setResponse);
+        get("/coAdmin/view", setResponse);
     }, []);
 
-    const handleBan=  () => {
+    const handleBan =  (id) => {
 
-
-        put(`/coadmin/ban/${response[0].id}`, "", setResponse);
-        if (response.status === 200) {
-            console.log("Banned");
-
-        } else {
-          console.log("Not Banned Something went wong" );
-
-        }
+        put(`/coAdmin/ban/${id}`, "", setBanResponse);
+        i = id;
 
     }
 
     useEffect(() => {
-        console.log(response)
-    }, [response]);
 
-    //Convert response to an array
+        if (banResponse === null) {
+            return;
+        }
+
+        if (banResponse?.status === "200") {
+
+            setErrorMsg({State: true, Type: "Success", Message: banResponse?.message});
+            let index = response.findIndex(user => user.id === i);
+            const temp = [...response]
+            temp.splice(index,1)
+            setResponse(temp)
+
+        } else {
+            setErrorMsg({State: true, Type: "Error", Message: banResponse?.message});
+        }
+
+    }, [banResponse]);
+
+    useEffect(() => {
+        const interval = setTimeout(() => {
+            setErrorMsg({State: false, Type: "", Message: ""});
+            setBanResponse(null)
+        }, 2000);
+
+        // Cleanup the timer to prevent memory leaks
+        return () => clearTimeout(interval);
+    }, [response]);
 
     return(
         <div>
         <Header active="Co-Admins">
-            <br></br>        
+            <Alert Type={errorMsg.Type} Message={errorMsg.Message} State={errorMsg.State} />
             <main className="h-auto flex justify-center items-center g:h-screen">
             <div className="relative border-[2px] border-main-purple sm:rounded-lg p-2 w-full">
                 <h2 className="text-2xl font-extrabold my-5">
@@ -85,14 +103,18 @@ const ViewCoAdmin = (props) => {
                             </button>
                         </div>
                     </div>
-                    <div>
-                        {/* display button only if userrole is admin */}
+                    {
+                        auth?.role === "ADMIN" ? (
+                            <div>
+                                <Button>
+                                    <Link to="/admin/add-co-admin">Add New Co Admin</Link>
+                                </Button>
+                            </div>
+                        ) : (
+                            <></>
+                        )
+                    }
 
-                            <Button>
-                                <Link to="/admin/add-co-admin">Add New Co Admin</Link>
-                            </Button>
-
-                    </div>
                 </div>
                 <table className="w-full text-[15px]text-left text-gray-500 dark:text-gray-400">
                     <thead className="text-[15px] text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -117,58 +139,58 @@ const ViewCoAdmin = (props) => {
                         return search.toLowerCase() === ''
                             ? user
                             : user.email.toLowerCase().includes(search)})
-                        .map((user) => (
-                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 " key={user.id}>
+                        .map((user,key) => (
+                            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 " key={key}>
 
-                        <th scope="row"
-                            className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
+                            <th scope="row"
+                                className="flex items-center px-4 py-2 text-gray-700 whitespace-nowrap dark:text-white">
 
-                            <div className="pl-2 flex flex-col items-start w-1/5 ">
-                                <div className="text-[15px] font-semibold pr-4">{user.firstname+' '+user.lastname}</div>
-                                <div className="text-[13px] text-gray-500 dark:text-gray-400 ">{user.email}</div>
-                            </div>
-                        </th>
-                        <td className="px-12 py-3 text-sm">
-                            <div className="flex justify-center">
-                                {user.status === 'Online' ? (
-                                    <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
-                                ) : (
-                                    <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>
-                                )}
-                                <span className="text-gray-700 dark:text-gray-400">
-                                    {user.status}
-                                </span>
-                            </div>
-                        </td>
+                                <div className="pl-2 flex flex-col items-start w-1/5 ">
+                                    <div className="text-[15px] font-semibold pr-4">{user.firstname+' '+user.lastname}</div>
+                                    <div className="text-[13px] text-gray-500 dark:text-gray-400 ">{user.email}</div>
+                                </div>
+                            </th>
+                            <td className="px-12 py-3 text-sm">
+                                <div className="flex justify-center">
+                                    {user.status === 'ONLINE' ? (
+                                        <span className="w-2.5 h-2.5 bg-green-500 rounded-full mr-2"/>
+                                    ) : (
+                                        <span className="w-2.5 h-2.5 bg-red-500 rounded-full mr-2"/>
+                                    )}
+                                    <span className="text-gray-700 dark:text-gray-400">
+                                        {user.status}
+                                    </span>
+                                </div>
+                            </td>
 
-                        <td className="px-4 py-2 text-right">
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                                <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                            </svg>
-                            <Link to={`/admin/update-co-admin/${user.id} ` }>
-                            Update
-                            </Link>
-                        </button>
-                        <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
-                                viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
-                                <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
-                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
-                            </svg>
-                            Ban
-                        </button>
+                            <td className="px-4 py-2 text-right">
+                            <button
+                                className="inline-flex items-center px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white text-[15px] rounded-md m-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                                    <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
+                                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                <Link to={`/admin/update-co-admin/${user.id} ` }>
+                                Update
+                                </Link>
+                            </button>
+                            <button
+                                className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={() => handleBan(user.id)}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                                        d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"/>
+                                    <path strokeLinecap="round" clipRule="evenodd" strokeWidth="1.3"
+                                        d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                Ban
+                            </button>
 
-                        </td>
-                        </tr>  
+                            </td>
+                            </tr>
                         ))}
                     </tbody>
                 </table>

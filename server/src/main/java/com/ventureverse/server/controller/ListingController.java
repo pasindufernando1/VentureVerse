@@ -6,10 +6,10 @@ import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.EntrepreneurService;
 import com.ventureverse.server.service.InvestorService;
 import com.ventureverse.server.service.ListingService;
-import org.springframework.core.io.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.MediaTypeFactory;
@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
-import static java.lang.System.exit;
 
 @RestController
 @RequestMapping("/api/entrepreneur")
@@ -48,7 +46,6 @@ public class ListingController {
             HttpServletResponse response,
             @RequestBody ListingRequestDTO listingRequestDTO
     ) {
-        System.out.println(listingRequestDTO);
         return ResponseEntity.ok(listingService.addListing(response, listingRequestDTO));
     }
 
@@ -67,14 +64,53 @@ public class ListingController {
     //Get the listing from the listing id
     @GetMapping("/getListingFromListingId/{id}")
     public ResponseEntity<ListingDTO> getListingFromListingId(@PathVariable Integer id) {
-        System.out.println(id);
         return ResponseEntity.ok(listingService.getListingFromListingId(id));
     }
 
     //Get all the listings available in the database with the status "published"
+    // @GetMapping("/getAllListings")
+    // public ResponseEntity<List<ListingDTO>> getAllListings() {
+    //     return ResponseEntity.ok(listingService.getAllListings());
+    // }
+
+    // //Get all the finalized listings available, with entries in the investor_interested_listing table and the entrepreneur_proof_document and investor_proof_document is not null
+    // @GetMapping("/getAllFinalizedListings")
+    // public ResponseEntity<List<ListingDTO>> getAllFinalizedListings() {
+    //     return ResponseEntity.ok(listingService.getAllFinalizedListings());
+    // }
+
+    // //Get the listing sectors of the listing using the listing id
+    // @GetMapping("/getListingSectors/{id}")
+    // public ResponseEntity<List<String>> getListingSectors(@PathVariable Integer id) {
+    //     //Get the listing object using the listing id
+    //     ListingDTO listing = listingService.getListing(id);
+
+    //     //Get the listing sectors related to the listing
+    //     List<String> listingSectors = listingService.getListingSectors(listing);
+
+
+    //     return ResponseEntity.ok(listingSectors);
+    // }
+
+    // //Function to get the finalized offered amounts of the listing
+    // @GetMapping("/getCompletedInvestment/{id}")
+    // public ResponseEntity<Integer> getCompletedInvestment(@PathVariable Integer id) {
+    //     //Get the listing object using the listing id
+    //     ListingDTO listing = listingService.getListing(id);
+
+    //     //Get the completed investment related to the listing
+    //     Integer completedInvestment = listingService.getCompletedInvestment(listing);
+
+    //     if(completedInvestment == null){
+    //         return ResponseEntity.ok(0);
+    //     }else{
+    //         return ResponseEntity.ok(completedInvestment);
+    //     }
+    // }
+
     @GetMapping("/getAllListings")
     public ResponseEntity<List<ListingDTO>> getAllListings() {
-        List<ListingDTO> listings=listingService.getAllListings();
+        List<ListingDTO> listings = listingService.getAllListings();
         List<ListingDTO> activeListings=new ArrayList<>();
 
         //Remove listing where status!=Active
@@ -141,7 +177,6 @@ public class ListingController {
         List<String> listingSectors = listingService.getListingSectors(listing);
 
 
-        System.out.println(listingSectors);
         return ResponseEntity.ok(listingSectors);
     }
 
@@ -155,10 +190,8 @@ public class ListingController {
         Integer completedInvestment = listingService.getCompletedInvestment(listing);
 
         if(completedInvestment == null){
-            System.out.println("null");
             return ResponseEntity.ok(0);
         }else{
-            System.out.println(completedInvestment);
             return ResponseEntity.ok(completedInvestment);
         }
 
@@ -168,7 +201,6 @@ public class ListingController {
     //Send the video relevent to the listing to the frontend using the listing id
     @GetMapping("/getVideo/{videoname}")
     public ResponseEntity<Resource> getVideo(@PathVariable String videoname) {
-        System.out.println(videoname);
         // Project root directory
         String rootDirectory = System.getProperty("user.dir");
         // Load the video file from resources/static/uploads folder
@@ -180,8 +212,6 @@ public class ListingController {
                 .contentType(mediaType)
                 .body(videoResource);
     }
-
-
 
     //Get the videos of all the videonames in the path variable
     @GetMapping("/getVideos")
@@ -231,14 +261,12 @@ public class ListingController {
 
         //Get the listing names related to the listing
         List<String> listingImages = listingService.getListingImages(listing);
-        System.out.println((long) listingImages.size());
 
         //Add the images to send to the frontend
         for (String listingImage : listingImages) {
             Path imagePath = Paths.get(imageUploadPath, listingImage);
             images.add(Files.readAllBytes(imagePath));
         }
-        System.out.println(images);
         return ResponseEntity.ok().body(images);
     }
 
@@ -264,7 +292,6 @@ public class ListingController {
     //Function to return an array of thumbnails by the thumbnail names(Thumbnail names are passed as an array
     @GetMapping("/getThumbnails/{thumbnailnames}")
     public ResponseEntity<List<byte[]>> getThumbnails(@PathVariable List<String> thumbnailnames) throws IOException {
-        System.out.println(thumbnailnames);
         List<byte[]> images = new ArrayList<>();
         String rootDirectory = System.getProperty("user.dir");
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
@@ -291,14 +318,11 @@ public class ListingController {
         //Get the interested investors related to the listing
         List<InvestorInterestedListingDTO> interestedInvestors = listingService.getInterestedInvestors(listing);
 
-//        System.out.println(interestedInvestors);
-//        System.out.println(interestedInvestors.size());
 
         //Get the interested investors profile images from the user table
         for (InvestorInterestedListingDTO interestedInvestor : interestedInvestors) {
             InvestorDTO investor = interestedInvestor.getId().getInvestorId();
             String profileImage = investor.getProfileImage();
-            System.out.println("Investor profile image: " + profileImage);
             Path imagePath = Paths.get(imageUploadPath, profileImage);
             images.add(Files.readAllBytes(imagePath));
         }
@@ -306,19 +330,25 @@ public class ListingController {
         return ResponseEntity.ok().body(images);
     }
 
-
-
     //Get the subscription
     @GetMapping("/getSubscription/{id}")
     public ResponseEntity<ListingSubscriptionDTO> getSubscriptionType(@PathVariable Integer id) {
         return ResponseEntity.ok(listingService.getSubscriptionType(id));
     }
 
+    @GetMapping("/userGains")
+    public ResponseEntity<List<Map<String, String>>> getUserGains() {
+        List<Map<String, String>> users = listingService.getUserGains();
+        if (users.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(users);
+    }
+
+
     @GetMapping("/finalizeListing/{id}")
     public ResponseEntity<List<InvestorInterestedListingDTO>> finalizeListings(@PathVariable Integer id) {
-        System.out.println("Id" + id);
         List<InvestorInterestedListingDTO> finalizedListings = listingService.finalizeListings(id);
-        System.out.println(finalizedListings);
         if (finalizedListings == null) {
             return ResponseEntity.notFound().build();
         }
@@ -353,7 +383,6 @@ public class ListingController {
             Path entrepreneurPath = Paths.get(imageUploadPath,name);
             pdfs.add(Files.readAllBytes(entrepreneurPath));
         }
-        System.out.println("kkkkk");
         return ResponseEntity.ok().body(pdfs);
     }
 
@@ -368,7 +397,6 @@ public class ListingController {
 
     @PostMapping("/addInterestedListing")
     public ResponseEntity<ResponseDTO> addInterestedListing(@RequestBody List<Integer> listingIds) {
-        System.out.println(listingIds);
         return ResponseEntity.ok(listingService.addInterestedListing(listingIds));
     }
 
@@ -383,22 +411,6 @@ public class ListingController {
             @PathVariable("id") Integer id,
             @RequestBody ListingDTO listingDTO
     ) {
-        System.out.println("Awaaaaa : " + listingDTO);
         return ResponseEntity.ok(listingService.updateListing(id, listingDTO));
     }
-
-    @GetMapping("/userGains")
-    public ResponseEntity<List<Map<String, String>>> getUserGains() {
-        List<Map<String, String>> users = listingService.getUserGains();
-        if (users.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(users);
-    }
-
-
-
-
-
-
 }

@@ -4,12 +4,19 @@ import com.ventureverse.server.model.entity.ChatDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.reactivestreams.Publisher;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
@@ -22,6 +29,20 @@ public class UserController {
             @PathVariable Integer id
     ) {
         return ResponseEntity.ok(userService.getDetails(id));
+    }
+
+    @GetMapping("/chat/{id}")
+    public ResponseEntity<List<DetailsDTO>> getChats(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(userService.getChats(id));
+    }
+
+    @GetMapping("/profileImage/{id}")
+    public ResponseEntity<byte []> getImage(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(userService.getProfileImage(id));
     }
 
     @GetMapping("/getusers")
@@ -60,12 +81,5 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
-
-    @GetMapping("/chat/{id}")
-    public ResponseEntity<List<ChatDTO>> getChats(
-            @PathVariable Integer id
-    ) {
-        return ResponseEntity.ok(userService.getChats(id));
-    }
 
 }

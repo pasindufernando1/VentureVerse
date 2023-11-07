@@ -3,10 +3,12 @@ package com.ventureverse.server.service;
 import com.ventureverse.server.enumeration.Complain;
 import com.ventureverse.server.enumeration.Role;
 import com.ventureverse.server.enumeration.Status;
+import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
 import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,32 +17,19 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class EntrepreneurService {
 
     private final EntrepreneurRepository entrepreneurRepository;
     private final ComplainRepository complainRepository;
+    private final UserRepository userRepository;
     private final Investor_InterestedListingRepository investor_interestedListingRepository;
-
     private final IndividualInvestorRepository individualInvestorRepository;
     private final EnterpriseInvestorRepository enterpriseInvestorRepository;
     private final CounterProposalRepository counterProposalRepository;
     private final ScheduleRepository scheduleRepository;
     private final ListingRepository listingRepository;
     private final ListingIndustrySectorsRepository listingIndustrySectorsRepository;
-    private final UserRepository userRepository;
-
-    public EntrepreneurService(EntrepreneurRepository entrepreneurRepository, ComplainRepository complainRepository, Investor_InterestedListingRepository investorInterestedListingRepository, IndividualInvestorRepository individualInvestorRepository, EnterpriseInvestorRepository enterpriseInvestorRepository, CounterProposalRepository counterProposalRepository, ScheduleRepository scheduleRepository, ListingRepository listingRepository, ListingIndustrySectorsRepository listingIndustrySectorsRepository, UserRepository userRepository) {
-        this.entrepreneurRepository = entrepreneurRepository;
-        this.complainRepository = complainRepository;
-        this.investor_interestedListingRepository = investorInterestedListingRepository;
-        this.individualInvestorRepository = individualInvestorRepository;
-        this.enterpriseInvestorRepository = enterpriseInvestorRepository;
-        this.counterProposalRepository = counterProposalRepository;
-        this.scheduleRepository = scheduleRepository;
-        this.listingRepository = listingRepository;
-        this.listingIndustrySectorsRepository = listingIndustrySectorsRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<EntrepreneurDTO> findByApprovalStatus(Status status) {
         return entrepreneurRepository.findByApprovalStatus(status);
@@ -70,6 +59,24 @@ public class EntrepreneurService {
         return GlobalService.response("Success", "Complain added successfully");
     }
 
+    public List <Map<String, String>> getComplains() {
+        List<ComplainDTO> complains = complainRepository.findAll();
+        List<Map<String, String>> complainMap = new ArrayList<>();
+        for (ComplainDTO complain : complains) {
+            UserDTO user = userRepository.findById(complain.getUserId().getId()).orElse(null);
+            if (user == null) {
+                return null;
+            }else{
+                complainMap.add(Map.of(
+                        "complainType", complain.getComplainType().toString(),
+                        "userRole", user.getRole().toString(),
+                        "date", complain.getDate().toString()
+                ));
+            }
+        }
+        return complainMap;
+    }
+    
     public List<InvestorInterestedListingDTO> finalizeListings(Integer id) {
         return investor_interestedListingRepository.findByEntreprenuerListingId(id);
     }
@@ -152,6 +159,58 @@ public class EntrepreneurService {
         return listingMap;
     }
 
+    public List<Map<String, String>> getSchedules(Integer id) {
+        List<ScheduleDTO> meetings=scheduleRepository.findEntrepreneurMeetings(id);
+
+        List<Map<String, String>> userMap = new ArrayList<>();
+        for (ScheduleDTO meeting:meetings) {
+            Map<String, String> user = Map.of(
+                    "date",meeting.getDate().toString(),
+                    "time",meeting.getTime().toString(),
+                    "title",meeting.getTitle()
+            );
+            userMap.add(user);
+        }
+        return userMap;
+
+    }
+
+    public List<Map<String, String>> getInterests(Integer id) {
+        List<ListingDTO> listings = listingRepository.findByEntrepreneurId(id);
+        List<Map<String, String>> listingMap = new ArrayList<>();
+
+        for(ListingDTO listing:listings) {
+            //sectors that investor is interested in
+            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId(listing.getListingId());
+            for (ListingIndustrySectorsDTO sector:sectors) {
+                Map<String, String> user = Map.of(
+                        "sector", sector.getId().getSectorId().getSectorName(),
+                        "amount", listing.getExpectedAmount().toString()
+                );
+                listingMap.add(user);
+            }
+        }
+        return listingMap;
+    }
+
+
+    public List<Map<String, String>> getCompletedListings(Integer id) {
+        List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
+        List<Map<String, String>> listingMap = new ArrayList<>();
+
+        for(InvestorInterestedListingDTO listing:listings){
+            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId(listing.getId().getListingId().getListingId());
+            for (ListingIndustrySectorsDTO sector:sectors) {
+                Map<String, String> user = Map.of(
+                        "sector", sector.getId().getSectorId().getSectorName(),
+                        "amount", listing.getId().getListingId().getExpectedAmount().toString()
+                );
+                listingMap.add(user);
+            }
+        }
+        return listingMap;
+    }
+
     public String getdoc(Integer id) {
         return investor_interestedListingRepository.findByListingId(id).getEntrepreneurProofDocument();
     }
@@ -177,7 +236,9 @@ public class EntrepreneurService {
             }else {
                 investorName = enterpriseInvestorRepository.findById(list.getId().getInvestorId().getId()).orElse(null).getBusinessName();
             }
+
             Map<String, String> user = Map.of(
+                    "id", list.getId().getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", list.getId().getListingId().getExpectedAmount().toString(),
                     "type","Interested",
@@ -203,6 +264,7 @@ public class EntrepreneurService {
                 investorName = enterpriseInvestorRepository.findById(prop.getInvestorId().getId()).orElse(null).getBusinessName();
             }
             Map<String, String> user = Map.of(
+                    "id", prop.getInvestorId().getId().toString(),
                     "Investor", investorName,
                     "amount", prop.getAmount().toString(),
                     "type","Counter",
@@ -213,11 +275,10 @@ public class EntrepreneurService {
         }
         return listingMap;
     }
+    
     public List<EntrepreneurDTO> getAllApprovedEntrepreneurs() {
         return entrepreneurRepository.findByApprovalStatus(Status.APPROVED);
     }
-
-
 
     public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
         Optional<EntrepreneurDTO> existingEntrepreneurOptional = entrepreneurRepository.findById(id);
@@ -244,23 +305,38 @@ public class EntrepreneurService {
         }
     }
 
+    
+    // public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
+    //     Integer entrepreneurId = updatedEntrepreneur.getId();
+    //     Optional<EntrepreneurDTO> existingEntrepreneuroptional = entrepreneurRepository.findById(id);
+
+    //     if(existingEntrepreneuroptional.isPresent()){
+    //         EntrepreneurDTO existingEntrepreneur = existingEntrepreneuroptional.get();
+    //         // Update the existing entrepreneur fields with the values from updatedAdmin
+    //         existingEntrepreneur.setFirstname(updatedEntrepreneur.getFirstname());
+    //         existingEntrepreneur.setLastname(updatedEntrepreneur.getLastname());
+    //         existingEntrepreneur.setFirstLineAddress(updatedEntrepreneur.getFirstLineAddress());
+    //         existingEntrepreneur.setSecondLineAddress(updatedEntrepreneur.getSecondLineAddress());
+    //         existingEntrepreneur.setTown(updatedEntrepreneur.getTown());
+    //         existingEntrepreneur.setDistrict(updatedEntrepreneur.getDistrict());
+    //         existingEntrepreneur.setContactNumber(updatedEntrepreneur.getContactNumber());
+    //         //save to backend
+    //         return entrepreneurRepository.save(existingEntrepreneur);
+    //     }else{
+    //         //keep the existing entrepreneur
+    //         return entrepreneurRepository.save(updatedEntrepreneur);
+    //     }
+    // }
+
 
     public UserDTO banEntrepreneur(Integer id) {
-        Optional<UserDTO> existingUserOptional = userRepository.findById(id);
+        UserDTO user = userRepository.findById(id).orElseThrow(() -> new CustomErrorException("User Not Found"));
+        user.setApprovalStatus(Status.BANNED);
+        return userRepository.save(user);
+    }
 
-        if (existingUserOptional.isPresent()) {
-            UserDTO existingUser = existingUserOptional.get();
-
-            existingUser.setApprovalStatus(Status.PENDING);
-
-            // Update other fields as needed...
-
-            // Save the updated entrepreneur entity back to the database
-            return userRepository.save(existingUser);
-        } else {
-            return null;
-        }
-
+    public long countEntrepreneurs() {
+        return entrepreneurRepository.count();
     }
 
     public String getadmindoc(Integer listingId,Integer investorId) {
@@ -287,103 +363,7 @@ public class EntrepreneurService {
             }
         }
         return name;
-    }
-    public long countEntrepreneurs() {
-        return entrepreneurRepository.count();
-    }
-
-
-    // public EntrepreneurDTO updateEntrepreneur(EntrepreneurDTO updatedEntrepreneur, Integer id) {
-    //     Integer entrepreneurId = updatedEntrepreneur.getId();
-    //     Optional<EntrepreneurDTO> existingEntrepreneuroptional = entrepreneurRepository.findById(id);
-
-    //     if(existingEntrepreneuroptional.isPresent()){
-    //         EntrepreneurDTO existingEntrepreneur = existingEntrepreneuroptional.get();
-    //         // Update the existing entrepreneur fields with the values from updatedAdmin
-    //         existingEntrepreneur.setFirstname(updatedEntrepreneur.getFirstname());
-    //         existingEntrepreneur.setLastname(updatedEntrepreneur.getLastname());
-    //         existingEntrepreneur.setFirstLineAddress(updatedEntrepreneur.getFirstLineAddress());
-    //         existingEntrepreneur.setSecondLineAddress(updatedEntrepreneur.getSecondLineAddress());
-    //         existingEntrepreneur.setTown(updatedEntrepreneur.getTown());
-    //         existingEntrepreneur.setDistrict(updatedEntrepreneur.getDistrict());
-    //         existingEntrepreneur.setContactNumber(updatedEntrepreneur.getContactNumber());
-    //         //save to backend
-    //         return entrepreneurRepository.save(existingEntrepreneur);
-    //     }else{
-    //         //keep the existing entrepreneur
-    //         return entrepreneurRepository.save(updatedEntrepreneur);
-    //     }
-    // }
-
-    public List <Map<String, String>> getComplains() {
-        List<ComplainDTO> complains = complainRepository.findAll();
-        List<Map<String, String>> complainMap = new ArrayList<>();
-        for (ComplainDTO complain : complains) {
-            UserDTO user = userRepository.findById(complain.getUserId().getId()).orElse(null);
-            if (user == null) {
-                return null;
-            }else{
-                complainMap.add(Map.of(
-                        "complainType", complain.getComplainType().toString(),
-                        "userRole", user.getRole().toString(),
-                        "date", complain.getDate().toString()
-                ));
-            }
-        }
-        return complainMap;
-    }
-
-    public List<Map<String, String>> getSchedules(Integer id) {
-        List<ScheduleDTO> meetings=scheduleRepository.findEntrepreneurMeetings(id);
-
-        List<Map<String, String>> userMap = new ArrayList<>();
-        for (ScheduleDTO meeting:meetings) {
-            Map<String, String> user = Map.of(
-                    "date",meeting.getDate().toString(),
-                    "time",meeting.getTime().toString(),
-                    "title",meeting.getTitle()
-            );
-            userMap.add(user);
-        }
-        return userMap;
-
-    }
-
-    public List<Map<String, String>> getInterests(Integer id) {
-        List<ListingDTO> listings = listingRepository.findByEntrepreneurId(id);
-        List<Map<String, String>> listingMap = new ArrayList<>();
-
-        for(ListingDTO listing:listings) {
-            //sectors that investor is interested in
-            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId2(listing.getListingId());
-            for (ListingIndustrySectorsDTO sector:sectors) {
-                Map<String, String> user = Map.of(
-                        "sector", sector.getId().getSectorId().getSectorName(),
-                        "amount", listing.getExpectedAmount().toString()
-                );
-                listingMap.add(user);
-            }
-        }
-        return listingMap;
-    }
-
-    public List<Map<String, String>> getCompletedListings(Integer id) {
-        List<InvestorInterestedListingDTO> listings = investor_interestedListingRepository.findByEntrepreneurId(id);
-        List<Map<String, String>> listingMap = new ArrayList<>();
-
-        for(InvestorInterestedListingDTO listing:listings){
-            List<ListingIndustrySectorsDTO> sectors = listingIndustrySectorsRepository.findByListingId2(listing.getId().getListingId().getListingId());
-            for (ListingIndustrySectorsDTO sector:sectors) {
-                Map<String, String> user = Map.of(
-                        "sector", sector.getId().getSectorId().getSectorName(),
-                        "amount", listing.getId().getListingId().getExpectedAmount().toString()
-                );
-                listingMap.add(user);
-            }
-        }
-        return listingMap;
-    }
-
+    }  
 
 
 }

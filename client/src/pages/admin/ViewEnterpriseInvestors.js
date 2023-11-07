@@ -1,38 +1,64 @@
 import React, {useEffect, useState} from "react";
-import {Header,Button} from "../webcomponent";
+import {Header, Button, Alert} from "../webcomponent";
 import { Rating } from "@material-tailwind/react";
 import {Link} from "react-router-dom";
 import useAxiosMethods from "../../hooks/useAxiosMethods";
-import {put} from "axios";
+
+let i;
 
 const ViewEntrepreneurs = () => {
-    const [rated, setRated] = React.useState(4);
     const {get,put} = useAxiosMethods();
+    const [rated, setRated] = useState(4);
     const [response, setResponse] = useState([]);
+    const [banResponse,setBanResponse] = useState(null);
+    const [errorMsg, setErrorMsg] = useState({State: false, Type: "", Message: ""});
     const [search, setSearch] = useState('');
-    const[response2, setResponse2] = useState([]);
 
     useEffect(() => {
         get("investors/EnterpriseInvestor/view", setResponse);
     }, []);
-    console.log(response);
 
-    const handleBan=  () => {
-        put(`investors/EnterpriseInvestor/ban/${response[0].id}`, "", setResponse2);
-        if (response2.status === 200) {
-            console.log("Banned");
-        } else {
-            console.log("Not Banned Something went wong" );
-        }
+    const handleBan=  (id) => {
+
+        put(`investors/ban/${id}`, "", setBanResponse);
+        i = id;
+
     }
 
+    useEffect(() => {
 
-    //create dummy array for table data
+        if (banResponse === null) {
+            return;
+        }
+
+        if (banResponse?.status === "200") {
+
+            setErrorMsg({State: true, Type: "Success", Message: banResponse?.message});
+            let index = response.findIndex(user => user.id === i);
+            const temp = [...response]
+            temp.splice(index,1)
+            setResponse(temp)
+
+        } else {
+            setErrorMsg({State: true, Type: "Error", Message: banResponse?.message});
+        }
+
+    }, [banResponse]);
+
+    useEffect(() => {
+        const interval = setTimeout(() => {
+            setErrorMsg({State: false, Type: "", Message: ""});
+            setBanResponse(null)
+        }, 2000);
+
+        // Cleanup the timer to prevent memory leaks
+        return () => clearTimeout(interval);
+    }, [response]);
 
     return(
         <div>
         <Header active="Enterprise Investors">
-            <br></br>        
+            <Alert Type={errorMsg.Type} Message={errorMsg.Message} State={errorMsg.State} />
             <main className="h-auto flex justify-center items-center g:h-screen">
             <div className="relative border-[2px] border-main-purple sm:rounded-lg p-2 w-full">
                 <h2 className="text-2xl font-extrabold my-5">
@@ -146,7 +172,7 @@ const ViewEntrepreneurs = () => {
                         </button>
                             </Link>
                         <button
-                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={handleBan}>
+                            className="inline-flex items-center px-2 py-1 bg-gray-500 hover:bg-gray-700 text-white text-[15px] rounded-md m-1" onClick={() => handleBan(user.id)}>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"

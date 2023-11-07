@@ -2,7 +2,6 @@ package com.ventureverse.server.repository;
 
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
-import com.ventureverse.server.model.normal.RegisterRequestDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

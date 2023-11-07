@@ -97,6 +97,7 @@ function Schedule() {
         })
         setEvents(temp);
     },[schedules] )
+
     const checkTimeGap = (time) => {
         const currentTime = new Date();
         const currentHour = currentTime.getHours();
@@ -114,6 +115,7 @@ function Schedule() {
         // If the time gap is less than 10 minutes, enable the button
         return currentHour === Number(meetingTime[0]) && timeGap <= tenMinutes;
     };
+    
     const handleVideoCAll = () =>{
         const conferenceWindow = window.open(
             '/meeting/01/entrepreneur/' + new Date().toISOString(),

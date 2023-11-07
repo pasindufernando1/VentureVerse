@@ -57,12 +57,33 @@ public class ScheduleService {
                 scheduleDTO.setEntrepreneurId(scheduleDTO.getEntrepreneurId());
             }
             var schedule = ScheduleDTO.builder()
-                            .title(scheduleDTO.getTitle())
-                            .time(scheduleDTO.getTime())
-                            .date(scheduleDTO.getDate())
-                            .investorId(scheduleDTO.getInvestorId())
-                            .entrepreneurId(scheduleDTO.getEntrepreneurId())
-                            .build();
+                    .title(scheduleDTO.getTitle())
+                    .time(scheduleDTO.getTime())
+                    .date(scheduleDTO.getDate())
+                    .investorId(scheduleDTO.getInvestorId())
+                    .entrepreneurId(scheduleDTO.getEntrepreneurId())
+                    .build();
+            scheduleRepository.save(schedule);
+            return new ResponseDTO("Schedule added successfully", "true");
+        } catch (Exception e) {
+            return new ResponseDTO("Failed to add schedule.", "false");
+        }
+    }
+
+    public ResponseDTO addScheduleEntrepreneur(Integer id, ScheduleDTO scheduleDTO) {
+        try {
+            if(scheduleDTO.getInvestorId().getId() == null){
+                scheduleDTO.setInvestorId(null);
+            }else{
+                scheduleDTO.setEntrepreneurId(scheduleDTO.getEntrepreneurId());
+            }
+            var schedule = ScheduleDTO.builder()
+                    .title(scheduleDTO.getTitle())
+                    .time(scheduleDTO.getTime())
+                    .date(scheduleDTO.getDate())
+                    .investorId(null)
+                    .entrepreneurId(scheduleDTO.getEntrepreneurId())
+                    .build();
             scheduleRepository.save(schedule);
             return new ResponseDTO("Schedule added successfully", "true");
         } catch (Exception e) {

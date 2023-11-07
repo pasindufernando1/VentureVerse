@@ -112,11 +112,7 @@ function Schedules() {
     };
 
     const handleEventClick = (info) => {
-        // const event = schedules.filter((schedule) =>
-        //     schedule.date === info.event.startStr && schedule.time === info.event.title.split(" ")[2]);
-        // console.log(event[0]);
         const event = schedules.filter((schedule) => schedule.date === info.event.startStr);
-        console.log(event[0]);
         setSelectedEvent(event[0]);
         setShowPopup(true);
     };

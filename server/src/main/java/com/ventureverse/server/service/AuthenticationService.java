@@ -25,11 +25,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
 import java.sql.Timestamp;
-import java.util.List;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -291,7 +288,7 @@ public class AuthenticationService {
         return GlobalService.response("Success", "User " + id + " Approved");
     }
 
-    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) throws IOException {
+    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {
 
         var salt = credentialRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
@@ -315,25 +312,27 @@ public class AuthenticationService {
 
         //Get the user image of the user
         var profileImage=userRepository.getimage(user.getId());
-        System.out.println(profileImage);
 
         String rootDirectory = System.getProperty("user.dir");
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
 
         Path path = Paths.get(imageUploadPath,profileImage);
-        byte[] image = Files.readAllBytes(path);
-        System.out.println(image);
 
         user.setStatus(Chat.ONLINE);
         user.setLastLogin(null);
         userRepository.save(user);
 
-        return GlobalService.authenticationResponse(
-                accessToken,
-                user.getId(),
-                user.getRole(),
-                image
-        );
+        try {
+            return GlobalService.authenticationResponse(
+                    accessToken,
+                    user.getId(),
+                    user.getRole(),
+                    Files.readAllBytes(path)
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public ResponseDTO forgotPassword(String email) {
@@ -428,6 +427,7 @@ public class AuthenticationService {
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         user.setLastLogin(timestamp);
+        user.setStatus(Chat.OFFLINE);
         userRepository.save(user);
 
         return GlobalService.response("Success", "");

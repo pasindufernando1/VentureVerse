@@ -578,7 +578,7 @@ const UpdateEntrepreInv = () => {
                         <div>
                             {showSuccessNotification && (
                                 <StatusPopUp
-                                    successTitle="Registration Successful"
+                                    successTitle="Update Successful"
                                     successMessage="You have successfully registered a new Co-Admin!"
                                     redirectUrl="/admin/users/coAdmins"
                                 />

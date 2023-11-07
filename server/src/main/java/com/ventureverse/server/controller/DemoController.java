@@ -1,12 +1,11 @@
 package com.ventureverse.server.controller;
 
 import com.ventureverse.server.enumeration.Complain;
-import com.ventureverse.server.enumeration.Status;
-import com.ventureverse.server.model.entity.*;
+import com.ventureverse.server.model.entity.AdminDTO;
+import com.ventureverse.server.model.entity.ComplainDTO;
+import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
 import com.ventureverse.server.service.DemoService;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,9 +60,7 @@ public class DemoController {
             @RequestBody DetailsDTO complainRequest,
             @PathVariable Integer id
     ) {
- //       System.out.println(complainRequest);
      ComplainDTO IgnoreComplain = demoService.addComplain(id,complainRequest);
-//
      if(IgnoreComplain !=null){
             return ResponseEntity.ok("  done successfully");
       }
@@ -75,8 +72,7 @@ public class DemoController {
     @GetMapping("/EntrepreneurLeaderboard")
     public List<Object[]> entrepreneurLeaderboard() {
         List<Object[]> AllEnter = demoService.entrepreneurLeaderboard();
-       System.out.println(AllEnter);
-       // return ResponseEntity.ok("  done successfully");
+
         return AllEnter;
     }
 
@@ -84,8 +80,6 @@ public class DemoController {
     @GetMapping("/InvestorLeaderboard")
     public List<Object[]> InvestorLeaderboard() {
         List<Object[]> AllObjects = demoService.investorLeaderboard();
-        System.out.println(AllObjects);
-        // return ResponseEntity.ok("  done successfully");
         return AllObjects;
     }
 
@@ -104,7 +98,6 @@ public class DemoController {
     public ResponseEntity<String> MarkedComplains(
             @PathVariable Integer id
     ){
-        System.out.println("hi");
         ComplainDTO MarkedComplains = demoService.MarkedComplains(id);
 
         if(MarkedComplains !=null){
@@ -135,14 +128,11 @@ public class DemoController {
 
 
     @GetMapping("/GivingStarRatingBoth/{id}")
-    public List LeaderBordBoth(
+    public List<Object> LeaderBordBoth(
             @PathVariable Integer id
     )
     {
-        List Both = demoService.LeaderboardBothService(id);
-
-        // return ResponseEntity.ok("  done successfully");
-        return Both;
+        return demoService.LeaderboardBothService(id);
 
     }
 

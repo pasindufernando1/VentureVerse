@@ -20,7 +20,6 @@ function ViewListingCounterProposal() {
         get(`entrepreneurs/offers/${listingId}`, setResponse);
     }, []);
 
-    console.log(response);
 
     const handleVideoCAll = () => {
         const conferenceWindow = window.open(
@@ -72,9 +71,9 @@ function ViewListingCounterProposal() {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {response.map((request) => (
+                                    {response.map((request,key) => (
                                         <tr className="font-medium text-gray-700 bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                                            key={request.id}>
+                                            key={key}>
                                             <td>
                                                 <Avatar
                                                     variant="circular"
@@ -89,7 +88,7 @@ function ViewListingCounterProposal() {
                                             {/* Two icons to start messaging and start video call */}
                                             <td className="px-6 py-4">
                                                 <div className="flex items-center space-x-4 text-sm">
-                                                    <Link to={"/inbox"} onClick={()=>setData({id: request.id, name: request.investorInterested, profileImage: "profileImage.jpg"})}>
+                                                    <Link to={"/inbox"} onClick={()=>setData({id: Number(request.id), name: request.Investor, profileImage: "profileImage.jpg"})}>
                                                         <img src="/assets/images/chat.png" alt="View"
                                                              className="cursor-pointer"/>
                                                     </Link>

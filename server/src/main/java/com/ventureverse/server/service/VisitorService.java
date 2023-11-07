@@ -15,9 +15,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +34,7 @@ public class VisitorService {
 
         String rootDirectory = System.getProperty("user.dir");
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/thumbnails";
-        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profiles";
+        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
 
         Listings.forEach(listing -> {
             Path imagePath = Paths.get(imageUploadPath, listing.getThumbnail());

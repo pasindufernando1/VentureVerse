@@ -20,6 +20,7 @@ function FinalizeListing() {
     const {get, post,put} = useAxiosMethods();
     const[response, setResponse] = useState([]);
     const[response1, setResponse1] = useState([]);
+    const[response2, setResponse2] = useState([]);
     const[investorpic, setinvestorpic] = useState([]);
     const[investorname, setinvestorname] = useState([]);
     const [showSuccessNotification, setShowSuccessNotification] = useState(false);
@@ -42,32 +43,26 @@ function FinalizeListing() {
 
     useEffect(() => {
         get(`/entrepreneurs/finalizeListings/${id}`, setResponse);
+        get(`/entrepreneurs/getEntrepreneurPic/${allinvestorid}`, setinvestorpic);
+        get(`/entrepreneurs/getInvestorName/${allinvestorid}`, setinvestorname);
     }, [response]);
 
     //useeffect to store data into image array
     response && response.map((item) => (
         allinvestorid.push(item.id.investorId.id)
-    )); 
-
-    useEffect(() => {
-        get(`/entrepreneurs/getEntrepreneurPic/${allinvestorid}`, setinvestorpic);
-    }, [response]);
-
-    useEffect(() => {
-        get(`/entrepreneurs/getInvestorName/${allinvestorid}`, setinvestorname);
-    }, [response]);
+    ));
 
     const requestData = {
         entrepreneurProofDocument:formData.agreement,
         status:"Entrepreneur_Finalized"
     };
 
-    const handlesubmit = async () => {
+    const handleSubmit = async () => {
         const formData = new FormData();
 
         const agreementName =  Date.now() + Math.random() + requestData.entrepreneurProofDocument.name;
         formData.append("agreement", requestData.entrepreneurProofDocument, agreementName);
-        post("/investors/upload", formData, setResponse, true);
+        post("/investors/upload", formData, setResponse2, true);
 
         requestData.entrepreneurProofDocument = agreementName;
         put(`/entrepreneurs/updatefinalizeListing/${id}`,requestData,setResponse1);
@@ -77,6 +72,7 @@ function FinalizeListing() {
     };
  
     const [isModalOpen, setIsModalOpen] = useState(false);
+
     return (
         //if condition to check the size of the response array
         response.length > 0 ?(
@@ -178,7 +174,7 @@ function FinalizeListing() {
                                     <Button
                                         type="button"
                                         className="float-right mt-2"
-                                        onClick={handlesubmit}
+                                        onClick={handleSubmit}
                                     >
                                         Finalize
                                     </Button>

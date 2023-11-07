@@ -28,7 +28,7 @@ const UpdateCoAdmin = () => {
 
     useEffect(() => {
 
-            get(`/coadmin/update/view/${id}`,setResponse);
+            get(`/coAdmin/update/view/${id}`,setResponse);
 
 
 
@@ -369,7 +369,7 @@ const UpdateCoAdmin = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Registration Successful"
+                            successTitle="Update Successful"
                             successMessage="You have successfully Updated the Co-Admin"
                             redirectUrl="/admin/users/coAdmins"
                         />

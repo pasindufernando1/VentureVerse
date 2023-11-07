@@ -35,6 +35,7 @@ public class AuthenticationController {
     public ResponseEntity<ResponseDTO> checkEmail(@PathVariable String email) {
         return ResponseEntity.ok(authenticationService.checkEmail(email));
     }
+
     @GetMapping("/UpdatecheckEmail/{email}/{id}")
     public ResponseEntity<ResponseDTO> checkEmailforId(@PathVariable String email,@PathVariable Integer id) {
         return ResponseEntity.ok(authenticationService.checkEmailforId(email,id));

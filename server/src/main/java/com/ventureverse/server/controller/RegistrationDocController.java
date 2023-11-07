@@ -67,7 +67,6 @@ public class RegistrationDocController {
 
         // Example paths for saving images and videos
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/regImages";
-        System.out.println("imageUploadPath: " + imageUploadPath);
 
         try {
             // Save images

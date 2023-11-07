@@ -1,6 +1,5 @@
 package com.ventureverse.server.repository;
 
-import com.ventureverse.server.model.entity.InvestorInterestedSectorDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
 import com.ventureverse.server.model.entity.ListingIndustrySectorsDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,6 +17,13 @@ public interface ListingIndustrySectorsRepository extends JpaRepository<ListingI
             """)
     List<ListingIndustrySectorsDTO> findByListingId(ListingDTO listing);
 
+    @Query("""
+            SELECT l 
+            FROM ListingIndustrySectorsDTO l 
+            WHERE l.id.listingId.listingId = :listingId
+            """)
+    List<ListingIndustrySectorsDTO> findByListingId(Integer listingId);
+    
     //Function to get the industry sectors of a listing
     @Query("""
             SELECT l.id.sectorId.sectorName 

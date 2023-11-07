@@ -1,9 +1,7 @@
 package com.ventureverse.server.repository;
 
 import com.ventureverse.server.model.entity.*;
-import com.ventureverse.server.model.normal.ResponseDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -22,8 +20,8 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
 //    List<InvestorInterestedListingDTO> findByInvestorId(Integer id);
 
     @Query("""
-            SELECT i 
-            FROM InvestorInterestedListingDTO i 
+            SELECT i
+            FROM InvestorInterestedListingDTO i
             WHERE i.id.investorId.id = :investor
             AND i.finalizedDate IS NOT NULL
             """)
@@ -42,6 +40,30 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             WHERE investorInterestedListingDTO.id.listingId.listingId = :id
             """)
     InvestorInterestedListingDTO findByListingId(Integer id);
+
+// public interface Investor_InterestedListingRepository extends JpaRepository<InvestorInterestedListingDTO, Integer> {
+
+//     @Query("""
+//             SELECT investorInterestedListingDTO
+//             FROM InvestorInterestedListingDTO investorInterestedListingDTO
+//             WHERE investorInterestedListingDTO.id.investorId.id = :id
+//             AND investorInterestedListingDTO.amountFinalized IS NULL
+//             """)
+//     List<InvestorInterestedListingDTO> findByInvestorId(Integer id);
+
+//    @Query("""
+//            SELECT investorInterestedListingDTO
+//            FROM InvestorInterestedListingDTO investorInterestedListingDTO
+//            WHERE investorInterestedListingDTO.id.listingId = :id
+//            """)
+//    Optional<InvestorInterestedListingDTO> findByListing(ListingDTO id);
+
+//     @Query("""
+//             SELECT investorInterestedListingDTO
+//             FROM InvestorInterestedListingDTO investorInterestedListingDTO
+//             WHERE investorInterestedListingDTO.id.listingId.listingId = :id
+//             """)
+//     InvestorInterestedListingDTO findByListingId(Integer id);
 
     @Query("""
             SELECT i\s
@@ -95,7 +117,7 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             FROM InvestorInterestedListingDTO i\s
             WHERE i.status='Investor_Finalized'
             AND i.id.listingId.listingId = :id
-            AND i.entrepreneurProofDocument IS NOT NULL
+            AND i.entrepreneurProofDocument IS NULL
             """)
     List<InvestorInterestedListingDTO> findByEntreprenuerListingId(Integer id);
 
@@ -214,6 +236,12 @@ public interface Investor_InterestedListingRepository extends JpaRepository<Inve
             AND i.id.investorId.id = :investorId
             """)
     InvestorInterestedListingDTO findByInvestorIdAndListingId(@Param("investorId") Integer investorId, @Param("listingId") int listingId);
+    
+//    @Query("SELECT investorInterestedListingDTO " +
+//            "FROM InvestorInterestedListingDTO investorInterestedListingDTO " +
+//            "WHERE investorInterestedListingDTO.id.listingId = :listingId " +  // Use 'listingId' instead of 'id'
+//            "AND investorInterestedListingDTO.id.investorId.id = :investorId")
+//    Optional<InvestorInterestedListingDTO> findByListingInvestor(@Param("listingId") ListingDTO listingId, @Param("investorId") Integer investorId);
 
 
     @Query("""

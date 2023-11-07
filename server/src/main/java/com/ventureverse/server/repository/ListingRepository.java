@@ -1,13 +1,10 @@
 package com.ventureverse.server.repository;
 
 import com.ventureverse.server.model.entity.EntrepreneurDTO;
+import com.ventureverse.server.model.entity.InvestorInterestedListingDTO;
 import com.ventureverse.server.model.entity.ListingDTO;
-import com.ventureverse.server.model.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import java.util.List;
-
-import java.util.List;
 
 import java.util.List;
 

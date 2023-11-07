@@ -1,7 +1,6 @@
 package com.ventureverse.server.repository;
 
 import com.ventureverse.server.model.entity.ResetDTO;
-import com.ventureverse.server.model.entity.TokenDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
