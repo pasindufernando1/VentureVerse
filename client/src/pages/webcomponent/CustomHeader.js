@@ -45,6 +45,7 @@ const CustomHeader = (props) => {
     const navigate = useNavigate();
 
     const [user, setUser] = useState();
+    const [profileImage, setProfileImage] = useState();
 
     const [toggle, setToggle] = useState(0);
 
@@ -59,6 +60,8 @@ const CustomHeader = (props) => {
         // stompClient.connect({}, onConnected, onError);
 
         get(`/user/details/${auth?.id}`, setUser);
+        get(`/user/profileImage/${auth?.id}`, setProfileImage);
+
     }, []);
 
     // const onConnected = () => {
@@ -351,11 +354,11 @@ const CustomHeader = (props) => {
                                 </Typography>
                             </div>
                             <Avatar
+                                // src={`data:application/img;base64,${profileImage}`}
                                 variant="circular"
                                 size="md"
                                 alt="tania andrew"
                                 className="border border-main-purple p-0.5"
-                                // src={`data:application/img;base64,${auth?.profileImage}`}
                                 src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
                             />
                         </div>

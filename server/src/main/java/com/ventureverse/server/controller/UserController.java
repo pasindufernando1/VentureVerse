@@ -38,12 +38,12 @@ public class UserController {
         return ResponseEntity.ok(userService.getChats(id));
     }
 
-//    @GetMapping("/profileImage/{id}")
-//    public ResponseEntity<byte []> getImage(
-//            @PathVariable Integer id
-//    ) {
-//        return ResponseEntity.ok(userService.getProfileImage(id));
-//    }
+    @GetMapping("/profileImage/{id}")
+    public ResponseEntity<byte []> getImage(
+            @PathVariable Integer id
+    ) {
+        return ResponseEntity.ok(userService.getProfileImage(id));
+    }
 
     @GetMapping("/getusers")
     public ResponseEntity<List<Map<String, String>>> getUsers() {

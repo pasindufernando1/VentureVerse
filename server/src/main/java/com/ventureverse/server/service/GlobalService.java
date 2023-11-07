@@ -16,8 +16,7 @@ public class GlobalService {
 
     private static final ResourceLoader resourceLoader = null;
 
-    static AuthenticationResponseDTO authenticationResponse(String accessToken, Integer userId, Role role
-    , byte[] profileImage) {
+    static AuthenticationResponseDTO authenticationResponse(String accessToken, Integer userId, Role role, byte[] profileImage) {
         return AuthenticationResponseDTO.builder()
                 .accessToken(accessToken)
                 .id(userId)

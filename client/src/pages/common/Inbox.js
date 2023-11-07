@@ -120,7 +120,7 @@ const Inbox = () => {
     useEffect(() => {
 
         if (data === null && rooms.length === 0) return;
-        
+
         if (data?.id) {
             if (isExist(rooms, data?.id)) {
                 setCurrentRoom([data?.id, rooms.findIndex(room => room.id === data?.id)]);

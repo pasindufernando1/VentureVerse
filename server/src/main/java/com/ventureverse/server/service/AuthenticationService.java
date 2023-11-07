@@ -9,10 +9,7 @@ import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.enumeration.TokenType;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.*;
-import com.ventureverse.server.model.normal.AuthenticationRequestDTO;
-import com.ventureverse.server.model.normal.AuthenticationResponseDTO;
-import com.ventureverse.server.model.normal.RegisterRequestDTO;
-import com.ventureverse.server.model.normal.ResponseDTO;
+import com.ventureverse.server.model.normal.*;
 import com.ventureverse.server.repository.*;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -291,7 +288,7 @@ public class AuthenticationService {
         return GlobalService.response("Success", "User " + id + " Approved");
     }
 
-    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) throws IOException {
+    public AuthenticationResponseDTO authenticate(HttpServletResponse response, AuthenticationRequestDTO authenticationRequest) {
 
         var salt = credentialRepository.findSaltByEmail(authenticationRequest.getEmail()).orElseThrow();
 
@@ -320,18 +317,22 @@ public class AuthenticationService {
         String imageUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
 
         Path path = Paths.get(imageUploadPath,profileImage);
-        byte[] image = Files.readAllBytes(path);
 
         user.setStatus(Chat.ONLINE);
         user.setLastLogin(null);
         userRepository.save(user);
 
-        return GlobalService.authenticationResponse(
-                accessToken,
-                user.getId(),
-                user.getRole(),
-                image
-        );
+        try {
+            return GlobalService.authenticationResponse(
+                    accessToken,
+                    user.getId(),
+                    user.getRole(),
+                    Files.readAllBytes(path)
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public ResponseDTO forgotPassword(String email) {

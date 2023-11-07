@@ -1,7 +1,6 @@
 package com.ventureverse.server.service;
 
 import com.ventureverse.server.enumeration.Role;
-import com.ventureverse.server.enumeration.Chat;
 import com.ventureverse.server.enumeration.Status;
 import com.ventureverse.server.exception.CustomErrorException;
 import com.ventureverse.server.model.entity.ChatDTO;
@@ -10,14 +9,12 @@ import com.ventureverse.server.model.entity.UserDTO;
 import com.ventureverse.server.model.normal.DetailsDTO;
 import com.ventureverse.server.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -219,19 +216,19 @@ public class UserService {
             return Details;
     }
 
-//    public byte[] getProfileImage(Integer id) {
-//
-//        String image = userRepository.getimage(id);
-//
-//        String rootDirectory = System.getProperty("user.dir");
-//        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
-//        Path imagePath = Paths.get(profileUploadPath, image);
-//
-//        try {
-//            return Files.readAllBytes(imagePath);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    public byte[] getProfileImage(Integer id) {
+
+        String image = userRepository.getimage(id);
+
+        String rootDirectory = System.getProperty("user.dir");
+        String profileUploadPath = rootDirectory + "/src/main/resources/static/uploads/images/profileImages";
+        Path imagePath = Paths.get(profileUploadPath, image);
+
+        try {
+            return Files.readAllBytes(imagePath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 }

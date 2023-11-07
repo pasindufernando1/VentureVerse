@@ -361,7 +361,7 @@ const UpdateEnterpriseInvestor = () => {
                 <div>
                     {showSuccessNotification && (
                         <StatusPopUp
-                            successTitle="Registration Successful"
+                            successTitle="Update Successful"
                             successMessage="You have successfully Updated the Co-Admin"
                             redirectUrl="/admin/users/coAdmins"
                         />
